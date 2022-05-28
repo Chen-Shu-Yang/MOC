@@ -6,7 +6,7 @@
 //= ======================================================
 //              Imports
 //= ======================================================
-const db = require('../controller/databaseConfig');
+const pool = require('../controller/databaseConfig');
 
 //= ======================================================
 //              Functions / Objects
