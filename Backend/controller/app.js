@@ -68,6 +68,7 @@ app.get('/', (req, res) => {
   res.status(200).send('HelloWorld');
 });
 
+// get all class of service
 app.get('/classes', printDebugInfo, async (req, res) => {
   Admin.getAllClassOfService((err, result) => {
     if (!err) {
@@ -81,14 +82,16 @@ app.get('/classes', printDebugInfo, async (req, res) => {
   });
 });
 
+// get a class of sevice
 app.get('/classes/:id', printDebugInfo, async (req, res) => {
-  const babyid = req.params.id;
+  // extract id from params
+  const classid = req.params.id;
 
   // try {
-  Admin.getClass(babyid, (err, result) => {
+  Admin.getClass(classid, (err, result) => {
     if (!err) {
-      if (result.length == 0) {
-        output = {
+      if (result.length === 0) {
+        const output = {
           Error: 'Id not found',
         };
         res.status(404).send(output);
@@ -96,7 +99,7 @@ app.get('/classes/:id', printDebugInfo, async (req, res) => {
         res.status(200).send(result);
       }
     } else {
-      output = {
+      const output = {
         Error: 'Internal sever issues',
       };
       res.status(500).send(output);
@@ -104,12 +107,14 @@ app.get('/classes/:id', printDebugInfo, async (req, res) => {
   });
 });
 
-// add baby detail
+// add a class
 app.post('/class', printDebugInfo, (req, res) => {
+  // extract all details needed
   const { ClassName } = req.body;
   const { ClassPricing } = req.body;
   const { ClassDes } = req.body;
 
+  // check if class pricing is float value and execute code
   if (Number.parseFloat(ClassPricing)) {
     Admin.addClass(ClassName, ClassPricing, ClassDes, (err, result) => {
       if (!err) {
@@ -122,18 +127,24 @@ app.post('/class', printDebugInfo, (req, res) => {
         res.status(500).send('Internal Server Error');
       }
     });
-  } else {
+  // eslint-disable-next-line brace-style
+  }
+  // if class pricing is not float
+  else {
     res.status(400).send('Null value not allowed');
   }
 });
 
-// update baby details
+// update class of service
 app.put('/class/:id', printDebugInfo, (req, res) => {
+  // extract id from params
   const classID = req.params.id;
+  // extract all details needed
   const { ClassName } = req.body;
   const { ClassPricing } = req.body;
   const { ClassDes } = req.body;
 
+  // check if class pricing is float value and execute code
   if (Number.parseFloat(ClassPricing)) {
     Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, (err, result) => {
       if (!err) {
@@ -152,13 +163,16 @@ app.put('/class/:id', printDebugInfo, (req, res) => {
         res.status(500).send('Internal Server Error');
       }
     });
-  } else {
+  }
+  // if class pricing is not float
+  else {
     res.status(406).send('Inappropriate value');
   }
 });
 
-// delete baby
+// delete class of service
 app.delete('/class/:id', printDebugInfo, (req, res) => {
+  // extract id from params
   const { id } = req.params;
 
   Admin.deleteClass(id, (err, result) => {
