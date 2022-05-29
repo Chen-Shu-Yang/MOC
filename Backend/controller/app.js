@@ -69,215 +69,113 @@ app.get('/', (req, res) => {
 });
 
 app.get('/classes', printDebugInfo, async (req, res) => {
-
-
-  Admin.getAllClassOfService(function (err, result) {
+  Admin.getAllClassOfService((err, result) => {
     if (!err) {
-      console.log("==================================")
-      console.log("get class work")
-      console.log("==================================")
+      console.log('==================================');
+      console.log('get class work');
+      console.log('==================================');
       res.status(200).send(result);
-    }
-    else {
-      res.status(500).send("Some error");
+    } else {
+      res.status(500).send('Some error');
     }
   });
-
-
-
 });
 
-
 app.get('/classes/:id', printDebugInfo, async (req, res) => {
-  var babyid = req.params.id;
+  const babyid = req.params.id;
 
   // try {
-  Admin.getClass(babyid, function (err, result) {
-
+  Admin.getClass(babyid, (err, result) => {
     if (!err) {
       if (result.length == 0) {
         output = {
-          "Error": "Id not found"
+          Error: 'Id not found',
         };
         res.status(404).send(output);
-
-      }
-      else {
+      } else {
         res.status(200).send(result);
-
       }
-
-
-    }
-    else {
+    } else {
       output = {
-        "Error": "Internal sever issues"
+        Error: 'Internal sever issues',
       };
       res.status(500).send(output);
-
     }
-
-
-
-
-
   });
-
-
-
-
-
 });
 
-
 // add baby detail
-app.post('/class', printDebugInfo, function (req, res) {
-  var ClassName = req.body.ClassName;
-  var ClassPricing = req.body.ClassPricing;
-  var ClassDes = req.body.ClassDes;
+app.post('/class', printDebugInfo, (req, res) => {
+  const { ClassName } = req.body;
+  const { ClassPricing } = req.body;
+  const { ClassDes } = req.body;
 
-
-
-
-
-
-  Admin.addClass(ClassName, ClassPricing, ClassDes, function (err, result) {
-
-   console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-   console.log("IN the app.js")
-   console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-
-    // if (typeof ClassPricing == 'number') {
+  if (Number.parseFloat(ClassPricing)) {
+    Admin.addClass(ClassName, ClassPricing, ClassDes, (err, result) => {
       if (!err) {
-
-        res.status(201).send(result)
+        res.status(201).send(result);
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      } else {
+        res.status(500).send('Internal Server Error');
       }
-      else {
-
-        if (err.code === "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD") {
-          res.status(406).send("Inappropriate value")
-
-        }
-
-        else if (err.code === "ER_BAD_NULL_ERROR") {
-          res.status(400).send("Null value not allowed")
-
-        }
-        else {
-          res.status(500).send("Internal Server Error")
-
-        }
-
-      }
-    // } else {
-    //   res.status(406).send("Inappropriate value");
-    // }
-  });
-}
-
-);
-
-
+    });
+  } else {
+    res.status(400).send('Null value not allowed');
+  }
+});
 
 // update baby details
-app.put('/class/:id', printDebugInfo, function (req, res) {
-  var classID = req.params.id;
-  var ClassName = req.body.ClassName;
-  var ClassPricing = req.body.ClassPricing;
-  var ClassDes = req.body.ClassDes;
+app.put('/class/:id', printDebugInfo, (req, res) => {
+  const classID = req.params.id;
+  const { ClassName } = req.body;
+  const { ClassPricing } = req.body;
+  const { ClassDes } = req.body;
 
-
-
-  Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, function (err, result) {
-
-   
-    // if (typeof ClassPricing == 'number') {
+  if (Number.parseFloat(ClassPricing)) {
+    Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, (err, result) => {
       if (!err) {
-        var output = {
-          "classID": result.insertId
-        }
+        const output = {
+          classID: result.insertId,
+        };
 
-        console.log("result comd" + output.classID)
-
+        console.log(`result comd${output.classID}`);
 
         res.status(201).send(result);
-
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      } else {
+        res.status(500).send('Internal Server Error');
       }
-      else {
-        if (err.code == "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD") {
-          res.status(406).send("Inappropriate value")
-
-        }
-
-        else if (err.code == "ER_BAD_NULL_ERROR") {
-          res.status(400).send("Null value not allowed")
-
-        }
-        else {
-          res.status(500).send("Internal Server Error")
-
-        }
-
-      }
-
-    // }
-    // else {
-    //   res.status(406).send("Inappropriate value")
-
-    // }
-
-  });
-
-
-
-
+    });
+  } else {
+    res.status(406).send('Inappropriate value');
+  }
 });
 
 // delete baby
-app.delete('/class/:id', printDebugInfo, function (req, res) {
-  var id = req.params.id;
+app.delete('/class/:id', printDebugInfo, (req, res) => {
+  const { id } = req.params;
 
-
-  Admin.deleteClass(id, function (err, result) {
-
-      if (!err) {
-
-          if (result.affectedRows == 0) {
-
-              res.status(404).send("Item cannot be deleted");
-              
-
-          }
-          else {
-              res.status(200).send(result);
-
-          }
-
-
-
+  Admin.deleteClass(id, (err, result) => {
+    if (!err) {
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      } else {
+        res.status(200).send(result);
       }
-      else {
-          output = {
-              "Error": "Internal sever issues"
-          };
-          res.status(500).send(output);
-      }
-
-
-
+    } else {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
   });
-
-
-
-
-
 });
-
-
-
-
-
-
 
 // module exports
 module.exports = app;

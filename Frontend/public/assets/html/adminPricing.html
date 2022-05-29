@@ -142,7 +142,6 @@
 
 
         <div id="errMsgNotificaton">
-
         </div>
         <div id="confirmationMsg">
 
@@ -201,6 +200,8 @@
                             console.log("error")
                             errMsg = "Not valid id"
                             $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+                            $('#babyTableBody').html('')
+                        loadAllBabies()
                         }
                         else if (xhr.status == 200) {
                             $('#babyTableBody').html('')
@@ -210,6 +211,8 @@
                             msg = "Successfully deleted!"
 
                             $('#confirmationMsg').html(confirmToast(msg + " " + xhr.status)).fadeOut(2500);
+                            $('#babyTableBody').html('')
+                        loadAllBabies()
 
 
 
@@ -260,6 +263,10 @@
                 var ClassPricing = $('#class-pricing-update').val();
                 var ClassDescription = $('#class-description-update').val();
 
+                $('#class_name_add').val("")
+                $('#class_pricing_add').val("")
+                $('#class_description__add').val("")
+
 
 
 
@@ -280,12 +287,14 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     success: function (data, textStatus, xhr) {
+                        $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
 
                         $('#babyTableBody').html('')
                         loadAllBabies()
                         msg = "Successfully updated!"
-
-                        $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+                      
+                        
+                     
 
 
 
@@ -298,11 +307,11 @@
                             errMsg = "Please ensure that your values are accurate"
                         }
                         else if (xhr.status == 400) {
-                            errMsg = "Invalid input " + xhr.status
+                            errMsg = " Invalid input "
 
                         }
                         else if (xhr.status == 406) {
-                            errMsg = "Innappropraite value " + xhr.status
+                            errMsg = " Invalid input" 
 
                         }
 
@@ -315,9 +324,11 @@
 
                             console.log("----------------------------")
 
-                            errMsg = "There is some other issues here " + xhr.status
+                            errMsg = "There is some other issues here "
 
                         }
+                        $('#babyTableBody').html('')
+                        loadAllBabies()
                         $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
 
                     }
@@ -349,12 +360,12 @@
 
 <td>
 
-    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" onClick="loadABaby(${cardInfo.classId})" data-whatever="@mdo">Update${cardInfo.classId}</button>
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" onClick="loadABaby(${cardInfo.classId})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"></i></button>
     
 
 
 </td>
-<td> <button type="button" id="deleteBabyBtn" class="btn btn-danger"  onClick="deleteBaby(${cardInfo.classId})">Delete</button></td>
+<td> <button type="button" id="deleteBabyBtn" class="btn btn-info"  onClick="deleteBaby(${cardInfo.classId})"><i class="fa-regular fa-trash-can"></i></button></td>
 </tr>
 
     
@@ -472,8 +483,8 @@
 
 
 
-                        $('#babyTableBody').html('')
-                        loadAllBabies()
+                        // $('#classTable').html('')
+                        // loadAllBabies()
 
 
 
@@ -514,7 +525,7 @@
 
 
                 $('#class_name_add').val("")
-                $('#class_pricing__add').val("")
+                $('#class_pricing_add').val("")
                 $('#class_description__add').val("")
 
 
@@ -575,10 +586,10 @@
                             errMsg = "Server Issues"
                         }
                         else if (xhr.status == 400) {
-                            errMsg = "Null values not allowed"
+                            errMsg = " Input not accepted"
                         }
                         else if (xhr.status == 406) {
-                            errMsg = "Invalid Input"
+                            errMsg = " Input not accepted"
 
                         }
 
@@ -587,7 +598,10 @@
                             errMsg = "There is some other issues here"
 
                         }
-                        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+                        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+                        $('#babyTableBody').html('')
+                        loadAllBabies()
+
 
                     }
                 });
@@ -625,7 +639,7 @@
 
         </script>
 
-<dive class="card mt-5">
+<dive class="card cardClassService">
     <div class=" addBtn">
         <button type="button" class="btn btn-success  btn-sm" data-toggle="modal" data-target="#AddModel"
             data-whatever="@mdo">Add Service Class</button>

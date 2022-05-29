@@ -13,49 +13,37 @@ const pool = require('../controller/databaseConfig');
 //= ======================================================
 const Admin = {
 
-    
+  getAllClassOfService(callback) {
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.class ;';
 
-    getAllClassOfService: function (callback) {
+    pool.query(sql, (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err.null);
+      }
+      return callback(null, result);
 
-        var sql = 'SELECT * FROM heroku_6b49aedb7855c0b.class ;';
+      // pool.end()
+    });
+  },
 
-        pool.query(sql, (err, result) => {
-            if (err) {
-                console.log(err);
-                       return callback(err.null);
-            } else {
-                return callback(null, result);
-            }
-             // pool.end()
-            })
-    },
+  getClass(id, callback) {
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.class where ClassID=?;';
 
-    
-    getClass: function (id, callback) {
+    const values = [id];
 
-        var sql="SELECT * FROM heroku_6b49aedb7855c0b.class where ClassID=?;"
+    pool.query(sql, values, (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      return callback(null, result);
+    });
+  },
 
-        const values = [id]
-
-        pool.query(sql,values,(err, result) => {
-            if(err) {
-                console.log(err);
-                return callback(err);
-            } else {
-                return callback(null,result);
-            }
-        })
-
-
-    },
-
-    
-    //  Assignment 2
-    addClass: function (ClassName, ClassPricing, ClassDes, callback) {
-
-
-   
-        var sql = `
+  //  Assignment 2
+  addClass(ClassName, ClassPricing, ClassDes, callback) {
+    const sql = `
 
 
         INSERT INTO
@@ -71,29 +59,20 @@ const Admin = {
         );
 `;
 
-
-pool.query(sql,[ClassName, ClassPricing, ClassDes], (err, result) => {
-    if (err) {
+    pool.query(sql, [ClassName, ClassPricing, ClassDes], (err, result) => {
+      if (err) {
         console.log(err);
         return callback(err);
-    } else {
-        console.log(ClassPricing + " MODEL")
-        return callback(null, result);
-    }
-     // pool.end()
-    })
+      }
+      console.log(`${ClassPricing} MODEL`);
+      return callback(null, result);
 
+      // pool.end()
+    });
+  },
 
-
-
-},
-
-    
-
-updateClass: function (ClassName, ClassPricing, ClassDes, id, callback) {
-
-        
-            var sql = `
+  updateClass(ClassName, ClassPricing, ClassDes, id, callback) {
+    const sql = `
             UPDATE 
             heroku_6b49aedb7855c0b.class
          SET
@@ -106,50 +85,29 @@ updateClass: function (ClassName, ClassPricing, ClassDes, id, callback) {
             
 
             `;
-   
-   pool.query(sql,[ClassName, ClassPricing, ClassDes,id],(err, result) => {
-       if(err) {
-           console.log(err);
-           return callback(err);
-       } else {
-           return callback(null,result);
-       }
-   })
 
-     
+    pool.query(sql, [ClassName, ClassPricing, ClassDes, id], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      return callback(null, result);
+    });
+  },
 
+  deleteClass(id, callback) {
+    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.class where ClassID =?;';
 
+    const values = [id];
 
-
-     },
-
-     
-
-    deleteClass: function (id, callback) {
-
-
-
-        var sql="DELETE FROM heroku_6b49aedb7855c0b.class where ClassID =?;"
-        
-                const values = [id]
-        
-                pool.query(sql,values,(err, result) => {
-                    if(err) {
-                        console.log(err);
-                        return callback(err);
-                    } else {
-                        return callback(null,result);
-                    }
-                })
-        
-        
-            },
-    
-    
-
-
-
-
+    pool.query(sql, values, (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      return callback(null, result);
+    });
+  },
 
 };
 
