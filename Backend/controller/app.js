@@ -143,9 +143,11 @@ app.post('/class', printDebugInfo, function (req, res) {
 
   Admin.addClass(ClassName, ClassPricing, ClassDes, function (err, result) {
 
-    console.log("type of: " + typeof (ClassPricing))
+   console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+   console.log("IN the app.js")
+   console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
-    if (typeof ClassPricing == 'number') {
+    // if (typeof ClassPricing == 'number') {
       if (!err) {
 
         res.status(201).send(result)
@@ -167,19 +169,10 @@ app.post('/class', printDebugInfo, function (req, res) {
         }
 
       }
-
-
-
-
-    }
-    else {
-      res.status(406).send("Inappropriate value")
-
-    }
-
-
+    // } else {
+    //   res.status(406).send("Inappropriate value");
+    // }
   });
-
 }
 
 );
@@ -197,7 +190,8 @@ app.put('/class/:id', printDebugInfo, function (req, res) {
 
   Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, function (err, result) {
 
-    if (typeof ClassPricing == 'number') {
+   
+    // if (typeof ClassPricing == 'number') {
       if (!err) {
         var output = {
           "classID": result.insertId
@@ -226,13 +220,53 @@ app.put('/class/:id', printDebugInfo, function (req, res) {
 
       }
 
-    }
-    else {
-      res.status(406).send("Inappropriate value")
+    // }
+    // else {
+    //   res.status(406).send("Inappropriate value")
 
-    }
+    // }
 
   });
+
+
+
+
+});
+
+// delete baby
+app.delete('/class/:id', printDebugInfo, function (req, res) {
+  var id = req.params.id;
+
+
+  Admin.deleteClass(id, function (err, result) {
+
+      if (!err) {
+
+          if (result.affectedRows == 0) {
+
+              res.status(404).send("Item cannot be deleted");
+              
+
+          }
+          else {
+              res.status(200).send(result);
+
+          }
+
+
+
+      }
+      else {
+          output = {
+              "Error": "Internal sever issues"
+          };
+          res.status(500).send(output);
+      }
+
+
+
+  });
+
 
 
 

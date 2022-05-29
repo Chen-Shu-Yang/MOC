@@ -121,7 +121,29 @@ updateClass: function (ClassName, ClassPricing, ClassDes, id, callback) {
 
 
 
-     }
+     },
+
+     
+
+    deleteClass: function (id, callback) {
+
+
+
+        var sql="DELETE FROM heroku_6b49aedb7855c0b.class where ClassID =?;"
+        
+                const values = [id]
+        
+                pool.query(sql,values,(err, result) => {
+                    if(err) {
+                        console.log(err);
+                        return callback(err);
+                    } else {
+                        return callback(null,result);
+                    }
+                })
+        
+        
+            },
     
     
 
