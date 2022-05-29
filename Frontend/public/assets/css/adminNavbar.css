@@ -16,13 +16,13 @@ body {
 .sidebar {
     position: fixed;
     height: 100%;
-    width: 240px;
+    width: 80px;
     background: #2E6869;
     transition: all 0.5s ease;
 }
 
 .sidebar.active {
-    width: 80px;
+    width: 220px;
 }
 
 .sidebar .logo-details {
@@ -89,20 +89,20 @@ body {
 .home-section {
     position: relative;
     min-height: 100vh;
-    width: calc(100% - 240px);
-    left: 240px;
+    width: calc(100% - 80px);
+    left: 80px;
     transition: all 0.5s ease;
 }
 
 .sidebar.active ~ .home-section {
-    width: calc(100% - 80px);
-    left: 80px;
+    width: calc(100% - 220px);
+    left: 220px;
 }
 
 .home-section nav {
     position: fixed;
-    width: calc(100% - 240px);
-    left: 240px;
+    width: calc(100% - 80px);
+    left: 80px;
     display: flex;
     height: 80px;
     background: #fff;
@@ -114,8 +114,8 @@ body {
 }
 
 .sidebar.active ~ .home-section nav {
-    width: calc(100% - 80px);
-    left: 80px;
+    width: calc(100% - 220px);
+    left: 220px;
 }
 
 .home-section nav .sidebar-button {
