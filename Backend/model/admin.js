@@ -6,6 +6,7 @@
 //= ======================================================
 //              Imports
 //= ======================================================
+//intialising pool
 const pool = require('../controller/databaseConfig');
 
 //= ======================================================
@@ -29,7 +30,7 @@ const Admin = {
       return callback(null, result); // if
     });
   },
-  // get all class of service by id
+  // get class of service by id
   getClass(id, callback) {
     // sql query statement
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.class where ClassID=?;';
