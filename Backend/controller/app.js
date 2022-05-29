@@ -68,5 +68,182 @@ app.get('/', (req, res) => {
   res.status(200).send('HelloWorld');
 });
 
+app.get('/classes', printDebugInfo, async (req, res) => {
+
+
+  Admin.getAllClassOfService(function (err, result) {
+    if (!err) {
+      console.log("==================================")
+      console.log("get class work")
+      console.log("==================================")
+      res.status(200).send(result);
+    }
+    else {
+      res.status(500).send("Some error");
+    }
+  });
+
+
+
+});
+
+
+app.get('/classes/:id', printDebugInfo, async (req, res) => {
+  var babyid = req.params.id;
+
+  // try {
+  Admin.getClass(babyid, function (err, result) {
+
+    if (!err) {
+      if (result.length == 0) {
+        output = {
+          "Error": "Id not found"
+        };
+        res.status(404).send(output);
+
+      }
+      else {
+        res.status(200).send(result);
+
+      }
+
+
+    }
+    else {
+      output = {
+        "Error": "Internal sever issues"
+      };
+      res.status(500).send(output);
+
+    }
+
+
+
+
+
+  });
+
+
+
+
+
+});
+
+
+// add baby detail
+app.post('/class', printDebugInfo, function (req, res) {
+  var ClassName = req.body.ClassName;
+  var ClassPricing = req.body.ClassPricing;
+  var ClassDes = req.body.ClassDes;
+
+
+
+
+
+
+  Admin.addClass(ClassName, ClassPricing, ClassDes, function (err, result) {
+
+    console.log("type of: " + typeof (ClassPricing))
+
+    if (typeof ClassPricing == 'number') {
+      if (!err) {
+
+        res.status(201).send(result)
+      }
+      else {
+
+        if (err.code === "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD") {
+          res.status(406).send("Inappropriate value")
+
+        }
+
+        else if (err.code === "ER_BAD_NULL_ERROR") {
+          res.status(400).send("Null value not allowed")
+
+        }
+        else {
+          res.status(500).send("Internal Server Error")
+
+        }
+
+      }
+
+
+
+
+    }
+    else {
+      res.status(406).send("Inappropriate value")
+
+    }
+
+
+  });
+
+}
+
+);
+
+
+
+// update baby details
+app.put('/class/:id', printDebugInfo, function (req, res) {
+  var classID = req.params.id;
+  var ClassName = req.body.ClassName;
+  var ClassPricing = req.body.ClassPricing;
+  var ClassDes = req.body.ClassDes;
+
+
+
+  Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, function (err, result) {
+
+    if (typeof ClassPricing == 'number') {
+      if (!err) {
+        var output = {
+          "classID": result.insertId
+        }
+
+        console.log("result comd" + output.classID)
+
+
+        res.status(201).send(result);
+
+      }
+      else {
+        if (err.code == "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD") {
+          res.status(406).send("Inappropriate value")
+
+        }
+
+        else if (err.code == "ER_BAD_NULL_ERROR") {
+          res.status(400).send("Null value not allowed")
+
+        }
+        else {
+          res.status(500).send("Internal Server Error")
+
+        }
+
+      }
+
+    }
+    else {
+      res.status(406).send("Inappropriate value")
+
+    }
+
+  });
+
+
+
+
+});
+
+
+
+
+
+
+
 // module exports
 module.exports = app;
