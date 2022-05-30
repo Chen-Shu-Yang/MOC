@@ -219,14 +219,18 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
   });
 });
 
+// get employee per page
 app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
+  // extract pageNumber from params to determine the page we are at
   const { pageNumber } = req.params;
 
-  // try {
+  // calling pageEmployee method from admin model
   Admin.pageEmployee(pageNumber, (err, result) => {
+    // if no error send result
     if (!err) {
       res.status(200).send(result);
     }
+    // if error send error message
     else {
       const output = {
         Error: 'Internal sever issues',
@@ -240,12 +244,15 @@ app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
 app.get('/employee', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getAllEmployee((err, result) => {
+    // if no error send result
     if (!err) {
       console.log('==================================');
       console.log('get class work');
       console.log('==================================');
       res.status(200).send(result);
-    } else {
+    }
+    // if error send error message
+    else {
       res.status(500).send('Some error');
     }
   });

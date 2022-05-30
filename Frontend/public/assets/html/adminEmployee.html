@@ -58,153 +58,92 @@
 
 
     <script>
-
-
-
+        //create a new row
         function createRow(cardInfo) {
-            console.log(cardInfo);
-
-
 
             var card = `
-
- 
             <tr>
-
 <td>${cardInfo.EmployeeID}</td>
 <td>${cardInfo.EmployeeName}</td>
 <td>${cardInfo.EmployeeDes}</td>
 <td>${cardInfo.EmployeeImg}</td>
 <td>${cardInfo.Skillsets}</td>
-
 <td>
-
 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" onClick="" data-whatever="@mdo">Update</button>
-
-
-
 </td>
 <td> <button type="button" id="deleteBabyBtn" class="btn btn-danger"  onClick="">Delete</button></td>
 </tr>
-
-
 </tr>
-
-    
-
-
-
 `;
-
-
-
             return card;
         }
 
-
-
-        function loadAllBabies() {
+        //loadAll employee to get the number of employee in the system
+        function loadAllEmployee() {
             $.ajax({
-
+                //backend url to connect
                 url: 'http://localhost:5000/employee',
+                //type of request
                 type: 'GET',
-
+                //contet-type
                 contentType: "application/json; charset=utf-8",
-
+                //sucess result
                 success: function (data, textStatus, xhr) {
-                    console.log("-------response data------")
+                    console.log("-------response data for load all employee------")
                     console.log(data)
                     console.log("LENGTH OF DATA:" + data.length)
 
-
-                    var totalNumberOfPages = Math.ceil(data.length / 3)
-
-
+                    //calculate number of pages for this project
+                    var totalNumberOfPages = Math.ceil(data.length / 6)
+                    //call pageBtnCreate(totalNumberOfPages) to create page button
                     pageBtnCreate(totalNumberOfPages)
-
-
-
-
                 },
-
+                //error response
                 error: function (xhr, textStatus, errorThrown) {
                     console.log('Error in Operation');
-
-                    console.log(xhr);
-                    console.log(textStatus);
-                    console.log(errorThrown);
-
-                    console.log(xhr.responseText);
-                    console.log(xhr.status);
-
 
                 }
             });
 
-
-
-
         }
 
-
-
-        function loadBabiesByLimit(pageNumber) {
+        // load employee with a limit of 6 per page
+        function loadEmployeesByLimit(pageNumber) {
             $.ajax({
-
+                //backend url to connect
                 url: 'http://localhost:5000/employee/' + pageNumber,
+                //type of request
                 type: 'GET',
-
+                //contet-type
                 contentType: "application/json; charset=utf-8",
-
+                //sucess result
                 success: function (data, textStatus, xhr) {
                     console.log("-------response data------")
                     console.log(data)
                     console.log("LENGTH OF DATA:" + data.length)
-                    $('#babyTable').html("")
-
-
+                    $('#employeeTable').html("")
                     for (var i = 0; i < data.length; i++) {
+                        //assign single data to emplyee
                         var employee = data[i];
-
+                        //extract row info of the employee
                         var RowInfo = {
                             "EmployeeID": employee.EmployeeID,
                             "EmployeeName": employee.EmployeeName,
                             "EmployeeDes": employee.EmployeeDes,
                             "EmployeeImg": employee.EmployeeImg,
                             "Skillsets": employee.Skillsets,
-
                         }
-
-                        console.log("---------Card INfo data pack------------")
-                        console.log(RowInfo);
-
+                        //create new row for each employee
                         var newRow = createRow(RowInfo);
-
-
-                        $('#babyTable').append(newRow);
-
-
-
+                        //append new rows to the table
+                        $('#employeeTable').append(newRow);
                     }
-
-                    loadAllBabies()
-
-
-
-
+                    //call loadAllEmployee()
+                    loadAllEmployee()
                 },
-
+                //error response
                 error: function (xhr, textStatus, errorThrown) {
                     console.log('Error in Operation');
-
-                    console.log(xhr);
-                    console.log(textStatus);
-                    console.log(errorThrown);
-
-                    console.log(xhr.responseText);
-                    console.log(xhr.status);
-
-
                 }
             });
 
@@ -213,101 +152,25 @@
 
         }
 
-
-
-        function loadABaby(id) {
-
-            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            console.log("load a baby runs")
-            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            $.ajax({
-
-                url: 'http://localhost:8000/babies/' + id,
-                type: 'GET',
-
-                contentType: "application/json; charset=utf-8",
-
-                success: function (data, textStatus, xhr) {
-                    console.log("-------response data------")
-                    console.log(data)
-                    console.log("LENGTH OF DATA:" + data.length)
-
-
-
-                    var RowInfo = {
-                        "id": data[0].id,
-                        "name": data[0].name,
-                        "height_six_month": data[0].height_six_month,
-                        "height_seven_month": data[0].height_seven_month,
-                        "height_eight_month": data[0].height_eight_month,
-                        "height_nine_month": data[0].height_nine_month,
-                        "height_ten_month": data[0].height_ten_month
-                    }
-
-                    console.log("---------Card INfo data pack------------")
-                    console.log(RowInfo);
-
-
-
-                    $('#baby-id-update').val(RowInfo.id);
-                    $('#baby-name-update').val(RowInfo.name);
-                    $('#baby-height-six-month-update').val(RowInfo.height_six_month);
-                    $('#baby-height-seven-month-update').val(RowInfo.height_seven_month);
-                    $('#baby-height-eight-month-update').val(RowInfo.height_eight_month);
-                    $('#baby-height-nine-month-update').val(RowInfo.height_nine_month);
-                    $('#baby-height-ten-month-update').val(RowInfo.height_ten_month);
-
-
-                    $('#babyTableBody').html('')
-                    loadAllBabies()
-
-
-
-
-
-
-
-
-                },
-
-                error: function (xhr, textStatus, errorThrown) {
-                    console.log('Error in Operation');
-
-                    if (xhr.status == 201) {
-                        errMsg = "The id doesn't exist "
-                    }
-                    $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-
-
-
-                }
-            });
-
-
-        }
-
-
-
+        //Create number of page button
         function pageBtnCreate(totalNumberOfPages) {
+            //set empty string to div of id numberPage
             $('#numberPage').html("");
 
+            //for loop to loop and create the buttons
             for (i = 1; i <= totalNumberOfPages; i++) {
-
-
+                //styling for button
                 divPaginBtn = `
-    <button type="button" class="btn btn-warning" data-toggle="modal" onClick="loadBabiesByLimit(${i})" data-whatever="@mdo">${i}</button>`
+    <button type="button" class="btn btn-warning" data-toggle="modal" onClick="loadEmployeesByLimit(${i})" data-whatever="@mdo">${i}</button>`
 
-
+                //append button to div with id numberPage
                 $('#numberPage').append(divPaginBtn + "|");
 
             }
 
-
-
         }
 
-
-
+        // load function on refresh
         $(document).ready(function () {
 
 
@@ -316,16 +179,11 @@
             console.log("Query Param (source): " + window.location.search)
             console.log("Query Param (extraction): " + queryParams)
 
-
-
-
-            loadBabiesByLimit(1);
+            //loadEmployeesByLimit(1) to load the data for first page
+            loadEmployeesByLimit(1);
 
 
         });
-
-
-
 
 
     </script>
@@ -337,20 +195,19 @@
 
 
 
-
+    <!-- table for employee-->
     <div class="table-size">
-        <table id="babyTable" class="table">
-         
-            <tbody id="babyTableBody">
+        <table id="employeeTable" class="table">
+
+            <tbody id="emplyeeTableBody">
 
 
 
             </tbody>
         </table>
-
-        <h1 id="numberPage">
-
-        </h1>
+<!-- Page button-->
+        <div id="numberPage">
+        </div>
     </div>
 
 
