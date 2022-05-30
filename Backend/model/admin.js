@@ -145,6 +145,22 @@ const Admin = {
       return callback(null, result);
     });
   },
+    // get all class of services
+    getAllEmployee(callback) {
+      // sql query statement
+      const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee;';
+      // pool query
+      pool.query(sql, (err, result) => {
+        // error
+        if (err) {
+          console.log(err);
+          return callback(err);
+        }
+        // result accurate
+  
+        return callback(null, result); // if
+      });
+    },
 
 };
 

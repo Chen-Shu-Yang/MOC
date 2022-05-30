@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./css/babies.css">
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+
+    <title>BabiesPage</title>
+</head>
+
+<body>
+
+    <h1> BabiesPagination page</h1>
+
+    <div id="errMsgNotificaton">
+
+    </div>
+    <div id="confirmationMsg">
+
+    </div>
+
+
+
+
+
+    <script>
+
+
+
+        function createRow(cardInfo) {
+            console.log(cardInfo);
+
+
+
+            var card = `
+
+ 
+            <tr>
+
+<td>${cardInfo.EmployeeID}</td>
+<td>${cardInfo.EmployeeName}</td>
+<td>${cardInfo.EmployeeDes}</td>
+<td>${cardInfo.EmployeeImg}</td>
+<td>${cardInfo.Skillsets}</td>
+
+<td>
+
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" onClick="" data-whatever="@mdo">Update</button>
+
+
+
+</td>
+<td> <button type="button" id="deleteBabyBtn" class="btn btn-danger"  onClick="">Delete</button></td>
+</tr>
+
+
+</tr>
+
+    
+
+
+
+`;
+
+
+
+            return card;
+        }
+
+
+
+        function loadAllBabies() {
+            $.ajax({
+
+                url: 'http://localhost:5000/employee',
+                type: 'GET',
+
+                contentType: "application/json; charset=utf-8",
+
+                success: function (data, textStatus, xhr) {
+                    console.log("-------response data------")
+                    console.log(data)
+                    console.log("LENGTH OF DATA:" + data.length)
+
+
+                    var totalNumberOfPages = Math.ceil(data.length / 3)
+
+
+                    pageBtnCreate(totalNumberOfPages)
+
+
+
+
+                },
+
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+
+                    console.log(xhr.responseText);
+                    console.log(xhr.status);
+
+
+                }
+            });
+
+
+
+
+        }
+
+
+
+        function loadBabiesByLimit(pageNumber) {
+            $.ajax({
+
+                url: 'http://localhost:5000/employee/' + pageNumber,
+                type: 'GET',
+
+                contentType: "application/json; charset=utf-8",
+
+                success: function (data, textStatus, xhr) {
+                    console.log("-------response data------")
+                    console.log(data)
+                    console.log("LENGTH OF DATA:" + data.length)
+                    $('#babyTable').html("")
+
+
+                    for (var i = 0; i < data.length; i++) {
+                        var employee = data[i];
+
+                        var RowInfo = {
+                            "EmployeeID": employee.EmployeeID,
+                            "EmployeeName": employee.EmployeeName,
+                            "EmployeeDes": employee.EmployeeDes,
+                            "EmployeeImg": employee.EmployeeImg,
+                            "Skillsets": employee.Skillsets,
+
+                        }
+
+                        console.log("---------Card INfo data pack------------")
+                        console.log(RowInfo);
+
+                        var newRow = createRow(RowInfo);
+
+
+                        $('#babyTable').append(newRow);
+
+
+
+                    }
+
+                    loadAllBabies()
+
+
+
+
+                },
+
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+
+                    console.log(xhr.responseText);
+                    console.log(xhr.status);
+
+
+                }
+            });
+
+
+
+
+        }
+
+
+
+        function loadABaby(id) {
+
+            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            console.log("load a baby runs")
+            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            $.ajax({
+
+                url: 'http://localhost:8000/babies/' + id,
+                type: 'GET',
+
+                contentType: "application/json; charset=utf-8",
+
+                success: function (data, textStatus, xhr) {
+                    console.log("-------response data------")
+                    console.log(data)
+                    console.log("LENGTH OF DATA:" + data.length)
+
+
+
+                    var RowInfo = {
+                        "id": data[0].id,
+                        "name": data[0].name,
+                        "height_six_month": data[0].height_six_month,
+                        "height_seven_month": data[0].height_seven_month,
+                        "height_eight_month": data[0].height_eight_month,
+                        "height_nine_month": data[0].height_nine_month,
+                        "height_ten_month": data[0].height_ten_month
+                    }
+
+                    console.log("---------Card INfo data pack------------")
+                    console.log(RowInfo);
+
+
+
+                    $('#baby-id-update').val(RowInfo.id);
+                    $('#baby-name-update').val(RowInfo.name);
+                    $('#baby-height-six-month-update').val(RowInfo.height_six_month);
+                    $('#baby-height-seven-month-update').val(RowInfo.height_seven_month);
+                    $('#baby-height-eight-month-update').val(RowInfo.height_eight_month);
+                    $('#baby-height-nine-month-update').val(RowInfo.height_nine_month);
+                    $('#baby-height-ten-month-update').val(RowInfo.height_ten_month);
+
+
+                    $('#babyTableBody').html('')
+                    loadAllBabies()
+
+
+
+
+
+
+
+
+                },
+
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+
+                    if (xhr.status == 201) {
+                        errMsg = "The id doesn't exist "
+                    }
+                    $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+
+
+
+                }
+            });
+
+
+        }
+
+
+
+        function pageBtnCreate(totalNumberOfPages) {
+            $('#numberPage').html("");
+
+            for (i = 1; i <= totalNumberOfPages; i++) {
+
+
+                divPaginBtn = `
+    <button type="button" class="btn btn-warning" data-toggle="modal" onClick="loadBabiesByLimit(${i})" data-whatever="@mdo">${i}</button>`
+
+
+                $('#numberPage').append(divPaginBtn + "|");
+
+            }
+
+
+
+        }
+
+
+
+        $(document).ready(function () {
+
+
+            var queryParams = new URLSearchParams(window.location.search);
+            console.log("--------Query Params----------")
+            console.log("Query Param (source): " + window.location.search)
+            console.log("Query Param (extraction): " + queryParams)
+
+
+
+
+            loadBabiesByLimit(1);
+
+
+        });
+
+
+
+
+
+    </script>
+
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddModel"
+        data-whatever="@mdo">Add</button>
+
+
+
+
+
+
+    <div class="table-size">
+        <table id="babyTable" class="table">
+         
+            <tbody id="babyTableBody">
+
+
+
+            </tbody>
+        </table>
+
+        <h1 id="numberPage">
+
+        </h1>
+    </div>
+
+
+
+
+</body>
+
+</html>
+
+
+
+</body>
+
+</html>

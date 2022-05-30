@@ -236,5 +236,20 @@ app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
   });
 });
 
+// get all employee
+app.get('/employee', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from admin model
+  Admin.getAllEmployee((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get class work');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
 // module exports
 module.exports = app;
