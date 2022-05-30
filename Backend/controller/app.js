@@ -219,5 +219,22 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
   });
 });
 
+app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
+  const { pageNumber } = req.params;
+
+  // try {
+  Admin.pageEmployee(pageNumber, (err, result) => {
+    if (!err) {
+      res.status(200).send(result);
+    }
+    else {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 // module exports
 module.exports = app;

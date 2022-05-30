@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
@@ -6,7 +7,7 @@
 //= ======================================================
 //              Imports
 //= ======================================================
-//intialising pool
+// intialising pool
 const pool = require('../controller/databaseConfig');
 
 //= ======================================================
@@ -121,6 +122,26 @@ const Admin = {
         return callback(err);
       }
       // result accurate
+      return callback(null, result);
+    });
+  },
+  pageEmployee(pageNumber, callback) {
+    // eslint-disable-next-line no-param-reassign
+    // eslint-disable-next-line radix
+    pageNumber = parseInt(pageNumber);
+    // eslint-disable-next-line no-undef
+    const limitPerPage = 3;
+    const numberOfValueToSkip = (pageNumber - 1) * 3;
+
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee LIMIT ? OFFSET ?;';
+
+    const values = [limitPerPage, numberOfValueToSkip];
+
+    pool.query(sql, values, (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
       return callback(null, result);
     });
   },
