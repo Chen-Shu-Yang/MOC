@@ -27,15 +27,16 @@ app.use((req, res, next) => {
 
 // go to homepage
 app.get('/', (req, res) => {
-  res.sendFile('/public/assets/html/index.html', { root: __dirname });
+  res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
-// go to homepage
-app.get('/homepage', (req, res) => {
-  res.sendFile('/public/assets/html/index.html', { root: __dirname });
-});
+
 // go to login
 app.get('/login', (req, res) => {
   res.sendFile('/public/assets/html/login.html', { root: __dirname });
+});
+// go to homepage
+app.get('/homepage', (req, res) => {
+  res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
 
 // retrieve from public folder
