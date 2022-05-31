@@ -27,11 +27,11 @@ app.use((req, res, next) => {
 
 // go to homepage
 app.get('/', (req, res) => {
-  res.sendFile('/public/assets/MOC/moc.sg/index.html', { root: __dirname });
+  res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
 // go to homepage
 app.get('/homepage', (req, res) => {
-  res.sendFile('/public/assets/MOC/moc.sg/index.html', { root: __dirname });
+  res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
 
 
