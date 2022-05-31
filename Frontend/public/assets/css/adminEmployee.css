@@ -238,8 +238,12 @@ nav .right-header {
     height: 150px;
     object-fit: none;
     border-radius: 50%;
-    margin-bottom: 20px;
-    border: 2px solid #c4c4c4;
+    margin-bottom: 20px;   
+    border: 2px solid #c4c4c4; 
+    background: url(../img/camera-icon.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 
 .modal-content .modal-body textarea {

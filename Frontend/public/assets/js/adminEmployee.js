@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
@@ -172,4 +173,21 @@ $(document).ready(() => {
   console.log(`Query Param (extraction): ${queryParams}`);
 
   loadEmployeeByLimit(1);
+});
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      // $('#blah').attr('src', e.target.result);
+      document.getElementById('ppPreview').style.backgroundImage = `url( ${e.target.result} )`;
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$('#file_photo').change(function () {
+  readURL(this);
 });
