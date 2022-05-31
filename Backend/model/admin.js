@@ -1,5 +1,5 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable linebreak-style */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
@@ -192,6 +192,31 @@ const Admin = {
     });
   },
 
+  // update all class of services
+  updateEmployee(EmployeeName, EmployeeSkills, EmployeeImg, EmployeeDes, id, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE 
+        heroku_6b49aedb7855c0b.employee
+      SET
+        EmployeeName=?,
+        EmployeeDes=?,
+        EmployeeImg=?,
+        Skillsets=?
+      WHERE
+        EmployeeID=?;
+    `;
+    // pool query
+    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImg, EmployeeSkills, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================

@@ -1,6 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable brace-style */
 /* eslint-disable linebreak-style */
+/* eslint-disable brace-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-console */
@@ -173,7 +172,8 @@ app.put('/class/:id', printDebugInfo, (req, res) => {
 
         res.status(201).send(result);
       }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
         res.status(406).send('Inappropriate value');
       }
@@ -200,7 +200,8 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
   // calling deleteClass method from admin model
   Admin.deleteClass(id, (err, result) => {
     if (!err) {
-      // result.affectedRows indicates that id to be deleted cannot be found hence send as error message
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
       }
@@ -259,7 +260,7 @@ app.get('/employee', printDebugInfo, async (req, res) => {
 });
 
 // get an employee
-app.get('/employee/:id', printDebugInfo, async (req, res) => {
+app.get('/oneemployee/:id', printDebugInfo, async (req, res) => {
   // extract id from params
   const employeeId = req.params.id;
 
@@ -284,6 +285,51 @@ app.get('/employee/:id', printDebugInfo, async (req, res) => {
       res.status(500).send(output);
     }
   });
+});
+
+// update employee
+app.put('/employees/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const EmployeeID = req.params.id;
+  // extract all details needed
+  const { EmployeeName } = req.body;
+  const { EmployeeDes } = req.body;
+  const { EmployeeSkills } = req.body;
+  const { EmployeeImg } = req.body;
+
+  // calling updateClass method from admin model
+  Admin.updateEmployee(
+    EmployeeName,
+    EmployeeSkills,
+    EmployeeImg,
+    EmployeeDes,
+    EmployeeID,
+    (err, result) => {
+    // if there is no errorsend the following as result
+      if (!err) {
+        const output = {
+          classID: result.insertId,
+        };
+
+        console.log(`result ${output.classID}`);
+
+        res.status(201).send(result);
+      }
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+      // Inappropriate value as return message
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // else if there is a server error return message
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    },
+  );
 });
 
 // module exports

@@ -131,7 +131,7 @@
 
                 <!-- Pagination Start -->
                 <div class="page-btn" id="pagination">
-                    
+
                 </div>
                 <!-- Pagination End -->
             </div>
@@ -160,6 +160,10 @@
                                 <textarea class="form-control" placeholder="Employee Description..."
                                     id="addEmployeeDes"></textarea>
                             </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Employee Skills..."
+                                    id="addEmployeeSkills"></textarea>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -184,6 +188,8 @@
                     </div>
                     <div class="modal-body">
                         <form>
+                            <input type="number" id="editEmployeeID" hidden>
+                            <input type="text" id="editProfilePicLink" hidden>
                             <div class="editProfilePic" id="NewProfilePreview"></div>
                             <input type="file" id="edit_picture_file" name="item_image">
                             <div class="form-group">
@@ -194,11 +200,15 @@
                                 <textarea class="form-control" placeholder="Employee Description..."
                                     id="editEmployeeDes"></textarea>
                             </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Employee Skills..."
+                                    id="editEmployeeSkills"></textarea>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn save-btn">Save changes</button>
+                        <button type="button" class="btn save-btn" data-dismiss="modal" id="editEmployeeBtn">Save changes</button>
                     </div>
                 </div>
             </div>

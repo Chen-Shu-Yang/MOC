@@ -1,5 +1,5 @@
-/* eslint-disable func-names */
 /* eslint-disable linebreak-style */
+/* eslint-disable func-names */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
@@ -116,11 +116,10 @@ function loadEmployeeByLimit(pageNumber) {
 
 // eslint-disable-next-line no-unused-vars
 function loadAnEmployee(id) {
+  console.log(id);
   $.ajax({
-
-    url: `http://localhost:5000/employee/${id}`,
+    url: `http://localhost:5000/oneemployee/${id}`,
     type: 'GET',
-
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
@@ -141,10 +140,12 @@ function loadAnEmployee(id) {
       console.log('---------Card INfo data pack------------');
       console.log(RowInfo);
 
-      document.getElementById('NewProfilePreview').style.backgroundImage = 'url(../img/' + RowInfo.EmployeeImg + ')';
-      // $('#edit_picture_file').val(RowInfo.EmployeeImg);
+      document.getElementById('NewProfilePreview').style.backgroundImage = 'url(../img/profile2.jpg)';
+      $('#editEmployeeID').val(RowInfo.EmployeeID);
       $('#editEmployeeName').val(RowInfo.Name);
       $('#editEmployeeDes').val(RowInfo.Description);
+      $('#editEmployeeSkills').val(RowInfo.Skillsets);
+      $('#editProfilePicLink').val(RowInfo.EmployeeImg);
     },
 
     error(xhr, textStatus, errorThrown) {
@@ -158,6 +159,49 @@ function loadAnEmployee(id) {
   });
 }
 
+function updateEmployee() {
+  // data extraction
+  const id = $('#editEmployeeID').val();
+  const employeeName = $('#editEmployeeName').val();
+  const employeeDes = $('#editEmployeeDes').val();
+  const employeeSkills = $('#editEmployeeSkills').val();
+  const employeeImg = $('#editProfilePicLink').val();
+
+  // get item from local storage
+  const data = {
+    EmployeeName: employeeName,
+    EmployeeDes: employeeDes,
+    EmployeeSkills: employeeSkills,
+    EmployeeImg: employeeImg,
+  };
+  console.log(`DATA: ${data}`);
+
+  // call the web service endpoint
+  $.ajax({
+    // headers: { authorization: `Bearer ${tmpToken}` },
+    url: `http://localhost:5000/employees/${id}`,
+    type: 'PUT',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      console.log('Update Successful');
+      $('#employeeListing').html('');
+      loadEmployeeByLimit(1);
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log('-----------------------');
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+    },
+  });
+}
+
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   console.log('--------Query Params----------');
@@ -165,6 +209,11 @@ $(document).ready(() => {
   console.log(`Query Param (extraction): ${queryParams}`);
 
   loadEmployeeByLimit(1);
+
+  // update button
+  $('#editEmployeeBtn').click(() => {
+    updateEmployee();
+  });
 });
 
 function readURL(input) {
