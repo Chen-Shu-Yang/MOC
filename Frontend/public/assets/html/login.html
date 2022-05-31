@@ -7,11 +7,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-
-    
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
             integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
     
     
     
@@ -40,27 +39,41 @@
     
         <script src="https://kit.fontawesome.com/ca9c4d369b.js" crossorigin="anonymous"></script>
         <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-  
-        <link href="../css/login.css" rel="stylesheet">
- 
     
-        <title>Login</title>
+        <link href="../../assets/css/login.css" rel="stylesheet">
+    
+    
+    
+        <title></title>
     </head>
     <body>
-        <h2>Responsive Two Column Layout</h2>
-        <p>Resize the browser window to see the responsive effect (the columns will stack on top of each other instead of floating next to each other, when the screen is less than 600px wide).</p>
-        
-        <div class="row">
-          <div class="column" style="background-color:#aaa;">
-            <h2>Column 1</h2>
-            <p>Some text..</p>
-          </div>
-          <div class="column" style="background-color:#bbb;">
-            <h2>Column 2</h2>
-            <p>Some text..</p>
-          </div>
-        </div>
-        
+       
+  <div class="row no-gutters m-4">
+    <div class="col m-4" id="leftcol">
+<img src="../../assets/img/loginScreen.jpeg" alt="">
+    </div>
+    <div class="col p-4 m-4 " id="rightcol">
+        <div class="login-form">
+            <form action="">
+                <h2 class="text-center">Log in</h2>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="emailInput" placeholder="Username"
+                        required="required">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="pwdInput" placeholder="Password"
+                        required="required">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary " id="Login">Log in</button> <p style="float:right">Not registered? <a href="#" id="signupBtn">Create an account</a></p>
+                </div>
+                
+            </form>
 
+        </div>
+  </div>
+
+  <script src="../../assets/js/login.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
     </body>
 </html>
