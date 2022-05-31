@@ -246,6 +246,19 @@ nav .right-header {
     background-size: cover;
 }
 
+.modal-content .modal-body .editProfilePic {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;   
+    border: 2px solid #c4c4c4;
+    background: none;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
 .modal-content .modal-body textarea {
     resize: none;
 }

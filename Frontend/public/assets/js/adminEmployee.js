@@ -12,21 +12,21 @@ function createRow(cardInfo) {
   console.log(cardInfo);
 
   const card = `
-        <div class="employee-card">
-            <div class="employee-id">
-                <img src="${cardInfo.EmployeeImg}" alt="">
-                <span>${cardInfo.EmployeeName}</span>
-            </div>
-            <p class="employee-des">${cardInfo.EmployeeDes}</p>
-            <div class="employee-links">
-                <a href="" data-toggle="modal" data-target="#">View Skillsets</a>
-                <a href="" data-toggle="modal" data-target="#viewEmpAvailabilityModal">View Availability</a>
-            </div>
-            <div class="employee-btn">
-                <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal">Edit</button>
-                <button type="button" class="delete-btn" data-toggle="modal" data-target="#deleteModal">Delete</button>
-            </div>
-        </div>
+      <div class="employee-card">
+          <div class="employee-id">
+              <img src="${cardInfo.EmployeeImg}" alt="">
+              <span>${cardInfo.EmployeeName}</span>
+          </div>
+          <p class="employee-des">${cardInfo.EmployeeDes}</p>
+          <div class="employee-links">
+              <a href="" data-toggle="modal" data-target="#">View Skillsets</a>
+              <a href="" data-toggle="modal" data-target="#viewEmpAvailabilityModal">View Availability</a>
+          </div>
+          <div class="employee-btn">
+              <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Edit</button>
+              <button type="button" class="delete-btn" data-toggle="modal" data-target="#deleteModal">Delete</button>
+          </div>
+      </div>
 `;
   return card;
 }
@@ -114,13 +114,11 @@ function loadEmployeeByLimit(pageNumber) {
   });
 }
 
-function loadABaby(id) {
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-  console.log('load a baby runs');
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+// eslint-disable-next-line no-unused-vars
+function loadAnEmployee(id) {
   $.ajax({
 
-    url: `http://localhost:8000/babies/${id}`,
+    url: `http://localhost:5000/employee/${id}`,
     type: 'GET',
 
     contentType: 'application/json; charset=utf-8',
@@ -130,38 +128,32 @@ function loadABaby(id) {
       console.log(data);
       console.log(`LENGTH OF DATA:${data.length}`);
 
+      const employee = data[0];
+
       const RowInfo = {
-        id: data[0].id,
-        name: data[0].name,
-        height_six_month: data[0].height_six_month,
-        height_seven_month: data[0].height_seven_month,
-        height_eight_month: data[0].height_eight_month,
-        height_nine_month: data[0].height_nine_month,
-        height_ten_month: data[0].height_ten_month,
+        EmployeeID: employee.EmployeeID,
+        Name: employee.EmployeeName,
+        Description: employee.EmployeeDes,
+        EmployeeImg: employee.EmployeeImg,
+        Skillsets: employee.Skillsets,
       };
 
       console.log('---------Card INfo data pack------------');
       console.log(RowInfo);
 
-      $('#baby-id-update').val(RowInfo.id);
-      $('#baby-name-update').val(RowInfo.name);
-      $('#baby-height-six-month-update').val(RowInfo.height_six_month);
-      $('#baby-height-seven-month-update').val(RowInfo.height_seven_month);
-      $('#baby-height-eight-month-update').val(RowInfo.height_eight_month);
-      $('#baby-height-nine-month-update').val(RowInfo.height_nine_month);
-      $('#baby-height-ten-month-update').val(RowInfo.height_ten_month);
-
-      $('#babyTableBody').html('');
-      loadAllEmployees();
+      document.getElementById('NewProfilePreview').style.backgroundImage = 'url(../img/' + RowInfo.EmployeeImg + ')';
+      // $('#edit_picture_file').val(RowInfo.EmployeeImg);
+      $('#editEmployeeName').val(RowInfo.Name);
+      $('#editEmployeeDes').val(RowInfo.Description);
     },
 
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
 
-      if (xhr.status == 201) {
-        errMsg = "The id doesn't exist ";
-      }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+      // if (xhr.status == 201) {
+      //     errMsg = "The id doesn't exist "
+      // }
+      // $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
 }
@@ -181,7 +173,7 @@ function readURL(input) {
 
     reader.onload = function (e) {
       // $('#blah').attr('src', e.target.result);
-      document.getElementById('ppPreview').style.backgroundImage = `url( ${e.target.result} )`;
+      document.getElementById('ppPreview').style.backgroundImage = `url( ${e.target.result})`;
     };
 
     reader.readAsDataURL(input.files[0]);
@@ -190,4 +182,21 @@ function readURL(input) {
 
 $('#file_photo').change(function () {
   readURL(this);
+});
+
+function readNewURL(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      // $('#blah').attr('src', e.target.result);
+      document.getElementById('NewProfilePreview').style.backgroundImage = `url( ${e.target.result})`;
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$('#edit_picture_file').change(function () {
+  readNewURL(this);
 });

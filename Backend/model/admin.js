@@ -173,6 +173,25 @@ const Admin = {
     });
   },
 
+  // get class of service by id
+  getEmployee(id, callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee where EmployeeID=?;';
+
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+    });
+  },
+
 };
 
 //= ======================================================
