@@ -34,6 +34,78 @@
 </head>
 
 <body>
+
+    <script>
+
+
+
+        function addEmployee() {
+            console.log("front end method start")
+
+            const image = document.getElementById('image');
+            // let reader = new FileReader();
+
+            console.log("file: " + image.files[0]);
+
+            //   fileSelector.addEventListener('change', (event) => {
+            //     const fileSelected = event.target.files[0];
+            //     console.log("file: "+fileSelected);
+            //   });
+
+            var employeeName = $('#addEmployeeName').val();
+            var employeeDes = $('#addEmployeeDes').val();
+            var skillSet = $('#addEmployeeSkills').val();
+
+
+
+            let webFormData = new FormData()
+
+            webFormData.append('employeeName', employeeName)
+            webFormData.append('employeeDes', employeeDes)
+           
+            webFormData.append('skillSet', skillSet)
+            webFormData.append('image', image.files[0])
+
+            console.log("formdata student name: " + webFormData.getAll('employeeName'))
+            console.log("formdata image: " + Object.keys(webFormData.getAll('image')))
+
+            const requestBody = {
+                "image": webFormData
+            }
+
+            $.ajax({
+                url: `http://localhost:5000/adddEmployee`,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                cache: false,
+                data: webFormData,
+                // dataType:"form-data",
+                enctype: "multipart/form-data",
+                success: function (data, textStatus, xhr) {
+                    const post = data;
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    console.log(xhr.responseText);
+                    console.log(xhr.status);
+                }
+            });
+
+
+
+
+
+        }
+
+
+
+    </script>
+
+
     <!-- Admin Side bar -->
     <div class="sidebar">
         <div class="logo-details">
@@ -115,6 +187,9 @@
             </div>
         </nav>
 
+
+
+
         <section class="employee-section">
             <div class="max-width">
                 <div class="employee-header moved">
@@ -137,6 +212,21 @@
             </div>
         </section>
 
+        <!-- <form>
+            <div class="form-group">
+                <h6>Employee Name</h6>
+                <input class="form-control" id="employeeName" type="text" value="" />
+                <h6>Employee Description</h6>
+                <input class="form-control" id="employeeDes" type="text" value="" />
+                <h6>Employee Skillset</h6>
+                <input class="form-control" id="skillSet" type="text" value="" />
+                <label for="exampleFormControlFile1">Example file input</label>
+                <input type="file" id="image" class="form-control-file" />
+                <button type="submit" class="btn btn-primary mb-2" onClick="addEmployee()">Confirm identity</button>
+
+            </div>
+        </form> -->
+
         <!-- Add Employee Modal Start -->
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -151,7 +241,7 @@
                     <div class="modal-body">
                         <form>
                             <div class="emptyProfilePic" id="ppPreview" src="" alt=""></div>
-                            <input type="file" id="file_photo" name="item_image">
+                            <input type="file" id="image" name="item_image">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Employee Name..."
                                     id="addEmployeeName">
@@ -168,7 +258,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn save-btn">Add Employee</button>
+                        <button type="button" onClick="addEmployee()" class="btn save-btn" data-dismiss="modal">Add Employee</button>
                     </div>
                 </div>
             </div>
@@ -208,7 +298,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn save-btn" data-dismiss="modal" id="editEmployeeBtn">Save changes</button>
+                        <button type="button" class="btn save-btn" data-dismiss="modal" id="editEmployeeBtn">Save
+                            changes</button>
                     </div>
                 </div>
             </div>

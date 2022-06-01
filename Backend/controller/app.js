@@ -341,13 +341,13 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
 // eslint-disable-next-line no-undef
 app.post('/adddEmployee', upload.single('image'), async (req, res) => {
   try {
-    console.log("api method called")
-    const result = await cloudinary.uploader.upload(req.file.path, {folder: 'employee'});
+    console.log('api method called');
+    const result = await cloudinary.uploader.upload(req.file.path, { folder: 'employee' });
 
     // eslint-disable-next-line prefer-const
     let EmployeeName = req.body.employeeName;
     // // eslint-disable-next-line no-var
-    var EmployeeDes = req.body.employeeDes;
+    const EmployeeDes = req.body.employeeDes;
     const Skillsets = req.body.skillSet;
 
     const EmployeeImgageCloudinaryFileId = result.public_id;
