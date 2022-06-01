@@ -1,3 +1,7 @@
+/* eslint-disable block-scoped-var */
+/* eslint-disable max-len */
+/* eslint-disable vars-on-top */
+/* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
 /* eslint-disable brace-style */
 /* eslint-disable consistent-return */
@@ -17,6 +21,8 @@ const cors = require('cors');
 
 const { JsonDB } = require('node-json-db');
 const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
+const cloudinary = require('../utils/cloudinary');
+const upload = require('../utils/multer');
 
 // model
 
@@ -330,6 +336,45 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
       }
     },
   );
+});
+
+// eslint-disable-next-line no-undef
+app.post('/adddEmployee', upload.single('image'), async (req, res) => {
+  try {
+    console.log("api method called")
+    const result = await cloudinary.uploader.upload(req.file.path, {folder: 'employee'});
+
+    // eslint-disable-next-line prefer-const
+    let EmployeeName = req.body.employeeName;
+    // // eslint-disable-next-line no-var
+    var EmployeeDes = req.body.employeeDes;
+    const Skillsets = req.body.skillSet;
+
+    const EmployeeImgageCloudinaryFileId = result.public_id;
+    const EmployeeImageUrl = result.secure_url;
+
+    // // eslint-disable-next-line no-shadow
+    Admin.addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, (err, result) => {
+      // if there is no error the userid is shown in postman
+      if (!err) {
+        // eslint-disable-next-line no-var
+        var output = 'done';
+        res.status(201).send(result.secure_url);
+      }
+      // else shows internal error
+      else {
+        // eslint-disable-next-line block-scoped-var
+        output = {
+          Error: 'Internal sever issues',
+        };
+        res.status(500).send(output);
+      }
+    });
+
+    return res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // module exports
