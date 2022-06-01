@@ -217,6 +217,52 @@ const Admin = {
       return callback(null, result);
     });
   },
+
+  //= ======================================================
+  //              Features / Booking
+  //= ======================================================
+
+  // get all booking
+  getAllBooking(callback) {
+    // sql query statement
+    const sql = '';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
+
+  // to limit and offset employee
+  pageBooking(pageNumber, callback) {
+    // the page number clicked
+    pageNumber = parseInt(pageNumber, 10);
+    // Number of employee showed per page
+    const limitPerPage = 6;
+    // Prevent displaying repetitive information
+    const numberOfValueToSkip = (pageNumber - 1) * 6;
+
+    // sql statement to limit and skip
+    const sql = '';
+    // values to pass for the query number of employee per page and number of employee to skip
+    const values = [limitPerPage, numberOfValueToSkip];
+    // query
+    pool.query(sql, values, (err, result) => {
+    // if error send error message
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // else send result
+      return callback(null, result);
+    });
+  },
+
 };
 
 //= ======================================================

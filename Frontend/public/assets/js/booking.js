@@ -42,7 +42,7 @@ function createRow(cardInfo) {
 
 function loadAllEmployees() {
   $.ajax({
-    url: `${backEndUrl}/admin/booking`,
+    url: `${backEndUrl}/booking`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -72,7 +72,7 @@ function loadAllEmployees() {
 function loadAllBookingByLimit(pageNumber) {
 // call the web service endpoint
   $.ajax({
-    url: `${backEndUrl}/admin/booking/${pageNumber}`,
+    url: `${backEndUrl}/booking/${pageNumber}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',

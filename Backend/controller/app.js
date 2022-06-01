@@ -332,5 +332,48 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
   );
 });
 
+//= ======================================================
+//              Features / Booking
+//= ======================================================
+
+// get employee per page
+app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
+  // extract pageNumber from params to determine the page we are at
+  const { pageNumber } = req.params;
+
+  // calling pageEmployee method from admin model
+  Admin.pageBooking(pageNumber, (err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// get all employee
+app.get('/booking', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from admin model
+  Admin.getAllBooking((err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Bihh');
+      console.log('==================================');
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
 // module exports
 module.exports = app;
