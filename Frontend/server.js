@@ -44,6 +44,10 @@ app.get('/admin/employee', (req, res) => {
 app.get('/admin/schedule', (req, res) => {
   res.sendFile('/public/assets/html/adminSchedule.html', { root: __dirname });
 });
+// go to homepage
+app.get('/admin/booking', (req, res) => {
+  res.sendFile('/public/assets/html/booking.html', { root: __dirname });
+});
 
 // retrieve from public folder
 app.use(serveStatic(`${__dirname}/public`));
