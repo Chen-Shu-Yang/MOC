@@ -33,9 +33,11 @@ $(document).ready(() => {
 
       success(data) {
         if (data != null) {
-          localStorage.setItem('userid', JSON.stringify(data.userid));
+          localStorage.setItem('UserID', JSON.stringify(data.UserID));
           localStorage.setItem('token', JSON.stringify(data.token));
-          window.location.replace(`${frontEndUrl}/profile`);
+          localStorage.setItem('CustomerID', JSON.stringify(data.CustomerID));
+          localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
+          window.location.replace(`${frontEndUrl}/homepage`);
         } else {
           console.log('Error');
         }

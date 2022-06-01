@@ -73,7 +73,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
   const { email } = req.body;
   const { password } = req.body;
 
-  Login.Verify(email, password, (err, result) => {
+  Login.Verify(email, password, (err, token, result) => {
     if (err) {
       // matched with callback (err, null)
       console.log(err);
@@ -89,8 +89,12 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
       };
       res.status(404).send(msg);
     } else {
+      console.log(`Token: ${result}`);
       msg = {
-        Success: 'login',
+        UserID: result.UserID,
+        token,
+        CustomerID: result.CustomerID,
+        SuperAdminID: result.SuperAdminID,
       };
       res.status(200).send(msg);
     }
