@@ -218,10 +218,12 @@ const Admin = {
       return callback(null, result);
     });
   },
-
+  // feature/addEmployee Model
   // eslint-disable-next-line max-len
   addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, callback) {
+    // sql statemetn to insert new employee
     const sql = 'INSERT INTO heroku_6b49aedb7855c0b.employee (EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, Skillsets) VALUES (?,?,?,?,?);';
+    // pool query
     pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets], (err, result) => {
       // error
       if (err) {
@@ -229,7 +231,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result); // if
     });
   },

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable block-scoped-var */
 /* eslint-disable max-len */
 /* eslint-disable vars-on-top */
@@ -338,42 +339,46 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
   );
 });
 
+//----------------------------------------------------
+//                 Feature/addEmployee
+//---------------------------------------------------
+
 // eslint-disable-next-line no-undef
+// upload.single method to upload an image with the key of image
 app.post('/adddEmployee', upload.single('image'), async (req, res) => {
   try {
-    console.log('api method called');
+    // cloudinary image upload method to the folder employee
     const result = await cloudinary.uploader.upload(req.file.path, { folder: 'employee' });
-
     // eslint-disable-next-line prefer-const
-    let EmployeeName = req.body.employeeName;
+    // eslint-disable-next-line spaced-comment
+    //retrieve EmployeeName from body
+    const EmployeeName = req.body.employeeName;
     // // eslint-disable-next-line no-var
+    // retrieve EmployeeDes from body
     const EmployeeDes = req.body.employeeDes;
+    // retrieve Skillsets from body
     const Skillsets = req.body.skillSet;
-
+    // retrieve EmployeeImgageCloudinaryFileId from result.public_id from uploading cloudinary
     const EmployeeImgageCloudinaryFileId = result.public_id;
+    // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
     const EmployeeImageUrl = result.secure_url;
-
     // // eslint-disable-next-line no-shadow
+    // invoking Admin.addEmployee
+    // eslint-disable-next-line no-shadow
+    // eslint-disable-next-line no-unused-vars
     Admin.addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, (err, result) => {
-      // if there is no error the userid is shown in postman
+      // if there is no error
       if (!err) {
         // eslint-disable-next-line no-var
         var output = 'done';
-        res.status(201).send(result.secure_url);
-      }
-      // else shows internal error
-      else {
-        // eslint-disable-next-line block-scoped-var
-        output = {
-          Error: 'Internal sever issues',
-        };
-        res.status(500).send(output);
+        return res.status(201).send(output);
       }
     });
-
-    return res.send(result);
   } catch (error) {
-    console.log(error);
+    output = {
+      Error: 'Internal sever issues',
+    };
+    return res.status(500).send(output);
   }
 });
 
