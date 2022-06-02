@@ -339,7 +339,6 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
   );
 });
 
-
 //----------------------------------------------------
 //                 Feature/deleteEmployee
 //---------------------------------------------------
@@ -348,8 +347,8 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
 app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
   // extract id from params
   const { employeeId } = req.params;
-  console.log(" app.js employee delete method start "+employeeId)
-  var output1;
+  console.log(` app.js employee delete method start ${employeeId}`);
+  let output1;
 
   Admin.getEmployee(employeeId, (err, result) => {
     if (!err) {
@@ -362,11 +361,11 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
       } else {
         // output
         output1 = {
-          "EmployeeId": result[0].EmployeeID,
-          "EmployeeImageCloudinaryFileId": result[0].EmployeeImageCloudinaryFileId
+          EmployeeId: result[0].EmployeeID,
+          EmployeeImageCloudinaryFileId: result[0].EmployeeImageCloudinaryFileId,
 
-      };
-      
+        };
+
         res.status(200).send(output1);
       }
     } else {
@@ -378,15 +377,11 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
     }
   });
 
-
-
-
   // calling deleteClass method from admin model
-
 
   Admin.deleteEmployee(employeeId, (err, result1) => {
     if (!err) {
-      console.log("DELETE EMPLOYEE STATEMENT")
+      console.log('DELETE EMPLOYEE STATEMENT');
       // result.affectedRows indicates that id to be deleted
       // cannot be found hence send as error message
       if (result1.affectedRows === 0) {
@@ -394,11 +389,10 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
       }
       // // else a postitve result
       else {
-      
-                console.log(output1.EmployeeImageCloudinaryFileId)
-            
-                cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId)
-               
+        console.log(output1.EmployeeImageCloudinaryFileId);
+
+        cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
+
         // res.send(result1);
       }
     } else
@@ -410,10 +404,8 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
       res.status(500).send(output);
     }
   });
-
-
-
 });
+
 
 //----------------------------------------------------
 //                 Feature/addEmployee

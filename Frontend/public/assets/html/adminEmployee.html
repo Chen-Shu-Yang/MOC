@@ -36,7 +36,7 @@
 <body>
 
     <script>
-        const backEndUrl = 'http://localhost:5000'
+
 
         //errorToast method display the error
         function errorToast(msg) {
@@ -69,81 +69,6 @@
         }
 
 
-
-        //function to add Employee
-        function addEmployee() {
-            //get value of the image uploaded from input file
-            const image = document.getElementById('image');
-            //get value of the employee name from employee name field
-            var employeeName = $('#addEmployeeName').val();
-            // get value from employee description field
-            var employeeDes = $('#addEmployeeDes').val();
-            //get value from skill set field
-            var skillSet = $('#addEmployeeSkills').val();
-            //create a variable called webFormData and call the FormData instance all field value to be added will be appended to webFormData
-            let webFormData = new FormData()
-            //webFormData.append method to append employeeName to the key of employeeName
-            webFormData.append('employeeName', employeeName)
-            //webFormData.append method to append employeeDes to the key of employeeDes
-            webFormData.append('employeeDes', employeeDes)
-            //webFormData.append method to append skillSet to the key of skillSet
-            webFormData.append('skillSet', skillSet)
-            //webFormData.append method to append image.files[0] to the key of image
-            webFormData.append('image', image.files[0])
-            //ajax fuction to connect to the backend
-            $.ajax({
-                //url to connect to backend api
-                url: `${backEndUrl}/adddEmployee`,
-                //method type
-                type: 'POST',
-                //setting processData false
-                processData: false,
-                //setting contentType false
-                contentType: false,
-                //setting cache false
-                cache: false,
-                //pass webForm data as data
-                data: webFormData,
-                //pass enctype as multipart/formdata
-                enctype: "multipart/form-data",
-                //success method
-                success: function (data, textStatus, xhr) {
-                    const post = data;
-                    //set value to empty after getting value
-                    $('#addEmployeeName').val("")
-                    $('#addEmployeeDes').val("")
-                    $('#addEmployeeSkills').val("")
-                    document.getElementById('image').value = ""
-                    //succcess message return
-                    if (xhr.status == 201) {
-                        msg = "Successfully deleted!"
-                        $('#confirmationMsg').html(confirmToast(msg + " " + xhr.status)).fadeOut(2500);
-                    }
-                },
-                //error method
-                error: function (xhr, textStatus, errorThrown) {
-                    console.log('Error in Operation');
-                    console.log(xhr);
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                    console.log(xhr.responseText);
-                    console.log(xhr.status);
-                    //error message return
-                    if (xhr.status == 500) {
-                        errMsg = "Server Error"
-                        var errMsg = ""
-                        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-
-                    }
-
-                }
-            });
-
-
-
-
-
-        }
 
 
 
@@ -376,30 +301,7 @@
         </div>
         <!-- View Employee Availability Modal End -->
 
-        <!-- Delete Employee Modal Start -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Delete Employee</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="../img/Wrong.png" alt="">
-                        <h3>Are You Sure?</h3>
-                        <p>Do you really want to delete this employee record? This proccess cannot be undone.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn delete-btn">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Delete Employee Modal End -->
+      
     </section>
     <!-- Error Message Notification  -->
     <div id="errMsgNotificaton">

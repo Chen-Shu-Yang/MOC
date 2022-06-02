@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-var */
+/* eslint-disable max-len */
 /* eslint-disable linebreak-style */
 /* eslint-disable func-names */
 /* eslint-disable no-plusplus */
@@ -7,6 +10,7 @@
 // const frontEndUrl = 'https://spspforum.herokuapp.com';
 // const backEndUrl = 'https://spspforum-backend.herokuapp.com';
 // const url = 'http://localhost:5000';
+const backEndUrl = 'http://localhost:5000';
 
 function createRow(cardInfo) {
   console.log(cardInfo);
@@ -14,7 +18,7 @@ function createRow(cardInfo) {
   const card = `
       <div class="employee-card">
           <div class="employee-id">
-              <img src="${cardInfo.EmployeeImg}" alt="">
+              <img src="${cardInfo.EmployeeImgUrl}" alt="">
               <span>${cardInfo.EmployeeName}</span>
           </div>
           <p class="employee-des">${cardInfo.EmployeeDes}</p>
@@ -24,7 +28,8 @@ function createRow(cardInfo) {
           </div>
           <div class="employee-btn">
               <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Edit</button>
-              <button type="button" class="delete-btn" data-toggle="modal" data-target="#deleteModal">Delete</button>
+              <button type="button" id="deleteClassServiceBtn" class="btn btn-danger"  onClick="deleteEmployee(${cardInfo.EmployeeID})">Delete</button>
+          
           </div>
       </div>
 `;
@@ -88,7 +93,7 @@ function loadEmployeeByLimit(pageNumber) {
           EmployeeID: employee.EmployeeID,
           EmployeeName: employee.EmployeeName,
           EmployeeDes: employee.EmployeeDes,
-          EmployeeImg: employee.EmployeeImg,
+          EmployeeImgUrl: employee.EmployeeImgUrl,
           Skillsets: employee.Skillsets,
         };
 
@@ -215,6 +220,118 @@ $(document).ready(() => {
     updateEmployee();
   });
 });
+
+// function to add Employee
+function addEmployee() {
+  // get value of the image uploaded from input file
+  const image = document.getElementById('image');
+  // get value of the employee name from employee name field
+  const employeeName = $('#addEmployeeName').val();
+  // get value from employee description field
+  const employeeDes = $('#addEmployeeDes').val();
+  // get value from skill set field
+  const skillSet = $('#addEmployeeSkills').val();
+  // create a variable called webFormData and call the FormData instance all field value to be added will be appended to webFormData
+  const webFormData = new FormData();
+  // webFormData.append method to append employeeName to the key of employeeName
+  webFormData.append('employeeName', employeeName);
+  // webFormData.append method to append employeeDes to the key of employeeDes
+  webFormData.append('employeeDes', employeeDes);
+  // webFormData.append method to append skillSet to the key of skillSet
+  webFormData.append('skillSet', skillSet);
+  // webFormData.append method to append image.files[0] to the key of image
+  webFormData.append('image', image.files[0]);
+  // ajax fuction to connect to the backend
+  $.ajax({
+    // url to connect to backend api
+    url: `${backEndUrl}/adddEmployee`,
+    // method type
+    type: 'POST',
+    // setting processData false
+    processData: false,
+    // setting contentType false
+    contentType: false,
+    // setting cache false
+    cache: false,
+    // pass webForm data as data
+    data: webFormData,
+    // pass enctype as multipart/formdata
+    enctype: 'multipart/form-data',
+    // success method
+    success(data, textStatus, xhr) {
+      const post = data;
+      // set value to empty after getting value
+      $('#addEmployeeName').val('');
+      $('#addEmployeeDes').val('');
+      $('#addEmployeeSkills').val('');
+      document.getElementById('image').value = '';
+      // succcess message return
+      if (xhr.status == 201) {
+        msg = 'Successfully deleted!';
+        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
+      }
+    },
+    // error method
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+      // error message return
+      if (xhr.status == 500) {
+        errMsg = 'Server Error';
+        var errMsg = '';
+        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+      }
+    },
+  });
+}
+
+function deleteEmployee(id) {
+  // call the web service endpoint for deleting class of service by id
+  $.ajax({
+
+    url: `http://localhost:5000/employee/${id}`,
+    type: 'DELETE',
+    contentType: 'application/json; charset=utf-8',
+    // if data inserted
+    success(data, textStatus, xhr) {
+      // if id in the params not valid show error
+      if (xhr.status === 404) {
+        // set and call error message
+        // eslint-disable-next-line no-use-before-define
+        errMsg = 'Not valid id';
+        // eslint-disable-next-line vars-on-top
+        var errMsg = '';
+        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+        $('#employeeListing').html('');
+        loadEmployeeByLimit(1);
+      }
+      // if the params id is valid and
+      else if (xhr.status === 200) {
+        // set and call confirmation message
+        msg = 'Successfully deleted!';
+
+        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
+      }
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else {
+        errMsg = 'There is some other issues here';
+      }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    },
+
+  });
+}
 
 function readURL(input) {
   if (input.files && input.files[0]) {

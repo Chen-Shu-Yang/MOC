@@ -194,7 +194,7 @@ const Admin = {
   },
 
   // update all class of services
-  updateEmployee(EmployeeName, EmployeeSkills, EmployeeImg, EmployeeDes, id, callback) {
+  updateEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id, callback) {
     // sql query statement
     const sql = `
       UPDATE 
@@ -202,13 +202,14 @@ const Admin = {
       SET
         EmployeeName=?,
         EmployeeDes=?,
-        EmployeeImg=?,
+        EmployeeImgageCloudinaryFileId=?,
+        EmployeeImgUrl=?,
         Skillsets=?
       WHERE
         EmployeeID=?;
     `;
     // pool query
-    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImg, EmployeeSkills, id], (err, result) => {
+    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id], (err, result) => {
       // error
       if (err) {
         console.log(err);
@@ -237,7 +238,7 @@ const Admin = {
 
   // delete all class of services
   deleteEmployee(id, callback) {
-    console.log(" admin.js employee delete method start "+id)
+    console.log(` admin.js employee delete method start ${id}`);
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.employee where EmployeeID =?;';
 
