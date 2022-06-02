@@ -411,7 +411,7 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
 //---------------------------------------------------
 
 // update employee
-app.put('/employee/:employeeId', upload.single('image'), printDebugInfo, async (req, res) => {
+app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, async (req, res) => {
   // extract id from params
   const { employeeId } = req.params;
   console.log(` app.js employee update method start ${employeeId}`);

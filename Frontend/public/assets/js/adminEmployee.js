@@ -165,46 +165,116 @@ function loadAnEmployee(id) {
 }
 
 function updateEmployee() {
-  // data extraction
   const id = $('#editEmployeeID').val();
+  // get value of the image uploaded from input file
+  const image_edit = document.getElementById('image_edit');
+  // get value of the employee name from employee name field
   const employeeName = $('#editEmployeeName').val();
+  // get value from employee description field
   const employeeDes = $('#editEmployeeDes').val();
-  const employeeSkills = $('#editEmployeeSkills').val();
-  const employeeImg = $('#editProfilePicLink').val();
-
-  // get item from local storage
-  const data = {
-    EmployeeName: employeeName,
-    EmployeeDes: employeeDes,
-    EmployeeSkills: employeeSkills,
-    EmployeeImg: employeeImg,
-  };
-  console.log(`DATA: ${data}`);
-
-  // call the web service endpoint
+  // get value from skill set field
+  const skillSet = $('#editEmployeeSkills').val();
+  // create a variable called webFormData and call the FormData instance all field value to be added will be appended to webFormData
+  const webFormData = new FormData();
+  // webFormData.append method to append employeeName to the key of employeeName
+  webFormData.append('employeeName', employeeName);
+  // webFormData.append method to append employeeDes to the key of employeeDes
+  webFormData.append('employeeDes', employeeDes);
+  // webFormData.append method to append skillSet to the key of skillSet
+  webFormData.append('skillSet', skillSet);
+  // webFormData.append method to append image.files[0] to the key of image
+  webFormData.append('image_edit', image_edit.files[0]);
+  // ajax fuction to connect to the backend
   $.ajax({
-    // headers: { authorization: `Bearer ${tmpToken}` },
-    url: `http://localhost:5000/employees/${id}`,
+    // url to connect to backend api
+    url: `${backEndUrl}/employee/${id}`,
+    // method type
     type: 'PUT',
-    data: JSON.stringify(data),
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data) {
-      console.log('Update Successful');
-      $('#employeeListing').html('');
-      loadEmployeeByLimit(1);
+    // setting processData false
+    processData: false,
+    // setting contentType false
+    contentType: false,
+    // setting cache false
+    cache: false,
+    // pass webForm data as data
+    data: webFormData,
+    // pass enctype as multipart/formdata
+    enctype: 'multipart/form-data',
+    // success method
+    success(data, textStatus, xhr) {
+      const post = data;
+      // set value to empty after getting value
+      $('#editEmployeeName').val('');
+      $('#editEmployeeDes').val('');
+      $('#editEmployeeSkills').val('');
+      document.getElementById('image_edit').value = '';
+      // succcess message return
+      if (xhr.status == 201) {
+        msg = 'Successfully deleted!';
+        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
+      }
     },
+    // error method
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
-      console.log('-----------------------');
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
-      console.log(xhr.status);
       console.log(xhr.responseText);
+      console.log(xhr.status);
+      // error message return
+      if (xhr.status == 500) {
+        errMsg = 'Server Error';
+        var errMsg = '';
+        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+      }
     },
   });
+}
+
+function deleteEmployee(id) {
+  // call the web service endpoint for deleting class of service by id
+  $.ajax({
+
+    url: `http://localhost:5000/employee/${id}`,
+    type: 'DELETE',
+    contentType: 'application/json; charset=utf-8',
+    // if data inserted
+    success(data, textStatus, xhr) {
+      // if id in the params not valid show error
+      if (xhr.status === 404) {
+        // set and call error message
+        // eslint-disable-next-line no-use-before-define
+        errMsg = 'Not valid id';
+        // eslint-disable-next-line vars-on-top
+        var errMsg = '';
+        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+        $('#employeeListing').html('');
+        loadEmployeeByLimit(1);
+      }
+      // if the params id is valid and
+      else if (xhr.status === 200) {
+        // set and call confirmation message
+        msg = 'Successfully deleted!';
+
+        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
+      }
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else {
+        errMsg = 'There is some other issues here';
+      }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    },
+
+  });
+ 
 }
 
 $(document).ready(() => {
