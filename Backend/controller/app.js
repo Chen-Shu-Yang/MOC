@@ -339,6 +339,38 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
   );
 });
 
+
+//----------------------------------------------------
+//                 Feature/deleteEmployee
+//---------------------------------------------------
+
+// delete employee
+app.delete('/employee/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params.id;
+  // calling deleteClass method from admin model
+  Admin.deleteEmployee(id, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      }
+      // else a postitve result
+      else {
+        res.status(200).send(result);
+      }
+    } else
+    // sever error
+    {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 //----------------------------------------------------
 //                 Feature/addEmployee
 //---------------------------------------------------
