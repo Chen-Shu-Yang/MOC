@@ -345,20 +345,61 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
 //---------------------------------------------------
 
 // delete employee
-app.delete('/employee/:id', printDebugInfo, (req, res) => {
+app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
   // extract id from params
-  const { id } = req.params.id;
-  // calling deleteClass method from admin model
-  Admin.deleteEmployee(id, (err, result) => {
+  const { employeeId } = req.params;
+  console.log(" app.js employee delete method start "+employeeId)
+  var output1;
+
+  Admin.getEmployee(employeeId, (err, result) => {
     if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        output1 = {
+          "EmployeeId": result[0].EmployeeID,
+          "EmployeeImageCloudinaryFileId": result[0].EmployeeImageCloudinaryFileId
+
+      };
+      
+        res.status(200).send(output1);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+
+
+
+
+  // calling deleteClass method from admin model
+
+
+  Admin.deleteEmployee(employeeId, (err, result1) => {
+    if (!err) {
+      console.log("DELETE EMPLOYEE STATEMENT")
       // result.affectedRows indicates that id to be deleted
       // cannot be found hence send as error message
-      if (result.affectedRows === 0) {
+      if (result1.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
       }
-      // else a postitve result
+      // // else a postitve result
       else {
-        res.status(200).send(result);
+      
+                console.log(output1.EmployeeImageCloudinaryFileId)
+            
+                cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId)
+               
+        // res.send(result1);
       }
     } else
     // sever error
@@ -369,6 +410,9 @@ app.delete('/employee/:id', printDebugInfo, (req, res) => {
       res.status(500).send(output);
     }
   });
+
+
+
 });
 
 //----------------------------------------------------

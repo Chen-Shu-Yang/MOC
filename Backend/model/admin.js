@@ -237,6 +237,7 @@ const Admin = {
 
   // delete all class of services
   deleteEmployee(id, callback) {
+    console.log(" admin.js employee delete method start "+id)
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.employee where EmployeeID =?;';
 
