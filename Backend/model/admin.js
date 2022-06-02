@@ -194,7 +194,7 @@ const Admin = {
   },
 
   // update all class of services
-  updateEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id, callback) {
+  updateEmployee(EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id, callback) {
     // sql query statement
     const sql = `
       UPDATE 
@@ -202,14 +202,14 @@ const Admin = {
       SET
         EmployeeName=?,
         EmployeeDes=?,
-        EmployeeImgageCloudinaryFileId=?,
+        EmployeeImageCloudinaryFileId=?,
         EmployeeImgUrl=?,
         Skillsets=?
       WHERE
         EmployeeID=?;
     `;
     // pool query
-    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id], (err, result) => {
+    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id], (err, result) => {
       // error
       if (err) {
         console.log(err);

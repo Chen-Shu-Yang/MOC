@@ -148,7 +148,7 @@ app.post('/class', printDebugInfo, (req, res) => {
         res.status(500).send('Internal Server Error');
       }
     });
-  // eslint-disable-next-line brace-style
+    // eslint-disable-next-line brace-style
   }
   // if class pricing is not float
   else {
@@ -312,7 +312,7 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
     EmployeeDes,
     EmployeeID,
     (err, result) => {
-    // if there is no errorsend the following as result
+      // if there is no errorsend the following as result
       if (!err) {
         const output = {
           classID: result.insertId,
@@ -406,6 +406,79 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
   });
 });
 
+//----------------------------------------------------
+//                 Feature/updateEmployee
+//---------------------------------------------------
+
+// update employee
+app.put('/employee/:employeeId', upload.single('image'), printDebugInfo, async (req, res) => {
+  // extract id from params
+  const { employeeId } = req.params;
+  console.log(` app.js employee update method start ${employeeId}`);
+
+  Admin.getEmployee(employeeId, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        output1 = {
+          EmployeeId: result[0].EmployeeID,
+          EmployeeImageCloudinaryFileId: result[0].EmployeeImageCloudinaryFileId,
+
+        };
+        cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
+
+        console.log('previous pic deleted');
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      console.log(output);
+    }
+  });
+
+  try {
+    // cloudinary image upload method to the folder employee
+    const result = await cloudinary.uploader.upload(req.file.path, { folder: 'employee' });
+    // eslint-disable-next-line prefer-const
+    // eslint-disable-next-line spaced-comment
+    //retrieve EmployeeName from body
+    const EmployeeName = req.body.employeeName;
+    // // eslint-disable-next-line no-var
+    // retrieve EmployeeDes from body
+    const EmployeeDes = req.body.employeeDes;
+    // retrieve Skillsets from body
+    const Skillsets = req.body.skillSet;
+    // retrieve EmployeeImgageCloudinaryFileId from result.public_id from uploading cloudinary
+    const EmployeeImgageCloudinaryFileId = result.public_id;
+    // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
+    const EmployeeImageUrl = result.secure_url;
+    // // eslint-disable-next-line no-shadow
+    // invoking Admin.addEmployee
+    // eslint-disable-next-line no-shadow
+    // eslint-disable-next-line no-unused-vars
+    Admin.updateEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, employeeId, (err, result) => {
+      // if there is no error
+      if (!err) {
+        // eslint-disable-next-line no-var
+        var output = 'done';
+        return res.status(201).send(output);
+      }
+    });
+  } catch (error) {
+    output = {
+      Error: 'Internal sever issues',
+    };
+    return res.status(500).send(output);
+  }
+});
 
 //----------------------------------------------------
 //                 Feature/addEmployee
