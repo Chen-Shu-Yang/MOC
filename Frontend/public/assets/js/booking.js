@@ -20,9 +20,9 @@ function createRow(cardInfo) {
   const card = `
     <tr>
     <td>${cardInfo.bookingID}</td>
-    <td>${cardInfo.FirstName} ${cardInfo.FirstName}</td>
+    <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
-    <td>${cardInfo.StartDate}</td>
+    <td>${cardInfo.ClassName}</td>
     <td>${cardInfo.TimeOfService}</td>
     <td>${cardInfo.NoOfRooms}</td>
     <td>${cardInfo.NoOfBathrooms}</td>
@@ -32,15 +32,15 @@ function createRow(cardInfo) {
     <td>${cardInfo.Employee}</td>
     <td>${cardInfo.Status}</td>
     <td>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadAClassOfService(${cardInfo.classId})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"></i></button>
     </td>
-    <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteClassOfService(${cardInfo.classId})"><i class="fa-regular fa-trash-can"></i></button></td>
+    <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa-regular fa-trash-can"></i></button></td>
     </tr>
     `;
   return card;
 }
 
-function loadAllEmployees() {
+function loadAllBooking() {
   $.ajax({
     url: `${backEndUrl}/booking`,
     type: 'GET',
@@ -81,34 +81,34 @@ function loadAllBookingByLimit(pageNumber) {
         console.log('-------response data------');
         console.log(data);
         console.log(`LENGTH OF DATA:${data.length}`);
-        $('#employeeListing').html('');
+        $('#bookingTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
           // compile the data that the card needs for its creation
           const bookingstbl = {
-            bookingID: booking.bookingID,
+            bookingID: booking.BookingID,
             FirstName: booking.FirstName,
             LastName: booking.LastName,
-            Package: booking.Package,
+            Package: booking.PackageName,
             ClassName: booking.ClassName,
             StartDate: booking.StartDate,
             TimeOfService: booking.TimeOfService,
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,
-            RateName: booking.RateName,
-            EstimatePricing: booking.EstimatePricing,
+            RateName: booking.Rate,
+            EstimatePricing: booking.EstimatedPricing,
             Address: booking.Address,
-            Employee: booking.Employee,
-            Status: booking.status,
+            Employee: booking.EmployeeName,
+            Status: booking.Status,
           };
           console.log('---------Card INfo data pack------------');
           console.log(bookingstbl);
 
-          const newRow = createRow(BookingInfo);
+          const newRow = createRow(bookingstbl);
           $('#bookingTableBody').append(newRow);
         }
       } else {
-        loadAllEmployees();
+        loadAllBooking();
       }
     },
 
@@ -125,6 +125,55 @@ function loadAllBookingByLimit(pageNumber) {
   });
 }
 
+// loadAClassOfService gets a class of services
+function loadABooking(id) {
+  // gets a class of service based on id
+  $.ajax({
+    url: `${backEndUrl}/booking/${id}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+    success(data, textStatus, xhr) {
+      // if the code works
+      console.log('-------response data------');
+      console.log(data);
+      console.log(`LENGTH OF DATA:${data.length}`);
+      // extract data information
+      const RowInfo = {
+        bookingID: booking.BookingID,
+        FirstName: booking.FirstName,
+        LastName: booking.LastName,
+        Package: booking.PackageName,
+        ClassName: booking.ClassName,
+        StartDate: booking.StartDate,
+        TimeOfService: booking.TimeOfService,
+        NoOfRooms: booking.NoOfRooms,
+        NoOfBathrooms: booking.NoOfBathrooms,
+        RateName: booking.Rate,
+        EstimatePricing: booking.EstimatedPricing,
+        Address: booking.Address,
+        Employee: booking.EmployeeName,
+        Status: booking.Status,
+      };
+      console.log('---------Card INfo data pack------------');
+      console.log(RowInfo);
+      console.log('---------------------');
+      // updating extracted values to update pop up
+      $('#class-id-update').val(RowInfo.classId);
+      $('#class-name-update').val(RowInfo.className);
+      $('#class-pricing-update').val(RowInfo.classPricing);
+      $('#class-description-update').val(RowInfo.classDescription);
+    },
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      errMsg = ' ';
+      if (xhr.status == 201) {
+        errMsg = "The id doesn't exist ";
+      }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    },
+  });
+}
+
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   console.log('--------Query Params----------');
@@ -132,4 +181,5 @@ $(document).ready(() => {
   console.log(`Query Param (extraction): ${queryParams}`);
 
   loadAllBookingByLimit(1);
+  loadABooking(id);
 });
