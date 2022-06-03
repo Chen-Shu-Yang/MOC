@@ -4,7 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 
-const frontEndUrl = 'http://localhost:3001';
+// const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
 function pageBtnCreate(totalNumberOfPages) {
@@ -23,6 +23,7 @@ function createRow(cardInfo) {
     <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
     <td>${cardInfo.ClassName}</td>
+    <td>${cardInfo.StartDate}</td>
     <td>${cardInfo.TimeOfService}</td>
     <td>${cardInfo.NoOfRooms}</td>
     <td>${cardInfo.NoOfBathrooms}</td>
@@ -139,20 +140,7 @@ function loadABooking(id) {
       console.log(`LENGTH OF DATA:${data.length}`);
       // extract data information
       const RowInfo = {
-        bookingID: booking.BookingID,
-        FirstName: booking.FirstName,
-        LastName: booking.LastName,
-        Package: booking.PackageName,
-        ClassName: booking.ClassName,
-        StartDate: booking.StartDate,
-        TimeOfService: booking.TimeOfService,
-        NoOfRooms: booking.NoOfRooms,
-        NoOfBathrooms: booking.NoOfBathrooms,
-        RateName: booking.Rate,
-        EstimatePricing: booking.EstimatedPricing,
-        Address: booking.Address,
-        Employee: booking.EmployeeName,
-        Status: booking.Status,
+
       };
       console.log('---------Card INfo data pack------------');
       console.log(RowInfo);
