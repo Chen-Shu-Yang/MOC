@@ -248,7 +248,7 @@ join class cl on c.Class = cl.ClassID
     });
   },
 
-  // to limit and offset employee
+  // to limit and offset booking
   pageBooking(pageNumber, callback) {
     // the page number clicked
     pageNumber = parseInt(pageNumber, 10);
@@ -280,6 +280,59 @@ join class cl on c.Class = cl.ClassID
         return callback(err);
       }
       // else send result
+      return callback(null, result);
+    });
+  },
+
+  // add booking of services
+  addBooking(Contract, ScheduleDate, Admin, callback) {
+    // sql query statement
+    const sql = `
+
+
+    INSERT INTO
+    heroku_6b49aedb7855c0b.booking (
+    Contract,
+    ScheduleDate, 
+    Status,
+    Admin)
+    VALUES
+    (?,?,Pending,?);
+`;
+    // pool query
+    pool.query(sql, [Contract, ScheduleDate, Admin], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+
+      // pool.end()
+    });
+  },
+
+  // update all booking of services
+  updateBooking(ScheduleDate, BookingID, callback) {
+    // sql query statement
+    const sql = `
+          UPDATE 
+            heroku_6b49aedb7855c0b.booking 
+          SET
+            ScheduleDate=?,
+          WHERE
+            BookingID=?
+               ;  
+              `;
+      // pool query
+    pool.query(sql, [ScheduleDate, BookingID], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
       return callback(null, result);
     });
   },

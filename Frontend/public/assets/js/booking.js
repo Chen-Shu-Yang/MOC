@@ -126,14 +126,14 @@ function loadAllBookingByLimit(pageNumber) {
   });
 }
 
-// loadAClassOfService gets a class of services
+// load gets a booking
 function loadABooking(id) {
   // gets a class of service based on id
   $.ajax({
     url: `${backEndUrl}/booking/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
-    success(data, textStatus, xhr) {
+    success(data) {
       // if the code works
       console.log('-------response data------');
       console.log(data);
@@ -151,12 +151,122 @@ function loadABooking(id) {
       $('#class-pricing-update').val(RowInfo.classPricing);
       $('#class-description-update').val(RowInfo.classDescription);
     },
-    error(xhr, textStatus, errorThrown) {
+    error(xhr) {
       // set and call error message
       errMsg = ' ';
-      if (xhr.status == 201) {
+      if (xhr.status === 201) {
         errMsg = "The id doesn't exist ";
       }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    },
+  });
+}
+
+// addClassOfService to add new class of service
+function addBooking() {
+  // extract values for add pop-up
+  const name = $('#class_name_add').val();
+  const classPricing = $('#class_pricing_add').val();
+  const classDescription = $('#class_description__add').val();
+  // setting empty string to the fields after adding
+  $('#class_name_add').val('');
+  $('#class_pricing_add').val('');
+  $('#class_description__add').val('');
+  // store all extracted info into requestBody
+  const requestBody = {
+    ClassName: name,
+    ClassPricing: classPricing,
+    ClassDes: classDescription,
+  };
+  console.log(`request body: ${requestBody}`);
+  // stringify reqBody
+  const reqBody = JSON.stringify(requestBody);
+  console.log(reqBody);
+  // call the method to post data
+  $.ajax({
+    url: 'http://localhost:5000/class',
+    type: 'POST',
+    data: reqBody,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      // set and call confirmation message
+      msg = 'Successfully added!';
+      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+      const post = data;
+      $('#classServiceTableBody').html('');
+      loadAllClassOfServices();
+    },
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status == 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else if (xhr.status == 400) {
+        errMsg = ' Input not accepted';
+      } else if (xhr.status == 406) {
+        errMsg = ' Input not accepted';
+      } else {
+        errMsg = 'There is some other issues here';
+      }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+      $('#classServiceTableBody').html('');
+      loadAllClassOfServices();
+    },
+  });
+}
+
+// updateClassOfService method update class of service
+function updateBooking() {
+  // extarct values from pop-up
+  const classId = $('#class-id-update').val();
+  const ClassName = $('#class-name-update').val();
+  const ClassPricing = $('#class-pricing-update').val();
+  const ClassDescription = $('#class-description-update').val();
+  // set value to empty after getting value
+  $('#class_name_add').val('');
+  $('#class_pricing_add').val('');
+  $('#class_description__add').val('');
+
+  // put all data inserted into data2 so that it can be used to parse as json data in the api
+  const data2 = {
+    ClassName,
+    ClassPricing,
+    ClassDes: ClassDescription,
+  };
+  // ajax method to call the method
+  $.ajax({
+
+    url: `http://localhost:5000/class/${classId}`,
+    type: 'PUT',
+    // data extractex
+    data: JSON.stringify(data2),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      // set and call confirmation message
+      msg = 'Successfully updated!';
+      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+      // refresh
+      $('#classServiceTableBody').html('');
+      loadAllClassOfServices();
+    },
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status == 500) {
+        console.log('error');
+        errMsg = 'Please ensure that your values are accurate';
+      } else if (xhr.status == 400) {
+        errMsg = ' Invalid input ';
+      } else if (xhr.status == 406) {
+        errMsg = ' Invalid input';
+      } else {
+        errMsg = 'There is some other issues here ';
+      }
+      $('#classServiceTableBody').html('');
+      loadAllClassOfServices();
       $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
@@ -170,4 +280,5 @@ $(document).ready(() => {
 
   loadAllBookingByLimit(1);
   loadABooking(id);
+  
 });

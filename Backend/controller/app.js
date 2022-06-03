@@ -15,8 +15,8 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 
-const { JsonDB } = require('node-json-db');
-const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
+// const { JsonDB } = require('node-json-db');
+// const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
 
 // model
 
@@ -371,6 +371,71 @@ app.get('/booking', printDebugInfo, async (req, res) => {
     // if error send error message
     else {
       res.status(500).send('Some error');
+    }
+  });
+});
+
+// add a class
+app.post('/booking', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { contract } = req.body;
+  const { scheduleDate } = req.body;
+
+  // calling addClass method from admin model
+  Admin.addBooking(contract, scheduleDate, (err, result) => {
+    // if no error send results as positive
+    if (!err) {
+      res.status(201).send(result);
+    }
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    // if server issues send this as an error
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+  // eslint-disable-next-line brace-style
+
+  // if class pricing is not float
+});
+
+// update class of service
+app.put('/booking/:bookingID', printDebugInfo, (req, res) => {
+  // extract id from params
+  const bookingID = req.params.id;
+  // extract all details needed
+  const { scheduleDate } = req.body;
+
+  // check if class pricing is float value and execute code
+
+  // calling updateClass method from admin model
+  Admin.updateBooking(scheduleDate, bookingID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      const output = {
+        bookingID: result.insertId,
+      };
+      console.log(`result ${output.bookingID}`);
+      res.status(201).send(result);
+    }
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+    // send Inappropriate value as return message
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    // else if there is a server error return message
+    else {
+      res.status(500).send('Internal Server Error');
     }
   });
 });
