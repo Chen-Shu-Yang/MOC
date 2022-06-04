@@ -210,7 +210,7 @@ function updateEmployee() {
       document.getElementById('image_edit').value = '';
       // succcess message return
       if (xhr.status == 201) {
-        msg = 'Successfully deleted!';
+        msg = 'Successfully added!';
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
