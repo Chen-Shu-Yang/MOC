@@ -85,6 +85,8 @@
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
+    outline: none;
+    background: #fff;
 }
 
 .time-slots .slots-2:hover {
@@ -101,6 +103,14 @@
 .schedule-section .employee-section {
     margin: 30px 0;
     margin-right: 45px;
+    min-width: 440px;
+    min-height: 520px;
+}
+
+.schedule-section .employee-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .schedule-section .employee-list {    
@@ -109,7 +119,13 @@
     overflow-y: scroll;
 }
 
+.employee-header #timing {
+    font-weight: bold;
+    margin-left: 50px;
+}
+
 .employee-section .confirm-btn {
+    display: none;
     padding: 5px 20px;
     margin: 20px 0;
     border: 3px solid #2E6869;
@@ -119,7 +135,7 @@
     text-align: center;
     cursor: pointer;
     width: 25%;
-    margin-left: 75%;
+    outline: none;
 }
 
 .employee-card {
@@ -131,7 +147,7 @@
     border-radius: 6px;
     margin-bottom: 20px;
     margin-right: 20px;
-    max-width: 480px;
+    /* max-width: 480px; */
 }
 
 .employee-card img {
@@ -156,8 +172,34 @@
 }
 
 @media (max-width: 1200px) {
+    .schedule-section {
+        display: block;
+    }
+
     .schedule-section .max-width {
         display: block;
+    }
+
+    .time-slots {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .employee-header #timing {
+        margin-left: 0px;
+    }
+
+    .time-slots .slots-2 {
+        max-width: 381px;
+    }
+
+    .max-width hr {
+        border: 1px solid #c4c4c4;
+        width: 90%;
+        color: #c4c4c4;
+        margin: auto;
     }
 
     .schedule-section .booking-time {
@@ -171,6 +213,8 @@
     .schedule-section .employee-section {
         margin: 30px 30px;
         margin-right: none;
+        min-height: auto;
+        min-width: auto;
     }
 
     .schedule-section .employee-list {    
@@ -187,6 +231,12 @@
     .schedule-section .max-width {
         margin-left: 120px;
         margin-right: 40px;
+    }
+
+    .employee-section .confirm-btn {
+        margin: 20px 0;
+        font-size: 15px;
+        padding: 5px 0;
     }
 }
 
@@ -205,13 +255,13 @@
     .datepicker.datepicker-inline th, 
     .datepicker.dropdown-menu td, 
     .datepicker.dropdown-menu th {
-        padding: 4px 6px !important;
-        font-size: 14px;
+        padding: 7px 9px !important;
+        font-size: 15px;
     }
     
     .employee-card img {
-        width: 70px;
-        height: 70px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         object-fit: cover;
         margin-right: 20px;
