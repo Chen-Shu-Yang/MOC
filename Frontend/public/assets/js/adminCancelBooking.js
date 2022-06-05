@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
@@ -12,11 +13,8 @@ function createRow(cardInfo) {
   console.log(cardInfo);
   console.log('********');
   console.log(cardInfo.Status);
-
   const card = `
-
     <tr>
-
     <td>${cardInfo.bookingID}</td>
     <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
@@ -30,19 +28,15 @@ function createRow(cardInfo) {
     <td>${cardInfo.Address}</td>
     <td>
     ${(cardInfo.Employee === null) ? '-' : cardInfo.Employee}
-    
   </td>
-   <td class="statusName"> <div class="statusBtn ${(cardInfo.Status).includes('Completed') ? 'completeBtn' : (cardInfo.Status).includes('Pending') ? 'pendingBtn' : (cardInfo.Status).includes('Assigned') ? 'assignBtn' : 'cancelBtn'} ">
+   <td class="statusName"> <div class="statusBtn ${ (cardInfo.Status).includes('Pending') ? 'pendingBtn' : 'assignBtn'} ">
     ${cardInfo.Status} </td>
-   
     <td><button onClick="cancelBooking(${cardInfo.bookingID})" class="btn btn-danger">Cancel</button></td>
-  
     </tr>
-
-  
     `;
   return card;
 }
+
 function pageBtnCreate(totalNumberOfPages) {
   $('#paginationCancel').html('');
   for (i = 1; i <= totalNumberOfPages; i++) {
@@ -56,24 +50,18 @@ function loadAllBookingToBeCancelled() {
     url: `${backEndUrl}/bookingCancel`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
-
     success(data) {
       console.log('-------response data------');
       console.log(data);
       console.log(`LENGTH OF DATA:${data.length}`);
-
       const totalNumberOfPages = Math.ceil(data.length / 6);
-
       pageBtnCreate(totalNumberOfPages);
     },
-
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
-
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
@@ -136,14 +124,11 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
 }
 
 function cancelBooking(id) {
-  console.log("Booking id to cancel "+ id)
+  console.log(`Booking id to cancel ${id}`);
   // ajax method to call the method
   $.ajax({
-   
-
     url: `http://localhost:5000/cancelBooking/${id}`,
     type: 'PUT',
-
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
@@ -157,18 +142,17 @@ function cancelBooking(id) {
     error(xhr, textStatus, errorThrown) {
       // set and call error message
       let errMsg = '';
-      if (xhr.status == 500) {
+      if (xhr.status === 500) {
         console.log('error');
         errMsg = 'Please ensure that your values are accurate';
-      } else if (xhr.status == 400) {
+      } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
-      } else if (xhr.status == 406) {
+      } else if (xhr.status === 406) {
         errMsg = ' Invalid input';
       } else {
         errMsg = 'There is some other issues here ';
       }
       $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
       $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });

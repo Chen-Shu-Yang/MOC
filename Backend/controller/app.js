@@ -357,44 +357,6 @@ app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
   });
 });
 
-// get employee per page
-app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
-  // extract pageNumber from params to determine the page we are at
-  const { pageNumber } = req.params;
-
-  // calling pageEmployee method from admin model
-  Admin.pageBookingCancel(pageNumber, (err, result) => {
-    // if no error send result
-    if (!err) {
-      res.status(200).send(result);
-    }
-    // if error send error message
-    else {
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-
-// get all employee
-app.get('/bookingCancel', printDebugInfo, async (req, res) => {
-  // calling getAllClassOfService method from admin model
-  Admin.getAllBookingCancel((err, result) => {
-    // if no error send result
-    if (!err) {
-      console.log('==================================');
-      console.log('Bihh');
-      console.log('==================================');
-      res.status(200).send(result);
-    }
-    // if error send error message
-    else {
-      res.status(500).send('Some error');
-    }
-  });
-});
 
 
 // get all employee
@@ -480,13 +442,51 @@ app.put('/booking/:bookingID', printDebugInfo, (req, res) => {
   });
 });
 
-// update employee
+//= ======================================================
+//              Features / Cancel Booking
+//= ======================================================
+// get booking that are pending or assigned per page
+app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
+  // extract pageNumber from params to determine the page we are at
+  const { pageNumber } = req.params;
+
+  // calling pageEmployee method from admin model
+  Admin.pageBookingCancel(pageNumber, (err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+// get all bookings that are pending or assigned
+app.get('/bookingCancel', printDebugInfo, async (req, res) => {
+  // calling getAllBookingCancel method from admin model
+  Admin.getAllBookingCancel((err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Bihh');
+      console.log('==================================');
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+// update cancel booking
 app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const bookingId = req.params.id;
-
-
-  // calling updateClass method from admin model
+  // calling cancelBookingAdmin method from admin model
   Admin.cancelBookingAdmin(
   
     bookingId,
