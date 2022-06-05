@@ -255,6 +255,65 @@ const Admin = {
     });
   },
 
+  // get all Customer
+  getAllCustomer(callback) {
+    // sql query statement
+    const sql = 'SELECT CustomerID, FirstName, LastName, Email, Password, Status FROM heroku_6b49aedb7855c0b.customer;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // get one Customer by id
+  getCustomer(id, callback) {
+    // sql query statement
+    const sql = 'SELECT CustomerID, FirstName, LastName, Password, Status FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID=?;';
+
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+    });
+  },
+
+  // update all class of services
+  updateCustomer(CustomerPassword, id, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE 
+        heroku_6b49aedb7855c0b.customer
+      SET
+        Password=?
+      WHERE
+        CustomerID=?;
+    `;
+    // pool query
+    pool.query(sql, [CustomerPassword, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
 };
 
 //= ======================================================
