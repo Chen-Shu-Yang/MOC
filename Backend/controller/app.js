@@ -375,34 +375,26 @@ app.get('/booking', printDebugInfo, async (req, res) => {
   });
 });
 
-// add a class
+// add a booking
 app.post('/booking', printDebugInfo, (req, res) => {
   // extract all details needed
-  const { contract } = req.body;
-  const { scheduleDate } = req.body;
+  const { bookingID } = req.body;
+  const { bookingDate } = req.body;
 
-  // calling addClass method from admin model
-  Admin.addBooking(contract, scheduleDate, (err, result) => {
-    // if no error send results as positive
+  Admin.addBooking(bookingID, bookingDate, (err, result) => {
     if (!err) {
       res.status(201).send(result);
     }
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
     else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       res.status(406).send('Inappropriate value');
     }
-    // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
     else if (err.code === 'ER_BAD_NULL_ERROR') {
       res.status(400).send('Null value not allowed');
     }
-    // if server issues send this as an error
     else {
       res.status(500).send('Internal Server Error');
     }
   });
-  // eslint-disable-next-line brace-style
-
-  // if class pricing is not float
 });
 
 // update class of service

@@ -174,61 +174,6 @@ function loadABooking(bookingID) {
   });
 }
 
-// addClassOfService to add new class of service
-function addBooking() {
-  // extract values for add pop-up
-  const name = $('#class_name_add').val();
-  const classPricing = $('#class_pricing_add').val();
-  const classDescription = $('#class_description__add').val();
-  // setting empty string to the fields after adding
-  $('#class_name_add').val('');
-  $('#class_pricing_add').val('');
-  $('#class_description__add').val('');
-  // store all extracted info into requestBody
-  const requestBody = {
-    ClassName: name,
-    ClassPricing: classPricing,
-    ClassDes: classDescription,
-  };
-  console.log(`request body: ${requestBody}`);
-  // stringify reqBody
-  const reqBody = JSON.stringify(requestBody);
-  console.log(reqBody);
-  // call the method to post data
-  $.ajax({
-    url: 'http://localhost:5000/class',
-    type: 'POST',
-    data: reqBody,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data, textStatus, xhr) {
-      // set and call confirmation message
-      msg = 'Successfully added!';
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      const post = data;
-      $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
-    },
-    error(xhr, textStatus, errorThrown) {
-      // set and call error message
-      let errMsg = '';
-      if (xhr.status == 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status == 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status == 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
-      }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
-      $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
-    },
-  });
-}
-
 // updateClassOfService method update class of service
 function updateBooking() {
   // extarct values from pop-up
@@ -283,6 +228,48 @@ function updateBooking() {
     },
   });
 }
+
+// Login
+$('#addNewBooking').click(() => {
+  // data extraction
+  const id = $('#addBookingID').val();
+  const date = $('#datepicker').val();
+  console.log(id + date);
+  // data compilation
+  const info = {
+    bookingID: id,
+    bookingDate: date,
+  };
+
+  // call web service endpoint
+  $.ajax({
+    url: `${backEndUrl}/booking`,
+    type: 'POST',
+    data: JSON.stringify(info),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      if (data != null) {
+        console.log('Added');
+      } else {
+        console.log('Error');
+      }
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log(`XHR: ${JSON.stringify(xhr)}`);
+      console.log(`Textstatus: ${textStatus}`);
+      console.log(`Errorthorwn${errorThrown}`);
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Please check your the date and ID',
+      }).show();
+    },
+  });
+});
 
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);

@@ -297,7 +297,7 @@ const Admin = {
     Status,
     Admin)
     VALUES
-    (?,?,Pending,?);
+    (?,?,'Pending',?);
 `;
     // pool query
     pool.query(sql, [Contract, ScheduleDate, Admin], (err, result) => {
