@@ -7,18 +7,12 @@
 // const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
-function pageBtnCreate(totalNumberOfPages) {
-  $('#pagination').html('');
-  for (i = 1; i <= totalNumberOfPages; i++) {
-    divPaginBtn = `<button type="button" onClick="loadAllBookingByLimit(${i})">${i}</button>`;
-    $('#pagination').append(divPaginBtn);
-  }
-}
-
 function createRow(cardInfo) {
   console.log(cardInfo);
   const card = `
+
     <tr>
+    <script>if(${cardInfo.Status}=="Assgined"|| ${cardInfo.Status}=="Pending"){</script>
     <td>${cardInfo.bookingID}</td>
     <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
@@ -32,13 +26,30 @@ function createRow(cardInfo) {
     <td>${cardInfo.Address}</td>
     <td>${cardInfo.Employee}</td>
     <td>${cardInfo.Status}</td>
+    <td><button type="button" class="scheduleBooking-btn" data-toggle="modal" data-target="#schedule" style=" background: #2E6869;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid #2E6869;
+    transition: all 0.3s ease;">Schedule</button></td>
     <td>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>
     <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa-regular fa-trash-can"></i></button></td>
+    <script>}   $("button").removeAttr("disabled");</script>
     </tr>
+
+  
     `;
   return card;
+}
+function pageBtnCreate(totalNumberOfPages) {
+  $('#pagination').html('');
+  for (i = 1; i <= totalNumberOfPages; i++) {
+    divPaginBtn = `<button type="button" onClick="loadAllBookingByLimit(${i})">${i}</button>`;
+    $('#pagination').append(divPaginBtn);
+  }
 }
 
 function loadAllBooking() {
@@ -108,9 +119,8 @@ function loadAllBookingByLimit(pageNumber) {
           const newRow = createRow(bookingstbl);
           $('#bookingTableBody').append(newRow);
         }
-      } else {
-        loadAllBooking();
       }
+      loadAllBooking();
     },
 
     error(xhr, textStatus, errorThrown) {
@@ -127,10 +137,10 @@ function loadAllBookingByLimit(pageNumber) {
 }
 
 // load gets a booking
-function loadABooking(id) {
+function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
-    url: `${backEndUrl}/booking/${id}`,
+    url: `${backEndUrl}/booking/${bookingID}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
@@ -279,6 +289,5 @@ $(document).ready(() => {
   console.log(`Query Param (extraction): ${queryParams}`);
 
   loadAllBookingByLimit(1);
-  loadABooking(id);
-  
+  loadABooking(bookingID);
 });

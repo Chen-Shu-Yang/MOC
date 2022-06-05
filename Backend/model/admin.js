@@ -227,14 +227,14 @@ const Admin = {
     // sql query statement
     const sql = `
     SELECT
-b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
-FROM
-booking b
-join contract c on b.Contract = c.ContractID
-join customer cu on c.Customer = cu.CustomerID
-join package p on c.Package = p.PackageID
-left join employee e on b.Employee = e.EmployeeID
-join class cl on c.Class = cl.ClassID
+    b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    FROM
+    heroku_6b49aedb7855c0b.booking b
+    join heroku_6b49aedb7855c0b.contract c on b.Contract = c.ContractID
+    join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
+    join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+    left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
+    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID
     `;
     // pool query
     pool.query(sql, (err, result) => {
