@@ -35,7 +35,7 @@ function createRow(cardInfo) {
    <td class="statusName"> <div class="statusBtn ${(cardInfo.Status).includes('Completed') ? 'completeBtn' : (cardInfo.Status).includes('Pending') ? 'pendingBtn' : (cardInfo.Status).includes('Assigned') ? 'assignBtn' : 'cancelBtn'} ">
     ${cardInfo.Status} </td>
    
-    <td><button class="btn btn-danger">Cancel</button></td>
+    <td><button onClick="cancelBooking(${cardInfo.bookingID})" class="btn btn-danger">Cancel</button></td>
   
     </tr>
 
@@ -80,7 +80,6 @@ function loadAllBookingToBeCancelled() {
   });
 }
 
-
 function loadAllBookingToBeCancelledByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
@@ -119,8 +118,7 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
           const newRow = createRow(bookingstbl);
           $('#bookingTableBody').append(newRow);
         }
-        loadAllBookingToBeCancelled()
-        
+        loadAllBookingToBeCancelled();
       }
     },
 
@@ -133,6 +131,45 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
 
       console.log(xhr.status);
       console.log(xhr.responseText);
+    },
+  });
+}
+
+function cancelBooking(id) {
+  console.log("Booking id to cancel "+ id)
+  // ajax method to call the method
+  $.ajax({
+   
+
+    url: `http://localhost:5000/cancelBooking/${id}`,
+    type: 'PUT',
+
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      // set and call confirmation message
+      msg = 'Successfully updated!';
+      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+      // refresh
+      // $('#classServiceTableBody').html('')
+      // loadAllClassOfServices()
+    },
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status == 500) {
+        console.log('error');
+        errMsg = 'Please ensure that your values are accurate';
+      } else if (xhr.status == 400) {
+        errMsg = ' Invalid input ';
+      } else if (xhr.status == 406) {
+        errMsg = ' Invalid input';
+      } else {
+        errMsg = 'There is some other issues here ';
+      }
+      $('#classServiceTableBody').html('');
+      loadAllClassOfServices();
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
 }

@@ -480,5 +480,43 @@ app.put('/booking/:bookingID', printDebugInfo, (req, res) => {
   });
 });
 
+// update employee
+app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const bookingId = req.params.id;
+
+
+  // calling updateClass method from admin model
+  Admin.cancelBookingAdmin(
+  
+    bookingId,
+    (err, result) => {
+    // if there is no errorsend the following as result
+      if (!err) {
+        const output = {
+          classID: result.insertId,
+        };
+
+        console.log(`result ${output.classID}`);
+
+        res.status(201).send(result);
+      }
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+      // Inappropriate value as return message
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // else if there is a server error return message
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    },
+  );
+});
+
 // module exports
 module.exports = app;

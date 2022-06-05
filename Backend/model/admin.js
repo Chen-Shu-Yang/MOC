@@ -398,6 +398,34 @@ const Admin = {
     });
   },
 
+  // update all class of services
+  cancelBookingAdmin(bookingId, callback) {
+    // sql query statement
+
+    const sql = `
+              UPDATE 
+              heroku_6b49aedb7855c0b.booking
+           SET
+              Status="Cancelled"
+            
+          where
+               BookingID=?
+               ;
+              
+  
+              `;
+      // pool query
+    pool.query(sql, [bookingId], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
 };
 
 //= ======================================================
