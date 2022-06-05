@@ -167,7 +167,7 @@ function loadAnEmployee(id) {
 function updateEmployee() {
   const id = $('#editEmployeeID').val();
   // get value of the image uploaded from input file
-  const image_edit = document.getElementById('edit_picture_file');
+  const image_edit = document.getElementById('image_edit');
   // get value of the employee name from employee name field
   const employeeName = $('#editEmployeeName').val();
   // get value from employee description field
@@ -183,7 +183,7 @@ function updateEmployee() {
   // webFormData.append method to append skillSet to the key of skillSet
   webFormData.append('skillSet', skillSet);
   // webFormData.append method to append image.files[0] to the key of image
-  webFormData.append('edit_picture_file', image_edit.files[0]);
+  webFormData.append('image_edit', image_edit.files[0]);
   // ajax fuction to connect to the backend
   $.ajax({
     // url to connect to backend api
@@ -207,7 +207,7 @@ function updateEmployee() {
       $('#editEmployeeName').val('');
       $('#editEmployeeDes').val('');
       $('#editEmployeeSkills').val('');
-      document.getElementById('edit_picture_file').value = '';
+      document.getElementById('image_edit').value = '';
       // succcess message return
       if (xhr.status == 201) {
         msg = 'Successfully added!';
@@ -416,7 +416,7 @@ function readURL(input) {
   }
 }
 
-$("#file_photo").change(function () {
+$("#image").change(function () {
   readURL(this);
 });
 
@@ -433,6 +433,6 @@ function readNewURL(input) {
   }
 }
 
-$("#edit_picture_file").change(function () {
+$("#image_edit").change(function () {
   readNewURL(this);
 });
