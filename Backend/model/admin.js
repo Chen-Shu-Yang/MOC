@@ -287,9 +287,8 @@ const Admin = {
   // add booking of services
   addBooking(Contract, ScheduleDate, Admin, callback) {
     // sql query statement
+
     const sql = `
-
-
     INSERT INTO
     heroku_6b49aedb7855c0b.booking (
     Contract,

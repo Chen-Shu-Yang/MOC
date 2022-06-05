@@ -12,7 +12,10 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
+    <!-- Noty CSS-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css" rel="stylesheet">
+    <!-- Noty CSS Map-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css.map" rel="stylesheet">
     <!-- JavaScript Bundle with Popper -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -181,15 +184,11 @@
                                 <input type="text" class="form-control" placeholder="booking ID..."
                                     id="addBookingID">
                             </div>
-                    
                             <div class="form-group">
                                 <input type="text" id="datepicker" width="270" placeholder="booking Date..." />
                             </div>
-                          
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-success" id="addNewBooking">Add booking</button>
-                       
-
                         </form>
                     </div>
                     <script>
@@ -203,12 +202,12 @@
         <!-- Add booking Modal End -->
 
         <!-- View booking Availability Modal Start -->
-        <div class="modal fade" id="viewEmpAvailabilityModal" tabindex="-1" role="dialog"
+        <div class="modal fade" id="editBookingModal" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">booking Availability</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">booking</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -216,21 +215,16 @@
                     <div class="modal-body">
                         <div class="container">
                             <form class="booking-availability">
-                                <input id="datepicker" width="270" />
-                                <input type="submit" value="Search" class="btn btn-success" />
+                                <fieldset>
+                                    <input type="text" id="booking-id-update" disabled>
+                                  </fieldset>
+                                <input id="datePicker" width="270" />
+                                <input type="submit" value="Update" id="updateBookingDate"class="btn btn-success" />
                             </form>
-                            <div class="timeslot available">
-                                <span>8.30am</span>
-                                <i class="fa-solid fa-check"></i>
-                            </div>
-                            <div class="timeslot unavailable">
-                                <span>12.30pm</span>
-                                <i class="fa-solid fa-xmark"></i>
-                            </div>
                         </div>
                         <script>
 
-                            $('#datepicker').datepicker({
+                            $('#datePicker').datepicker({
                                 uiLibrary: 'bootstrap'
                             });
                         </script>
@@ -239,10 +233,13 @@
             </div>
         </div>
         <!-- View booking Availability Modal End -->
-    
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js">
+    </script>
     </section>
-
+    <!-- Noty JS-->
+  
     <script>
+        
         $('#editModal').on('shown.bs.modal', function () {
             $('#editModal').trigger('focus')
         })

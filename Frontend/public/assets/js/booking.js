@@ -36,7 +36,7 @@ function createRow(cardInfo) {
     ${cardInfo.Status} </td>
     <td><button type="button" class="${(cardInfo.Status).includes('Completed') ? 'btn disabled' : (cardInfo.Status).includes('Cancelled') ? 'btn disabled' : 'btn btn-success'} ">Assign</button></td>
     <td>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editBookingModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>
     <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa-regular fa-trash-can"></i></button></td>
     <script>}   $("button").removeAttr("disabled");</script>
@@ -158,10 +158,7 @@ function loadABooking(bookingID) {
       console.log(RowInfo);
       console.log('---------------------');
       // updating extracted values to update pop up
-      $('#class-id-update').val(RowInfo.classId);
-      $('#class-name-update').val(RowInfo.className);
-      $('#class-pricing-update').val(RowInfo.classPricing);
-      $('#class-description-update').val(RowInfo.classDescription);
+      $('#booking-id-update').val(RowInfo.bookingID);
     },
     error(xhr) {
       // set and call error message
@@ -229,8 +226,50 @@ function updateBooking() {
   });
 }
 
-// Login
+// add new booking
 $('#addNewBooking').click(() => {
+  // data extraction
+  const id = $('#addBookingID').val();
+  const date = $('#datepicker').val();
+  console.log(id + date);
+  // data compilation
+  const info = {
+    bookingID: id,
+    bookingDate: date,
+  };
+
+  // call web service endpoint
+  $.ajax({
+    url: `${backEndUrl}/booking`,
+    type: 'POST',
+    data: JSON.stringify(info),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      if (data != null) {
+        console.log('Added');
+      } else {
+        console.log('Error');
+      }
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log(`XHR: ${JSON.stringify(xhr)}`);
+      console.log(`Textstatus: ${textStatus}`);
+      console.log(`Errorthorwn${errorThrown}`);
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Please check your the date and ID',
+      }).show();
+    },
+  });
+});
+
+// Login
+$('#updateBookingDate').click(() => {
   // data extraction
   const id = $('#addBookingID').val();
   const date = $('#datepicker').val();
