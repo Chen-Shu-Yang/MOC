@@ -113,6 +113,7 @@
         <section class="assign-section ">
             <div class="container">
                 <div class="row">
+                    <!--Customer Information Form-->
                     <div class="col form-group ">
                         <h2>Customer Booking Details</h2>
 
@@ -143,7 +144,7 @@
                                 <h3>Order Information</h3>
                                 <div class="col-md-4 ">
                                     <label for="postal">Number of Rooms</label>
-                                    <input type="text" class="form-control" id="noOfRoom" readonly>                                    
+                                    <input type="text" class="form-control" id="noOfRoom" readonly>
                                 </div>
                                 <div class="col-md-4 ">
                                     <label for="postal">Number of Bathrooms</label>
@@ -151,28 +152,57 @@
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <label for="postal">Estimated Sizing</label>
-                                    <input type="text" class="form-control" id="sizing" readonly>                                
+                                    <input type="text" class="form-control" id="sizing" readonly>
                                 </div>
                             </div>
-                            <!---->
+                            <!--Pricing and assigned employee-->
                             <div class="row">
-
+                                <div class="col-6">
+                                    <label for="pricing">Estimated Pricing</label>
+                                    <input type="text" class="form-control" id="pricing" readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="employee">Assigned Employee</label>
+                                    <input type="text" class="form-control" id="assign" readonly>
+                                </div>
                             </div>
+                            <div class="row">
+                                <label for="extraNotes">Extra Notes</label>
+                                <textarea type="text" class="form-control" id="extraNotes" readonly></textarea>
+                            </div>
+
                             <hr class="mb-4">
                         </form>
                     </div>
+                    <!--Employee List-->
+                    <div class="col list-section" id="employeeList">
+                        <h2>Employee List</h2>
 
-                    <div class="col">
-                        <p>Second</p>
+                        <div class="card mb-3" style="max-width: 93%;">
+                            <div class="row no-gutters">
+                                <div class="col-sm-3">
+                                    <img src="../../assets/img/profile1.jpg" class="card-img rounded-circle " alt="...">
+                                </div>
+                                <div class="col-sm-9 ">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Card title</h6>
+                                        <p class="card-text">This is a wider card with supporting text below as a
+                                            natural lead-in to additional content. This content is a little bit longer.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
 
-            </div>
+
         </section>
     </section>
 
-
+    <script src="../assets/js/assignEmployee.js"></script>
     <script src="../assets/js/adminNavbar.js"></script>
 
 </body>
