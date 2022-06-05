@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
@@ -9,10 +10,13 @@ const backEndUrl = 'http://localhost:5000';
 
 function createRow(cardInfo) {
   console.log(cardInfo);
+  console.log('********');
+  console.log(cardInfo.Status);
+
   const card = `
 
     <tr>
-    <script>if(${cardInfo.Status}=="Assgined"|| ${cardInfo.Status}=="Pending"){</script>
+
     <td>${cardInfo.bookingID}</td>
     <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
@@ -24,15 +28,13 @@ function createRow(cardInfo) {
     <td>${cardInfo.RateName}</td>
     <td>${cardInfo.EstimatePricing}</td>
     <td>${cardInfo.Address}</td>
-    <td>${cardInfo.Employee}</td>
-    <td>${cardInfo.Status}</td>
-    <td><button type="button" class="scheduleBooking-btn" data-toggle="modal" data-target="#schedule" style=" background: #2E6869;
-    color: #fff;
-    padding: 5px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    border: 2px solid #2E6869;
-    transition: all 0.3s ease;">Schedule</button></td>
+    <td>
+    ${(cardInfo.Employee === null) ? '-' : cardInfo.Employee}
+    
+  </td>
+   <td class="statusName"> <div class="statusBtn ${(cardInfo.Status).includes('Completed') ? 'completeBtn' : (cardInfo.Status).includes('Pending') ? 'pendingBtn' : (cardInfo.Status).includes('Assigned') ? 'assignBtn' : 'cancelBtn'} ">
+    ${cardInfo.Status} </td>
+    <td><button type="button" class="${(cardInfo.Status).includes('Assigned' || 'Pedning') ? 'btn btn-success' : 'btn disabled'} ">Assign</button></td>
     <td>
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>

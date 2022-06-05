@@ -5,6 +5,29 @@
     margin-left: 790px;
 }
 
+.statusBtn{
+    height:20px;
+    width: 20px;
+    border-radius: 25px;
+    margin-left: -30px ;
+    margin-right: 50px !important;
+}
+.cancelBtn{
+    background-color: #C86E6E;
+}
+.completeBtn{
+    background-color: #73A684;
+}
+.assignBtn{
+    background-color: #A5A66C;
+}
+.pendingBtn{
+    background-color: #9E9C9C;
+}
+.statusName{
+    margin: 100px;;
+}
+
 .btn-success{
     background-color: #448788;
 
@@ -377,6 +400,7 @@ nav .right-header {
         margin-left: none;
     }
 }
+
 
 @media (max-width: 580px) {
     .booking-section .max-width {
