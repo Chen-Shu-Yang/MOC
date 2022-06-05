@@ -248,6 +248,31 @@ const Admin = {
     });
   },
 
+  // get all booking
+  getAllBookingCancel(callback) {
+    // sql query statement
+    const sql = `
+      SELECT
+      b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+      FROM
+      heroku_6b49aedb7855c0b.booking b
+      join heroku_6b49aedb7855c0b.contract c on b.Contract = c.ContractID
+      join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
+      join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+      left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
+      join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID where b.Status='Assigned' or b.Status='Pending'
+      `;
+      // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
   // to limit and offset booking
   pageBooking(pageNumber, callback) {
     // the page number clicked
@@ -268,6 +293,42 @@ const Admin = {
     join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
     left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
     join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID LIMIT ? OFFSET ?;
+  
+    `;
+    // values to pass for the query number of employee per page and number of employee to skip
+    const values = [limitPerPage, numberOfValueToSkip];
+    // query
+    pool.query(sql, values, (err, result) => {
+    // if error send error message
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // else send result
+      return callback(null, result);
+    });
+  },
+
+  // to limit and offset booking
+  pageBookingCancel(pageNumber, callback) {
+    // the page number clicked
+    pageNumber = parseInt(pageNumber, 10);
+    // Number of employee showed per page
+    const limitPerPage = 6;
+    // Prevent displaying repetitive information
+    const numberOfValueToSkip = (pageNumber - 1) * 6;
+
+    // sql statement to limit and skip
+    const sql = `
+    SELECT
+    b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    FROM
+    heroku_6b49aedb7855c0b.booking b
+    join heroku_6b49aedb7855c0b.contract c on b.Contract = c.ContractID
+    join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
+    join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+    left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
+    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID where b.Status='Assigned' or b.Status='Pending'  LIMIT ? OFFSET ?;
   
     `;
     // values to pass for the query number of employee per page and number of employee to skip
