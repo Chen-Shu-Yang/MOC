@@ -15,7 +15,8 @@ const config = require('../config');
 //= ======================================================
 const Login = {
 
-  // get all class of services
+    // sql query statement
+    // get all class of services
   Verify(email, password, callback) {
     // sql query statement
     const sql = `SELECT *
@@ -55,7 +56,7 @@ const Login = {
                 console.log(err);
                 return callback(err, null);
               } if (result.length === 0) {
-                console.log('Bih');
+                return callback(null, null);
               }
               // there must only be 1 result here
               // since email is unique
