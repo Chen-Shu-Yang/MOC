@@ -28,7 +28,7 @@ function createRow(cardInfo) {
           </div>
           <div class="employee-btn">
               <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Edit</button>
-              <button type="button" id="deleteClassServiceBtn" class="btn btn-danger"  onClick="deleteEmployee(${cardInfo.EmployeeID})">Delete</button>
+              <button type="button" id="deleteClassServiceBtn" class="delete-btn"  onClick="deleteEmployee(${cardInfo.EmployeeID})">Delete</button>
           
           </div>
       </div>
@@ -167,7 +167,7 @@ function loadAnEmployee(id) {
 function updateEmployee() {
   const id = $('#editEmployeeID').val();
   // get value of the image uploaded from input file
-  const image_edit = document.getElementById('image_edit');
+  const image_edit = document.getElementById('edit_picture_file');
   // get value of the employee name from employee name field
   const employeeName = $('#editEmployeeName').val();
   // get value from employee description field
@@ -183,7 +183,7 @@ function updateEmployee() {
   // webFormData.append method to append skillSet to the key of skillSet
   webFormData.append('skillSet', skillSet);
   // webFormData.append method to append image.files[0] to the key of image
-  webFormData.append('image_edit', image_edit.files[0]);
+  webFormData.append('edit_picture_file', image_edit.files[0]);
   // ajax fuction to connect to the backend
   $.ajax({
     // url to connect to backend api
@@ -207,7 +207,7 @@ function updateEmployee() {
       $('#editEmployeeName').val('');
       $('#editEmployeeDes').val('');
       $('#editEmployeeSkills').val('');
-      document.getElementById('image_edit').value = '';
+      document.getElementById('edit_picture_file').value = '';
       // succcess message return
       if (xhr.status == 201) {
         msg = 'Successfully added!';
@@ -405,34 +405,34 @@ function deleteEmployee(id) {
 
 function readURL(input) {
   if (input.files && input.files[0]) {
-    const reader = new FileReader();
+      var reader = new FileReader();
 
-    reader.onload = function (e) {
-      // $('#blah').attr('src', e.target.result);
-      document.getElementById('ppPreview').style.backgroundImage = `url( ${e.target.result})`;
-    };
+      reader.onload = function (e) {
+          //$('#blah').attr('src', e.target.result);
+          document.getElementById('ppPreview').style.backgroundImage = "url( " + e.target.result + ")";
+      }
 
-    reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(input.files[0]);
   }
 }
 
-$('#file_photo').change(function () {
+$("#file_photo").change(function () {
   readURL(this);
 });
 
 function readNewURL(input) {
   if (input.files && input.files[0]) {
-    const reader = new FileReader();
+      var reader = new FileReader();
 
-    reader.onload = function (e) {
-      // $('#blah').attr('src', e.target.result);
-      document.getElementById('NewProfilePreview').style.backgroundImage = `url( ${e.target.result})`;
-    };
+      reader.onload = function (e) {
+          //$('#blah').attr('src', e.target.result);
+          document.getElementById('NewProfilePreview').style.backgroundImage = "url( " + e.target.result + ")";
+      }
 
-    reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(input.files[0]);
   }
 }
 
-$('#edit_picture_file').change(function () {
+$("#edit_picture_file").change(function () {
   readNewURL(this);
 });
