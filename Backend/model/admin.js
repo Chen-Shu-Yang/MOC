@@ -411,8 +411,6 @@ const Admin = {
           where
                BookingID=?
                ;
-              
-  
               `;
       // pool query
     pool.query(sql, [bookingId], (err, result) => {
