@@ -28,7 +28,7 @@ function createRow(cardInfo) {
           </div>
           <div class="employee-btn">
               <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Edit</button>
-              <button type="button" id="deleteClassServiceBtn" class="delete-btn"  onClick="deleteEmployee(${cardInfo.EmployeeID})">Delete</button>
+              <button type="button" class="delete-btn" data-toggle="modal" data-target="#deleteModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Delete</button>
           
           </div>
       </div>
@@ -138,15 +138,16 @@ function loadAnEmployee(id) {
         EmployeeID: employee.EmployeeID,
         Name: employee.EmployeeName,
         Description: employee.EmployeeDes,
-        EmployeeImg: employee.EmployeeImg,
+        EmployeeImg: employee.EmployeeImgUrl,
         Skillsets: employee.Skillsets,
       };
 
       console.log('---------Card INfo data pack------------');
       console.log(RowInfo);
 
-      document.getElementById('NewProfilePreview').style.backgroundImage = 'url(../img/profile2.jpg)';
+      document.getElementById('NewProfilePreview').style.backgroundImage = `url(${RowInfo.EmployeeImg})`;
       $('#editEmployeeID').val(RowInfo.EmployeeID);
+      $('#deleteEmployeeID').val(RowInfo.EmployeeID);
       $('#editEmployeeName').val(RowInfo.Name);
       $('#editEmployeeDes').val(RowInfo.Description);
       $('#editEmployeeSkills').val(RowInfo.Skillsets);
@@ -295,6 +296,12 @@ $(document).ready(() => {
   // update button
   $('#editEmployeeBtn').click(() => {
     updateEmployee();
+  });
+
+  // delete button
+  $('#deleteEmployeeBtn').click(() => {
+    const employeeID = $('#deleteEmployeeID').val();
+    deleteEmployee(employeeID);
   });
 });
 
