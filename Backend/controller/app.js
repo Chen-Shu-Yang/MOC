@@ -580,8 +580,6 @@ app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
   });
 });
 
-
-
 // get all employee
 app.get('/booking', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
@@ -655,7 +653,6 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
   const BookingID = req.params.bookingIDs;
   // extract all details needed
   const { ScheduleDate } = req.body;
-  console.log("Im HERE");
   // check if class pricing is float value and execute code
 
   // calling updateClass method from admin model
@@ -726,10 +723,10 @@ app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
   const bookingId = req.params.id;
   // calling cancelBookingAdmin method from admin model
   Admin.cancelBookingAdmin(
-  
+
     bookingId,
     (err, result) => {
-    // if there is no errorsend the following as result
+      // if there is no errorsend the following as result
       if (!err) {
         const output = {
           classID: result.insertId,
@@ -754,6 +751,72 @@ app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
       }
     },
   );
+});
+
+//---------------------------------------------------
+//                 Feature/schedule-Employee
+//---------------------------------------------------
+
+// get unassigned available employee
+app.get('/availemployee/:date', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const { date } = req.params;
+
+  // calling getClass method from admin model
+  Admin.getAvailableEmployee(date, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// schedule employee availability
+app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { employeeId } = req.params;
+  const { date } = req.body;
+  const { time } = req.body;
+
+  // calling addClass method from admin model
+  Admin.addEmployeeAvailability(employeeId, date, time, (err, result) => {
+    // if no error send results as positive
+    if (!err) {
+      const output = {
+        success: true,
+        'affected rows': result.affectedRows,
+        'changed rows': result.changedRows,
+      };
+      res.status(201).send(output);
+    }
+    // eslint-disable-next-line max-len
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    // if server issues send this as an error
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
 });
 
 // module exports

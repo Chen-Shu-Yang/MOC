@@ -112,68 +112,18 @@
 
                     <div class="time-slots">
                         <h4>Time Slots</h4>
-                        <div class="slots-2 morningSlot active">8.30 AM</div>
-                        <div class="slots-2 afternoonSlot ">12.30 PM</div>
+                        <input type="submit" class="slots-2 morningSlot" value="08:30:00">
+                        <input type="submit" class="slots-2 afternoonSlot" value="12:30:00">
                     </div>
                 </div>
-
+                <hr>
                 <div class="employee-section">
-                    <div class="confirm-btn">Confirm</div>
-                    <div class="employee-list">
-                        <div class="employee-card">
-                            <img src="../img/profile1.jpg" alt="">
-                            <div class="employee-details">
-                                <span class="employee-name">Mary</span><br>
-                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                    do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
-                            </div>
-                            <input type="checkbox" class="availability">
-                        </div>
-
-                        <div class="employee-card">
-                            <img src="../img/profile1.jpg" alt="">
-                            <div class="employee-details">
-                                <span class="employee-name">Mary</span><br>
-                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                    do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
-                            </div>
-                            <input type="checkbox" class="availability">
-                        </div>
-
-                        <div class="employee-card">
-                            <img src="../img/profile1.jpg" alt="">
-                            <div class="employee-details">
-                                <span class="employee-name">Mary</span><br>
-                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                    do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
-                            </div>
-                            <input type="checkbox" class="availability">
-                        </div>
-
-                        <div class="employee-card">
-                            <img src="../img/profile1.jpg" alt="">
-                            <div class="employee-details">
-                                <span class="employee-name">Mary</span><br>
-                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                    do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
-                            </div>
-                            <input type="checkbox" class="availability">
-                        </div>
-
-                        <div class="employee-card">
-                            <img src="../img/profile1.jpg" alt="">
-                            <div class="employee-details">
-                                <span class="employee-name">Mary</span><br>
-                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                    do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
-                            </div>
-                            <input type="checkbox" class="availability">
-                        </div>
+                    <div class="employee-header">
+                        <span id="timing"></span>
+                        <button type="submit" class="confirm-btn" id="confirmBtn">Confirm</button>
+                    </div>
+                    <div class="employee-list" id="employee-list">
+                    
                     </div>
                 </div>
 
@@ -182,26 +132,13 @@
     </section>
 
     <script src="../../assets/js/adminNavbar.js"></script>
+    <script src="../../assets/js/adminSchedule.js"></script>
     <script>
         $('#calendar').datepicker({
             language: "el",
             calendarWeeks: true,
             todayHighlight: true
         });
-
-        // toggle time slots
-        let morningSlot = document.querySelector(".morningSlot");
-        let afternoonSlot = document.querySelector(".afternoonSlot");
-
-        morningSlot.onclick = function () {
-            morningSlot.classList.toggle("active");
-            afternoonSlot.classList.toggle("active");
-        }
-
-        afternoonSlot.onclick = function () {
-            morningSlot.classList.toggle("active");
-            afternoonSlot.classList.toggle("active");
-        }
     </script>
 </body>
 
