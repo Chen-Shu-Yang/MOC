@@ -621,8 +621,9 @@ app.post('/booking', printDebugInfo, (req, res) => {
   // extract all details needed
   const { bookingID } = req.body;
   const { bookingDate } = req.body;
-
-  Admin.addBooking(bookingID, bookingDate, (err, result) => {
+  const { AdminId } = req.body;
+  console.log(AdminId);
+  Admin.addOneBooking(bookingID, bookingDate, AdminId, (err, result) => {
     if (!err) {
       res.status(201).send(result);
     }

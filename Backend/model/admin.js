@@ -340,7 +340,7 @@ const Admin = {
   },
 
   // add booking of services
-  addBooking(Contract, ScheduleDate, Admin, callback) {
+  addOneBooking(Contract, ScheduleDate, AdminID, callback) {
     // sql query statement
 
     const sql = `
@@ -354,7 +354,7 @@ const Admin = {
     (?,?,'Pending',?);
 `;
     // pool query
-    pool.query(sql, [Contract, ScheduleDate, Admin], (err, result) => {
+    pool.query(sql, [Contract, ScheduleDate, AdminID], (err, result) => {
       if (err) {
         console.log(err);
         return callback(err);

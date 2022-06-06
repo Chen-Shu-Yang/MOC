@@ -143,59 +143,59 @@ function loadAllBookingByLimit(pageNumber) {
 
 function loadAllBookingToBECancelledByLimit(pageNumber) {
   // call the web service endpoint
-    $.ajax({
-      url: `${backEndUrl}/bookingCancel/${pageNumber}`,
-      type: 'GET',
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      success(data) {
-        if (data != null) {
-          console.log('-------response data------');
-          console.log(data);
-          console.log(`LENGTH OF DATA:${data.length}`);
-          $('#bookingTableBody').html('');
-          for (let i = 0; i < data.length; i++) {
-            const booking = data[i];
-            // compile the data that the card needs for its creation
-            const bookingstbl = {
-              bookingID: booking.BookingID,
-              FirstName: booking.FirstName,
-              LastName: booking.LastName,
-              Package: booking.PackageName,
-              ClassName: booking.ClassName,
-              StartDate: booking.StartDate,
-              TimeOfService: booking.TimeOfService,
-              NoOfRooms: booking.NoOfRooms,
-              NoOfBathrooms: booking.NoOfBathrooms,
-              RateName: booking.Rate,
-              EstimatePricing: booking.EstimatedPricing,
-              Address: booking.Address,
-              Employee: booking.EmployeeName,
-              Status: booking.Status,
-            };
-            console.log('---------Card INfo data pack------------');
-            console.log(bookingstbl);
-  
-            const newRow = createRow(bookingstbl);
-            $('#bookingTableBody').append(newRow);
-          }
+  $.ajax({
+    url: `${backEndUrl}/bookingCancel/${pageNumber}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      if (data != null) {
+        console.log('-------response data------');
+        console.log(data);
+        console.log(`LENGTH OF DATA:${data.length}`);
+        $('#bookingTableBody').html('');
+        for (let i = 0; i < data.length; i++) {
+          const booking = data[i];
+          // compile the data that the card needs for its creation
+          const bookingstbl = {
+            bookingID: booking.BookingID,
+            FirstName: booking.FirstName,
+            LastName: booking.LastName,
+            Package: booking.PackageName,
+            ClassName: booking.ClassName,
+            StartDate: booking.StartDate,
+            TimeOfService: booking.TimeOfService,
+            NoOfRooms: booking.NoOfRooms,
+            NoOfBathrooms: booking.NoOfBathrooms,
+            RateName: booking.Rate,
+            EstimatePricing: booking.EstimatedPricing,
+            Address: booking.Address,
+            Employee: booking.EmployeeName,
+            Status: booking.Status,
+          };
+          console.log('---------Card INfo data pack------------');
+          console.log(bookingstbl);
+
+          const newRow = createRow(bookingstbl);
+          $('#bookingTableBody').append(newRow);
         }
-        loadAllBooking();
-      },
-  
-      error(xhr, textStatus, errorThrown) {
-        console.log('Error in Operation');
-        console.log('-----------------------');
-        console.log(xhr);
-        console.log(textStatus);
-        console.log(errorThrown);
-  
-        console.log(xhr.status);
-        console.log(xhr.responseText);
-      },
-    });
-  }
-  
+      }
+      loadAllBooking();
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log('-----------------------');
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+    },
+  });
+}
+
 // load gets a booking
 function loadABooking(bookingID) {
   // gets a class of service based on id
@@ -234,43 +234,85 @@ function loadABooking(bookingID) {
 // add new booking
 $('#addNewBooking').click(() => {
   // data extraction
-  const id = $('#addContractID').val();
-  const date = $('#datepicker').val();
-  // data compilation
-  const info = {
-    bookingID: id,
-    bookingDate: date,
-  };
 
-  // call web service endpoint
-  $.ajax({
-    url: `${backEndUrl}/booking`,
-    type: 'POST',
-    data: JSON.stringify(info),
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data) {
-      if (data != null) {
-        loadAllBookingByLimit(1)
-        console.log('Added');
-      } else {
-        console.log('Error');
-      }
-    },
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(`XHR: ${JSON.stringify(xhr)}`);
-      console.log(`Textstatus: ${textStatus}`);
-      console.log(`Errorthorwn${errorThrown}`);
-      new Noty({
-        timeout: '5000',
-        type: 'error',
-        layout: 'topCenter',
-        theme: 'sunset',
-        text: 'Please check your the date and ID',
-      }).show();
-    },
-  });
+  const Employeeid = localStorage.getItem('EmployeeID');
+  if (Employeeid != null) {
+    const id = $('#addContractID').val();
+    const date = $('#datepicker').val();
+    const Employeeid = localStorage.getItem('EmployeeID');
+
+    // data compilation
+    const info = {
+      bookingID: id,
+      bookingDate: date,
+      AdminId: Employeeid
+    };
+    $.ajax({
+      url: `${backEndUrl}/booking`,
+      type: 'POST',
+      data: JSON.stringify(info),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success(data) {
+        if (data != null) {
+          loadAllBookingByLimit(1);
+          console.log('Added');
+        } else {
+          console.log('Error');
+        }
+      },
+      error(xhr, textStatus, errorThrown) {
+        console.log('Error in Operation');
+        console.log(`XHR: ${JSON.stringify(xhr)}`);
+        console.log(`Textstatus: ${textStatus}`);
+        console.log(`Errorthorwn${errorThrown}`);
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Please check your the date and ID',
+        }).show();
+      },
+    });
+  } else {
+    const id = $('#addContractID').val();
+    const date = $('#datepicker').val();
+    const SuperAdminID = localStorage.getItem('SuperAdminID');
+    const info = {
+      bookingID: id,
+      bookingDate: date,
+      Admin: SuperAdminID
+    };
+    $.ajax({
+      url: `${backEndUrl}/booking`,
+      type: 'POST',
+      data: JSON.stringify(info),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success(data) {
+        if (data != null) {
+          loadAllBookingByLimit(1);
+          console.log('Added');
+        } else {
+          console.log('Error');
+        }
+      },
+      error(xhr, textStatus, errorThrown) {
+        console.log('Error in Operation');
+        console.log(`XHR: ${JSON.stringify(xhr)}`);
+        console.log(`Textstatus: ${textStatus}`);
+        console.log(`Errorthorwn${errorThrown}`);
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Please check your the date and ID',
+        }).show();
+      },
+    });
+  }
 });
 
 // Login
@@ -300,7 +342,7 @@ $('#updateBookingDate').click(() => {
           theme: 'sunset',
           text: 'added successfully',
         }).show();
-        loadAllBookingByLimit(1)
+        loadAllBookingByLimit(1);
       } else {
         console.log('Error');
       }
