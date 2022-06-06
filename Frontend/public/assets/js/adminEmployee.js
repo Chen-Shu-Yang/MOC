@@ -368,50 +368,6 @@ function addEmployee() {
   });
 }
 
-function deleteEmployee(id) {
-  // call the web service endpoint for deleting class of service by id
-  $.ajax({
-
-    url: `http://localhost:5000/employee/${id}`,
-    type: 'DELETE',
-    contentType: 'application/json; charset=utf-8',
-    // if data inserted
-    success(data, textStatus, xhr) {
-      // if id in the params not valid show error
-      if (xhr.status === 404) {
-        // set and call error message
-        // eslint-disable-next-line no-use-before-define
-        errMsg = 'Not valid id';
-        // eslint-disable-next-line vars-on-top
-        var errMsg = '';
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-        $('#employeeListing').html('');
-        loadEmployeeByLimit(1);
-      }
-      // if the params id is valid and
-      else if (xhr.status === 200) {
-        // set and call confirmation message
-        msg = 'Successfully deleted!';
-
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
-      }
-    },
-
-    error(xhr, textStatus, errorThrown) {
-      // set and call error message
-      let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else {
-        errMsg = 'There is some other issues here';
-      }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-    },
-
-  });
-}
-
 function readURL(input) {
   if (input.files && input.files[0]) {
       var reader = new FileReader();
