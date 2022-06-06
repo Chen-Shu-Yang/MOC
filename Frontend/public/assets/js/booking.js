@@ -173,7 +173,6 @@ function loadABooking(bookingID) {
     },
   });
 }
-
 // add new booking
 $('#addNewBooking').click(() => {
   // data extraction
@@ -215,7 +214,6 @@ $('#addNewBooking').click(() => {
   });
 });
 
-
 // Login
 $('#updateBookingDate').click(() => {
   // data extraction
@@ -243,6 +241,7 @@ $('#updateBookingDate').click(() => {
           theme: 'sunset',
           text: 'added successfully',
         }).show();
+        loadAllBookingByLimit
       } else {
         console.log('Error');
       }
