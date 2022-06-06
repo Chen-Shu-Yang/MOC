@@ -15,8 +15,8 @@ const config = require('../config');
 //= ======================================================
 const Login = {
 
-    // sql query statement
-    // get all class of services
+  // sql query statement
+  // get all class of services
   Verify(email, password, callback) {
     // sql query statement
     const sql = `SELECT *

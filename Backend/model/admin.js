@@ -1,9 +1,9 @@
-/* eslint-disable max-len */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
+/* eslint-disable max-len */
 
 //= ======================================================
 //              Imports

@@ -4,9 +4,11 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 
-// const frontEndUrl = 'https://spspforum.herokuapp.com';
-// const backEndUrl = 'https://spspforum-backend.herokuapp.com';
-// const url = 'http://localhost:5000';
+
+
+const frontEndUrl = 'http://localhost:3001';
+const backEndUrl = 'http://localhost:5000';
+
 
 function createRow(cardInfo) {
   const card = `

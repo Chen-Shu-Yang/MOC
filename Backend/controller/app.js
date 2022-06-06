@@ -1,13 +1,13 @@
-/* eslint-disable no-shadow */
-/* eslint-disable block-scoped-var */
-/* eslint-disable max-len */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
 /* eslint-disable brace-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-console */
+/* eslint-disable no-shadow */
+/* eslint-disable block-scoped-var */
+/* eslint-disable max-len */
+/* eslint-disable vars-on-top */
+/* eslint-disable no-undef */
 
 //= ======================================================
 //              Imports
@@ -20,8 +20,6 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 
-const { JsonDB } = require('node-json-db');
-const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 
@@ -91,7 +89,6 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     }
     let msg;
     if (!result) {
-      // matched with callback(null, null)
       msg = {
         Error: 'Invalid login',
       };
@@ -104,9 +101,10 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
         CustomerID: result.CustomerID,
         SuperAdminID: result.SuperAdminID,
       };
+      res.status(200).send(msg);
     }
   });
-  res.status(200).send(msg);
+  res.status(200).send('Invalid account');
 });
 
 app.get('/classes', printDebugInfo, async (req, res) => {

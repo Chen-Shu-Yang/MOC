@@ -7,7 +7,6 @@
 
 // const res = require("express/lib/response");
 
-// backend url
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
