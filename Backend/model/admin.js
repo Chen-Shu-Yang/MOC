@@ -274,7 +274,7 @@ const Admin = {
     const values = [limitPerPage, numberOfValueToSkip];
     // query
     pool.query(sql, values, (err, result) => {
-    // if error send error message
+      // if error send error message
       if (err) {
         console.log(err);
         return callback(err);
@@ -325,7 +325,7 @@ const Admin = {
             BookingID=?
                ;  
               `;
-      // pool query
+    // pool query
     pool.query(sql, [ScheduleDate, BookingID], (err, result) => {
       // error
       if (err) {
@@ -336,7 +336,51 @@ const Admin = {
       return callback(null, result);
     });
   },
+  getBookingDetails(id, callback) {
+    // sql query statement
+    const sql = `SELECT b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,cu.FirstName,cu.LastName,r.RateName,e.EmployeeName
+    FROM heroku_6b49aedb7855c0b.booking as b
+    join heroku_6b49aedb7855c0b.contract as c on b.Contract = c.ContractID
+    join heroku_6b49aedb7855c0b.customer as cu on c.Customer = cu.CustomerID
+    join heroku_6b49aedb7855c0b.rates as r on c.Rate = r.RatesID
+    left join heroku_6b49aedb7855c0b.employee as e on b.Employee = e.EmployeeID
+    where b.BookingID=?;`;
 
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+    });
+  },
+  getEmployeeAvailabilty(bookingDate, callback) {
+    // sql query statement
+    const sql = `SELECT e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,b.*
+    FROM heroku_6b49aedb7855c0b.employee as e
+    left join heroku_6b49aedb7855c0b.schedule as s on e.EmployeeID = s.Employee
+    left join heroku_6b49aedb7855c0b.booking as b on e.EmployeeID = b.Employee
+    
+    Having FormatScheduleDate= ?;`;
+
+    const values = [bookingDate];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================

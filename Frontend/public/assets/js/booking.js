@@ -34,7 +34,7 @@ function createRow(cardInfo) {
   </td>
    <td class="statusName"> <div class="statusBtn ${(cardInfo.Status).includes('Completed') ? 'completeBtn' : (cardInfo.Status).includes('Pending') ? 'pendingBtn' : (cardInfo.Status).includes('Assigned') ? 'assignBtn' : 'cancelBtn'} ">
     ${cardInfo.Status} </td>
-    <td><button type="button" class="${(cardInfo.Status).includes('Completed') ? 'btn disabled' : (cardInfo.Status).includes('Cancelled') ? 'btn disabled' : 'btn btn-success'} ">Assign</button></td>
+    <td><a type="button" href="/admin/assign?bookingid=${cardInfo.bookingID}" class="${(cardInfo.Status).includes('Completed') ? 'btn disabled' : (cardInfo.Status).includes('Cancelled') ? 'btn disabled' : 'btn btn-success'} ">Assign</a></td>
     <td>
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>

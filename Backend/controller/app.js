@@ -440,5 +440,45 @@ app.put('/booking/:bookingID', printDebugInfo, (req, res) => {
   });
 });
 
+//= ======================================================
+//              Features / Assign
+//= ======================================================
+
+app.get('/contract/:id', printDebugInfo, async (req, res) => {
+  // calling getBookingdetails method from admin model
+  const details = req.params.id;
+
+  Admin.getBookingDetails(details, (err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Continue');
+      console.log('==================================');
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+app.get('/employeeList', printDebugInfo, async (req, res) => {
+  // calling getBookingdetails method from admin model
+  const details = req.body.bookingDate;
+
+  Admin.getEmployeeAvailabilty(details, (err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Continue');
+      console.log('==================================');
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
 // module exports
 module.exports = app;
