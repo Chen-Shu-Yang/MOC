@@ -84,7 +84,7 @@ function loadAllBooking() {
 }
 
 function loadAllBookingByLimit(pageNumber) {
-// call the web service endpoint
+  // call the web service endpoint
   $.ajax({
     url: `${backEndUrl}/booking/${pageNumber}`,
     type: 'GET',
@@ -174,69 +174,11 @@ function loadABooking(bookingID) {
   });
 }
 
-// updateClassOfService method update class of service
-function updateBooking() {
-  // extarct values from pop-up
-  const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------------Query Params ----------------');
-  console.log(`QUery Param(source): ${window.location.search}`);
-  console.log(`Query parrams(extracted): ${queryParams}`);
-  const bookingID = queryParams.get('pageNumber');
-
-  // set value to empty after getting value
-  $('#class_name_add').val('');
-  $('#class_pricing_add').val('');
-  $('#class_description__add').val('');
-
-  // put all data inserted into data2 so that it can be used to parse as json data in the api
-  const data2 = {
-    ClassName,
-    ClassPricing,
-    ClassDes: ClassDescription,
-  };
-  // ajax method to call the method
-  $.ajax({
-
-    url: `http://localhost:5000/class/${classId}`,
-    type: 'PUT',
-    // data extractex
-    data: JSON.stringify(data2),
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data, textStatus, xhr) {
-      // set and call confirmation message
-      msg = 'Successfully updated!';
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      // refresh
-      $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
-    },
-    error(xhr, textStatus, errorThrown) {
-      // set and call error message
-      let errMsg = '';
-      if (xhr.status == 500) {
-        console.log('error');
-        errMsg = 'Please ensure that your values are accurate';
-      } else if (xhr.status == 400) {
-        errMsg = ' Invalid input ';
-      } else if (xhr.status == 406) {
-        errMsg = ' Invalid input';
-      } else {
-        errMsg = 'There is some other issues here ';
-      }
-      $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-    },
-  });
-}
-
 // add new booking
 $('#addNewBooking').click(() => {
   // data extraction
   const id = $('#addBookingID').val();
   const date = $('#datepicker').val();
-  console.log(id + date);
   // data compilation
   const info = {
     bookingID: id,
@@ -273,12 +215,12 @@ $('#addNewBooking').click(() => {
   });
 });
 
+
 // Login
 $('#updateBookingDate').click(() => {
   // data extraction
   const bookingIDs = $('#booking-id-update').val();
   const date = $('#datePicker').val();
-  console.log(bookingIDs + date + "joooo");
   // data compilation
   const info = {
     bookingID: bookingIDs,
