@@ -1,3 +1,6 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-unused-vars */
+/* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable block-scoped-var */
 /* eslint-disable max-len */
