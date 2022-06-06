@@ -208,9 +208,13 @@ function updateEmployee() {
       $('#editEmployeeDes').val('');
       $('#editEmployeeSkills').val('');
       document.getElementById('image_edit').value = '';
+
+
       // succcess message return
       if (xhr.status == 201) {
         msg = 'Successfully added!';
+        $('#employeeListing').html("");
+        loadEmployeeByLimit(1)
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
@@ -241,6 +245,8 @@ function deleteEmployee(id) {
     contentType: 'application/json; charset=utf-8',
     // if data inserted
     success(data, textStatus, xhr) {
+      $('#employeeListing').html("");
+      loadEmployeeByLimit(1)
       // if id in the params not valid show error
       if (xhr.status === 404) {
         // set and call error message
@@ -256,6 +262,7 @@ function deleteEmployee(id) {
       else if (xhr.status === 200) {
         // set and call confirmation message
         msg = 'Successfully deleted!';
+     
 
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
@@ -337,7 +344,9 @@ function addEmployee() {
       document.getElementById('image').value = '';
       // succcess message return
       if (xhr.status == 201) {
-        msg = 'Successfully deleted!';
+        $('#employeeListing').html("");
+        loadEmployeeByLimit(1)
+        msg = 'Successfully added!';
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },

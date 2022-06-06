@@ -251,6 +251,7 @@ $('#addNewBooking').click(() => {
     dataType: 'json',
     success(data) {
       if (data != null) {
+        loadAllBookingByLimit(1)
         console.log('Added');
       } else {
         console.log('Error');
@@ -299,7 +300,7 @@ $('#updateBookingDate').click(() => {
           theme: 'sunset',
           text: 'added successfully',
         }).show();
-        loadAllBookingByLimit
+        loadAllBookingByLimit(1)
       } else {
         console.log('Error');
       }

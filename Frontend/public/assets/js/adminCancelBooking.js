@@ -29,8 +29,7 @@ function createRow(cardInfo) {
     <td>
     ${(cardInfo.Employee === null) ? '-' : cardInfo.Employee}
   </td>
-   <td class="statusName"> <div class="statusBtn ${ (cardInfo.Status).includes('Pending') ? 'pendingBtn' : 'assignBtn'} ">
-    ${cardInfo.Status} </td>
+  <td class="status"> <div class="status-color ${cardInfo.Status}"></div>${cardInfo.Status}</td>
     <td><button onClick="cancelBooking(${cardInfo.bookingID})" class="btn btn-danger">Cancel</button></td>
     </tr>
     `;
@@ -104,7 +103,7 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
           console.log(bookingstbl);
 
           const newRow = createRow(bookingstbl);
-          $('#bookingTableBody').append(newRow);
+          $('#bookingCancelTableBody').append(newRow);
         }
         loadAllBookingToBeCancelled();
       }
@@ -133,8 +132,12 @@ function cancelBooking(id) {
     dataType: 'json',
     success(data, textStatus, xhr) {
       // set and call confirmation message
+     $('#bookingCancelTableBody').html("");
+      loadAllBookingToBeCancelledByLimit(1)
       msg = 'Successfully updated!';
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+      
+      
       // refresh
       // $('#classServiceTableBody').html('')
       // loadAllClassOfServices()
