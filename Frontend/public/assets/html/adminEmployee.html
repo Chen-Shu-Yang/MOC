@@ -73,69 +73,69 @@
 
     </script>
 
-<!-- Admin Side bar -->
-<div class="sidebar">
-    <div class="logo-details">
-        <img src="../../assets/img/logo.png">
-        <span class="logo-name">Ministry of Clean</span>
+    <!-- Admin Side bar -->
+    <div class="sidebar">
+        <div class="logo-details">
+            <img src="../../assets/img/logo.png">
+            <span class="logo-name">Ministry of Clean</span>
+        </div>
+        <div class="nav-links">
+            <li>
+                <a href="/admin/dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/booking">
+                    <i class="fa-solid fa-calendar"></i>
+                    <span class="link_name">Booking</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/cancelBooking">
+                    <i class="fa-solid fa-calendar-xmark"></i>
+                    <span class="link_name">Cancellation</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/pricing">
+                    <i class="fa-solid fa-tags"></i>
+                    <span class="link_name">Pricing</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/employee" class="active">
+                    <i class="fa-solid fa-users"></i>
+                    <span class="link_name">Employee</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/schedule">
+                    <i class="fa-solid fa-clock"></i>
+                    <span class="link_name">Schedule</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/customer">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="link_name">Customer</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/contract">
+                    <i class="fa-solid fa-file-signature"></i>
+                    <span class="link_name">Contract</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/profile">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span class="link_name">Profile</span>
+                </a>
+            </li>
+        </div>
     </div>
-    <div class="nav-links">
-        <li>
-            <a href="/admin/dashboard">
-                <i class="fa-solid fa-chart-line"></i>
-                <span class="link_name">Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/schedule">
-                <i class="fa-solid fa-calendar"></i>
-                <span class="link_name">Booking</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/cancelBooking">
-                <i class="fa-solid fa-calendar-xmark"></i>
-                <span class="link_name">Cancellation</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/pricing">
-                <i class="fa-solid fa-tags"></i>
-                <span class="link_name">Pricing</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/booking" class="active">
-                <i class="fa-solid fa-users"></i>
-                <span class="link_name">booking</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/schedule">
-                <i class="fa-solid fa-clock"></i>
-                <span class="link_name">Schedule</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/customer">
-                <i class="fa-solid fa-user"></i>
-                <span class="link_name">Customer</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/contract">
-                <i class="fa-solid fa-file-signature"></i>
-                <span class="link_name">Contract</span>
-            </a>
-        </li>
-        <li>
-            <a href="/admin/profile">
-                <i class="fa-solid fa-id-card"></i>
-                <span class="link_name">Profile</span>
-            </a>
-        </li>
-    </div>
-</div>
 
     <!-- Home Content -->
     <section class="home-section">
@@ -314,11 +314,12 @@
                         <img src="../../assets/img/Wrong.png" alt="">
                         <h3>Are You Sure?</h3>
                         <p>Do you really want to delete this employee record? This proccess cannot be undone.</p>
-                        <input type="number" id="deleteEmployeeID" disabled hidden/>
+                        <input type="number" id="deleteEmployeeID" disabled hidden />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn delete-btn" id="deleteEmployeeBtn" data-dismiss="modal">Delete</button>
+                        <button type="button" class="btn delete-btn" id="deleteEmployeeBtn"
+                            data-dismiss="modal">Delete</button>
                     </div>
                 </div>
             </div>
