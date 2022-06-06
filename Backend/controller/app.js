@@ -814,6 +814,50 @@ app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
 //---------------------------------------------------
 //                 Feature/adminCustomer
 //---------------------------------------------------
+
+// get all customer
+app.get('/customer', printDebugInfo, async (req, res) => {
+  // calling getAllCustomer method from admin model
+  Admin.getAllCustomer((err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get an employee
+app.get('/onecustomer/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+
+  // calling getCustomer method from admin model
+  Admin.getCustomer(customerId, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 // update customer
 app.put('/customer/:id', printDebugInfo, (req, res) => {
   // extract id from params
