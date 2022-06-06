@@ -32,11 +32,23 @@ $(document).ready(() => {
 
       success(data) {
         if (data != null) {
-          localStorage.setItem('UserID', JSON.stringify(data.UserID));
-          localStorage.setItem('token', JSON.stringify(data.token));
-          localStorage.setItem('CustomerID', JSON.stringify(data.CustomerID));
-          localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
-          window.location.replace(`${frontEndUrl}/adminCustomer`);
+          console.log('HI');
+          if (data.CustomerID != null) {
+            localStorage.setItem('token', JSON.stringify(data.token));
+            localStorage.setItem('EmployeeID', JSON.stringify(data.CustomerID));
+            window.location.replace(`${frontEndUrl}/homepage`);
+          } else if (data.UserID != null) {
+            localStorage.setItem('UserID', JSON.stringify(data.UserID));
+            localStorage.setItem('token', JSON.stringify(data.token));
+            window.location.replace(`${frontEndUrl}/admin/booking`);
+          }
+          else {
+            localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
+            localStorage.setItem('token', JSON.stringify(data.token));
+            window.location.replace(`${frontEndUrl}/admin/schedule`);
+          }
+
+
         } else {
           console.log('Error');
         }

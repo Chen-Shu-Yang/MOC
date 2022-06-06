@@ -234,7 +234,7 @@ function loadABooking(bookingID) {
 // add new booking
 $('#addNewBooking').click(() => {
   // data extraction
-  const id = $('#addBookingID').val();
+  const id = $('#addContractID').val();
   const date = $('#datepicker').val();
   // data compilation
   const info = {

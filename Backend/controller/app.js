@@ -104,7 +104,6 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
       res.status(200).send(msg);
     }
   });
-  res.status(200).send('Invalid account');
 });
 
 app.get('/classes', printDebugInfo, async (req, res) => {
