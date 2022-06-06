@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../assets/css/adminNavbar.css" rel="stylesheet">
+    <link href="../../assets/css/adminSchedule.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ca9c4d369b.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.nl.min.js"></script>
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css"
+        rel="stylesheet" />
+
+
+    <title>Employee</title>
+</head>
+
+<body>
+    <!-- Admin Side bar -->
+    <div class="sidebar">
+        <div class="logo-details">
+            <img src="../img/logo.png">
+            <span class="logo-name">Ministry of Clean</span>
+        </div>
+        <div class="nav-links">
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-calendar"></i>
+                    <span class="link_name">Booking</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-calendar-xmark"></i>
+                    <span class="link_name">Cancellation</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-tags"></i>
+                    <span class="link_name">Pricing</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/employee">
+                    <i class="fa-solid fa-users"></i>
+                    <span class="link_name">Employee</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/schedule" class="active">
+                    <i class="fa-solid fa-clock"></i>
+                    <span class="link_name">Schedule</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/customer">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="link_name">Customer</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-file-signature"></i>
+                    <span class="link_name">Contract</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span class="link_name">Profile</span>
+                </a>
+            </li>
+        </div>
+    </div>
+
+    <!-- Home Content -->
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class="fa-solid fa-bars sidebarBtn"></i>
+                <span class="page-title">Schedule</span>
+            </div>
+        </nav>
+
+        <section class="schedule-section">
+            <div class="max-width">
+                <div class="booking-time">
+                    <div class="calendar-container">
+                        <div id="calendar"></div>
+                    </div>
+
+                    <div class="time-slots">
+                        <h4>Time Slots</h4>
+                        <div class="slots-2 morningSlot active">8.30 AM</div>
+                        <div class="slots-2 afternoonSlot ">12.30 PM</div>
+                    </div>
+                </div>
+
+                <div class="employee-section">
+                    <div class="confirm-btn">Confirm</div>
+                    <div class="employee-list">
+                        <div class="employee-card">
+                            <img src="../img/profile1.jpg" alt="">
+                            <div class="employee-details">
+                                <span class="employee-name">Mary</span><br>
+                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                    do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
+                            </div>
+                            <input type="checkbox" class="availability">
+                        </div>
+
+                        <div class="employee-card">
+                            <img src="../img/profile1.jpg" alt="">
+                            <div class="employee-details">
+                                <span class="employee-name">Mary</span><br>
+                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                    do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
+                            </div>
+                            <input type="checkbox" class="availability">
+                        </div>
+
+                        <div class="employee-card">
+                            <img src="../img/profile1.jpg" alt="">
+                            <div class="employee-details">
+                                <span class="employee-name">Mary</span><br>
+                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                    do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
+                            </div>
+                            <input type="checkbox" class="availability">
+                        </div>
+
+                        <div class="employee-card">
+                            <img src="../img/profile1.jpg" alt="">
+                            <div class="employee-details">
+                                <span class="employee-name">Mary</span><br>
+                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                    do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
+                            </div>
+                            <input type="checkbox" class="availability">
+                        </div>
+
+                        <div class="employee-card">
+                            <img src="../img/profile1.jpg" alt="">
+                            <div class="employee-details">
+                                <span class="employee-name">Mary</span><br>
+                                <span class="employee-des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                    do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br>
+                            </div>
+                            <input type="checkbox" class="availability">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </section>
+
+    <script src="../../assets/js/adminNavbar.js"></script>
+    <script>
+        $('#calendar').datepicker({
+            language: "el",
+            calendarWeeks: true,
+            todayHighlight: true
+        });
+
+        // toggle time slots
+        let morningSlot = document.querySelector(".morningSlot");
+        let afternoonSlot = document.querySelector(".afternoonSlot");
+
+        morningSlot.onclick = function () {
+            morningSlot.classList.toggle("active");
+            afternoonSlot.classList.toggle("active");
+        }
+
+        afternoonSlot.onclick = function () {
+            morningSlot.classList.toggle("active");
+            afternoonSlot.classList.toggle("active");
+        }
+    </script>
+</body>
+
+</html>

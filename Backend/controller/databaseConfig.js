@@ -8,7 +8,7 @@
 console.log('--------------------------------------');
 console.log('databaseconfig.js');
 console.log('--------------------------------------');
-
+//get data from dbconfig
 const {
   databaseUserName, databaseHost, database, databasePassword,
 } = require('../dbConfig');

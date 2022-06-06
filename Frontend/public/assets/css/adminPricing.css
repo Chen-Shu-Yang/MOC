@@ -1,0 +1,30 @@
+.addBtn{
+    margin-left: 790px;
+}
+
+.btn-success{
+    background-color: #448788;
+
+}
+
+.btn-success:hover{
+    background-color: #448788;
+
+}
+
+.btn-success:active{
+    background-color: #448788;
+
+}
+
+.alert{
+    width:300px;
+    margin-left:500px;
+    margin-top:20px;
+  
+}
+
+.cardClassService{
+    margin-top: 90px;
+    margin-left: -40px;
+}
