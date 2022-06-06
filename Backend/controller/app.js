@@ -1374,7 +1374,5 @@ app.delete('/rate/:id', printDebugInfo, (req, res) => {
   });
 });
 
-
-
 // module exports
 module.exports = app;
