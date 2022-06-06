@@ -522,11 +522,8 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
   try {
     // cloudinary image upload method to the folder employee
     const result = await cloudinary.uploader.upload(req.file.path, { folder: 'employee' });
-    // eslint-disable-next-line prefer-const
-    // eslint-disable-next-line spaced-comment
-    //retrieve EmployeeName from body
+    // retrieve EmployeeName from body
     const EmployeeName = req.body.employeeName;
-    // // eslint-disable-next-line no-var
     // retrieve EmployeeDes from body
     const EmployeeDes = req.body.employeeDes;
     // retrieve Skillsets from body
@@ -535,10 +532,7 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
     const EmployeeImgageCloudinaryFileId = result.public_id;
     // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
     const EmployeeImageUrl = result.secure_url;
-    // // eslint-disable-next-line no-shadow
     // invoking Admin.addEmployee
-    // eslint-disable-next-line no-shadow
-    // eslint-disable-next-line no-unused-vars
     Admin.addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, (err, result) => {
       // if there is no error
       if (!err) {
@@ -659,7 +653,7 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
   Admin.updateBooking(ScheduleDate, BookingID, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
-      res.status(201).send(result + "HIii");
+      res.status(201).send(result);
     }
     // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
     // send Inappropriate value as return message
