@@ -28,7 +28,7 @@ const upload = require('../utils/multer');
 // model
 
 const Login = require('../model/login');
-
+const Admin = require('../model/admin');
 // MF function
 /**
  * prints useful debugging information about an endpoint we are going to service
