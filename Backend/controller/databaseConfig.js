@@ -1,33 +1,40 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable object-curly-spacing */
+/* eslint-disable object-shorthand */
+/* eslint-disable key-spacing */
+/* eslint-disable linebreak-style */
 /* eslint-disable no-console */
 // sanity check
 console.log('--------------------------------------');
 console.log('databaseconfig.js');
 console.log('--------------------------------------');
 
+const {
+  databaseUserName, databaseHost, database, databasePassword,
+} = require('../dbConfig');
+
 //= ======================================================
 //              Imports
 //= ======================================================
+// eslint-disable-next-line import/order
 const mysql = require('mysql');
 
 //= ======================================================
 //              Objects / Functions
 //= ======================================================
-const dbconnect = {
-  getConnection() {
-    const conn = mysql.createConnection({
-      host: 'us-cdbr-east-05.cleardb.net',
-      user: 'bd926a7014f79f',
+const config = (
+  {
+    user :databaseUserName,
+    password:databasePassword,
+    host:databaseHost,
+    database:database,
+  }
+);
 
-      password: '34f39a33',
-
-      database: 'heroku_6b49aedb7855c0b',
-    });
-    return conn;
-  },
-};
+// eslint-disable-next-line new-cap
+const pool = new mysql.createPool(config);
 
 //= ======================================================
 //              Exports
 //= ======================================================
-module.exports = dbconnect;
+module.exports = pool;

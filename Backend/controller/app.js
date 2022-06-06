@@ -14,12 +14,12 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 
-const { JsonDB } = require('node-json-db');
-const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
+// const { JsonDB } = require('node-json-db');
+// const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
 
 // model
 
-const Admin = require('../model/admin');
+const Login = require('../model/login');
 
 // MF function
 /**
@@ -66,6 +66,39 @@ app.use(cors());
 
 app.get('/', (req, res) => {
   res.status(200).send('HelloWorld');
+});
+
+// get all class of service
+app.post('/login', printDebugInfo, async (req, res, next) => {
+  const { email } = req.body;
+  const { password } = req.body;
+
+  Login.Verify(email, password, (err, token, result) => {
+    if (err) {
+      // matched with callback (err, null)
+      console.log(err);
+      res.status(500);
+      res.send(err.statusCode);
+      return next(err);
+    }
+    let msg;
+    if (!result) {
+      // matched with callback(null, null)
+      msg = {
+        Error: 'Invalid login',
+      };
+      res.status(404).send(msg);
+    } else {
+      console.log(`Token: ${result}`);
+      msg = {
+        UserID: result.UserID,
+        token,
+        CustomerID: result.CustomerID,
+        SuperAdminID: result.SuperAdminID,
+      };
+      res.status(200).send(msg);
+    }
+  });
 });
 
 // module exports
