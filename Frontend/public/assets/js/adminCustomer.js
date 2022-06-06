@@ -19,7 +19,7 @@ function createRow(cardInfo) {
                 <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadACustomer(${cardInfo.CustomerID})">
                 <i class="fa-solid fa-pen"></i>
                 </button>
-                <button type="button"><i class="fa-solid fa-trash-can"></i></button>
+                <button type="button" id="deleteCustomerBtn" onClick="deleteCustomer(${cardInfo.CustomerID})"><i class="fa-solid fa-trash-can"></i></button>
             </td>
         </tr>
     `;
@@ -86,6 +86,7 @@ function loadACustomer(id) {
       $('#firstName').append(RowInfo.FirstName);
       $('#lastName').append(RowInfo.LastName);
       $('#customerPwdInput').val(RowInfo.Password);
+      $('#customerStatusInput').val(RowInfo.Status);
     },
 
     error(xhr, textStatus, errorThrown) {
@@ -103,10 +104,12 @@ function updateCustomer() {
   // data extraction
   const id = $('#editCustomerID').val();
   const customerPwd = $('#customerPwdInput').val();
+  const customerStatus = $('#customerStatusInput').val();
 
   // get item from local storage
   const data = {
     CustomerPassword: customerPwd,
+    CustomerStatus: customerStatus,
   };
 
   // call the web service endpoint
@@ -135,11 +138,56 @@ function updateCustomer() {
   });
 }
 
+function deleteCustomer(id) {
+  // call the web service endpoint for deleting customer by id
+  $.ajax({
+
+    url: `http://localhost:5000/customer/${id}`,
+    type: 'DELETE',
+    contentType: 'application/json; charset=utf-8',
+    // if data inserted
+    success(data, textStatus, xhr) {
+      // if id in the params not valid show error
+      console.log('Delete Successful');
+      $('#customer-list').html('');
+      loadAllCustomers();
+      if (xhr.status === 404) {
+        // set and call error message
+        // eslint-disable-next-line no-use-before-define
+        errMsg = 'Not valid id';
+      }
+      // if the params id is valid and
+      else if (xhr.status === 200) {
+        // set and call confirmation message
+        msg = 'Successfully deleted!';
+
+        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
+      }
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else {
+        errMsg = 'There is some other issues here';
+      }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    },
+  });
+}
+
 $(document).ready(() => {
   loadAllCustomers();
 
   // update button
   $('#editCustomerBtn').click(() => {
     updateCustomer();
+  });
+  // delete button
+  $('#deleteCustomerBtn').click(() => {
+    deleteCustomer();
   });
 });

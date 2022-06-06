@@ -292,18 +292,19 @@ const Admin = {
   },
 
   // update all class of services
-  updateCustomer(CustomerPassword, id, callback) {
+  updateCustomer(CustomerPassword, CustomerStatus, id, callback) {
     // sql query statement
     const sql = `
       UPDATE 
         heroku_6b49aedb7855c0b.customer
       SET
-        Password=?
+        Password=?,
+        Status=?
       WHERE
         CustomerID=?;
     `;
     // pool query
-    pool.query(sql, [CustomerPassword, id], (err, result) => {
+    pool.query(sql, [CustomerPassword, CustomerStatus, id], (err, result) => {
       // error
       if (err) {
         console.log(err);
@@ -313,6 +314,25 @@ const Admin = {
       return callback(null, result);
     });
   },
+
+    // delete customer
+    deleteCustomer(id, callback) {
+      console.log(` admin.js customer delete method start ${id}`);
+      // sql query statement
+      const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
+  
+      const values = [id];
+      // pool query
+      pool.query(sql, [id], (err, result) => {
+        // error
+        if (err) {
+          console.log(err);
+          return callback(err);
+        }
+        // result accurate
+        return callback(null, result);
+      });
+    },
 
 };
 
