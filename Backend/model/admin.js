@@ -247,7 +247,24 @@ const Admin = {
       return callback(null, result); // if
     });
   },
+  // get class of service by id
+  getBooking(id, callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.booking where BookingID=?;';
 
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+    });
+  },
   // to limit and offset booking
   pageBooking(pageNumber, callback) {
     // the page number clicked
@@ -315,14 +332,9 @@ const Admin = {
   // update all booking of services
   updateBooking(ScheduleDate, BookingID, callback) {
     // sql query statement
+    console.log(ScheduleDate + BookingID + "suPPP");
     const sql = `
-          UPDATE 
-            heroku_6b49aedb7855c0b.booking 
-          SET
-            ScheduleDate=?,
-          WHERE
-            BookingID=?
-               ;  
+          UPDATE heroku_6b49aedb7855c0b.booking SET ScheduleDate= ? WHERE BookingID= ?;  
               `;
       // pool query
     pool.query(sql, [ScheduleDate, BookingID], (err, result) => {

@@ -142,7 +142,7 @@ function loadAllBookingByLimit(pageNumber) {
 function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
-    url: `${backEndUrl}/booking/${bookingID}`,
+    url: `${backEndUrl}/oneBooking/${bookingID}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
@@ -150,15 +150,18 @@ function loadABooking(bookingID) {
       console.log('-------response data------');
       console.log(data);
       console.log(`LENGTH OF DATA:${data.length}`);
+      const booking = data[0];
       // extract data information
       const RowInfo = {
-
+        bookingID: booking.BookingID,
+        ScheduleDate: booking.ScheduleDate,
       };
       console.log('---------Card INfo data pack------------');
       console.log(RowInfo);
       console.log('---------------------');
       // updating extracted values to update pop up
       $('#booking-id-update').val(RowInfo.bookingID);
+      $('#datePicker').val(RowInfo.ScheduleDate);
     },
     error(xhr) {
       // set and call error message
@@ -174,10 +177,12 @@ function loadABooking(bookingID) {
 // updateClassOfService method update class of service
 function updateBooking() {
   // extarct values from pop-up
-  const classId = $('#class-id-update').val();
-  const ClassName = $('#class-name-update').val();
-  const ClassPricing = $('#class-pricing-update').val();
-  const ClassDescription = $('#class-description-update').val();
+  const queryParams = new URLSearchParams(window.location.search);
+  console.log('--------------Query Params ----------------');
+  console.log(`QUery Param(source): ${window.location.search}`);
+  console.log(`Query parrams(extracted): ${queryParams}`);
+  const bookingID = queryParams.get('pageNumber');
+
   // set value to empty after getting value
   $('#class_name_add').val('');
   $('#class_pricing_add').val('');
@@ -271,19 +276,19 @@ $('#addNewBooking').click(() => {
 // Login
 $('#updateBookingDate').click(() => {
   // data extraction
-  const id = $('#addBookingID').val();
-  const date = $('#datepicker').val();
-  console.log(id + date);
+  const bookingIDs = $('#booking-id-update').val();
+  const date = $('#datePicker').val();
+  console.log(bookingIDs + date +"joooo");
   // data compilation
   const info = {
-    bookingID: id,
-    bookingDate: date,
+    bookingID: bookingIDs,
+    ScheduleDate: date,
   };
 
   // call web service endpoint
   $.ajax({
-    url: `${backEndUrl}/booking`,
-    type: 'POST',
+    url: `${backEndUrl}/updateBooking/${bookingIDs}`,
+    type: 'PUT',
     data: JSON.stringify(info),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
@@ -317,5 +322,4 @@ $(document).ready(() => {
   console.log(`Query Param (extraction): ${queryParams}`);
 
   loadAllBookingByLimit(1);
-  loadABooking(bookingID);
 });

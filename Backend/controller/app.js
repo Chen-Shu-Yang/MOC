@@ -374,6 +374,33 @@ app.get('/booking', printDebugInfo, async (req, res) => {
     }
   });
 });
+// get a class of sevice
+app.get('/oneBooking/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const bookingID = req.params.id;
+
+  // calling getClass method from admin model
+  Admin.getBooking(bookingID, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
 
 // add a booking
 app.post('/booking', printDebugInfo, (req, res) => {
@@ -398,23 +425,19 @@ app.post('/booking', printDebugInfo, (req, res) => {
 });
 
 // update class of service
-app.put('/booking/:bookingID', printDebugInfo, (req, res) => {
+app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
   // extract id from params
-  const bookingID = req.params.id;
+  const BookingID = req.params.bookingIDs;
   // extract all details needed
-  const { scheduleDate } = req.body;
-
+  const { ScheduleDate } = req.body;
+console.log("Im HERE");
   // check if class pricing is float value and execute code
 
   // calling updateClass method from admin model
-  Admin.updateBooking(scheduleDate, bookingID, (err, result) => {
+  Admin.updateBooking(ScheduleDate, BookingID, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
-      const output = {
-        bookingID: result.insertId,
-      };
-      console.log(`result ${output.bookingID}`);
-      res.status(201).send(result);
+      res.status(201).send(result + "HIii");
     }
     // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
     // send Inappropriate value as return message
