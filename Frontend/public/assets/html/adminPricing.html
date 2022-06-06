@@ -53,40 +53,41 @@
     <div class="row">
 
         <div class="col-3">
+            <!-- Admin Side bar -->
             <div class="sidebar">
                 <div class="logo-details">
-                    <img src="../img/logo.png">
+                    <img src="../../assets/img/logo.png">
                     <span class="logo-name">Ministry of Clean</span>
                 </div>
                 <div class="nav-links">
                     <li>
-                        <a href="#">
+                        <a href="/admin/dashboard">
                             <i class="fa-solid fa-chart-line"></i>
                             <span class="link_name">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/admin/schedule">
                             <i class="fa-solid fa-calendar"></i>
                             <span class="link_name">Booking</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/admin/cancelBooking">
                             <i class="fa-solid fa-calendar-xmark"></i>
                             <span class="link_name">Cancellation</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="active">
+                        <a href="/admin/pricing">
                             <i class="fa-solid fa-tags"></i>
                             <span class="link_name">Pricing</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/admin/employee">
+                        <a href="/admin/booking" class="active">
                             <i class="fa-solid fa-users"></i>
-                            <span class="link_name">Employee</span>
+                            <span class="link_name">booking</span>
                         </a>
                     </li>
                     <li>
@@ -102,13 +103,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/admin/contract">
                             <i class="fa-solid fa-file-signature"></i>
                             <span class="link_name">Contract</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/admin/profile">
                             <i class="fa-solid fa-id-card"></i>
                             <span class="link_name">Profile</span>
                         </a>
@@ -203,7 +204,7 @@
                                 msg = "Successfully deleted!"
 
                                 $('#confirmationMsg').html(confirmToast(msg + " " + xhr.status)).fadeOut(2500);
-                                 //to refresh
+                                //to refresh
                                 $('#classServiceTableBody').html('')
                                 loadAllClassOfServices()
 
@@ -484,9 +485,9 @@
             </script>
 
 
- <!-- Card for class of service table  -->
+            <!-- Card for class of service table  -->
             <dive class="card cardClassService">
-                 <!-- Button to add new class of service -->
+                <!-- Button to add new class of service -->
                 <div class=" addBtn">
                     <button type="button" class="btn btn-success  btn-sm" data-toggle="modal"
                         data-target="#AddClassModel" data-whatever="@mdo">Add Service Class</button>
@@ -573,7 +574,7 @@
 
                 </div>
 
-                 <!-- class of service table -->
+                <!-- class of service table -->
                 <div class="table-size">
                     <table id="classTable" class="table">
                         <thead>

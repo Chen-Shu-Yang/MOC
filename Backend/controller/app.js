@@ -513,7 +513,6 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, as
 //                 Feature/addEmployee
 //---------------------------------------------------
 
-// eslint-disable-next-line no-undef
 // upload.single method to upload an image with the key of image
 app.post('/adddEmployee', upload.single('image'), async (req, res) => {
   try {
@@ -533,9 +532,8 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
     Admin.addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, (err, result) => {
       // if there is no error
       if (!err) {
-        // eslint-disable-next-line no-var
-        var output = 'done';
-        return res.status(201).send(output);
+        const output = 'done';
+        return res.status(201).send(output + result);
       }
     });
   } catch (error) {
