@@ -21,7 +21,7 @@ function createRow(cardInfo) {
     <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
     <td>${cardInfo.ClassName}</td>
-    <td>${cardInfo.StartDate}</td>
+    <td>${cardInfo.ScheduleDate}</td>
     <td>${cardInfo.TimeOfService}</td>
     <td>${cardInfo.NoOfRooms}</td>
     <td>${cardInfo.NoOfBathrooms}</td>
@@ -39,7 +39,7 @@ function createRow(cardInfo) {
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editBookingModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>
     <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa-regular fa-trash-can"></i></button></td>
-    <script>}   $("button").removeAttr("disabled");</script>
+    <script>   $("button").removeAttr("disabled");</script>
     </tr>
 
   
@@ -105,7 +105,7 @@ function loadAllBookingByLimit(pageNumber) {
             LastName: booking.LastName,
             Package: booking.PackageName,
             ClassName: booking.ClassName,
-            StartDate: booking.StartDate,
+            ScheduleDate: booking.ScheduleDate,
             TimeOfService: booking.TimeOfService,
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,
@@ -278,7 +278,7 @@ $('#updateBookingDate').click(() => {
   // data extraction
   const bookingIDs = $('#booking-id-update').val();
   const date = $('#datePicker').val();
-  console.log(bookingIDs + date +"joooo");
+  console.log(bookingIDs + date + "joooo");
   // data compilation
   const info = {
     bookingID: bookingIDs,
@@ -294,7 +294,13 @@ $('#updateBookingDate').click(() => {
     dataType: 'json',
     success(data) {
       if (data != null) {
-        console.log('Added');
+        new Noty({
+          timeout: '5000',
+          type: 'sucess',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'added successfully',
+        }).show();
       } else {
         console.log('Error');
       }
