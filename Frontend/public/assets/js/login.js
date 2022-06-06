@@ -37,7 +37,7 @@ $(document).ready(() => {
           localStorage.setItem('token', JSON.stringify(data.token));
           localStorage.setItem('CustomerID', JSON.stringify(data.CustomerID));
           localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
-          window.location.replace(`${frontEndUrl}/homepage`);
+          window.location.replace(`${frontEndUrl}/adminCustomer`);
         } else {
           console.log('Error');
         }
@@ -57,7 +57,6 @@ $(document).ready(() => {
         }).show();
       },
     });
-
     return false;
   });
 });

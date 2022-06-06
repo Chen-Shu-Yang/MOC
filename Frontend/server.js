@@ -25,8 +25,17 @@ app.use((req, res, next) => {
   }
 });
 
+//= ======================================================
+//                   User
+//= ======================================================
+
 // go to homepage
 app.get('/', (req, res) => {
+  res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
+});
+
+// go to homepage
+app.get('/homepage', (req, res) => {
   res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
 
@@ -34,10 +43,10 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
   res.sendFile('/public/assets/html/login.html', { root: __dirname });
 });
-// go to homepage
-app.get('/homepage', (req, res) => {
-  res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
-});
+
+//= ======================================================
+//                   Admin
+//= ======================================================
 
 // go to admin Employee
 app.get('/admin/employee', (req, res) => {
@@ -50,19 +59,34 @@ app.get('/admin/schedule', (req, res) => {
 });
 // go to booking
 app.get('/admin/booking', (req, res) => {
-  res.sendFile('/public/assets/html/booking.html', { root: __dirname });
+  res.sendFile('/public/assets/html/adminBooking.html', { root: __dirname });
 });
 
-// go to admin customer
+// go to admin Customer
 app.get('/admin/customer', (req, res) => {
   res.sendFile('/public/assets/html/adminCustomer.html', { root: __dirname });
 });
 
-// go to admin customer
+// go to admin Cancel Booking
 app.get('/admin/cancelBooking', (req, res) => {
   res.sendFile('/public/assets/html/adminCancelBooking.html', { root: __dirname });
 });
 
+// go to admin Cancel Booking
+app.get('/admin/pricing', (req, res) => {
+  res.sendFile('/public/assets/html/adminPricing.html', { root: __dirname });
+});
+
+//= ======================================================
+//                   Customer
+//= ======================================================
+
+
+
+
+//= ======================================================
+//                   Super Admin
+//= ======================================================
 
 // retrieve from public folder
 app.use(serveStatic(`${__dirname}/public`));
