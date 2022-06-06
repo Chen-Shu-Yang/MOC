@@ -1,5 +1,5 @@
-/* eslint-disable linebreak-style */
 /* eslint-disable max-len */
+/* eslint-disable linebreak-style */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
@@ -263,7 +263,7 @@ const Admin = {
     // sql query statement
     const sql = `
     SELECT
-    b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    b.BookingID,b.Admin,DATE_ADD(b.ScheduleDate, INTERVAL 1 DAY) ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.booking b
     join heroku_6b49aedb7855c0b.contract c on b.Contract = c.ContractID
@@ -315,7 +315,7 @@ const Admin = {
     // sql statement to limit and skip
     const sql = `
     SELECT
-    b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    b.BookingID,b.Admin,DATE_ADD(b.ScheduleDate, INTERVAL 1 DAY) ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.booking b
     join heroku_6b49aedb7855c0b.contract c on b.Contract = c.ContractID
@@ -469,64 +469,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-      return callback(null, result);
-    });
-  },
-
-  //---------------------------------------------------
-  //                 Feature/schedule-Employee
-  //---------------------------------------------------
-
-  // add class of services
-  addEmployeeAvailability(employeeId, date, time, callback) {
-    // sql query statement
-    const sql = `
-          INSERT INTO
-            heroku_6b49aedb7855c0b.schedule (
-              ScheduleDate,
-              TimeSlot, 
-              Employee)
-          VALUES
-            (?,?,?);
-        `;
-      // pool query
-    pool.query(sql, [date, time, employeeId], (err, result) => {
-      if (err) {
-        console.log(err);
-        return callback(err);
-      } // else send result
-      return callback(null, result);
-    });
-  },
-
-  // get class of service by id
-  getAvailableEmployee(date, callback) {
-    // sql query statement
-    const sql = `
-            SELECT DISTINCT
-              e.EmployeeID, e.EmployeeName, e.EmployeeDes, e.EmployeeImgUrl, e.EmployeeImageCloudinaryFileId
-            FROM 
-              heroku_6b49aedb7855c0b.employee AS e
-            LEFT JOIN 
-              heroku_6b49aedb7855c0b.schedule AS s 
-            ON 
-              s.Employee = e.EmployeeID 
-            WHERE
-              ScheduleDate IS NULL OR ScheduleDate != ? 
-            AND 
-              Employee NOT IN (SELECT s.Employee FROM heroku_6b49aedb7855c0b.schedule s WHERE ScheduleDate = ?);
-            `;
-
-    const values = [date, date];
-    // pool query
-    pool.query(sql, values, (err, result) => {
-      // error
-      if (err) {
-        console.log(err);
-        return callback(err);
-      }
-      // result accurate
-
       return callback(null, result);
     });
   },

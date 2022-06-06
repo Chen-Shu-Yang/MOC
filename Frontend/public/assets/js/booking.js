@@ -32,8 +32,7 @@ function createRow(cardInfo) {
     ${(cardInfo.Employee === null) ? '-' : cardInfo.Employee}
     
   </td>
-   <td class="statusName"> <div class="statusBtn ${(cardInfo.Status).includes('Completed') ? 'completeBtn' : (cardInfo.Status).includes('Pending') ? 'pendingBtn' : (cardInfo.Status).includes('Assigned') ? 'assignBtn' : 'cancelBtn'} ">
-    ${cardInfo.Status} </td>
+   <td class="status"> <div class="status-color ${cardInfo.Status}"></div>${cardInfo.Status}</td>
     <td><button type="button" class="${(cardInfo.Status).includes('Completed') ? 'btn disabled' : (cardInfo.Status).includes('Cancelled') ? 'btn disabled' : 'btn btn-success'} ">Assign</button></td>
     <td>
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editBookingModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
@@ -62,7 +61,7 @@ function loadAllBooking() {
 
     success(data) {
       console.log('-------response data------');
-      console.log(data);
+      console.log(data.ScheduleDate);
       console.log(`LENGTH OF DATA:${data.length}`);
 
       const totalNumberOfPages = Math.ceil(data.length / 6);
@@ -98,6 +97,9 @@ function loadAllBookingByLimit(pageNumber) {
         $('#bookingTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
+
+          let date = booking.ScheduleDate;
+          date = date.replace("T16:00:00.000Z", "");
           // compile the data that the card needs for its creation
           const bookingstbl = {
             bookingID: booking.BookingID,
@@ -105,7 +107,7 @@ function loadAllBookingByLimit(pageNumber) {
             LastName: booking.LastName,
             Package: booking.PackageName,
             ClassName: booking.ClassName,
-            ScheduleDate: booking.ScheduleDate,
+            ScheduleDate: date,
             TimeOfService: booking.TimeOfService,
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,

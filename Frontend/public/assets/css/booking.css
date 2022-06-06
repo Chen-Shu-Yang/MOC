@@ -5,13 +5,6 @@
     margin-left: 790px;
 }
 
-.statusBtn{
-    height:15px;
-    width: 15px;
-    border-radius: 50%;
-   
-    margin-right: 10px !important;
-}
 .cancelBtn{
     background-color: #C86E6E;
 }
@@ -23,9 +16,6 @@
 }
 .pendingBtn{
     background-color: #9E9C9C;
-}
-.statusName{
-    margin: 100px;;
 }
 
 .btn-success{
@@ -318,6 +308,54 @@ nav .right-header {
 
 .modal-content .modal-body textarea {
     resize: none;
+}
+
+.max-width table {
+    width: 100%;
+}
+
+.max-width h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.max-width thead {
+    background: #2E6869;
+    color: #fff;
+}
+
+.max-width table .status {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border: none;
+}
+
+table tr {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.max-width table .status-color {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+}
+
+.max-width table .status-color.Cancelled {
+    background: #C86E6E;
+}
+
+.max-width table .status-color.Assigned {
+    background: #A5A66C;
+}
+
+.max-width table .status-color.Pending {
+    background: #9E9C9C;
+}
+
+.max-width table .status-color.Completed {
+    background: #73A684;
 }
 
 @media (max-width: 1200px) {

@@ -131,35 +131,36 @@
                     <button type="button" class="addbooking-btn" data-toggle="modal" data-target="#addModal"><i
                             class="fa-solid fa-plus"></i> Add booking</button>
                 </div>
-                <div class="table-size">
-                    <table id="classTable" class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Order No</th>
-                                <th scope="col">Name Of Customer</th>
-                                <th scope="col">Package</th>
-                                <th scope="col">Class Of Services</th>
-                                <th scope="col">Schedule Date</th>
-                                <th scope="col">Schedule Slot</th>
-                                <th scope="col">No. Rooms</th>
-                                <th scope="col">No. Bathrooms</th>
-                                <th scope="col">Size Of Flats</th>
-                                <th scope="col">Total Cost</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">booking</th>
-                                <th scope="col">Status </th>
-                                <th scope="col">Schedule</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delte</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bookingTableBody">
+                <div style="overflow-x: auto; width: 100%">
+                    <div class="table-size">
+                        <table id="classTable" class="table">
+                            <thead class="thead customer-table">
+                                <tr>
+                                    <th scope="col">Order No</th>
+                                    <th scope="col">Name Of Customer</th>
+                                    <th scope="col">Package</th>
+                                    <th scope="col">Class Of Services</th>
+                                    <th scope="col">Schedule Date</th>
+                                    <th scope="col">Schedule Slot</th>
+                                    <th scope="col">No. Rooms</th>
+                                    <th scope="col">No. Bathrooms</th>
+                                    <th scope="col">Size Of Flats</th>
+                                    <th scope="col">Total Cost</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">booking</th>
+                                    <th scope="col">Status </th>
+                                    <th scope="col">Schedule</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delte</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingTableBody">
 
-
-
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
 
                 <!-- Pagination Start -->
                 <div class="page-btn" id="pagination">
@@ -238,7 +239,7 @@
 
         $('#editModal').on('shown.bs.modal', function () {
             $('#editModal').trigger('focus')
-        })
+        });
     </script>
     <!-- Noty JS-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js">
