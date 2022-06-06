@@ -347,6 +347,10 @@ const Admin = {
       return callback(null, result);
     });
   },
+
+  //= ======================================================
+  //              Features / Assign-Zhengye
+  //= ======================================================
   getBookingDetails(id, callback) {
     // sql query statement
     const sql = `SELECT b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,cu.FirstName,cu.LastName,r.RateName,e.EmployeeName
