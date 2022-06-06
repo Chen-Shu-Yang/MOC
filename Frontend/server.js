@@ -58,6 +58,12 @@ app.get('/admin/customer', (req, res) => {
   res.sendFile('/public/assets/html/adminCustomer.html', { root: __dirname });
 });
 
+// go to admin customer
+app.get('/admin/cancelBooking', (req, res) => {
+  res.sendFile('/public/assets/html/adminCancelBooking.html', { root: __dirname });
+});
+
+
 // retrieve from public folder
 app.use(serveStatic(`${__dirname}/public`));
 
