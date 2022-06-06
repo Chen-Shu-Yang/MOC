@@ -474,90 +474,45 @@ const Admin = {
       return callback(null, result);
     });
   },
-  //= ======================================================
-  //              Extra Services
-  //= ======================================================
 
-  // get all extra services
-  getAllExtraServices(callback) {
+  // ---------------------------------------------------
+  //                 Feature/adminCustomer
+  // ---------------------------------------------------
+
+  // delete customer
+  deleteCustomer(id, callback) {
+    console.log(` admin.js customer delete method start ${id}`);
     // sql query statement
-    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice;';
-    // pool query
-    pool.query(sql, (err, result) => {
-      // error
-      if (err) {
-        console.log(err);
-        return callback(err);
-      }
-      // result accurate
-
-      return callback(null, result); // if
-    });
-  },
-
-  // get extra service by id
-  getExtraService(id, callback) {
-    // sql query statement
-    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice where ExtraServiceID=?;';
+    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
 
     const values = [id];
     // pool query
-    pool.query(sql, values, (err, result) => {
-      // error
+    pool.query(sql, [id], (err, result) => {
+    // error
       if (err) {
         console.log(err);
         return callback(err);
       }
       // result accurate
-
       return callback(null, result);
     });
   },
 
-  // add new extra service
-  addExtraService(ExtraServiceName, ExtraServicePrice, callback) {
-    // sql query statement
+  // update customer
+  updateCustomer(CustomerPassword, CustomerStatus, id, callback) {
+  // sql query statement
     const sql = `
-        INSERT INTO
-               heroku_6b49aedb7855c0b.extraservice (
-                ExtraServiceName,
-                ExtraServicePrice)
-        VALUES
-        (
-        ?,
-        ?
-        );
-`;
+    UPDATE 
+      heroku_6b49aedb7855c0b.customer
+    SET
+      Password=?,
+      Status=?
+    WHERE
+      CustomerID=?;
+  `;
     // pool query
-    pool.query(sql, [ExtraServiceName, ExtraServicePrice], (err, result) => {
-      if (err) {
-        console.log(err);
-        return callback(err);
-      }
-      // result accurate
-
-      return callback(null, result);
-
-      // pool.end()
-    });
-  },
-
-  // update existing extra service
-  updateExtraService(ExtraServiceName, ExtraServicePrice, id, callback) {
-    // sql query statement
-    const sql = `
-            UPDATE 
-            heroku_6b49aedb7855c0b.extraservice
-         SET
-            ExtraServiceName=?,
-            ExtraServicePrice=?
-        where
-            ExtraServiceID=?
-             ;
-            `;
-    // pool query
-    pool.query(sql, [ExtraServiceName, ExtraServicePrice, id], (err, result) => {
-      // error
+    pool.query(sql, [CustomerPassword, CustomerStatus, id], (err, result) => {
+    // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -567,27 +522,9 @@ const Admin = {
     });
   },
 
-  // delete existing extra service
-  deleteExtraService(id, callback) {
-    // sql query statement
-    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.extraservice where ExtraServiceID =?;';
-
-    const values = [id];
-    // pool query
-    pool.query(sql, values, (err, result) => {
-      // error
-      if (err) {
-        console.log(err);
-        return callback(err);
-      }
-      // result accurate
-      return callback(null, result);
-    });
-  },
-
-  //= ======================================================
-  //              Rates
-  //= ======================================================
+  // ---------------------------------------------------
+  //                 Feature/rates
+  // ---------------------------------------------------
 
   // get all rates
   getAllRates(callback) {
@@ -698,15 +635,13 @@ const Admin = {
       return callback(null, result);
     });
   },
-
-};
-  // ---------------------------------------------------
-  //                 Feature/adminCustomer
-  // ---------------------------------------------------
-  // get all Customer
-  getAllCustomer(callback) {
+  //= ======================================================
+  //              Features / ExtraServices
+  //= ======================================================
+  // get all extra services
+  getAllExtraServices(callback) {
   // sql query statement
-    const sql = 'SELECT CustomerID, FirstName, LastName, Email, Password, Status FROM heroku_6b49aedb7855c0b.customer;';
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice;';
     // pool query
     pool.query(sql, (err, result) => {
     // error
@@ -720,10 +655,10 @@ const Admin = {
     });
   },
 
-  // get one Customer by id
-  getCustomer(id, callback) {
+  // get extra service by id
+  getExtraService(id, callback) {
   // sql query statement
-    const sql = 'SELECT CustomerID, FirstName, LastName, Password, Status FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID=?;';
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice where ExtraServiceID=?;';
 
     const values = [id];
     // pool query
@@ -738,15 +673,50 @@ const Admin = {
       return callback(null, result);
     });
   },
-  // delete customer
-  deleteCustomer(id, callback) {
-    console.log(` admin.js customer delete method start ${id}`);
-    // sql query statement
-    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
 
-    const values = [id];
+  // add new extra service
+  addExtraService(ExtraServiceName, ExtraServicePrice, callback) {
+  // sql query statement
+    const sql = `
+      INSERT INTO
+             heroku_6b49aedb7855c0b.extraservice (
+              ExtraServiceName,
+              ExtraServicePrice)
+      VALUES
+      (
+      ?,
+      ?
+      );
+`;
     // pool query
-    pool.query(sql, [id], (err, result) => {
+    pool.query(sql, [ExtraServiceName, ExtraServicePrice], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+
+    // pool.end()
+    });
+  },
+
+  // update existing extra service
+  updateExtraService(ExtraServiceName, ExtraServicePrice, id, callback) {
+  // sql query statement
+    const sql = `
+          UPDATE 
+          heroku_6b49aedb7855c0b.extraservice
+       SET
+          ExtraServiceName=?,
+          ExtraServicePrice=?
+      where
+          ExtraServiceID=?
+           ;
+          `;
+    // pool query
+    pool.query(sql, [ExtraServiceName, ExtraServicePrice, id], (err, result) => {
     // error
       if (err) {
         console.log(err);
@@ -757,20 +727,14 @@ const Admin = {
     });
   },
 
-  // update customer
-  updateCustomer(CustomerPassword, CustomerStatus, id, callback) {
+  // delete existing extra service
+  deleteExtraService(id, callback) {
   // sql query statement
-    const sql = `
-    UPDATE 
-      heroku_6b49aedb7855c0b.customer
-    SET
-      Password=?,
-      Status=?
-    WHERE
-      CustomerID=?;
-  `;
+    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.extraservice where ExtraServiceID =?;';
+
+    const values = [id];
     // pool query
-    pool.query(sql, [CustomerPassword, CustomerStatus, id], (err, result) => {
+    pool.query(sql, values, (err, result) => {
     // error
       if (err) {
         console.log(err);
