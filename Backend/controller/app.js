@@ -666,6 +666,158 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
     }
   });
 });
+//= ======================================================
+//              Class of Service
+//= ======================================================
+
+// get all class of service
+app.get('/classes', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from admin model
+  Admin.getAllClassOfService((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get class work');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get a class of sevice
+app.get('/classes/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const classid = req.params.id;
+
+  // calling getClass method from admin model
+  Admin.getClass(classid, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// add a class
+app.post('/class', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { ClassName } = req.body;
+  const { ClassPricing } = req.body;
+  const { ClassDes } = req.body;
+
+  // check if class pricing is float value and execute code
+  if (Number.parseFloat(ClassPricing)) {
+    // calling addClass method from admin model
+    Admin.addClass(ClassName, ClassPricing, ClassDes, (err, result) => {
+      // if no error send results as positive
+      if (!err) {
+        res.status(201).send(result);
+      }
+      // eslint-disable-next-line max-len
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // if server issues send this as an error
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  // eslint-disable-next-line brace-style
+  }
+  // if class pricing is not float
+  else {
+    res.status(400).send('Null value not allowed');
+  }
+});
+
+// update class of service
+app.put('/class/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const classID = req.params.id;
+  // extract all details needed
+  const { ClassName } = req.body;
+  const { ClassPricing } = req.body;
+  const { ClassDes } = req.body;
+
+  // check if class pricing is float value and execute code
+  if (Number.parseFloat(ClassPricing)) {
+    // calling updateClass method from admin model
+    Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, (err, result) => {
+      // if there is no errorsend the following as result
+      if (!err) {
+        const output = {
+          classID: result.insertId,
+        };
+
+        console.log(`result ${output.classID}`);
+
+        res.status(201).send(result);
+      }
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // else if there is a server error return message
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  }
+  // if class pricing is not float
+  else {
+    res.status(406).send('Inappropriate value');
+  }
+});
+
+// delete class of service
+app.delete('/class/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params;
+  // calling deleteClass method from admin model
+  Admin.deleteClass(id, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      }
+      // else a postitve result
+      else {
+        res.status(200).send(result);
+      }
+    } else
+    // sever error
+    {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
 
 //= ======================================================
 //              Features / Cancel Booking
@@ -918,8 +1070,311 @@ app.delete('/customer/:id', printDebugInfo, (req, res) => {
   });
 });
 
-// module exports
-module.exports = app;
+//= ======================================================
+//              Extra Services
+//= ======================================================
+
+// get all extra services
+app.get('/extraServices', printDebugInfo, async (req, res) => {
+  // calling getAllExtraServices method from admin model
+  Admin.getAllExtraServices((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get extra services');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get a class of sevice
+app.get('/extraServices/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const extraserviceid = req.params.id;
+
+  // calling getClass method from admin model
+  Admin.getExtraService(extraserviceid, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// add an extra service
+app.post('/extraService', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { ExtraServiceName } = req.body;
+  const { ExtraServicePrice } = req.body;
+
+  // check if extra service pricing is float value and execute code
+  if (Number.parseFloat(ExtraServicePrice)) {
+    // calling addExtraService method from admin model
+    Admin.addExtraService(ExtraServiceName, ExtraServicePrice, (err, result) => {
+      // if no error send results as positive
+      if (!err) {
+        res.status(201).send(result);
+      }
+      // eslint-disable-next-line max-len
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // if server issues send this as an error
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  // eslint-disable-next-line brace-style
+  }
+  // if class pricing is not float
+  else {
+    res.status(400).send('Null value not allowed');
+  }
+});
+
+// update extra service
+app.put('/extraService/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const ExtraServiceID = req.params.id;
+  // extract all details needed
+  const { ExtraServiceName } = req.body;
+  const { ExtraServicePrice } = req.body;
+
+  // check if extra service pricing is float value and execute code
+  if (Number.parseFloat(ExtraServicePrice)) {
+    // calling updateExtraService method from admin model
+    Admin.updateExtraService(ExtraServiceName, ExtraServicePrice, ExtraServiceID, (err, result) => {
+      // if there is no errorsend the following as result
+      if (!err) {
+        const output = {
+          ExtraServiceID: result.insertId,
+        };
+
+        console.log(`result ${output.ExtraServiceID}`);
+
+        res.status(201).send(result);
+      }
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // else if there is a server error return message
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  }
+  // if class pricing is not float
+  else {
+    res.status(406).send('Inappropriate value');
+  }
+});
+
+// delete extra service
+app.delete('/extraService/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params;
+  // calling deleteExtraService method from admin model
+  Admin.deleteExtraService(id, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      }
+      // else a postitve result
+      else {
+        res.status(200).send(result);
+      }
+    } else
+    // sever error
+    {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+//= ======================================================
+//              Rates
+//= ======================================================
+
+// get all rates
+app.get('/rates', printDebugInfo, async (req, res) => {
+  // calling getAllRates method from admin model
+  Admin.getAllRates((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get rates');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get a rate
+app.get('/rates/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const rateid = req.params.id;
+
+  // calling getClass method from admin model
+  Admin.getRate(rateid, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// add new rate
+app.post('/rate', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { RateName } = req.body;
+  const { RatePrice } = req.body;
+  const { Package } = req.body;
+
+  // check if rate pricing is float value and execute code
+  if (Number.parseFloat(RatePrice)) {
+    // calling addClass method from admin model
+    Admin.addRate(RateName, RatePrice, Package, (err, result) => {
+      // if no error send results as positive
+      if (!err) {
+        res.status(201).send(result);
+      }
+      // eslint-disable-next-line max-len
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // if server issues send this as an error
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  // eslint-disable-next-line brace-style
+  }
+  // if class pricing is not float
+  else {
+    res.status(400).send('Null value not allowed');
+  }
+});
+
+// update existing extra service
+app.put('/rate/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const RatesID = req.params.id;
+  // extract all details needed
+  const { RateName } = req.body;
+  const { RatePrice } = req.body;
+  const { Package } = req.body;
+
+  // check if rate pricing is float value and execute code
+  if (Number.parseFloat(RatePrice)) {
+    // calling updateRate method from admin model
+    Admin.updateRate(RateName, RatePrice, Package, RatesID, (err, result) => {
+      // if there is no errorsend the following as result
+      if (!err) {
+        const output = {
+          RatesID: result.insertId,
+        };
+
+        console.log(`result ${output.RatesID}`);
+
+        res.status(201).send(result);
+      }
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // else if there is a server error return message
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  }
+  // if class pricing is not float
+  else {
+    res.status(406).send('Inappropriate value');
+  }
+});
+
+// delete existing rate
+app.delete('/rate/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params;
+  // calling deleteRate method from admin model
+  Admin.deleteRate(id, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      }
+      // else a postitve result
+      else {
+        res.status(200).send(result);
+      }
+    } else
+    // sever error
+    {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+
 
 // module exports
 module.exports = app;
