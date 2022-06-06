@@ -44,11 +44,11 @@ app.get('/admin/employee', (req, res) => {
   res.sendFile('/public/assets/html/adminEmployee.html', { root: __dirname });
 });
 
-// go to homepage
+// go to admin Schedule
 app.get('/admin/schedule', (req, res) => {
   res.sendFile('/public/assets/html/adminSchedule.html', { root: __dirname });
 });
-// go to homepage
+// go to booking
 app.get('/admin/booking', (req, res) => {
   res.sendFile('/public/assets/html/booking.html', { root: __dirname });
 });

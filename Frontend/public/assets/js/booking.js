@@ -21,7 +21,7 @@ function createRow(cardInfo) {
     <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
     <td>${cardInfo.ClassName}</td>
-    <td>${cardInfo.StartDate}</td>
+    <td>${cardInfo.ScheduleDate}</td>
     <td>${cardInfo.TimeOfService}</td>
     <td>${cardInfo.NoOfRooms}</td>
     <td>${cardInfo.NoOfBathrooms}</td>
@@ -36,10 +36,10 @@ function createRow(cardInfo) {
     ${cardInfo.Status} </td>
     <td><a type="button" href="/admin/assign?bookingid=${cardInfo.bookingID}" class="${(cardInfo.Status).includes('Completed') ? 'btn disabled' : (cardInfo.Status).includes('Cancelled') ? 'btn disabled' : 'btn btn-success'} ">Assign</a></td>
     <td>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditClassModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editBookingModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>
     <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa-regular fa-trash-can"></i></button></td>
-    <script>}   $("button").removeAttr("disabled");</script>
+    <script>   $("button").removeAttr("disabled");</script>
     </tr>
 
   
@@ -105,7 +105,7 @@ function loadAllBookingByLimit(pageNumber) {
             LastName: booking.LastName,
             Package: booking.PackageName,
             ClassName: booking.ClassName,
-            StartDate: booking.StartDate,
+            ScheduleDate: booking.ScheduleDate,
             TimeOfService: booking.TimeOfService,
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,
@@ -142,7 +142,7 @@ function loadAllBookingByLimit(pageNumber) {
 function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
-    url: `${backEndUrl}/booking/${bookingID}`,
+    url: `${backEndUrl}/oneBooking/${bookingID}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
@@ -150,18 +150,18 @@ function loadABooking(bookingID) {
       console.log('-------response data------');
       console.log(data);
       console.log(`LENGTH OF DATA:${data.length}`);
+      const booking = data[0];
       // extract data information
       const RowInfo = {
-
+        bookingID: booking.BookingID,
+        ScheduleDate: booking.ScheduleDate,
       };
       console.log('---------Card INfo data pack------------');
       console.log(RowInfo);
       console.log('---------------------');
       // updating extracted values to update pop up
-      $('#class-id-update').val(RowInfo.classId);
-      $('#class-name-update').val(RowInfo.className);
-      $('#class-pricing-update').val(RowInfo.classPricing);
-      $('#class-description-update').val(RowInfo.classDescription);
+      $('#booking-id-update').val(RowInfo.bookingID);
+      $('#datePicker').val(RowInfo.ScheduleDate);
     },
     error(xhr) {
       // set and call error message
@@ -174,68 +174,15 @@ function loadABooking(bookingID) {
   });
 }
 
-// addClassOfService to add new class of service
-function addBooking() {
-  // extract values for add pop-up
-  const name = $('#class_name_add').val();
-  const classPricing = $('#class_pricing_add').val();
-  const classDescription = $('#class_description__add').val();
-  // setting empty string to the fields after adding
-  $('#class_name_add').val('');
-  $('#class_pricing_add').val('');
-  $('#class_description__add').val('');
-  // store all extracted info into requestBody
-  const requestBody = {
-    ClassName: name,
-    ClassPricing: classPricing,
-    ClassDes: classDescription,
-  };
-  console.log(`request body: ${requestBody}`);
-  // stringify reqBody
-  const reqBody = JSON.stringify(requestBody);
-  console.log(reqBody);
-  // call the method to post data
-  $.ajax({
-    url: 'http://localhost:5000/class',
-    type: 'POST',
-    data: reqBody,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data, textStatus, xhr) {
-      // set and call confirmation message
-      msg = 'Successfully added!';
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      const post = data;
-      $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
-    },
-    error(xhr, textStatus, errorThrown) {
-      // set and call error message
-      let errMsg = '';
-      if (xhr.status == 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status == 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status == 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
-      }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
-      $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
-    },
-  });
-}
-
 // updateClassOfService method update class of service
 function updateBooking() {
   // extarct values from pop-up
-  const classId = $('#class-id-update').val();
-  const ClassName = $('#class-name-update').val();
-  const ClassPricing = $('#class-pricing-update').val();
-  const ClassDescription = $('#class-description-update').val();
+  const queryParams = new URLSearchParams(window.location.search);
+  console.log('--------------Query Params ----------------');
+  console.log(`QUery Param(source): ${window.location.search}`);
+  console.log(`Query parrams(extracted): ${queryParams}`);
+  const bookingID = queryParams.get('pageNumber');
+
   // set value to empty after getting value
   $('#class_name_add').val('');
   $('#class_pricing_add').val('');
@@ -284,6 +231,96 @@ function updateBooking() {
   });
 }
 
+// add new booking
+$('#addNewBooking').click(() => {
+  // data extraction
+  const id = $('#addBookingID').val();
+  const date = $('#datepicker').val();
+  console.log(id + date);
+  // data compilation
+  const info = {
+    bookingID: id,
+    bookingDate: date,
+  };
+
+  // call web service endpoint
+  $.ajax({
+    url: `${backEndUrl}/booking`,
+    type: 'POST',
+    data: JSON.stringify(info),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      if (data != null) {
+        console.log('Added');
+      } else {
+        console.log('Error');
+      }
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log(`XHR: ${JSON.stringify(xhr)}`);
+      console.log(`Textstatus: ${textStatus}`);
+      console.log(`Errorthorwn${errorThrown}`);
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Please check your the date and ID',
+      }).show();
+    },
+  });
+});
+
+// Login
+$('#updateBookingDate').click(() => {
+  // data extraction
+  const bookingIDs = $('#booking-id-update').val();
+  const date = $('#datePicker').val();
+  console.log(bookingIDs + date + "joooo");
+  // data compilation
+  const info = {
+    bookingID: bookingIDs,
+    ScheduleDate: date,
+  };
+
+  // call web service endpoint
+  $.ajax({
+    url: `${backEndUrl}/updateBooking/${bookingIDs}`,
+    type: 'PUT',
+    data: JSON.stringify(info),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      if (data != null) {
+        new Noty({
+          timeout: '5000',
+          type: 'sucess',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'added successfully',
+        }).show();
+      } else {
+        console.log('Error');
+      }
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log(`XHR: ${JSON.stringify(xhr)}`);
+      console.log(`Textstatus: ${textStatus}`);
+      console.log(`Errorthorwn${errorThrown}`);
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Please check your the date and ID',
+      }).show();
+    },
+  });
+});
+
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   console.log('--------Query Params----------');
@@ -291,5 +328,4 @@ $(document).ready(() => {
   console.log(`Query Param (extraction): ${queryParams}`);
 
   loadAllBookingByLimit(1);
-  loadABooking(bookingID);
 });
