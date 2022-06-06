@@ -254,10 +254,24 @@ const Admin = {
     });
   },
 
-  // get all Customer
-  getAllCustomer(callback) {
+  //= ======================================================
+  //              Features / Booking
+  //= ======================================================
+
+  // get all booking
+  getAllBooking(callback) {
     // sql query statement
-    const sql = 'SELECT CustomerID, FirstName, LastName, Email, Password, Status FROM heroku_6b49aedb7855c0b.customer;';
+    const sql = `
+    SELECT
+    b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    FROM
+    heroku_6b49aedb7855c0b.booking b
+    join heroku_6b49aedb7855c0b.contract c on b.Contract = c.ContractID
+    join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
+    join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+    left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
+    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID
+    `;
     // pool query
     pool.query(sql, (err, result) => {
       // error
@@ -271,10 +285,10 @@ const Admin = {
     });
   },
 
-  // get one Customer by id
-  getCustomer(id, callback) {
+  // get class of service by id
+  getBooking(id, callback) {
     // sql query statement
-    const sql = 'SELECT CustomerID, FirstName, LastName, Password, Status FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID=?;';
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.booking where BookingID=?;';
 
     const values = [id];
     // pool query
@@ -289,20 +303,78 @@ const Admin = {
       return callback(null, result);
     });
   },
+  // to limit and offset booking
+  pageBooking(pageNumber, callback) {
+    // the page number clicked
+    pageNumber = parseInt(pageNumber, 10);
+    // Number of employee showed per page
+    const limitPerPage = 6;
+    // Prevent displaying repetitive information
+    const numberOfValueToSkip = (pageNumber - 1) * 6;
 
-  // update all class of services
-  updateCustomer(CustomerPassword, id, callback) {
+    // sql statement to limit and skip
+    const sql = `
+    SELECT
+    b.BookingID,b.Admin,b.ScheduleDate,b.Contract,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    FROM
+    heroku_6b49aedb7855c0b.booking b
+    join heroku_6b49aedb7855c0b.contract c on b.Contract = c.ContractID
+    join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
+    join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+    left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
+    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID LIMIT ? OFFSET ?;
+  
+    `;
+    // values to pass for the query number of employee per page and number of employee to skip
+    const values = [limitPerPage, numberOfValueToSkip];
+    // query
+    pool.query(sql, values, (err, result) => {
+      // if error send error message
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // else send result
+      return callback(null, result);
+    });
+  },
+
+  // add booking of services
+  addBooking(Contract, ScheduleDate, Admin, callback) {
+    // sql query statement
+
+    const sql = `
+    INSERT INTO
+    heroku_6b49aedb7855c0b.booking (
+    Contract,
+    ScheduleDate, 
+    Status,
+    Admin)
+    VALUES
+    (?,?,'Pending',?);
+`;
+    // pool query
+    pool.query(sql, [Contract, ScheduleDate, Admin], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+
+      // pool.end()
+    });
+  },
+
+  // update all booking of services
+  updateBooking(ScheduleDate, BookingID, callback) {
     // sql query statement
     const sql = `
-      UPDATE 
-        heroku_6b49aedb7855c0b.customer
-      SET
-        Password=?
-      WHERE
-        CustomerID=?;
-    `;
+          UPDATE heroku_6b49aedb7855c0b.booking SET ScheduleDate= ? WHERE BookingID= ?;  
+              `;
     // pool query
-    pool.query(sql, [CustomerPassword, id], (err, result) => {
+    pool.query(sql, [ScheduleDate, BookingID], (err, result) => {
       // error
       if (err) {
         console.log(err);

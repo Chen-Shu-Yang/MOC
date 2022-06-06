@@ -555,12 +555,40 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
   }
 });
 
-// get all customer
-app.get('/customer', printDebugInfo, async (req, res) => {
-  // calling getAllCustomer method from admin model
-  Admin.getAllCustomer((err, result) => {
+//= ======================================================
+//              Features / Booking
+//= ======================================================
+
+// get employee per page
+app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
+  // extract pageNumber from params to determine the page we are at
+  const { pageNumber } = req.params;
+
+  // calling pageEmployee method from admin model
+  Admin.pageBooking(pageNumber, (err, result) => {
     // if no error send result
     if (!err) {
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// get all employee
+app.get('/booking', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from admin model
+  Admin.getAllBooking((err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Bihh');
+      console.log('==================================');
       res.status(200).send(result);
     }
     // if error send error message
@@ -569,14 +597,13 @@ app.get('/customer', printDebugInfo, async (req, res) => {
     }
   });
 });
-
-// get an employee
-app.get('/onecustomer/:id', printDebugInfo, async (req, res) => {
+// get a class of sevice
+app.get('/oneBooking/:id', printDebugInfo, async (req, res) => {
   // extract id from params
-  const customerId = req.params.id;
+  const bookingID = req.params.id;
 
-  // calling getCustomer method from admin model
-  Admin.getCustomer(customerId, (err, result) => {
+  // calling getClass method from admin model
+  Admin.getBooking(bookingID, (err, result) => {
     if (!err) {
       // if id not found detect and return error message
       if (result.length === 0) {
@@ -598,26 +625,45 @@ app.get('/onecustomer/:id', printDebugInfo, async (req, res) => {
   });
 });
 
-// update customer
-app.put('/customer/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const CustomerID = req.params.id;
+// add a booking
+app.post('/booking', printDebugInfo, (req, res) => {
   // extract all details needed
-  const { CustomerPassword } = req.body;
+  const { bookingID } = req.body;
+  const { bookingDate } = req.body;
 
-  // calling updateCustomer method from admin model
-  Admin.updateCustomer(CustomerPassword, CustomerID, (err, result) => {
-    // if there is no errorsend the following as result
+  Admin.addBooking(bookingID, bookingDate, (err, result) => {
     if (!err) {
-      const output = {
-        customerId: result.insertId,
-      };
-
-      console.log(`result ${output.customerId}`);
-
       res.status(201).send(result);
     }
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+// update class of service
+app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
+  // extract id from params
+  const BookingID = req.params.bookingIDs;
+  // extract all details needed
+  const { ScheduleDate } = req.body;
+  console.log("Im HERE");
+  // check if class pricing is float value and execute code
+
+  // calling updateClass method from admin model
+  Admin.updateBooking(ScheduleDate, BookingID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      res.status(201).send(result + "HIii");
+    }
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+    // send Inappropriate value as return message
     else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       res.status(406).send('Inappropriate value');
     }

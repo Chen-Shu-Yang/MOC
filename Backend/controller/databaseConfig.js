@@ -24,10 +24,10 @@ const mysql = require('mysql');
 //= ======================================================
 const config = (
   {
-    user :databaseUserName,
-    password:databasePassword,
-    host:databaseHost,
-    database:database,
+    user: databaseUserName,
+    password: databasePassword,
+    host: databaseHost,
+    database: database,
   }
 );
 
