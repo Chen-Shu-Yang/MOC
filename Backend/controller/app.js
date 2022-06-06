@@ -523,6 +523,10 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
   }
 });
 
+//---------------------------------------------------
+//                 Feature/schedule-Employee
+//---------------------------------------------------
+
 // get unassigned available employee
 app.get('/availemployee/:date', printDebugInfo, async (req, res) => {
   // extract id from params

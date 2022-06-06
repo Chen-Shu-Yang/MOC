@@ -255,6 +255,10 @@ const Admin = {
     });
   },
 
+  //---------------------------------------------------
+  //                 Feature/schedule-Employee
+  //---------------------------------------------------
+
   // get class of service by id
   getAvailableEmployee(date, callback) {
     // sql query statement
@@ -299,7 +303,7 @@ const Admin = {
         VALUES
           (?,?,?);
       `;
-      // pool query
+    // pool query
     pool.query(sql, [date, time, employeeId], (err, result) => {
       if (err) {
         console.log(err);
