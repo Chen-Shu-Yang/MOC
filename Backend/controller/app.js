@@ -141,7 +141,7 @@ app.post('/class', printDebugInfo, (req, res) => {
         res.status(500).send('Internal Server Error');
       }
     });
-  // eslint-disable-next-line brace-style
+    // eslint-disable-next-line brace-style
   }
   // if class pricing is not float
   else {
@@ -305,7 +305,7 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
     EmployeeDes,
     EmployeeID,
     (err, result) => {
-    // if there is no errorsend the following as result
+      // if there is no errorsend the following as result
       if (!err) {
         const output = {
           classID: result.insertId,
@@ -430,7 +430,7 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
   const BookingID = req.params.bookingIDs;
   // extract all details needed
   const { ScheduleDate } = req.body;
-console.log("Im HERE");
+  console.log("Im HERE");
   // check if class pricing is float value and execute code
 
   // calling updateClass method from admin model
@@ -477,11 +477,11 @@ app.get('/contract/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
-app.get('/employeeList', printDebugInfo, async (req, res) => {
+app.post('/employeeList', printDebugInfo, async (req, res) => {
   // calling getBookingdetails method from admin model
-  const details = req.body.bookingDate;
+  const detail = req.body.bookingDates;
 
-  Admin.getEmployeeAvailabilty(details, (err, result) => {
+  Admin.getEmployeeAvailabilty(detail, (err, result) => {
     // if no error send result
     if (!err) {
       console.log('==================================');
@@ -492,6 +492,35 @@ app.get('/employeeList', printDebugInfo, async (req, res) => {
     // if error send error message
     else {
       res.status(500).send('Some error');
+    }
+  });
+});
+app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
+  // extract id from params
+  const BookingID = req.params.bookingIDs;
+  // extract all details needed
+  const { EmployeeID } = req.body;
+  console.log("Im HERE");
+  // check if class pricing is float value and execute code
+
+  // calling updateClass method from admin model
+  Admin.assignBooking(EmployeeID, BookingID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      res.status(200).send(JSON.stringify(result) + " Resulted data");
+    }
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+    // send Inappropriate value as return message
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    // else if there is a server error return message
+    else {
+      res.status(500).send('Internal Server Error');
     }
   });
 });

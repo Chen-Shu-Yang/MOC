@@ -376,7 +376,7 @@ const Admin = {
   },
   getEmployeeAvailabilty(bookingDate, callback) {
     // sql query statement
-    const sql = `SELECT e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,b.*
+    const sql = `SELECT e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,e.EmployeeID,b.*
     FROM heroku_6b49aedb7855c0b.employee as e
     left join heroku_6b49aedb7855c0b.schedule as s on e.EmployeeID = s.Employee
     left join heroku_6b49aedb7855c0b.booking as b on e.EmployeeID = b.Employee
@@ -393,6 +393,23 @@ const Admin = {
       }
       // result accurate
 
+      return callback(null, result);
+    });
+  },
+  assignBooking(EmployeeID, BookingID, callback) {
+    // sql query statement
+    console.log(EmployeeID + BookingID + " suPPP");
+    const sql = `
+          UPDATE heroku_6b49aedb7855c0b.booking SET Employee= ? WHERE BookingID= ?;  
+              `;
+    // pool query
+    pool.query(sql, [EmployeeID, BookingID], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
       return callback(null, result);
     });
   },
