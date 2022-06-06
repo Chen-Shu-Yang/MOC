@@ -1,4 +1,6 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
@@ -464,6 +466,53 @@ const Admin = {
       // pool query
     pool.query(sql, [bookingId], (err, result) => {
       // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
+  // ---------------------------------------------------
+  //                 Feature/adminCustomer
+  // ---------------------------------------------------
+
+  // delete customer
+  deleteCustomer(id, callback) {
+    console.log(` admin.js customer delete method start ${id}`);
+    // sql query statement
+    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
+
+    const values = [id];
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+    // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
+  // update customer
+  updateCustomer(CustomerPassword, CustomerStatus, id, callback) {
+  // sql query statement
+    const sql = `
+    UPDATE 
+      heroku_6b49aedb7855c0b.customer
+    SET
+      Password=?,
+      Status=?
+    WHERE
+      CustomerID=?;
+  `;
+    // pool query
+    pool.query(sql, [CustomerPassword, CustomerStatus, id], (err, result) => {
+    // error
       if (err) {
         console.log(err);
         return callback(err);

@@ -811,5 +811,73 @@ app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
   });
 });
 
+//---------------------------------------------------
+//                 Feature/adminCustomer
+//---------------------------------------------------
+// update customer
+app.put('/customer/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const CustomerID = req.params.id;
+  // extract all details needed
+  const { CustomerPassword } = req.body;
+  const { CustomerStatus } = req.body;
+
+  // calling updateCustomer method from admin model
+  Admin.updateCustomer(CustomerPassword, CustomerStatus, CustomerID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      const output = {
+        customerId: result.insertId,
+      };
+
+      console.log(`result ${output.customerId}`);
+
+      res.status(201).send(result);
+    }
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    // else if there is a server error return message
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+// delete customer
+app.delete('/customer/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params;
+  // calling deleteClass method from admin model
+  Admin.deleteCustomer(id, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      }
+      // else a postitve result
+      else {
+        res.status(200).send(result);
+      }
+    } else
+    // sever error
+    {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// module exports
+module.exports = app;
+
 // module exports
 module.exports = app;
