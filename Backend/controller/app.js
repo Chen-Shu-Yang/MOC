@@ -580,6 +580,8 @@ app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
   });
 });
 
+
+
 // get all employee
 app.get('/booking', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
@@ -676,6 +678,82 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   });
+});
+
+//= ======================================================
+//              Features / Cancel Booking
+//= ======================================================
+// get booking that are pending or assigned per page
+app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
+  // extract pageNumber from params to determine the page we are at
+  const { pageNumber } = req.params;
+
+  // calling pageEmployee method from admin model
+  Admin.pageBookingCancel(pageNumber, (err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+// get all bookings that are pending or assigned
+app.get('/bookingCancel', printDebugInfo, async (req, res) => {
+  // calling getAllBookingCancel method from admin model
+  Admin.getAllBookingCancel((err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Bihh');
+      console.log('==================================');
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+// update cancel booking
+app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const bookingId = req.params.id;
+  // calling cancelBookingAdmin method from admin model
+  Admin.cancelBookingAdmin(
+  
+    bookingId,
+    (err, result) => {
+    // if there is no errorsend the following as result
+      if (!err) {
+        const output = {
+          classID: result.insertId,
+        };
+
+        console.log(`result ${output.classID}`);
+
+        res.status(201).send(result);
+      }
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+      // Inappropriate value as return message
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      // else if there is a server error return message
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    },
+  );
 });
 
 // module exports

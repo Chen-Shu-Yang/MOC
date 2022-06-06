@@ -138,6 +138,62 @@ function loadAllBookingByLimit(pageNumber) {
   });
 }
 
+
+function loadAllBookingToBECancelledByLimit(pageNumber) {
+  // call the web service endpoint
+    $.ajax({
+      url: `${backEndUrl}/bookingCancel/${pageNumber}`,
+      type: 'GET',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success(data) {
+        if (data != null) {
+          console.log('-------response data------');
+          console.log(data);
+          console.log(`LENGTH OF DATA:${data.length}`);
+          $('#bookingTableBody').html('');
+          for (let i = 0; i < data.length; i++) {
+            const booking = data[i];
+            // compile the data that the card needs for its creation
+            const bookingstbl = {
+              bookingID: booking.BookingID,
+              FirstName: booking.FirstName,
+              LastName: booking.LastName,
+              Package: booking.PackageName,
+              ClassName: booking.ClassName,
+              StartDate: booking.StartDate,
+              TimeOfService: booking.TimeOfService,
+              NoOfRooms: booking.NoOfRooms,
+              NoOfBathrooms: booking.NoOfBathrooms,
+              RateName: booking.Rate,
+              EstimatePricing: booking.EstimatedPricing,
+              Address: booking.Address,
+              Employee: booking.EmployeeName,
+              Status: booking.Status,
+            };
+            console.log('---------Card INfo data pack------------');
+            console.log(bookingstbl);
+  
+            const newRow = createRow(bookingstbl);
+            $('#bookingTableBody').append(newRow);
+          }
+        }
+        loadAllBooking();
+      },
+  
+      error(xhr, textStatus, errorThrown) {
+        console.log('Error in Operation');
+        console.log('-----------------------');
+        console.log(xhr);
+        console.log(textStatus);
+        console.log(errorThrown);
+  
+        console.log(xhr.status);
+        console.log(xhr.responseText);
+      },
+    });
+  }
+  
 // load gets a booking
 function loadABooking(bookingID) {
   // gets a class of service based on id
