@@ -38,6 +38,10 @@ app.get('/', (req, res) => {
 app.get('/homepage', (req, res) => {
   res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
+// Display NavBar
+app.get('/admin/adminNavbar.html', (req, res) => {
+  res.sendFile('/public/assets/html/adminNavbar.html', { root: __dirname });
+});
 
 // go to login
 app.get('/login', (req, res) => {
@@ -60,6 +64,10 @@ app.get('/admin/schedule', (req, res) => {
 // go to booking
 app.get('/admin/booking', (req, res) => {
   res.sendFile('/public/assets/html/adminBooking.html', { root: __dirname });
+});
+// go to AssignEmployeePage
+app.get('/admin/assign', (req, res) => {
+  res.sendFile('/public/assets/html/adminAssignEmployee.html', { root: __dirname });
 });
 
 // go to admin Customer

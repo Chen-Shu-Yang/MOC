@@ -643,6 +643,7 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
   const BookingID = req.params.bookingIDs;
   // extract all details needed
   const { ScheduleDate } = req.body;
+  console.log('Im HERE');
   // check if class pricing is float value and execute code
 
   // calling updateClass method from admin model
@@ -1374,5 +1375,74 @@ app.delete('/rate/:id', printDebugInfo, (req, res) => {
   });
 });
 
+//= ======================================================
+//              Features / Assign
+//= ======================================================
+
+app.get('/contract/:id', printDebugInfo, async (req, res) => {
+  // calling getBookingdetails method from admin model
+  const details = req.params.id;
+
+  Admin.getBookingDetails(details, (err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Continue');
+      console.log('==================================');
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+app.post('/employeeList', printDebugInfo, async (req, res) => {
+  // calling getBookingdetails method from admin model
+  const detail = req.body.bookingDates;
+
+  Admin.getEmployeeAvailabilty(detail, (err, result) => {
+    // if no error send result
+    if (!err) {
+      console.log('==================================');
+      console.log('Continue');
+      console.log('==================================');
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
+  // extract id from params
+  const BookingID = req.params.bookingIDs;
+  // extract all details needed
+  const { EmployeeID } = req.body;
+  console.log('Im HERE');
+  // check if class pricing is float value and execute code
+
+  // calling updateClass method from admin model
+  Admin.assignBooking(EmployeeID, BookingID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      res.status(200).send(`${JSON.stringify(result)} Resulted data`);
+    }
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+    // send Inappropriate value as return message
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    // else if there is a server error return message
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
 // module exports
 module.exports = app;
