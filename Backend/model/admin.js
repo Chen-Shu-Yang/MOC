@@ -18,6 +18,9 @@ const pool = require('../controller/databaseConfig');
 //= ======================================================
 const Admin = {
 
+  //= ======================================================
+  //              Features / Class
+  //= ======================================================
   // get all class of services
   getAllClassOfService(callback) {
     // sql query statement
@@ -128,22 +131,18 @@ const Admin = {
       return callback(null, result);
     });
   },
+  //= ======================================================
+  //              Features / Employee
+  //= ======================================================
   // to limit and offset employee
   pageEmployee(pageNumber, callback) {
-    // eslint-disable-next-line no-param-reassign
-    // eslint-disable-next-line radix
-
     // the page number clicked
     // eslint-disable-next-line radix
     pageNumber = parseInt(pageNumber);
-    // eslint-disable-next-line no-undef
-
     // Number of employee showed per page
     const limitPerPage = 6;
-    // eslint-disable-next-line max-len
     // Number of employee to skip based on the page number so that previously shown data will not be displayed
     const numberOfValueToSkip = (pageNumber - 1) * 6;
-
     // sql statement to limit and skip
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee LIMIT ? OFFSET ?;';
     // values to pass for the query number of employee per page and number of employee to skip
@@ -782,7 +781,7 @@ const Admin = {
   },
 
   //= ======================================================
-  //              Features / Assign-Zhengye
+  //              Features / Assign
   //= ======================================================
   getBookingDetails(id, callback) {
     // sql query statement
