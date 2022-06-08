@@ -48,19 +48,19 @@
             </div>
             <div class="bookingCol">
                 <h2>Address</h2>
-            </div> 
+            </div>
             <div class="bookingCol" style="display: flex;">
                 <div class="form-group">
                     <div style="float: left;">
                         <h5>Rooms:</h5>
                         <button onclick="incrementR()">+</button>
-                        <input id=rooms type=number min=1 max=10>
+                        <input id=rooms type=number min=1 max=10 onchange="updatedRooms()">
                         <button onclick="decrementR()">-</button>
                     </div>
                     <div style="float: left; margin-left: 20px;">
                         <h5>Bathrooms: </h5>
                         <button onclick="incrementBR()">+</button>
-                        <input id=bathRooms type=number min=1 max=10>
+                        <input id=bathRooms type=number min=1 max=10 onchange="updatedBathrooms()">
                         <button onclick="decrementBR()">-</button>
                     </div>
                 </div>
@@ -70,18 +70,18 @@
                 <div class="form-group">
                     <div style="float: left;">
                         <h5>Start Date:</h5>
-                    
+
                     </div>
                     <div style="float: left; margin-left: 20px;">
                         <h5>Day : </h5>
-                   
+
                     </div>
                     <div style="float: left; margin-left: 20px;">
                         <h5>Time : </h5>
-                        <select name="Time" id="timeOfService">
+                        <select name="Time" id="timeOfService" onchange="updatedTime()">
                             <option value="08:30">08:30</option>
                             <option value="12:30">12:30</option>
-                          </select>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -93,8 +93,39 @@
 
         <div class="col">
 
-            <div class="card-affix">
-                <h2>Your Booking</h2>
+            <div class="card affix" style="margin-right: 20px;">
+                <h2 style="text-align: center;">Your Booking</h2>
+                <hr>
+                <h5>Service Preference</h5>
+                <p id="listService"></p>
+                <h5>Package: </h5>
+                <p id="listPackage"></p>
+                <div style="display: flex;">
+                    <div style="float: left;">
+                        <h5>Rooms:</h5>
+                        <p id="listRooms"></p>
+                    </div>
+                    <div style="float: left;">
+                        <h5>Bathrooms:</h5>
+                        <p id="listBathrooms"></p>
+                    </div>
+                </div>
+                <h5>Rates:</h5>
+                <p id="listRates"></p>
+                <h5>Additional Service:</h5>
+                <p id="listAddService">-</p>
+                <div style="display: flex;">
+                    <div style="float: left;">
+                        <h5>Date:</h5>
+                        <p id="listDate"></p>
+                    </div>
+                    <div style="float: left;">
+                        <h5>Day:</h5>
+                        <p id="listDay"></p>
+                    </div>
+                </div>
+                <h5>Time</h5>
+                <p id="listTime"></p>
             </div>
         </div>
     </div>
