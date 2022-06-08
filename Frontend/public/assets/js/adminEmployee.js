@@ -10,6 +10,7 @@
 // const url = 'http://localhost:5000';
 // const backEndUrl = 'http://localhost:5000';
 const backEndUrl = 'https://moc-ba.herokuapp.com/';
+
 function createRow(cardInfo) {
   console.log(cardInfo);
 
@@ -44,7 +45,7 @@ function pageBtnCreate(totalNumberOfPages) {
 
 function loadAllEmployees() {
   $.ajax({
-    url: 'http://localhost:5000/employee',
+    url: `${backEndUrl}/employee`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -73,7 +74,7 @@ function loadAllEmployees() {
 
 function loadEmployeeByLimit(pageNumber) {
   $.ajax({
-    url: `http://localhost:5000/employee/${pageNumber}`,
+    url: `${backEndUrl}/employee/${pageNumber}`,
     type: 'GET',
 
     contentType: 'application/json; charset=utf-8',
@@ -121,7 +122,7 @@ function loadEmployeeByLimit(pageNumber) {
 function loadAnEmployee(id) {
   console.log(id);
   $.ajax({
-    url: `http://localhost:5000/oneemployee/${id}`,
+    url: `${backEndUrl}/oneemployee/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -239,7 +240,7 @@ function deleteEmployee(id) {
   // call the web service endpoint for deleting class of service by id
   $.ajax({
 
-    url: `http://localhost:5000/employee/${id}`,
+    url: `${backEndUrl}/employee/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
     // if data inserted
