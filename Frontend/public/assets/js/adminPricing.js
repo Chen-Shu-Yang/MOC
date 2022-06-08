@@ -249,7 +249,7 @@ function loadAllClassOfServices() {
                 //calling createTable to display values row by row
                 var newRow = createTable(RowInfo);
                 //appeding row to classTable
-                $('#classTable').append(newRow);
+                $('#classServiceTableBody').append(newRow);
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -336,12 +336,14 @@ function addClassOfService() {
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: function (data, textStatus, xhr) {
-            //set and call confirmation message
-            msg = "Successfully added!"
-            $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
             const post = data;
+            //set and call confirmation message
             $('#classServiceTableBody').html('')
             loadAllClassOfServices()
+            msg = "Successfully added!"
+            $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+           
+         
         },
         error: function (xhr, textStatus, errorThrown) {
             //set and call error message
@@ -395,7 +397,7 @@ function loadAllExtraServices() {
                 //calling createExtraServicesTable to display values row by row
                 var newRow = createExtraServicesTable(RowInfo);
                 //appeding row to extraServicesTable
-                $('#extraServicesTable').append(newRow);
+                $('#extraServiceTableBody').append(newRow);
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -475,6 +477,7 @@ function addExtraService() {
             $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
             const post = data;
             $('#extraServiceTableBody').html('')
+            loadAllExtraServices()
         },
         error: function (xhr, textStatus, errorThrown) {
             //set and call error message
@@ -528,8 +531,8 @@ function updateExtraService() {
             $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
             //refresh
             $('#extraServiceTableBody').html('')
-            //loadAllClassOfServices()
-            //loadAllExtraServices()
+            loadAllExtraServices()
+         
         },
         error: function (xhr, textStatus, errorThrown) {
             //set and call error message
@@ -584,6 +587,7 @@ function deleteExtraService(id) {
                 $('#confirmationMsg').html(confirmToast(msg + " " + xhr.status)).fadeOut(2500);
                  //to refresh
                 $('#extraServiceTableBody').html('')
+                loadAllExtraServices()
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -631,7 +635,7 @@ function loadAllRates() {
                 //calling createRateTable to display values row by row
                 var newRow = createRateTable(RowInfo);
                 //appeding row to ratesTable
-                $('#ratesTable').append(newRow);
+                $('#rateTableBody').append(newRow);
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -710,11 +714,14 @@ function addRate() {
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: function (data, textStatus, xhr) {
+            $('#rateTableBody').html('')
+            loadAllRates()
             //set and call confirmation message
+
             msg = "Successfully added!"
             $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
             const post = data;
-            $('#rateTableBody').html('')
+         
         },
         error: function (xhr, textStatus, errorThrown) {
             //set and call error message
@@ -770,6 +777,7 @@ function updateRate() {
             $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
             //refresh
             $('#rateTableBody').html('')
+            loadAllRates()
             //loadAllClassOfServices()
             //loadAllExtraServices()
         },
@@ -817,6 +825,7 @@ function deleteRate(id) {
                 $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
                 //to refresh
                 $('#rateTableBody').html('')
+              
             }
             //if the params id is valid and 
             else if (xhr.status == 200) {
@@ -825,7 +834,10 @@ function deleteRate(id) {
 
                 $('#confirmationMsg').html(confirmToast(msg + " " + xhr.status)).fadeOut(2500);
                  //to refresh
+                  //to refresh
                 $('#rateTableBody').html('')
+                loadAllRates()
+               
             }
         },
         error: function (xhr, textStatus, errorThrown) {

@@ -138,205 +138,154 @@
             </div>
 
             <!-- Card for class of service table  -->
-            <dive class="card cardClassService">
-                <!-- Button to add new class of service -->
-                <div class=" addBtn">
-                    <button type="button" class="btn btn-success  btn-sm" data-toggle="modal"
-                        data-target="#AddClassModel" data-whatever="@mdo">Add Service Class</button>
+
+            <section class="customer-section">
+                <div class="max-width">
+                    <h2>Class Of Services</h2>
+
+                    <!-- Button to add new class of service -->
+                    <div class=" addBtn">
+                        <button type="button" class="btn btn-success  btn-sm" data-toggle="modal"
+                            data-target="#AddClassModel" data-whatever="@mdo">Add Service Class</button>
+                    </div>
+
+
+
+                    <div style="overflow-x: auto; width: 100%">
+                        <div class="table-size">
+                            <table id="classTable" class="thead customer-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Class Id</th>
+                                        <th scope="col">Class Name</th>
+                                        <th scope="col">Class Pricing</th>
+                                        <th scope="col">Class Description</th>
+                                        <th scope="col">Update</th>
+                                        <th scope="col">Delete</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="classServiceTableBody">
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
+            </section>
 
 
 
-                <!-- pop up to add class of service-->
-                <div class="modal fade" id="AddClassModel" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">New Class of Service</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <h6>Name:</h6>
-                                        <input type="text" class="form-control" value="" id="class_name_add">
-                                    </div>
-                                    <div class="form-group">
-                                        <h6>Pricing:</h6>
-                                        <input type="text" class="form-control" value="" id="class_pricing_add">
-                                    </div>
-                                    <div class="form-group">
-                                        <h6>Description:</h6>
-                                        <input type="text" class="form-control" value="" id="class_description__add">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                    onClick="addClassOfService()">Add</button>
-                            </div>
+
+            <!-- pop up to add class of service-->
+            <div class="modal fade" id="AddClassModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New Class of Service</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <h6>Name:</h6>
+                                    <input type="text" class="form-control" value="" id="class_name_add">
+                                </div>
+                                <div class="form-group">
+                                    <h6>Pricing:</h6>
+                                    <input type="text" class="form-control" value="" id="class_pricing_add">
+                                </div>
+                                <div class="form-group">
+                                    <h6>Description:</h6>
+                                    <input type="text" class="form-control" value="" id="class_description__add">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                onClick="addClassOfService()">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- pop up to update class of service -->
+            <div class="modal fade" id="EditClassModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Class of Service</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="class-id-update">
+                                </div>
+                                <div class="form-group">
+                                    <label for="class-name-update" class="col-form-label">Class Name:</label>
+                                    <input type="text" class="form-control" id="class-name-update">
+                                </div>
+                                <div class="form-group">
+                                    <label for="class-pricing-update" class="col-form-label">Class Pricing:</label>
+                                    <input type="text" class="form-control" id="class-pricing-update">
+                                </div>
+                                <div class="form-group">
+                                    <label for="class-description-update" class="col-form-label">Class
+                                        Description:</label>
+                                    <input type="text" class="form-control" id="class-description-update">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updateClassOfService()"
+                                data-dismiss="modal">Update</button>
                         </div>
                     </div>
                 </div>
 
 
-                <!-- pop up to update class of service -->
-                <div class="modal fade" id="EditClassModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit Class of Service</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <input type="hidden" class="form-control" id="class-id-update">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="class-name-update" class="col-form-label">Class Name:</label>
-                                        <input type="text" class="form-control" id="class-name-update">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="class-pricing-update" class="col-form-label">Class Pricing:</label>
-                                        <input type="text" class="form-control" id="class-pricing-update">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="class-description-update" class="col-form-label">Class
-                                            Description:</label>
-                                        <input type="text" class="form-control" id="class-description-update">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="updateClassOfService()"
-                                    data-dismiss="modal">Update</button>
-                            </div>
-                        </div>
-                    </div>
+            </div>
 
-
-                </div>
-
-                <!-- class of service table -->
-                <div style="overflow-x: auto; width: 100%">
-                    <div class="table-size">
-                        <table id="classTable" class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Class Id</th>
-                                    <th scope="col">Class Name</th>
-                                    <th scope="col">Class Pricing</th>
-                                    <th scope="col">Class Description</th>
-                                    <th scope="col">Update</th>
-                                    <th scope="col">Delete</th>
-
-                                </tr>
-                            </thead>
-                            <tbody id="classServiceTableBody">
+            <!-- class of service table -->
 
 
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <br><br>
+            <br><br>
 
-                <!-- Card for extra service table  -->
-                <dive class="card cardExtraService">
+            <!-- Card for extra service table  -->
+
+
+            <section class="customer-section">
+                <div class="max-width">
+                    <h2>Extra Services</h2>
                     <!-- Button to add new extra service -->
                     <div class=" addBtn">
                         <button type="button" class="btn btn-success  btn-sm" data-toggle="modal"
                             data-target="#AddExtraServiceModel" data-whatever="@mdo">Add Extra Service</button>
                     </div>
 
-                    <!-- pop up to add extra service-->
-                    <div class="modal fade" id="AddExtraServiceModel" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">New Extra Service</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <h6>Extra Service Name:</h6>
-                                            <input type="text" class="form-control" value="" id="extra_service_add">
-                                        </div>
-                                        <div class="form-group">
-                                            <h6>Extra Service Pricing:</h6>
-                                            <input type="text" class="form-control" value=""
-                                                id="extra_service_pricing_add">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                        onClick="addExtraService()">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- pop up to update extra service -->
-                    <div class="modal fade" id="EditExtraServiceModal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Edit Extra Service</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <input type="hidden" class="form-control" id="extra-service-id-update">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="extra-service-name-update" class="col-form-label">Extra Service
-                                                Name:</label>
-                                            <input type="text" class="form-control" id="extra-service-name-update">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="extra-service-pricing-update" class="col-form-label">Extra
-                                                Service Pricing:</label>
-                                            <input type="text" class="form-control" id="extra-service-pricing-update">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="updateExtraService()"
-                                        data-dismiss="modal">Update</button>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
-
-                    <!-- class of extra services table -->
                     <div style="overflow-x: auto; width: 100%">
                         <div class="table-size">
-                            <table id="extraServicesTable" class="table">
+
+                            <table id="extraServicesTable" class="thead customer-table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Class Id</th>
+                                        <th scope="col">Extra Service Id</th>
                                         <th scope="col">Extra Service</th>
                                         <th scope="col">Pricing</th>
                                         <th scope="col">Update</th>
@@ -353,132 +302,225 @@
                         </div>
                     </div>
 
-                    <br><br>
+                </div>
+            </section>
 
-                    <!-- Card for rate table  -->
-                    <dive class="card cardRate">
-                        <!-- Button to add new rate -->
-                        <div class=" addBtn">
-                            <button type="button" class="btn btn-success  btn-sm" data-toggle="modal"
-                                data-target="#AddRateModel" data-whatever="@mdo">Add Rate</button>
+
+            <br><br>
+
+            <!-- Card for rate table  -->
+
+
+            <section class="customer-section">
+                <div class="max-width">
+                    <h2>Rate</h2>
+                    <!-- Button to add new rate -->
+                    <div class=" addBtn">
+                        <button type="button" class="btn btn-success  btn-sm" data-toggle="modal"
+                            data-target="#AddRateModel" data-whatever="@mdo">Add Rate</button>
+                    </div>
+
+
+                    <div style="overflow-x: auto; width: 100%">
+                        <div class="table-size">
+
+                            <table id="ratesTable" class="thead customer-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Rate Id</th>
+                                        <th scope="col">Rate Name</th>
+                                        <th scope="col">Rate Price</th>
+                                        <th scope="col">Package</th>
+                                        <th scope="col">Update</th>
+                                        <th scope="col">Delete</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="rateTableBody">
+                                </tbody>
+                            </table>
+
+
+
+
                         </div>
+                    </div>
 
-                        <!-- pop up to add rate-->
-                        <div class="modal fade" id="AddRateModel" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">New Rate</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                </div>
+            </section>
+
+
+
+
+            
+
+
+                <!-- pop up to add extra service-->
+                <div class="modal fade" id="AddExtraServiceModel" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">New Extra Service</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <h6>Extra Service Name:</h6>
+                                        <input type="text" class="form-control" value="" id="extra_service_add">
                                     </div>
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <h6>Rate Name:</h6>
-                                                <input type="text" class="form-control" value="" id="rate_add">
-                                            </div>
-                                            <div class="form-group">
-                                                <h6>Rate Pricing:</h6>
-                                                <input type="text" class="form-control" value="" id="rate_pricing_add">
-                                            </div>
-                                            <div class="form-group">
-                                                <h6>Package:</h6>
-                                                <input type="text" class="form-control" value="" id="package_add">
-                                                1 = Mulberry | 2 = Sassafras
-                                            </div>
-                                        </form>
+                                    <div class="form-group">
+                                        <h6>Extra Service Pricing:</h6>
+                                        <input type="text" class="form-control" value="" id="extra_service_pricing_add">
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                            onClick="addRate()">Add</button>
-                                    </div>
-                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    onClick="addExtraService()">Add</button>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- pop up to update rate -->
-                        <div class="modal fade" id="EditRateModal" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Edit Rate</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <input type="hidden" class="form-control" id="rate-id-update">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="rate-name-update" class="col-form-label">Rate Name:</label>
-                                                <input type="text" class="form-control" id="rate-name-update">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="rate-pricing-update" class="col-form-label">Rate
-                                                    Pricing:</label>
-                                                <input type="text" class="form-control" id="rate-pricing-update">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="package-update" class="col-form-label">Package:</label>
-                                                <input type="text" class="form-control" id="package-update">
-                                                1 = Mulberry | 2 = Sassafras
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="updateRate()"
-                                            data-dismiss="modal">Update</button>
-                                    </div>
-                                </div>
+                <!-- pop up to update extra service -->
+                <div class="modal fade" id="EditExtraServiceModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Extra Service</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-
-
-                        </div>
-
-                        <!-- class of extra services table -->
-                        <div style="overflow-x: auto; width: 100%">
-                            <div class="table-size">
-                                <table id="ratesTable" class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Rate Id</th>
-                                            <th scope="col">Rate Name</th>
-                                            <th scope="col">Rate Price</th>
-                                            <th scope="col">Package</th>
-                                            <th scope="col">Update</th>
-                                            <th scope="col">Delete</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="rateTableBody">
-
-
-
-                                    </tbody>
-                                </table>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" id="extra-service-id-update">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="extra-service-name-update" class="col-form-label">Extra Service
+                                            Name:</label>
+                                        <input type="text" class="form-control" id="extra-service-name-update">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="extra-service-pricing-update" class="col-form-label">Extra
+                                            Service Pricing:</label>
+                                        <input type="text" class="form-control" id="extra-service-pricing-update">
+                                    </div>
+                                </form>
                             </div>
-
-
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="updateExtraService()"
+                                    data-dismiss="modal">Update</button>
+                            </div>
                         </div>
+                    </div>
 
-        </div>
+                </div>
 
-    </div>
+               
+                <br><br>
 
-    <!-- Scripts -->
 
-    <script src="../../assets/js/adminNavbar.js"></script>
-    <script src="../../assets/js/adminPricing.js"></script>
+
+
+                <!-- pop up to add rate-->
+                <div class="modal fade" id="AddRateModel" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">New Rate</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <h6>Rate Name:</h6>
+                                        <input type="text" class="form-control" value="" id="rate_add">
+                                    </div>
+                                    <div class="form-group">
+                                        <h6>Rate Pricing:</h6>
+                                        <input type="text" class="form-control" value="" id="rate_pricing_add">
+                                    </div>
+                                    <div class="form-group">
+                                        <h6>Package:</h6>
+                                        <input type="text" class="form-control" value="" id="package_add">
+                                        1 = Mulberry | 2 = Sassafras
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    onClick="addRate()">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- pop up to update rate -->
+                <div class="modal fade" id="EditRateModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Rate</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" id="rate-id-update">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rate-name-update" class="col-form-label">Rate Name:</label>
+                                        <input type="text" class="form-control" id="rate-name-update">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rate-pricing-update" class="col-form-label">Rate
+                                            Pricing:</label>
+                                        <input type="text" class="form-control" id="rate-pricing-update">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="package-update" class="col-form-label">Package:</label>
+                                        <input type="text" class="form-control" id="package-update">
+                                        1 = Mulberry | 2 = Sassafras
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="updateRate()"
+                                    data-dismiss="modal">Update</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- class of extra services table -->
+
+
+
+         
+
+            <!-- Scripts -->
+
+            <script src="../../assets/js/adminNavbar.js"></script>
+            <script src="../../assets/js/adminPricing.js"></script>
 
 </body>
 
