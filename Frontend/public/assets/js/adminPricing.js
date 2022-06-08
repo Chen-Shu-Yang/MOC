@@ -1,3 +1,7 @@
+
+const frontEndUrl = 'http://localhost:3001';
+const backEndUrl = 'http://localhost:5000';
+
 //errorToast method display the error
 function errorToast(msg) {
     // error alert div
@@ -34,7 +38,7 @@ function deleteClassOfService(id) {
     // call the web service endpoint for deleting class of service by id
     $.ajax({
 
-        url: `http://localhost:5000/class/${id}`,
+        url: `${backEndUrl}/class/${id}`,
         type: 'DELETE',
         contentType: 'application/json; charset=utf-8',
         // if data inserted
@@ -112,7 +116,7 @@ function updateClassOfService() {
     // ajax method to call the method
     $.ajax({
 
-        url: 'http://localhost:5000/class/' + classId,
+        url: `${backEndUrl}/class/` + classId,
         type: 'PUT',
         //data extractex
         data: JSON.stringify(data2),
@@ -222,7 +226,7 @@ function createRateTable(cardInfo) {
 //loadAllClassOfServices gets all class of services
 function loadAllClassOfServices() {
     $.ajax({
-        url: 'http://localhost:5000/classes',
+        url: `${backEndUrl}/classes`,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
@@ -264,7 +268,7 @@ function loadAllClassOfServices() {
 function loadAClassOfService(id) {
     // gets a class of service based on id
     $.ajax({
-        url: 'http://localhost:5000/classes/' + id,
+        url: `${backEndUrl}/classes/` + id,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
@@ -326,7 +330,7 @@ function addClassOfService() {
     console.log(reqBody)
     // call the method to post data
     $.ajax({
-        url: `http://localhost:5000/class`,
+        url: `${backEndUrl}/class`,
         type: 'POST',
         data: reqBody,
         contentType: "application/json; charset=utf-8",
@@ -369,7 +373,7 @@ function addClassOfService() {
 //loadAllExtraServices gets all extra services
 function loadAllExtraServices() {
     $.ajax({
-        url: 'http://localhost:5000/extraServices',
+        url: `${backEndUrl}/extraServices`,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
@@ -405,7 +409,7 @@ function loadAllExtraServices() {
 function loadAnExtraService(id) {
     // gets a class of service based on id
     $.ajax({
-        url: 'http://localhost:5000/extraServices/' + id,
+        url: `${backEndUrl}/extraServices/`+ id,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
@@ -460,7 +464,7 @@ function addExtraService() {
     console.log(reqBody)
     // call the method to post data
     $.ajax({
-        url: `http://localhost:5000/extraService`,
+        url: `${backEndUrl}/extraService`,
         type: 'POST',
         data: reqBody,
         contentType: "application/json; charset=utf-8",
@@ -512,7 +516,7 @@ function updateExtraService() {
     }
     // ajax method to call the method
     $.ajax({
-            url: 'http://localhost:5000/extraService/' + extraServiceId,
+            url: `${backEndUrl}/extraService/` + extraServiceId,
             type: 'PUT',
             //data extracted
             data: JSON.stringify(data2),
@@ -557,7 +561,7 @@ function deleteExtraService(id) {
     // call the web service endpoint for deleting class of service by id
     $.ajax({
 
-        url: `http://localhost:5000/extraService/${id}`,
+        url: `${backEndUrl}/extraService/${id}`,
         type: 'DELETE',
         contentType: 'application/json; charset=utf-8',
         // if data inserted
@@ -604,7 +608,7 @@ function deleteExtraService(id) {
 //loadAllRates gets all rates
 function loadAllRates() {
     $.ajax({
-        url: 'http://localhost:5000/rates',
+        url: `${backEndUrl}/rates`,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
@@ -641,7 +645,7 @@ function loadAllRates() {
  function loadARate(id) {
     // gets a class of service based on id
     $.ajax({
-        url: 'http://localhost:5000/rates/' + id,
+        url: `${backEndUrl}/rates/` + id,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
@@ -700,7 +704,7 @@ function addRate() {
     console.log(reqBody)
     // call the method to post data
     $.ajax({
-        url: `http://localhost:5000/rate`,
+        url: `${backEndUrl}/rate`,
         type: 'POST',
         data: reqBody,
         contentType: "application/json; charset=utf-8",
@@ -754,7 +758,7 @@ function updateRate() {
     }
     // ajax method to call the method
     $.ajax({
-            url: 'http://localhost:5000/rate/' + rateId,
+            url: `${backEndUrl}/rate/` + rateId,
             type: 'PUT',
             //data extracted
             data: JSON.stringify(data2),
@@ -799,7 +803,7 @@ function deleteRate(id) {
     // call the web service endpoint for deleting class of service by id
     $.ajax({
 
-        url: `http://localhost:5000/rate/${id}`,
+        url: `${backEndUrl}/rate/${id}`,
         type: 'DELETE',
         contentType: 'application/json; charset=utf-8',
         // if data inserted

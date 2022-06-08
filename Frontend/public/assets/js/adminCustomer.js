@@ -4,10 +4,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-const frontEndUrl = 'https://spspforum.herokuapp.com';
-const backEndUrl = 'https://spspforum-backend.herokuapp.com';
-const url = 'http://localhost:5000';
-
+const frontEndUrl = 'http://localhost:3001';
+const backEndUrl = 'http://localhost:5000';
 function createRow(cardInfo) {
   const card = `
         <tr>
@@ -29,7 +27,7 @@ function createRow(cardInfo) {
 function loadAllCustomers() {
   $.ajax({
 
-    url: 'http://localhost:5000/customer',
+    url: `${backEndUrl}/customer`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -67,7 +65,7 @@ function loadAllCustomers() {
 // eslint-disable-next-line no-unused-vars
 function loadACustomer(id) {
   $.ajax({
-    url: `http://localhost:5000/onecustomer/${id}`,
+    url: `${backEndUrl}/onecustomer/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -115,7 +113,7 @@ function updateCustomer() {
   // call the web service endpoint
   $.ajax({
     // headers: { authorization: `Bearer ${tmpToken}` },
-    url: `http://localhost:5000/customer/${id}`,
+    url: `${backEndUrl}/customer/${id}`,
     type: 'PUT',
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
@@ -142,7 +140,7 @@ function deleteCustomer(id) {
   // call the web service endpoint for deleting customer by id
   $.ajax({
 
-    url: `http://localhost:5000/customer/${id}`,
+    url: `${backEndUrl}/customer/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
     // if data inserted
