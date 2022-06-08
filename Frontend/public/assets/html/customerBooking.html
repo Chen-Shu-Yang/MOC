@@ -63,14 +63,27 @@
                         <input id=bathRooms type=number min=1 max=10>
                         <button onclick="decrementBR()">-</button>
                     </div>
-
-
-
                 </div>
 
             </div>
-            <div class="bookingCol">
-                <h2>Date</h2>
+            <div class="bookingCol" style="display: flex;">
+                <div class="form-group">
+                    <div style="float: left;">
+                        <h5>Start Date:</h5>
+                    
+                    </div>
+                    <div style="float: left; margin-left: 20px;">
+                        <h5>Day : </h5>
+                   
+                    </div>
+                    <div style="float: left; margin-left: 20px;">
+                        <h5>Time : </h5>
+                        <select name="Time" id="timeOfService">
+                            <option value="08:30">08:30</option>
+                            <option value="12:30">12:30</option>
+                          </select>
+                    </div>
+                </div>
             </div>
             <div class="bookingCol">
                 <h2>Additional Info</h2>
