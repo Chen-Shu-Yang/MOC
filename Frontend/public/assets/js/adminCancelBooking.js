@@ -126,7 +126,7 @@ function cancelBooking(id) {
   console.log(`Booking id to cancel ${id}`);
   // ajax method to call the method
   $.ajax({
-    url: `http://localhost:5000/cancelBooking/${id}`,
+    url: `${backEndUrl}/cancelBooking/${id}`,
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',

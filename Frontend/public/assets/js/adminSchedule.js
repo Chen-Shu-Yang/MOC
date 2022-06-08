@@ -26,7 +26,7 @@ function createRow(cardInfo) {
 
 function loadAllAvailEmployees(date) {
   $.ajax({
-    url: `http://localhost:5000/availemployee/${date}`,
+    url: `${backEndUrl}/availemployee/${date}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -75,7 +75,7 @@ function ScheduleAvailability(employeeId, date, time) {
   // call the web
   $.ajax({
     // headers: { authorization: `Bearer ${tmpToken}` },
-    url: `http://localhost:5000/availemployee/${employeeId}`,
+    url: `${backEndUrl}/availemployee/${employeeId}`,
     type: 'POST',
     contentType: 'application/json; charset=utf-8',
     data: JSON.stringify(data),
