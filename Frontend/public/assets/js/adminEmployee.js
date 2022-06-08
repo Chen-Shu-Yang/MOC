@@ -7,9 +7,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 
-// const url = 'http://localhost:5000';
+// const url = '${backEndUrl}';
 // const backEndUrl = 'http://localhost:5000';
-const backEndUrl = 'https://moc-ba.herokuapp.com/';
+const backEndUrl = 'https://moc-ba.herokuapp.com';
+
+let userSearchChar = [];
+const userSearch = document.getElementById('searchEmployee');
 
 function createRow(cardInfo) {
   console.log(cardInfo);
@@ -44,6 +47,7 @@ function pageBtnCreate(totalNumberOfPages) {
 }
 
 function loadAllEmployees() {
+
   $.ajax({
     url: `${backEndUrl}/employee`,
     type: 'GET',
@@ -53,7 +57,7 @@ function loadAllEmployees() {
       console.log('-------response data------');
       console.log(data);
       console.log(`LENGTH OF DATA:${data.length}`);
-
+      userSearchChar = data;
       const totalNumberOfPages = Math.ceil(data.length / 6);
 
       pageBtnCreate(totalNumberOfPages);
@@ -262,7 +266,7 @@ function deleteEmployee(id) {
       else if (xhr.status === 200) {
         // set and call confirmation message
         msg = 'Successfully deleted!';
-     
+
 
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
@@ -281,9 +285,109 @@ function deleteEmployee(id) {
     },
 
   });
- 
-}
 
+}
+function levenshtein(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+
+  // increment along the first column of each row
+  let i;
+  for (i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  // increment each column in the first row
+  let j;
+  for (j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for (i = 1; i <= b.length; i++) {
+    for (j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          Math.min(
+            matrix[i][j - 1] + 1, // insertion
+            matrix[i - 1][j] + 1, // deletion
+          ),
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+userSearch.addEventListener('keyup', (e) => {
+  let RowInfo = {};
+  const similarResults = [];
+  const searchString = e.target.value.toLowerCase();
+  console.log(searchString);
+  $('#pagination').html('');
+
+  if (searchString === '') {
+    console.log('if');
+    $('#employeeListing').html('');
+    loadEmployeeByLimit(1);
+  }
+
+  // eslint-disable-next-line arrow-body-style
+  const filterUsers = userSearchChar.filter((user) => {
+    return (
+      user.EmployeeName.toLowerCase().includes(searchString)
+    );
+  });
+
+  $('#similarSearch').html('');
+  $('#employeeListing').html('');
+  if (filterUsers.length !== 0) {
+    for (let i = 0; i < filterUsers.length; i++) {
+      const employee = filterUsers[i];
+
+      // compile the data that the card needs for its creation
+      RowInfo = {
+        "EmployeeID": employee.EmployeeID,
+        "EmployeeName": employee.EmployeeName,
+        "EmployeeDes": employee.EmployeeDes,
+        "EmployeeImg": employee.EmployeeImgUrl,
+        "Skillsets": employee.Skillsets,
+      }
+
+      const newCard = createRow(RowInfo);
+      $('#employeeListing').append(newCard);
+    }
+  } else {
+    for (let i = 0; i < userSearchChar.length; i++) {
+      const compared = userSearchChar[i].EmployeeName;
+      const distance = levenshtein(searchString, compared.toLowerCase()); // Levenshtein Distance
+      const employee = userSearchChar[i];
+
+      // compile the data that the card needs for its creation
+      RowInfo = {
+        "EmployeeID": employee.EmployeeID,
+        "EmployeeName": employee.EmployeeName,
+        "EmployeeDes": employee.EmployeeDes,
+        "EmployeeImg": employee.EmployeeImgUrl,
+        "Skillsets": employee.Skillsets,
+      }
+
+      if (distance <= 4) {
+        similarResults.push(RowInfo);
+      }
+    }
+
+    for (let j = 0; j < similarResults.length; j++) {
+      const newCard = createRow(similarResults[j]);
+      $('#employeeListing').append(newCard);
+    }
+    $('#similarSearch').html(`<p><b>${searchString}</b> not found, do you mean...</p><br>`);
+  }
+});
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   console.log('--------Query Params----------');
@@ -376,14 +480,14 @@ function addEmployee() {
 
 function readURL(input) {
   if (input.files && input.files[0]) {
-      var reader = new FileReader();
+    var reader = new FileReader();
 
-      reader.onload = function (e) {
-          //$('#blah').attr('src', e.target.result);
-          document.getElementById('ppPreview').style.backgroundImage = "url( " + e.target.result + ")";
-      }
+    reader.onload = function (e) {
+      //$('#blah').attr('src', e.target.result);
+      document.getElementById('ppPreview').style.backgroundImage = "url( " + e.target.result + ")";
+    }
 
-      reader.readAsDataURL(input.files[0]);
+    reader.readAsDataURL(input.files[0]);
   }
 }
 
@@ -393,14 +497,14 @@ $("#image").change(function () {
 
 function readNewURL(input) {
   if (input.files && input.files[0]) {
-      var reader = new FileReader();
+    var reader = new FileReader();
 
-      reader.onload = function (e) {
-          //$('#blah').attr('src', e.target.result);
-          document.getElementById('NewProfilePreview').style.backgroundImage = "url( " + e.target.result + ")";
-      }
+    reader.onload = function (e) {
+      //$('#blah').attr('src', e.target.result);
+      document.getElementById('NewProfilePreview').style.backgroundImage = "url( " + e.target.result + ")";
+    }
 
-      reader.readAsDataURL(input.files[0]);
+    reader.readAsDataURL(input.files[0]);
   }
 }
 
