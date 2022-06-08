@@ -88,6 +88,10 @@ app.get('/admin/pricing', (req, res) => {
 //= ======================================================
 //                   Customer
 //= ======================================================
+// go to admin Cancel Booking
+app.get('/customer/booking', (req, res) => {
+  res.sendFile('/public/assets/html/customerBooking.html', { root: __dirname });
+});
 
 
 

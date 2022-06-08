@@ -36,7 +36,7 @@ $(document).ready(() => {
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('EmployeeID', JSON.stringify(data.CustomerID));
-            window.location.replace(`${frontEndUrl}/homepage`);
+            window.location.replace(`${frontEndUrl}/customer/booking`);
           } else if (data.UserID != null) {
             localStorage.setItem('UserID', JSON.stringify(data.UserID));
             localStorage.setItem('token', JSON.stringify(data.token));

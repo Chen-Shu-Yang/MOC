@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../assets/css/customerBooking.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ca9c4d369b.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.nl.min.js"></script>
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css"
+        rel="stylesheet" />
+
+
+
+    <title>CustomerBooking</title>
+</head>
+
+<body>
+    <Header>
+        <div class="logo-details">
+            <img src="../../assets/img/logo.png">
+        </div>
+    </Header>
+    <hr>
+    <div style="text-align: center;">
+        <h1>1. Booking &#8594 2. Confirmation &#8594 3.Possible List Of Helper</h1>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <div class="bookingCol">
+                <h2>Choose your Service Preference:</h2>
+            </div>
+            <div class="bookingCol">
+                <h2>Address</h2>
+            </div> 
+            <div class="bookingCol" style="display: flex;">
+                <div class="form-group">
+                    <div style="float: left;">
+                        <h5>Rooms:</h5>
+                        <button onclick="incrementR()">+</button>
+                        <input id=rooms type=number min=1 max=10>
+                        <button onclick="decrementR()">-</button>
+                    </div>
+                    <div style="float: left; margin-left: 20px;">
+                        <h5>Bathrooms: </h5>
+                        <button onclick="incrementBR()">+</button>
+                        <input id=bathRooms type=number min=1 max=10>
+                        <button onclick="decrementBR()">-</button>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <div class="bookingCol">
+                <h2>Date</h2>
+            </div>
+            <div class="bookingCol">
+                <h2>Additional Info</h2>
+            </div>
+        </div>
+
+
+        <div class="col">
+
+            <div class="card-affix">
+                <h2>Your Booking</h2>
+            </div>
+        </div>
+    </div>
+    <script src="../../assets/js/customerBooking.js"></script>
+</body>
+
+</html>
