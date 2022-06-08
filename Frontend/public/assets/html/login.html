@@ -400,33 +400,57 @@
                 </div>
             </div>
         </div>
-
     </header>
-    <div class="row" id="row">
-        <div class="col" id="col">
-            <img src="../../assets/img/loginScreen.jpeg" alt="">
-        </div>
-        <div class="col" id="col">
-            <div class="login-form" id="form">
-                <form action="">
-                    <h2>Log in</h2>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="emailInput" placeholder="Username"
-                            required="required">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" id="pwdInput" placeholder="Password"
-                            required="required">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary " id="Login">Log in</button>
-                        <p style="float:right">Not registered? <a href="#" id="signupBtn">Create an account</a></p>
-                    </div>
+    <div id="bigScreen">
+        <div class="row" id="row">
+            <div class="col" id="col">
+                <img src="../../assets/img/loginScreen.jpeg" alt="">
+            </div>
+            <div class="col" id="col">
+                <div class="login-form" id="form">
+                    <form action="" id="loginForm">
+                        <h2>Login</h2>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="emailInput" placeholder="Email"
+                                required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="pwdInput" placeholder="Password"
+                                required="required">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn" style="background-color:#2E6869 ; color:white;"
+                                id="Login">Log in</button>
+                            <p style="float:right">Forgot Password? <a href="#" id="signupBtn">Reset Password</a></p>
+                        </div>
+                    </form>
 
-                </form>
-
+                </div>
             </div>
         </div>
+    </div>
+    <div id="smallScreen" >
+        <img   src="../../assets/img/loginScreen.jpeg" alt="">
+        <div  class="login-form" id="form">
+            <form action="" id="loginFormPhone">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="emailInput" placeholder="Email"
+                        required="required">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="pwdInput" placeholder="Password"
+                        required="required">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn" style="background-color:#2E6869 ; color:white;"
+                        id="Login">Log in</button>
+                    <p style="float:right">Forgot Password? <a href="#" id="signupBtn">Reset Password</a></p>
+                </div>
+            </form>
+
+        </div>
+
     </div>
     <footer>
         <div class="footer_inner clearfix">
