@@ -1,18 +1,20 @@
 function incrementR() {
     document.getElementById('rooms').stepUp();
+    updatedRooms();
 
 }
 function decrementR() {
     document.getElementById('rooms').stepDown();
+    updatedRooms();
 
 }
 function incrementBR() {
-
     document.getElementById('bathRooms').stepUp();
+    updatedBathrooms();
 }
 function decrementBR() {
-
     document.getElementById('bathRooms').stepDown();
+    updatedBathrooms();
 }
 function updatedService(){
     var time = document.getElementById("").value;
@@ -23,12 +25,12 @@ function updatePackage(){
     document.getElementById("listPackage").innerHTML = time;
 }
 function updatedRooms(){
-    var time = document.getElementById("rooms").value;
-    document.getElementById("listRooms").innerHTML = time;
+    var roomss = document.getElementById("rooms").value;
+    document.getElementById("listRooms").innerHTML = roomss;
 }
 function updatedBathrooms(){
-    var time = document.getElementById("bathRooms").value;
-    document.getElementById("listBathrooms").innerHTML = time;
+    var bathroomss = document.getElementById("bathRooms").value;
+    document.getElementById("listBathrooms").innerHTML = bathroomss;
 }
 function updatedRates(){
     var time = document.getElementById("").value;
@@ -60,8 +62,7 @@ $(document).ready(() => {
     updatedDate();
     updatedAddServices();
     updatedRates();
-    updatedBathrooms();
     updatedService();
     updatePackage();
-    updatedRooms();
+   ;
 });
