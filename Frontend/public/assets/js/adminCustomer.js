@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 const frontEndUrl = 'http://localhost:3001';
 // const backEndUrl = 'http://localhost:5000';
-const backEndUrl = 'https://moc-ba.herokuapp.com/';
+const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 function createRow(cardInfo) {
   const card = `
