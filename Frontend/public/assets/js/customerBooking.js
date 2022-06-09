@@ -52,54 +52,6 @@ function loadUserDetails() {
     });
 }
 
-// function updateStory() {
-//     // data extraction
-//     const tmpStoryTitle = $('#storyTitle').val();
-//     const tmpStoryDes = $('#StoryDesInput').val();
-//     const tmpStoryContent = $('#storyInput').val();
-//     const tmpStoryId = $('#storyId').val();
-//     const tmpUserId = localStorage.getItem('userid');
-
-//     // get item from local storage
-//     const data = {
-//         title: tmpStoryTitle,
-//         description: tmpStoryDes,
-//         story: tmpStoryContent,
-//         userId: tmpUserId,
-//     };
-
-//     $('#msg').html('');
-
-//     // call the web service endpoint
-//     $.ajax({
-//         headers: { authorization: `Bearer ${tmpToken}` },
-//         url: `${backEndUrl}/story/${tmpStoryId}`,
-//         type: 'PUT',
-//         data: JSON.stringify(data),
-//         contentType: 'application/json; charset=utf-8',
-//         dataType: 'json',
-//         success(data) {
-//             if (data != null && data.success) {
-//                 new Noty({
-//                     timeout: '5000',
-//                     type: 'info/information',
-//                     layout: 'topCenter',
-//                     theme: 'sunset',
-//                     text: 'Successfully Updated Story',
-//                 }).show();
-//             } else {
-//                 console.log('Error');
-//             }
-//         },
-//         error(xhr, textStatus, errorThrown) {
-//             console.log('Error in Operation');
-//             console.log('-----------------------');
-//             console.log(xhr);
-//             console.log(textStatus);
-//             console.log(errorThrown);
-//         },
-//     });
-// }
 
 
 
