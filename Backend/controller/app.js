@@ -96,7 +96,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     } else {
       console.log(`Token: ${result}`);
       msg = {
-        UserID: result.UserID,
+        AdminID: result.AdminID,
         token,
         CustomerID: result.CustomerID,
         SuperAdminID: result.SuperAdminID,

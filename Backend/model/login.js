@@ -115,7 +115,7 @@ const Login = {
         const token = jwt.sign(
           {
           // (1)Payload
-            UserId: result[0].UserId,
+            AdminID: result[0].AdminID,
           },
           // (2) Secret Key
           config.key,
