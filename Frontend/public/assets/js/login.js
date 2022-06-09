@@ -39,8 +39,8 @@ $(document).ready(() => {
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('EmployeeID', JSON.stringify(data.CustomerID));
             window.location.replace(`${frontEndUrl}/homepage`);
-          } else if (data.UserID != null) {
-            localStorage.setItem('UserID', JSON.stringify(data.UserID));
+          } else if (data.AdminID != null) {
+            localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/booking`);
           }
