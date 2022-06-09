@@ -32,13 +32,13 @@ $(document).ready(() => {
 
       success(data) {
         if (data != null) {
-          console.log('HI');
+          console.log('Data');
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
-            localStorage.setItem('EmployeeID', JSON.stringify(data.CustomerID));
+            localStorage.setItem('CustomerID', JSON.stringify(data.CustomerID));
             window.location.replace(`${frontEndUrl}/customer/booking`);
           } else if (data.UserID != null) {
-            localStorage.setItem('UserID', JSON.stringify(data.UserID));
+            localStorage.setItem('EmployeeID', JSON.stringify(data.UserID));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/booking`);
           }

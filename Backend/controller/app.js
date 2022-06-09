@@ -22,11 +22,13 @@ const cors = require('cors');
 
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
-
+const verifyToken = require('../auth/isLoggedInMiddleWare');
 // model
 
 const Login = require('../model/login');
 const Admin = require('../model/admin');
+const Customer = require('../model/customer');
+
 // MF function
 /**
  * prints useful debugging information about an endpoint we are going to service
@@ -1415,7 +1417,7 @@ app.post('/employeeList', printDebugInfo, async (req, res) => {
     }
   });
 });
-app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
+app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
   // extract id from params
   const BookingID = req.params.bookingIDs;
   // extract all details needed
@@ -1444,5 +1446,25 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
     }
   });
 });
+
+//---------------------------------------------------
+//                 Feature/adminCustomer
+//---------------------------------------------------
+
+// Get user profile
+app.get('/customerAddBooking/:userID', printDebugInfo, async (req, res, next) => {
+  const userid = req.params.userID;
+
+  Customer.getCustomerById(userid, (err, result) => {
+    if (!err) {
+      console.log('hi');
+      console.log(`result: ${result}`);
+      res.status(200).send(result);
+    } else {
+      return next(err);
+    }
+  });
+});
+
 // module exports
 module.exports = app;
