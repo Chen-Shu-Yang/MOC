@@ -22,7 +22,7 @@ const cors = require('cors');
 
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
-const verifyToken = require('../auth/isLoggedInMiddleWare');
+// const verifyToken = require('../auth/isLoggedInMiddleWare');
 // model
 
 const Login = require('../model/login');
