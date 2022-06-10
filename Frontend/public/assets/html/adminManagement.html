@@ -179,22 +179,23 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <input type="text" id="addAdminID" hidden />
                                 <label>FirstName:</label>
                                 <input type="text" class="form-control" placeholder="First Name ..."
-                                    id="addFirstNameInput"><br>
+                                    id="addAdminFirstNameInput"><br>
                                 <label>LastName:</label>
                                 <input type="text" class="form-control" placeholder="Last Name ..."
-                                    id="addLastNameInput"><br>
+                                    id="addAdminLastNameInput"><br>
                                 <label>Admin Email:</label>
-                                <input type="text" class="form-control" placeholder="Admin email ..."
-                                    id="addAdminNameInput"><br>
+                                <input type="email" class="form-control" placeholder="Admin email ..."
+                                    id="addAdminEmailInput"><br>
+                                    <label>Admin Password:</label>
+                                <input type="text" class="form-control" placeholder="Admin password ..."
+                                    id="addAdminPasswordInput"><br>
                                 <span>Is this Admin a Super Admin?</span>
-
-                                <input type="radio" id="addRadioBtnYes" value="Super Admin">
-                                <label>Y</label>
-                                <input type="radio" id="addRadioBtnNo" value="Admin">
-                                <label>N</label>
+                                <select class="form-select" aria-label="Default select example" id="addAdminTypeInput">
+                                    <option value="Super Admin">Super Admin</option>
+                                    <option value="Admin">Admin</option>
+                                </select>
                             </div>
                         </form>
                     </div>
@@ -230,8 +231,8 @@
                                     id="AdminPwdInput"><br>
                                 <span>Is this Admin a Super Admin?</span>
                                 <select class="form-select" aria-label="Default select example" id="changeAdminType">
-                                    <option value="Super Admin">Super Admin</option>
                                     <option value="Admin">Admin</option>
+                                    <option value="Super Admin">Super Admin</option>
                                 </select>
 
                             </div>
@@ -240,7 +241,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn update-btn" id="editAdminBtn" data-dismiss="modal">Update
                             Admin Password</button>
-                        <button type="button" class="btn btn-danger" id="editAdminTypeBtn" data-dismiss="modal">Update Admin Type</button>
+                        <button type="button" class="btn btn-danger" id="editAdminTypeBtn" data-dismiss="modal">Update
+                            Admin Type</button>
                     </div>
                 </div>
             </div>

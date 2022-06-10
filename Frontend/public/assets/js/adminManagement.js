@@ -340,10 +340,87 @@ function deleteAdmin(id) {
   });
 }
 
+//add new admin
+function addAdmin(){
+    //extract values for add pop-up
+    const addFirstName = $('#addAdminFirstNameInput').val();
+    const addLastName = $('#addAdminLastNameInput').val();
+    const addEmail = $('#addAdminEmailInput').val();
+    const addPassword = $('#addAdminPasswordInput').val();
+    const addAdminType = $('#addAdminTypeInput').val();
+    console.log(addFirstName + addLastName+ addEmail);
+    // declares a variable endpoint
+    let endpoint;
+    // Check if the admin extracted is a super admin or a normal admin
+    // Change the endpoint and add the admins into different admin type table
+    if (addAdminType === "Super Admin") {
+      // Endpoint to add regular admin into superadmin table
+      endpoint = `Superadmin`;
+    } else {
+      // Endpoint to add superadmin into admin table
+      endpoint = `Admin`;
+    }
+  
+    //store all extracted info into requestBody
+    const requestBody = {
+      LastName: addLastName,
+      FirstName: addFirstName,
+      AdminPwd: addPassword,
+      AdminEmail: addEmail,
+      AdminType: addAdminType,
+    }
+ 
+  
+    // Converts requestBody into a String
+    const reqtsBody = JSON.stringify(requestBody);
+     console.log(reqtsBody);
+    // call the method to post data
+    $.ajax({
+      url: `${backEndUrl}/add${endpoint}`,
+      type: 'POST',
+      data: reqtsBody,
+      contentType: "application/json; charset=utf-8",
+      dataType: 'json',
+      success: function (data, textStatus, xhr) {
+        //set and call confirmation message
+        msg = "Successfully added!"
+        $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+        const post = data;
+        // Refresh the admin table
+        loadAllAdmins()
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        //set and call error message
+        var errMsg = ""
+        if (xhr.status == 500) {
+          console.log("error")
+          errMsg = "Server Issues"
+        }
+        else if (xhr.status == 400) {
+          errMsg = " Input not accepted"
+        }
+        else if (xhr.status == 406) {
+          errMsg = " Input not accepted"
+        }
+        else {
+          errMsg = "There is some other issues here"
+        }
+        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+      }
+    });
+
+}
+
 // Load datas when page refresh or loads for the first time
 $(document).ready(() => {
   // LoadAllAdmins() called when page is loaded or refreshed
   loadAllAdmins();
+  
+  // Add Admin Password button
+  $('#addAdminBtn').click(() => {
+    // addAdmin()() function called upon click event
+    addAdmin()
+  });
 
   // Update Admin Type button
   $('#editAdminTypeBtn').click(() => {
