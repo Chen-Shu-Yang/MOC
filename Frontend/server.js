@@ -85,6 +85,11 @@ app.get('/admin/pricing', (req, res) => {
   res.sendFile('/public/assets/html/adminPricing.html', { root: __dirname });
 });
 
+// go to admin view contract
+app.get('/admin/contract', (req, res) => {
+  res.sendFile('/public/assets/html/adminViewContract.html', { root: __dirname });
+});
+
 //= ======================================================
 //                   Customer
 //= ======================================================
