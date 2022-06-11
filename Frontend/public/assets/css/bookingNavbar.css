@@ -18,22 +18,15 @@
 .navbar {
     position: fixed;
     width: 100%;
-    z-index: 999;
+    z-index: 1;
     font-family: 'Ubuntu', sans-serif;
-    transition: all 0.3s ease;
+    background: #fff;
 }
 
 .navbar .max-width {
     padding-top: 12px;
     padding-bottom: 11px;
 }
-
-/* .menu-btn {
-    color: #000;
-    font-size: 23px;
-    cursor: pointer;
-    display: none;
-} */
 
 .navbar.sticky {
     background: grey;
@@ -76,7 +69,8 @@
 }
 
 .booking-process hr {
-    background: #000;
+    margin: 0;
+    border-top: 2px solid #000;
 }
 
 .booking-process .steps {
@@ -84,6 +78,7 @@
     font-family: 'Ubuntu', sans-serif;
     font-weight: 500;
     cursor: pointer;
+    color: #000;
 }
 
 .booking-process .steps.active {

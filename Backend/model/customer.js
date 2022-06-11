@@ -1,11 +1,5 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
-/* eslint-disable consistent-return */
 /* eslint-disable no-console */
-/* eslint-disable max-len */
 
 //= ======================================================
 //              Imports
@@ -15,7 +9,7 @@ const pool = require('../controller/databaseConfig');
 //= ======================================================
 //              Functions / Objects
 //= ======================================================
-const Profile = {
+const Customer = {
   // get all class of services
   getCustomerById(cID, callback) {
     // sql query statement
@@ -40,9 +34,36 @@ const Profile = {
     });
   },
 
+  // get employees scheduled as available for booking
+  possibleAvailableHelpers(bookingDate, callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,e.EmployeeID, e.Skillsets
+      FROM 
+        heroku_6b49aedb7855c0b.employee AS e
+      LEFT JOIN 
+        heroku_6b49aedb7855c0b.schedule AS s ON e.EmployeeID = s.Employee
+      LEFT JOIN 
+        heroku_6b49aedb7855c0b.booking AS b ON e.EmployeeID = b.Employee
+      Having 
+        FormatScheduleDate= ?;`;
+
+    const values = [bookingDate];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================
 //              Exports
 //= ======================================================
-module.exports = Profile;
+module.exports = Customer;

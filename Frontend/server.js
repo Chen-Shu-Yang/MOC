@@ -93,7 +93,10 @@ app.get('/customer/booking', (req, res) => {
   res.sendFile('/public/assets/html/customerBooking.html', { root: __dirname });
 });
 
-
+// List of possible Employees
+app.get('/customer/helpers', (req, res) => {
+  res.sendFile('/public/assets/html/customerHelpers.html', { root: __dirname });
+});
 
 
 //= ======================================================

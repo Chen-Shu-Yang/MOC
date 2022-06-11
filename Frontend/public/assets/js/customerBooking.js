@@ -1,5 +1,3 @@
-
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
@@ -114,7 +112,7 @@ $(document).ready(() => {
     decrementR();
     incrementBR();
     decrementBR();
-    updatedTime()
+    updatedTime();
     // updatedDay();
     // updatedDate();
     // updatedAddServices();

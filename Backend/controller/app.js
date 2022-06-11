@@ -1466,5 +1466,35 @@ app.get('/customerAddBooking/:userID', printDebugInfo, async (req, res, next) =>
   });
 });
 
+//---------------------------------------------------
+//               Feature/ Customer
+//---------------------------------------------------
+app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
+  const dates = req.params.bookingDates;
+
+  // calling possibleAvailableHelpers method from customer model
+  Customer.possibleAvailableHelpers(dates, (err, result) => {
+    // if no error send result
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 // module exports
 module.exports = app;
