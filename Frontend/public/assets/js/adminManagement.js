@@ -360,7 +360,6 @@ function addAdmin(){
       // Endpoint to add superadmin into admin table
       endpoint = `Admin`;
     }
-  
     //store all extracted info into requestBody
     const requestBody = {
       LastName: addLastName,
@@ -369,8 +368,6 @@ function addAdmin(){
       AdminEmail: addEmail,
       AdminType: addAdminType,
     }
- 
-  
     // Converts requestBody into a String
     const reqtsBody = JSON.stringify(requestBody);
      console.log(reqtsBody);
@@ -416,9 +413,9 @@ $(document).ready(() => {
   // LoadAllAdmins() called when page is loaded or refreshed
   loadAllAdmins();
   
-  // Add Admin Password button
+  // Add Admin button
   $('#addAdminBtn').click(() => {
-    // addAdmin()() function called upon click event
+    // addAdmin()function called upon click event
     addAdmin()
   });
 
