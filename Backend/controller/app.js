@@ -1497,6 +1497,7 @@ app.get('/contracts/:pageNumber', printDebugInfo, async (req, res) => {
     }
   });
 });
+// Get all contracts
 app.get('/contracts', printDebugInfo, async (req, res) => {
   // calling getAllContracts method from admin model
   Admin.getAllContracts((err, result) => {

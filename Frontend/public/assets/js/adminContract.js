@@ -5,7 +5,7 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 
-
+// Create a new row for Contracts
 function createRow(cardInfo) {
 
     const card = `
@@ -26,7 +26,7 @@ function createRow(cardInfo) {
       `;
     return card;
 }
-
+// Create pagination numbering
 function pageBtnCreate(totalNumberOfPages) {
     $('#pagination').html('');
     for (i = 1; i <= totalNumberOfPages; i++) {
@@ -34,7 +34,7 @@ function pageBtnCreate(totalNumberOfPages) {
         $('#pagination').append(divPaginBtn);
     }
 }
-
+//Load all contracts to allow for pagination numbering
 function loadAllContracts() {
     $.ajax({
         url: `${backEndUrl}/contracts`,
@@ -56,7 +56,7 @@ function loadAllContracts() {
         },
     });
 }
-
+// Load contracts restricted to 6 row per page
 function loadAllContractByLimit(pageNumber) {
     // call the web service endpoint
     $.ajax({
@@ -67,6 +67,7 @@ function loadAllContractByLimit(pageNumber) {
         success(data) {
             if (data != null) {
                 $('#contractTableBody').html('');
+                // for loop to generate each row
                 for (let i = 0; i < data.length; i++) {
                     const contract = data[i];
 
