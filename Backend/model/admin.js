@@ -1,11 +1,7 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
-/* eslint-disable max-len */
 
 //= ======================================================
 //              Imports
@@ -98,10 +94,7 @@ const Admin = {
             ClassPricing=?,
             ClassDes=?
         where
-             ClassID=?
-             ;
-            
-
+             ClassID=?;
             `;
     // pool query
     pool.query(sql, [ClassName, ClassPricing, ClassDes, id], (err, result) => {
@@ -141,7 +134,8 @@ const Admin = {
     pageNumber = parseInt(pageNumber);
     // Number of employee showed per page
     const limitPerPage = 6;
-    // Number of employee to skip based on the page number so that previously shown data will not be displayed
+    // Number of employee to skip based on the page number so that
+    // previously shown data will not be displayed
     const numberOfValueToSkip = (pageNumber - 1) * 6;
     // sql statement to limit and skip
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee LIMIT ? OFFSET ?;';
@@ -170,12 +164,11 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result); // if
     });
   },
 
-  // get class of service by id
+  // get employee by id
   getEmployee(id, callback) {
     // sql query statement
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee where EmployeeID=?;';
@@ -189,13 +182,20 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result);
     });
   },
 
-  // update all class of services
-  updateEmployee(EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id, callback) {
+  // update employee
+  updateEmployee(
+    EmployeeName,
+    EmployeeDes,
+    EmployeeImageCloudinaryFileId,
+    EmployeeImgUrl,
+    EmployeeSkills,
+    id,
+    callback,
+  ) {
     // sql query statement
     const sql = `
       UPDATE 
@@ -210,7 +210,14 @@ const Admin = {
         EmployeeID=?;
     `;
     // pool query
-    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id], (err, result) => {
+    pool.query(sql, [
+      EmployeeName,
+      EmployeeDes,
+      EmployeeImageCloudinaryFileId,
+      EmployeeImgUrl,
+      EmployeeSkills,
+      id,
+    ], (err, result) => {
       // error
       if (err) {
         console.log(err);
@@ -220,13 +227,26 @@ const Admin = {
       return callback(null, result);
     });
   },
+
   // feature/addEmployee Model
-  // eslint-disable-next-line max-len
-  addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, callback) {
-    // sql statemetn to insert new employee
+  addEmployee(
+    EmployeeName,
+    EmployeeDes,
+    EmployeeImgageCloudinaryFileId,
+    EmployeeImageUrl,
+    Skillsets,
+    callback,
+  ) {
+    // sql statement to insert new employee
     const sql = 'INSERT INTO heroku_6b49aedb7855c0b.employee (EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, Skillsets) VALUES (?,?,?,?,?);';
     // pool query
-    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets], (err, result) => {
+    pool.query(sql, [
+      EmployeeName,
+      EmployeeDes,
+      EmployeeImgageCloudinaryFileId,
+      EmployeeImageUrl,
+      Skillsets,
+    ], (err, result) => {
       // error
       if (err) {
         console.log(err);
@@ -237,9 +257,8 @@ const Admin = {
     });
   },
 
-  // delete all class of services
+  // delete employee
   deleteEmployee(id, callback) {
-    console.log(` admin.js employee delete method start ${id}`);
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.employee where EmployeeID =?;';
 
@@ -504,7 +523,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result);
     });
   },
@@ -544,7 +562,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result); // if
     });
   },
@@ -563,7 +580,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result);
     });
   },
@@ -574,7 +590,6 @@ const Admin = {
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
 
-    const values = [id];
     // pool query
     pool.query(sql, [id], (err, result) => {
       // error
