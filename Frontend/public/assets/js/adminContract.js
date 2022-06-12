@@ -5,9 +5,9 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 
-// Create a new row for Contracts
+// Create a new card for Contracts
 function createRow(cardInfo) {
-
+    // cardInfo data is place in each respective place
     const card = `
       <tr>
   
@@ -28,7 +28,9 @@ function createRow(cardInfo) {
 }
 // Create pagination numbering
 function pageBtnCreate(totalNumberOfPages) {
+    // Remove any pagination 
     $('#pagination').html('');
+    // for loop to the button based on totalNumberOfPages
     for (i = 1; i <= totalNumberOfPages; i++) {
         divPaginBtn = `<button type="button" onClick="loadAllContractByLimit(${i})">${i}</button>`;
         $('#pagination').append(divPaginBtn);
@@ -36,11 +38,13 @@ function pageBtnCreate(totalNumberOfPages) {
 }
 //Load all contracts to allow for pagination numbering
 function loadAllContracts() {
+    // call the web service endpoint
     $.ajax({
         url: `${backEndUrl}/contracts`,
         type: 'GET',
         contentType: 'application/json; charset=utf-8',
-
+        // when successful, divide the number of result by 6 to determine 
+        // number of pages needed
         success(data) {
             const totalNumberOfPages = Math.ceil(data.length / 6);
             pageBtnCreate(totalNumberOfPages);
@@ -67,7 +71,7 @@ function loadAllContractByLimit(pageNumber) {
         success(data) {
             if (data != null) {
                 $('#contractTableBody').html('');
-                // for loop to generate each row
+                // for loop to generate each row of result
                 for (let i = 0; i < data.length; i++) {
                     const contract = data[i];
 
@@ -92,7 +96,7 @@ function loadAllContractByLimit(pageNumber) {
                     $('#contractTableBody').append(newRow);
                 }
             }
-            
+
         },
         error(xhr, textStatus, errorThrown) {
             console.log('Error in Operation');
