@@ -983,7 +983,7 @@ app.get('/customer', printDebugInfo, async (req, res) => {
   });
 });
 
-// get an employee
+// get a Customer
 app.get('/onecustomer/:id', printDebugInfo, async (req, res) => {
   // extract id from params
   const customerId = req.params.id;
@@ -1452,13 +1452,11 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
 //---------------------------------------------------
 
 // Get user profile
-app.get('/customerAddBooking/:userID', printDebugInfo, async (req, res, next) => {
-  const userid = req.params.userID;
+app.get('/customerAddBooking/:customerID', printDebugInfo, async (req, res, next) => {
+  const customerId = req.params.customerID;
 
-  Customer.getCustomerById(userid, (err, result) => {
+  Customer.getCustomerById(customerId, (err, result) => {
     if (!err) {
-      console.log('hi');
-      console.log(`result: ${result}`);
       res.status(200).send(result);
     } else {
       return next(err);
