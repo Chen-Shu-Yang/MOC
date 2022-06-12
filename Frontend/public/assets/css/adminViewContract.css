@@ -1,9 +1,7 @@
 .table{
     padding-top: 20000px;
 }
-.addBtn{
-    margin-left: 790px;
-}
+
 
 .alert{
     width:300px;
@@ -18,7 +16,7 @@
 }
 
 .home-section nav .search-box,
-.booking-header.moved .search-box {
+.contract-header.moved .search-box {
     height: 40px;
     width: 300px;
     margin: 0 20px;
@@ -26,7 +24,7 @@
 }
 
 nav .search-box input,
-.booking-header.moved .search-box input {
+.contract-header.moved .search-box input {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -40,7 +38,7 @@ nav .search-box input,
 }
 
 nav .search-box .fa-magnifying-glass,
-.booking-header.moved .search-box .fa-magnifying-glass {
+.contract-header.moved .search-box .fa-magnifying-glass {
     position: absolute;
     right: 5px;
     top: 50%;
@@ -62,17 +60,17 @@ nav .right-header {
 }
 
 
-/* booking Section */
-.booking-header.moved {
+/* contract Section */
+.contract-header.moved {
     display: none;
 }
 
-.booking-section {
+.contract-section {
     padding-top: 100px;
     padding-bottom: 20px;
 }
 
-.booking-section .max-width {
+.contract-section .max-width {
     margin: 0 80px;
     display: flex;
     align-items: center;
@@ -80,28 +78,28 @@ nav .right-header {
     justify-content: center;
 }
 
-.booking-section .booking-list {
+.contract-section .contract-list {
     max-width: 1000px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 50px;
 }
 
-.booking-card {
+.contract-card {
     border: 2px solid #000;
     padding: 20px;
     border-radius: 6px; 
     font-size: 11px;
 }
 
-.booking-card .booking-id {
+.contract-card .contract-id {
     display: flex;
     align-items: center;
     justify-content: start;
     font-size: 16px;
 }
 
-.booking-card .booking-id img {
+.contract-card .contract-id img {
     width: 70px;
     height: 70px;
     object-fit: cover;
@@ -109,11 +107,11 @@ nav .right-header {
     border-radius: 50%;
 }
 
-.booking-card .booking-des {
+.contract-card .contract-des {
     margin: 20px 0;
 }
 
-.booking-card .booking-links {
+.contract-card .contract-links {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -158,16 +156,6 @@ nav .right-header {
     margin-bottom: 20px;
 }
 
-.modal-content .modal-footer .save-btn {
-    background: #84BC9E;
-    color: #fff;
-}
-
-.modal-content .modal-footer .delete-btn {
-    background: #D38984;
-    color: #fff;
-}
-
 .modal-content .modal-header .close {
     background: none;
     border: none;
@@ -177,7 +165,7 @@ nav .right-header {
     font-size: 25px;
 }
 
-.modal-content .modal-body .booking-availability {
+.modal-content .modal-body .contract-availability {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -281,13 +269,8 @@ table tr {
 }
 
 @media (max-width: 1200px) {
-    .booking-section .booking-list {
+    .contract-section .contract-list {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .addbooking-btn {    
-        font-size: 12px;
-        padding: 5px 10px ;
     }
 
     .home-section nav .search-box {
@@ -312,18 +295,14 @@ table tr {
 }
 
 @media (max-width: 900px) {
-    .booking-section .booking-list {
+    .contract-section .contract-list {
         grid-template-columns: repeat(1, 1fr);
     }
 
-    .addbooking-btn {    
-        font-size: 11px;
-        padding: 5px 5px ;
-    }
 }
 
 @media (max-width: 729px) {
-    .booking-section .max-width {
+    .contract-section .max-width {
         margin-left: 120px;
         margin-right: 40px;
     }
@@ -332,7 +311,7 @@ table tr {
         display: none;
     }
 
-    .booking-header.moved {
+    .contract-header.moved {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -341,7 +320,7 @@ table tr {
         z-index: -1;
     }
 
-    .booking-header.moved .search-box {
+    .contract-header.moved .search-box {
         height: 40px;
         width: 100%;
         margin: 0px;
@@ -349,21 +328,11 @@ table tr {
         flex-basis: 75%;
     }
 
-    .booking-header.moved .addbooking-btn {
-        padding: 7px 2px;
-        font-size: 12px;
-        flex-basis: 25%;
-        transition: all 0.3s ease;
-    }
-    
-    .booking-header.moved .addbooking-btn span {
-        margin-left: none;
-    }
 }
 
 
 @media (max-width: 580px) {
-    .booking-section .max-width {
+    .contract-section .max-width {
         margin: 0 30px;
     }
 }
