@@ -44,8 +44,6 @@ const Customer = {
         heroku_6b49aedb7855c0b.employee AS e
       LEFT JOIN 
         heroku_6b49aedb7855c0b.schedule AS s ON e.EmployeeID = s.Employee
-      LEFT JOIN 
-        heroku_6b49aedb7855c0b.booking AS b ON e.EmployeeID = b.Employee
       Having 
         FormatScheduleDate= ?;`;
 
