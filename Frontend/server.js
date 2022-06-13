@@ -89,7 +89,10 @@ app.get('/admin/pricing', (req, res) => {
 //                   Customer
 //= ======================================================
 
-
+// go to customer profile
+app.get('/customer/profile', (req, res) => {
+  res.sendFile('/public/assets/html/customerProfile.html', { root: __dirname });
+});
 
 
 //= ======================================================
