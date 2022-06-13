@@ -950,11 +950,12 @@ const Admin = {
 
     // sql statement to limit and skip
     const sql = `
-    select c.ContractId,c.StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    select c.ContractId,c.StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,r.RateName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.contract c
     join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
     join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+    join heroku_6b49aedb7855c0b.rates r on c.Rate = r.RatesID
     join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID LIMIT ? OFFSET ?;
 
   `;

@@ -19,8 +19,8 @@ function createRow(cardInfo) {
         <td>${cardInfo.TimeOfService}</td>
         <td>${cardInfo.NoOfRooms}</td>
         <td>${cardInfo.NoOfBathrooms}</td>
-        <td>${cardInfo.RateName}</td>
-        <td>${cardInfo.EstimatePricing}</td>
+        <td>${cardInfo.RateName}ft</td>
+        <td>$${cardInfo.EstimatePricing}</td>
         <td>${cardInfo.Address}</td>
       </tr>
       `;
@@ -88,7 +88,7 @@ function loadAllContractByLimit(pageNumber) {
                         TimeOfService: contract.TimeOfService,
                         NoOfRooms: contract.NoOfRooms,
                         NoOfBathrooms: contract.NoOfBathrooms,
-                        RateName: contract.Rate,
+                        RateName: contract.RateName,
                         EstimatePricing: contract.EstimatedPricing,
                         Address: contract.Address,
                     };
