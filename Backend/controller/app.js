@@ -1540,12 +1540,12 @@ app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
         if (month.includes(x)) {
           countNumBooking++;
           if (countNumBooking <= actualCountNumBooking) {
-            finalOutput.push({ month: x, numberOfBoooking: numMonthBooking[countNumBooking - 1] });
+            finalOutput.push({ month: x, numberOfBooking: numMonthBooking[countNumBooking - 1] });
           }
         }
 
         else {
-          finalOutput.push({ month: x, numberOfBoooking: 0 });
+          finalOutput.push({ month: x, numberOfBooking: 0 });
         }
       }
 

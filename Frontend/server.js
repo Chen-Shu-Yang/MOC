@@ -85,6 +85,11 @@ app.get('/admin/pricing', (req, res) => {
   res.sendFile('/public/assets/html/adminPricing.html', { root: __dirname });
 });
 
+// go to admin dashboard
+app.get('/admin/dashboard', (req, res) => {
+  res.sendFile('/public/assets/html/adminDashboard.html', { root: __dirname });
+});
+
 //= ======================================================
 //                   Customer
 //= ======================================================
@@ -95,6 +100,7 @@ app.get('/admin/pricing', (req, res) => {
 //= ======================================================
 //                   Super Admin
 //= ======================================================
+
 
 // retrieve from public folder
 app.use(serveStatic(`${__dirname}/public`));
