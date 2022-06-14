@@ -33,6 +33,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/customerProfile.css" rel="stylesheet">
     <title>Profile</title>
 </head>
 
@@ -63,7 +64,7 @@
                 <a href="image-gallery/index.html" class="nav-item nav-link">Gallery</a>
                 <a href="academy/index.html" class="nav-item nav-link">Academy</a>
                 <a href="contact/index.html" class="nav-item nav-link">Contact Us</a>
-                <a href="login" class="nav-item nav-link">Login</a>
+                <a href="/login" class="nav-item nav-link">Login</a>
                 <a href="contact/index.html" class="nav-item nav-link">Register</a>
             </ul>
         </div>
@@ -71,8 +72,71 @@
     <!--Nav bar end-->
     <!--Profile section-->
     <section>
+        <div class="row mx-auto">
+            <!--Profile page NavBar-->
+            <div class="col-sm-3 menu offset-sm-1">
+                <ul class="nav flex-column ">
+                    <li class="nav-item border rounded">
+                        <a class="nav-link active " href="/customer/profile">My Details</a>
+                    </li>
+                    <li class="nav-item border rounded">
+                        <a class="nav-link " href="#">Change Password</a>
+                    </li>
+                    <li class="nav-item border rounded">
+                        <a class="nav-link " href="/customer/history">Booking History</a>
+                    </li>
+                </ul>
+            </div>
+            <!--Profile details-->
+
+            <div class="col profileDetails border container">
+                <div class="">
+                    <h2>My Details</h2>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <label for="firstName">First Name</label>
+                            <input class="form-control" type="text" value="" id="firstName">
+                        </div>
+                        <div class="col">
+                            <label for="lastName">Last Name</label>
+                            <input class="form-control" type="text" value="" id="lastName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="address">Address</label>
+                            <input class="form-control" type="text" value="" id="address">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="postal">Postal</label>
+                            <input class="form-control" type="text" value="" id="postal">
+                        </div>
+                        <div class="col">
+                            <label for="phone">Phone number</label>
+                            <input class="form-control" type="text" value="" id="phone">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="email">Email Address</label>
+                            <input class="form-control" type="text" value="" id="email">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-success " type="button" id="updateProfile">Edit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </section>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src="../../assets/js/customerProfile.js"></script>
 </body>
 
 </html>

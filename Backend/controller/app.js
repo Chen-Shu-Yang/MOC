@@ -21,6 +21,8 @@ const upload = require('../utils/multer');
 
 const Login = require('../model/login');
 const Admin = require('../model/admin');
+const Customer = require('../model/customer');
+
 // MF function
 /**
  * prints useful debugging information about an endpoint we are going to service
@@ -1468,6 +1470,63 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
       res.status(400).send('Null value not allowed');
     }
     // else if there is a server error return message
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+//= ======================================================
+//              Features / customer
+//= ======================================================
+
+app.get('/user/customer/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+
+  // calling getCustomerById method from Customer model
+  Customer.getCustomerById(customerId, (err, result) => {
+    if (!err) {
+      // if customer id is not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+app.put('/update/customer/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+  // extract all details needed
+  const { firstName } = req.body;
+  const { lastName } = req.body;
+  const { address } = req.body;
+  const { postal } = req.body;
+  const { phoneNumber } = req.body;
+  const { email } = req.body;
+
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Customer.updateCustProfile(firstName, lastName, address, postal, phoneNumber, email, customerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    }
     else {
       res.status(500).send('Internal Server Error');
     }
