@@ -937,6 +937,30 @@ const Admin = {
       return callback(null, result); // if
     });
   },
+  getRevenueOfTheMonth(callback) {
+    // sql query statement
+    const sql = `
+    select c.ContractID ,(c.EstimatedPricing * count(b.BookingID))
+    as Revenue,count(b.BookingID) from heroku_6b49aedb7855c0b.contract 
+    as c
+     join heroku_6b49aedb7855c0b.booking as b
+    on  c.ContractID=b.ContractId
+    where month(b.ScheduleDate) = month(CURRENT_DATE()) 
+    group by c.ContractID
+    `
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
 
 };
 

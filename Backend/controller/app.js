@@ -1555,5 +1555,26 @@ app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
     }
   });
 });
+
+// get all rates
+app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
+  // calling getAllRates method from admin model
+  Admin.getRevenueOfTheMonth((err, result) => {
+    if (!err) {
+      let sum = 0;
+
+      for (i = 0; i < result.length; i++) {
+        console.log(typeof (result[i].Revenue));
+        sum += result[i].Revenue;
+      }
+      console.log(sum);
+      var output = { totalRevenue: sum };
+
+      res.status(200).send(output);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
 // module exports
 module.exports = app;

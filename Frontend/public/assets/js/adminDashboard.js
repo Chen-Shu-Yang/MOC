@@ -52,23 +52,7 @@ function loadMonthlyBookingForGraph() {
                 }
               }
             });
-    
-            
 
-            // for (var i = 0; i < data.length; i++) {
-            //     //assigning variable for classOfService
-            //     var classOfService = data[i];
-            //     //extracting information
-            //     var RowInfo = {
-            //         "classId": classOfService.ClassID,
-            //         "className": classOfService.ClassName,
-            //         "classPricing": classOfService.ClassPricing,
-            //         "classDes": classOfService.ClassDes,
-            //     }
-            //     console.log("---------Card INfo data pack------------")
-            //     console.log(RowInfo);
-               
-            // }
         },
         error: function (xhr, textStatus, errorThrown) {
             //print error
@@ -84,6 +68,33 @@ function loadMonthlyBookingForGraph() {
 
 
 
+//loadAllClassOfServices gets all class of services
+function getRevenueOfTheMonth() {
+    $.ajax({
+        url: `${backEndUrl}/revenueOfTheMonth`,
+        type: 'GET',
+        contentType: "application/json; charset=utf-8",
+        success: function (data, textStatus, xhr) {
+            console.log("-------response data------")
+            console.log(data)
+
+            $('#revenueOfTheMonth').append(data.totalRevenue);
+          
+
+         
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            //print error
+            console.log('Error in Operation');
+        }
+    });
+
+
+
+
+
+}
+
 
 // to load datas when page refresh or loads for the first time
 $(document).ready(function () {
@@ -94,6 +105,8 @@ $(document).ready(function () {
     console.log("Query Param (extraction): " + queryParams)
     //load
     loadMonthlyBookingForGraph();
+  console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    getRevenueOfTheMonth()
    
    
 });
