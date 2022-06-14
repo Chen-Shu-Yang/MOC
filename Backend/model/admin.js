@@ -914,6 +914,30 @@ const Admin = {
       return callback(null, result);
     });
   },
+   //= ======================================================
+  //              Features / adminDashboard
+  //= ======================================================
+  // get all extra services
+  getBookingByMonth(callback) {
+    // sql query statement
+    const sql = `select month(ScheduleDate) as month, count(ScheduleDate) as numberOfBooking
+    from heroku_6b49aedb7855c0b.booking 
+    WHERE     year(ScheduleDate) = year(curdate())
+    group by month(ScheduleDate);
+    `
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
 };
 
 //= ======================================================

@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable linebreak-style */
 /* eslint-disable brace-style */
 /* eslint-disable consistent-return */
@@ -1470,6 +1471,87 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
     // else if there is a server error return message
     else {
       res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from admin model
+  Admin.getBookingByMonth((err, result) => {
+    const finalOutput = [];
+    const month = [];
+    const numMonthBooking = [];
+
+    if (!err) {
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].month === 1) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 2) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 3) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 4) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 5) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 6) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 7) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 8) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 9) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 10) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 11) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        if (result[i].month === 12) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+      }
+
+      let countNumBooking = 0;
+      const actualCountNumBooking = numMonthBooking.length;
+      for (let x = 1; x < 13; x++) {
+        if (month.includes(x)) {
+          countNumBooking++;
+          if (countNumBooking <= actualCountNumBooking) {
+            finalOutput.push({ month: x, numberOfBoooking: numMonthBooking[countNumBooking - 1] });
+          }
+        }
+
+        else {
+          finalOutput.push({ month: x, numberOfBoooking: 0 });
+        }
+      }
+
+      res.status(200).send(finalOutput);
+    } else {
+      res.status(500).send('Some error');
     }
   });
 });
