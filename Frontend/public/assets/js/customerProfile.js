@@ -4,7 +4,7 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 function loadProfileDetails() {
-    const customerId = localStorage.getItem('EmployeeID')
+    const customerId = localStorage.getItem('customerID')
     $.ajax({
         url: `${backEndUrl}/user/customer/${customerId}`,
         type: 'GET',
@@ -45,7 +45,7 @@ $('#updateProfile').click(() => {
     const postal = $('#postal').val();
     const phoneNumber = $('#phone').val();
     const email = $('#email').val();
-    const customerId = localStorage.getItem('EmployeeID')
+    const customerId = localStorage.getItem('customerID')
     // data compilation
     const info = {
         firstName: firstName,
