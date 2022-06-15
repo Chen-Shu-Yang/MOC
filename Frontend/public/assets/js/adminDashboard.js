@@ -25,13 +25,20 @@ function loadMonthlyBookingForGraph() {
             numberOfBookingOct = data[9].numberOfBooking
             numberOfBookingNov = data[10].numberOfBooking
             numberOfBookingDec = data[11].numberOfBooking
-
+            var numberOfBooking = [numberOfBookingJan, numberOfBookingFeb, numberOfBookingMar, numberOfBookingApr, numberOfBookingMay, numberOfBookingJun, numberOfBookingJul, numberOfBookingAug, numberOfBookingSep, numberOfBookingOct, numberOfBookingNov, numberOfBookingDec];
 
 
             var xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "October", "Novemeber", "December"];
-            var yValues = [numberOfBookingJan, numberOfBookingFeb, numberOfBookingMar, numberOfBookingApr, numberOfBookingMay, numberOfBookingJun, numberOfBookingJul, numberOfBookingAug, numberOfBookingSep, numberOfBookingOct, numberOfBookingNov, numberOfBookingDec];
+            var yValues = [];
+            const currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            console.log(currentMonth)
 
-            colorVal = "rgba(242, 70, 141, 0.8)"
+            for (i = 0; i <= currentMonth; i++) {
+                yValues[i] = numberOfBooking[i]
+            }
+
+            colorVal = "rgb(255, 99, 132)"
 
             new Chart("myChart", {
                 type: "line",
@@ -40,15 +47,32 @@ function loadMonthlyBookingForGraph() {
                     datasets: [{
                         fill: true,
                         lineTension: 0.2,
+                        color: "#fff",
                         backgroundColor: colorVal,
-                        strokeColor: "rgba(0,0,0,0.8)",
+                        borderColor: "rgb(255,99.132)",
                         data: yValues
                     }]
                 },
                 options: {
+                    responsive: true,
                     legend: { display: false },
+
+                    title: {
+                        display: true,
+                        text: 'Booking'
+                    }
+
+                    ,
                     scales: {
-                        yAxes: [{ ticks: { min: 0, autoSkip: true } }],
+
+                        yAxes: [{
+                            ticks: { min: 0, autoSkip: true },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Number of Booking'
+                            }
+
+                        }],
                     }
                 }
             });
@@ -105,38 +129,40 @@ function diffInConsecutiveMonthBooking() {
             let currentMonth = currentDate.getMonth();
             let lastMonth;
 
-            if(currentMonth==0){
-                lastMonth=12
+            if (currentMonth == 0) {
+                lastMonth = 12
             }
-            else{
-                lastMonth=currentMonth-1
+            else {
+                lastMonth = currentMonth - 1
             }
 
-          
 
-            var numberOfBookingLastMonth,numberOfBookingCurrenttMonth;
+
+            var numberOfBookingLastMonth, numberOfBookingCurrenttMonth;
             numberOfBookingLastMonth = data[lastMonth].numberOfBooking
             numberOfBookingCurrenttMonth = data[currentMonth].numberOfBooking
 
-            var diffInBooking=numberOfBookingCurrenttMonth-numberOfBookingLastMonth
+            var diffInBooking = numberOfBookingCurrenttMonth - numberOfBookingLastMonth
 
            
 
-            console.log("Difference in booking: "+diffInBooking)
+            if (diffInBooking > 0) {
+                $('#diffInBooking').append(diffInBooking)
+                $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" id="dollarIcon"></i>`)
 
-            if(diffInBooking>0){
-                $('#diffInBooking').append("Positive: "+diffInBooking)
-
-
-            }
-            else if(diffInBooking ==0){
-                $('#diffInBooking').append("neutral: "+diffInBooking)
-            }
-            else{
-                $('#diffInBooking').append("negative: "+Math.abs(diffInBooking))
 
             }
-        
+            else if(diffInBooking<0) {
+                $('#diffInBooking').append(Math.abs(diffInBooking))
+                $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" id="downTrendIcon"></i>`)
+
+            }
+            else if (diffInBooking == 0) {
+                $('#diffInBooking').append(diffInBooking)
+                $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" ></i>`)
+            }
+          
+
 
 
 

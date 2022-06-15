@@ -41,6 +41,8 @@
 
     <link href="../../assets/css/adminNavbar.css" rel="stylesheet">
     <link href="../../assets/css/adminPricing.css" rel="stylesheet">
+    <link href="../../assets/css/adminDashboard.css" rel="stylesheet">
+
 
     <title>Admin Pricing</title>
 </head>
@@ -124,37 +126,73 @@
                 </nav>
             </section>
 
-         
+
 
 
         </div>
-      
 
-      
+
+
         <div class="col-9 ">
 
-          
-            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 
-            <h1 id="revenueOfTheMonth">Revenue: </h1>
 
-            <h1 id="diffInBooking">Diff: </h1>
+
+            <div id="graphContainCard" class="card ">
+                <div id="graphContain">
+                    <canvas id="myChart"></canvas>
+                </div>
+
+
 
             </div>
 
+            <div id="valueContainCard" class="card ">
+                <div class="row">
 
 
+                    <div id="valueContain"  class="card col-sm-6 ">
+                        <div  class="row">
+                        <div class="col-8 ml-5">
+                            <h1 id="revenueOfTheMonth"> </h1><br>
+                            <h6 id="revenueLabel">Revenue</h6>
 
+                        </div>
+                       
+                        <div class="col-2">
+                        <i class="fa-solid fa-dollar-sign fa-2xl" id="dollarIcon" ></i>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div id="valueContain"  class="card col-sm-6 ">
+                        <div  class="row">
+                            <div class="col-8 ml-5">
+                                <h1 id="diffInBooking"> </h1><br>
+                                <h6 id="revenueLabel">Order</h6>
+    
+                            </div>
+                           
+                            <div class="col-2" id="statusOrder">
+                          
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
         </div>
 
-          
+
+
+
+    </div>
 
 
 
 
 
 
-            
 
 
 
@@ -163,20 +201,23 @@
 
 
 
-            
-
-
-              
 
 
 
 
-         
 
-            <!-- Scripts -->
 
-            <script src="../../assets/js/adminNavbar.js"></script>
-            <script src="../../assets/js/adminDashboard.js"></script>
+
+
+
+
+
+
+
+    <!-- Scripts -->
+
+    <script src="../../assets/js/adminNavbar.js"></script>
+    <script src="../../assets/js/adminDashboard.js"></script>
 
 </body>
 
