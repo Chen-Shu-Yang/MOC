@@ -22,7 +22,7 @@
     clear: both;
   }
   .bookingCol{
-      background-color: #C4C4C4;
+   
       margin: 20px;
   }
   .card-affix{
@@ -52,4 +52,9 @@
   background-color: #2E6869;
   color: white;
   border-radius: 10px;
+}
+#serviceCol{
+  background-color: #F8F8F8;
+  margin-left: 20px;
+  margin-right: 20px;
 }
