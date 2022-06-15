@@ -21,6 +21,8 @@ const upload = require('../utils/multer');
 
 const Login = require('../model/login');
 const Admin = require('../model/admin');
+const Register = require('../model/register');
+const { register } = require('../model/register');
 // MF function
 /**
  * prints useful debugging information about an endpoint we are going to service
@@ -99,7 +101,28 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     }
   });
 });
+// register
+app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
+  const { FirstName } = req.body;
+  const { LastName } = req.body;
+  const { Password } = req.body;
+  const { Email } = req.body;
+  const { Address } = req.body;
+  const { PhoneNumber } = req.body;
+  const { PostalCode } = req.body;
 
+  // eslint-disable-next-line max-len
+  Register.registerCustomer(FirstName, LastName, Password, Email, Address, PhoneNumber, PostalCode, (err, result) => {
+    if (err) {
+      // matched with callback (err, null)
+      console.log(err);
+      res.status(500);
+      res.send(err.statusCode);
+      return next(err);
+    }
+    res.status(201).send(result);
+  });
+});
 app.get('/classes', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getAllClassOfService((err, result) => {

@@ -39,7 +39,7 @@
     <script src="https://kit.fontawesome.com/ca9c4d369b.js" crossorigin="anonymous"></script>
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 
-    <link href="../../assets/css/login.css" rel="stylesheet">
+    <link href="../../assets/css/customerRegister.css" rel="stylesheet">
 
     <!-- Official website css    -->
 
@@ -407,44 +407,72 @@
                 <img src="../../assets/img/loginScreen.jpeg" alt="">
             </div>
             <div class="col" id="col">
-                <div class="login-form" id="form">
-                    <form action="" id="loginForm">
-                        <h2>Login</h2>
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="emailInput" placeholder="Email"
+                <div class="register-form" id="form">
+                    <form action="" id="registerForm">
+                      
+                        <div class="row">
+                            <h2>Register</h2>
+                            <div class="col">  
+                                <div class="form-group">
+                                <input type="text" class="form-control" id="firstNameInput" placeholder="First Name"
+                                    required="required">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name"
+                                    required="required">
+                                </div>
+                            </div>
+                          
+                            <div class="form-group" >
+                            <input type="email" class="form-control" id="customerEmailInput" placeholder="Email"
                                 required="required">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="pwdInput" placeholder="Password"
+                            </div>
+                            <div class="form-group">
+                            <input type="text" class="form-control" id="customerPasswordInput" placeholder="Password"
                                 required="required">
-                        </div>
-                        <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                            <input type="number" class="form-control" id="numberInput" placeholder="Phone Number"
+                                required="required">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" id="addressInput" placeholder="Address"></textarea>
+                            </div>
+                            <div class="form-group">
+                            <input type="number" class="form-control" id="postalCodeInput" placeholder="Postal Code"
+                                required="required">
+                            </div>
+                            <div class="form-group">
                             <button type="submit" class="btn" style="background-color:#2E6869 ; color:white;"
-                                id="Login">Log in</button>
-                            <p style="float:right">Forgot Password? <a href="#" id="signupBtn">Reset Password</a></p>
+                                id="SignUp">Sign Up</button>
+                            </div>
+
                         </div>
+
+
                     </form>
 
                 </div>
             </div>
         </div>
     </div>
-    <div id="smallScreen" >
-        <img   src="../../assets/img/loginScreen.jpeg" alt="">
-        <div  class="login-form" id="form">
+    <div id="smallScreen">
+        <img src="../../assets/img/loginScreen.jpeg" alt="">
+        <div class="login-form" id="form">
             <form action="" id="loginFormPhone">
                 <h2>Login</h2>
                 <div class="form-group">
-                    <input type="email" class="form-control" id="emailInput" placeholder="Email"
-                        required="required">
+                    <input type="email" class="form-control" id="emailInput" placeholder="Email" required="required">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" id="pwdInput" placeholder="Password"
                         required="required">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn" style="background-color:#2E6869 ; color:white;"
-                        id="Login">Log in</button>
+                    <button type="submit" class="btn" style="background-color:#2E6869 ; color:white;" id="Login">Log
+                        in</button>
                     <p style="float:right">Forgot Password? <a href="#" id="signupBtn">Reset Password</a></p>
                 </div>
             </form>
@@ -564,7 +592,7 @@
             </div>
         </div>
     </footer>
-    <script src="../../assets/js/login.js"></script>
+    <script src="../../assets/js/customerRegister.js"></script>
     <!-- Noty JS-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js">
     </script>
