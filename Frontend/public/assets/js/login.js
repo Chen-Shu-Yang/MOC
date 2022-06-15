@@ -37,7 +37,7 @@ $(document).ready(() => {
           console.log('HI');
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
-            localStorage.setItem('EmployeeID', JSON.stringify(data.CustomerID));
+            localStorage.setItem('customerID', JSON.stringify(data.CustomerID));
             window.location.replace(`${frontEndUrl}/homepage`);
           } else if (data.AdminID != null) {
             localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
