@@ -1506,7 +1506,7 @@ app.get('/user/customer/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
-
+// Update own account details
 app.put('/update/customer/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const customerId = req.params.id;
@@ -1524,6 +1524,24 @@ app.put('/update/customer/:id', printDebugInfo, (req, res) => {
     // if there is no errorsend the following as result
     if (!err) {
       console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Customer.getBookingDetails(customerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result}`);
 
       res.status(202).send(result);
     }
