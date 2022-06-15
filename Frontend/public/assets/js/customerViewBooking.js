@@ -65,7 +65,7 @@ function createRow(cardInfo) {
 }
 
 function loadAllBooking() {
-    const customerId = localStorage.getItem('EmployeeID');
+    const customerId = localStorage.getItem('customerID');
     $.ajax({
         url: `${backEndUrl}/show/bookings/${customerId}`,
         type: 'GET',
