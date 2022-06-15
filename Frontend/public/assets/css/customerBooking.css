@@ -47,3 +47,9 @@
     justify-content: center;
     flex-direction: column;
 }
+#timeOfService{
+  width: 50%;
+  background-color: #2E6869;
+  color: white;
+  border-radius: 20px;
+}

@@ -1,3 +1,10 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-console */
+/* eslint-disable no-shadow */
+/* eslint-disable no-undef */
+
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
@@ -100,6 +107,7 @@ function updatedTime() {
   document.getElementById('listTime').innerHTML = time;
 }
 $(document).ready(() => {
+  $().dropdown('update');
   incrementR();
   decrementR();
   incrementBR();
