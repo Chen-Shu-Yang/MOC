@@ -14,6 +14,8 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 
+const moment = require('moment'); // require
+
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 
@@ -22,6 +24,7 @@ const upload = require('../utils/multer');
 const Login = require('../model/login');
 const Admin = require('../model/admin');
 const Customer = require('../model/customer');
+const { key } = require('../config');
 
 // MF function
 /**
@@ -1543,6 +1546,75 @@ app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
     if (!err) {
       console.log(`result ${result}`);
 
+      res.status(202).send(result);
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+// Update own account details
+app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const bookingId = req.params.id;
+  // const startTime = moment();
+  // const end = moment('2021-02-01');
+  // const duration = moment.duration(end.diff(startTime));
+  // const hours = duration.asHours();
+  // console.log(hours);
+
+  const currentDate = new Date();
+  const currentTime = moment().format('HH:MM:SS');
+  console.log(`Current Date: ${currentDate}`);
+  console.log(`Current time: ${currentTime}`);
+  let bookingDate;
+  let bookingTime;
+  let diffInDates;
+  let diffInHours;
+  let diffInTime;
+
+  Customer.getABookingById(bookingId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      bookingDate = result[0].ScheduleDate;
+      bookingTime = result[0].TimeOfService;
+      diffInDates = moment(bookingDate).diff(moment(currentDate), 'days');
+      diffInHours = moment(bookingDate).diff(moment(currentDate), 'hours');
+      diffInTime = moment(bookingTime).diff(moment(currentDate), 'hours');
+
+      console.log(`Booking date: ${bookingDate}`);
+      console.log(`Time of booking: ${bookingTime}`);
+
+      console.log(`diffInDate for date: ${diffInDates}`);
+      console.log(`difeeInHours for date: ${diffInHours}`);
+
+      if (diffInDates == 0) {
+        if (diffInHours == 0) {
+          console.log('Day Of Appointment');
+        }
+        else {
+          console.log('Appointment Next Day');
+        }
+      }
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
+  //   var a = moment([2007, 5, 29]);
+  // var b = moment([2007, 5, 28]);
+
+  // console.log(a.diff(b, 'days'))
+  // 1
+  console.log(bookingDate);
+
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Customer.updateBookingStatus(bookingId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
       res.status(202).send(result);
     }
     else {

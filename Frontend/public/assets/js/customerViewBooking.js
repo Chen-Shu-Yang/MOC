@@ -4,6 +4,16 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
+// function cancelBooking(bookingId){
+//     var moment = require('moment'); // require
+//     alert(bookingId)
+//     const startTime = moment('2021-01-01')  
+// const end = moment('2021-02-01')  
+// const duration = moment.duration(end.diff(startTime));  
+// const hours = duration.asHours();  
+// console.log(hours)
+// }
+
 
 function createRow(cardInfo) {
     //   console.log(cardInfo);
@@ -55,7 +65,7 @@ function createRow(cardInfo) {
                                 Extra Notes : ${(cardInfo.extraNotes) === null ? 'No Extra notes' : cardInfo.extraNotes}
                             </div>
                             <div class="col-md-5 mx-auto py-1">
-                                <button class="btn btn-danger" type="button">Cancel</button>
+                                <button class="btn btn-danger" type="button" onClick=cancelBooking(${cardInfo.bookingID})>Cancel</button>
                             </div>
                         </div>
                     </div>
