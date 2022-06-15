@@ -41,14 +41,11 @@ $(document).ready(() => {
             localStorage.setItem('EmployeeID', JSON.stringify(data.UserID));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/booking`);
-          }
-          else {
+          } else {
             localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/schedule`);
           }
-
-
         } else {
           console.log('Error');
         }

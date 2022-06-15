@@ -1,4 +1,4 @@
-
+/* 
 * {
     box-sizing: border-box;
   }
@@ -6,17 +6,17 @@
     padding-top: 100px;
     padding-bottom:300px;
     display: flex;
-  }
+  } */
   /* Create two equal columns that floats next to each other */
-  .col {
+  /* .col {
     float: left;
     width: 50%;
     padding: 10px;
-    height: 300px; /* Should be removed. Only for demonstration */
+    height: 300px;
   }
-  
+   */
   /* Clear floats after the columns */
-  .row:after {
+  /* .row:after {
     content: "";
     display: table;
     clear: both;
@@ -32,4 +32,18 @@
   .timeOfService{
       background-color:#448788 ;
       color: white;
-  }
+  } */
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;800&family=Poppins:wght@200;300;400;500&family=Ubuntu:wght@300;400;500&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.customerBookingForm .max-width {
+    padding-left: 120px;
+    padding-right: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

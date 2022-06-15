@@ -101,7 +101,7 @@ function loadAllBookingByLimit(pageNumber) {
           const booking = data[i];
 
           let date = booking.ScheduleDate;
-          date = date.replace("T16:00:00.000Z", "");
+          date = date.replace('T16:00:00.000Z', "");
           // compile the data that the card needs for its creation
           const bookingstbl = {
             bookingID: booking.BookingID,

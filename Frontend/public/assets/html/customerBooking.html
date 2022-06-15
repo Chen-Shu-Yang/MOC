@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
+    <link href="../../assets/css/bookingNavbar.css" rel="stylesheet">
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -30,113 +31,151 @@
 </head>
 
 <body>
-    <Header>
-        <div class="logo-details">
-            <img src="../../assets/img/logo.png">
-        </div>
-    </Header>
-    <hr>
-    <div style="text-align: center;">
-        <h1>1. Booking &#8594 2. Confirmation &#8594 3.Possible List Of Helper</h1>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col">
-            <div class="bookingCol">
-                <h2>Choose your Service Preference:</h2>
+    <!-- Header Section Start -->
+    <nav class="navbar">
+        <div class="max-width">
+            <div class="logo">
+                <a href="/">
+                    <img src="../../assets/img/logo.png">
+                </a>
             </div>
-            <div class="bookingCol"  style="display: flex;">
-                <div class="form-group">
-                    <div style="float: left;">
-                        <h5>Address:</h5>
-                       <input type="text" id="cAddress">
-                    </div>
-                    <div style="float: left; margin-left: 50px;">
-                        <h5>Postal Code: </h5>
-                        <input type="text" id="cPostalCode">
-                    </div>
-                </div>
-            </div>
-            <div class="bookingCol" style="display: flex;">
-                <div class="form-group">
-                    <div style="float: left;">
-                        <h5>Rooms:</h5>
-                        <button onclick="incrementR()">+</button>
-                        <input id=rooms type=number min=1 max=10 onchange="updatedRooms()">
-                        <button onclick="decrementR()">-</button>
-                    </div>
-                    <div style="float: left; margin-left: 50px;">
-                        <h5>Bathrooms: </h5>
-                        <button onclick="incrementBR()">+</button>
-                        <input id=bathRooms type=number min=1 max=10 onchange="updatedBathrooms()">
-                        <button onclick="decrementBR()">-</button>
-                    </div>
-                </div>
-
-            </div>
-            <div class="bookingCol" style="display: flex;">
-                <div class="form-group">
-                    <div style="float: left;">
-                        <h5>Start Date:</h5>
-
-                    </div>
-                    <div style="float: left; margin-left: 50px;">
-                        <h5>Day : </h5>
-
-                    </div>
-                    <div style="float: left; margin-left: 50px;">
-                        <h5>Time : </h5>
-                        <select name="Time" id="timeOfService" onchange="updatedTime()">
-                            <option value="08:30">08:30</option>
-                            <option value="12:30">12:30</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="bookingCol">
-                <h2>Additional Info</h2>
-            </div>
+            <ul class="menu">
+                <li>
+                    <a href="/profile">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Username</span>
+                    </a>
+                </li>
+            </ul>
         </div>
 
-
-        <div class="col">
-
-            <div class="card affix" style="margin-right: 20px;">
-                <h2 style="text-align: center;">Your Booking</h2>
-                <hr>
-                <h5>Service Preference</h5>
-                <p id="listService"></p>
-                <h5>Package: </h5>
-                <p id="listPackage"></p>
-                <div style="display: flex;">
-                    <div style="float: left;">
-                        <h5>Rooms:</h5>
-                        <p id="listRooms"></p>
-                    </div>
-                    <div style="float: left; margin-left: 50px;">
-                        <h5>Bathrooms:</h5>
-                        <p id="listBathrooms"></p>
-                    </div>
+        <div class="booking-process">
+            <hr>
+            <div class="max-width">
+                <a href="#" class="steps active">
+                    <span>1. Booking</span>
+                    <i class="fa-solid fa-check active"></i>
+                </a>
+                <div class="arrow">
+                    <div class="line"></div>
+                    <i class="fa-solid fa-angle-right"></i>
                 </div>
-                <h5>Rates:</h5>
-                <p id="listRates"></p>
-                <h5>Additional Service:</h5>
-                <p id="listAddService">-</p>
-                <div style="display: flex;">
-                    <div style="float: left;">
-                        <h5>Date:</h5>
-                        <p id="listDate"></p>
-                    </div>
-                    <div style="float: left;  margin-left: 50px;">
-                        <h5>Day:</h5>
-                        <p id="listDay"></p>
-                    </div>
+                <a href="#" class="steps active">
+                    <span>2. Confirmation</span>
+                    <i class="fa-solid fa-check active"></i>
+                </a>
+                <div class="arrow">
+                    <div class="line"></div>
+                    <i class="fa-solid fa-angle-right"></i>
                 </div>
-                <h5>Time</h5>
-                <p id="listTime"></p>
+                <a href="#" class="steps active">
+                    <span>3. List of Helpers</span>
+                    <i class="fa-solid fa-check active"></i>
+                </a>
+            </div>
+            <hr>
+        </div>
+    </nav>
+    <!-- Header Section End -->
+
+        <div class="row">
+            <div class="col-6">
+                <div class="bookingCol">
+                    <h2>Choose your Service Preference:</h2>
+                </div>
+                <div class="row">
+               
+                        <div class="col">
+                            <h5>Address:</h5>
+                            <input type="text" id="cAddress">
+                        </div>
+                        <div class="col">
+                            <h5>Postal Code: </h5>
+                            <input type="text" id="cPostalCode">
+                        </div>
+                    
+                </div>
+                <div class="row">
+                 
+                        <div class="col">
+                            <h5>Rooms:</h5>
+                            <button onclick="incrementR()">+</button>
+                            <input id=rooms type=number min=1 max=10 onchange="updatedRooms()" readonly>
+                            <button onclick="decrementR()">-</button>
+                        </div>
+                        <div class="col" >
+                            <h5>Bathrooms: </h5>
+                            <button onclick="incrementBR()">+</button>
+                            <input id=bathRooms type=number min=1 max=10 onchange="updatedBathrooms()" readonly>
+                            <button onclick="decrementBR()">-</button>
+                        </div>
+          
+
+                </div>
+                <div class="row">
+            
+                        <div class="col">
+                            <h5>Start Date:</h5>
+
+                        </div>
+                        <div class="col" >
+                            <h5>Day : </h5>
+
+                        </div>
+                        <div class="col">
+                            <h5>Time : </h5>
+                            <select name="Time" id="timeOfService" onchange="updatedTime()">
+                                <option value="08:30">08:30</option>
+                                <option value="12:30">12:30</option>
+                            </select>
+                        </div>
+                    
+                </div>
+                <div>
+                    <h2>Additional Info</h2>
+                </div>
+            </div>
+
+
+            <div class="col-3">
+
+            
+                    <h2 style="text-align: center;">Your Booking</h2>
+                    <hr>
+                    <h5>Service Preference</h5>
+                    <p id="listService"></p>
+                    <h5>Package: </h5>
+                    <p id="listPackage"></p>
+                    <div class="row">
+                        <div class="col">
+                            <h5>Rooms:</h5>
+                            <p id="listRooms"></p>
+                        </div>
+                        <div class="col" >
+                            <h5>Bathrooms:</h5>
+                            <p id="listBathrooms"></p>
+                        </div>
+                    </div>
+                    <h5>Rates:</h5>
+                    <p id="listRates"></p>
+                    <h5>Additional Service:</h5>
+                    <p id="listAddService">-</p>
+                    <div class="row">
+                        <div class="col">
+                            <h5>Date:</h5>
+                            <p id="listDate"></p>
+                        </div>
+                        <div class="col" >
+                            <h5>Day:</h5>
+                            <p id="listDay"></p>
+                        </div>
+                    </div>
+                    <h5>Time</h5>
+                    <p id="listTime"></p>
+             
             </div>
         </div>
-    </div>
+ 
     <script src="../../assets/js/customerBooking.js"></script>
 </body>
 
