@@ -1,11 +1,7 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
-/* eslint-disable max-len */
 
 //= ======================================================
 //              Imports
@@ -98,10 +94,7 @@ const Admin = {
             ClassPricing=?,
             ClassDes=?
         where
-             ClassID=?
-             ;
-            
-
+             ClassID=?;
             `;
     // pool query
     pool.query(sql, [ClassName, ClassPricing, ClassDes, id], (err, result) => {
@@ -141,7 +134,8 @@ const Admin = {
     pageNumber = parseInt(pageNumber);
     // Number of employee showed per page
     const limitPerPage = 6;
-    // Number of employee to skip based on the page number so that previously shown data will not be displayed
+    // Number of employee to skip based on the page number so that
+    // previously shown data will not be displayed
     const numberOfValueToSkip = (pageNumber - 1) * 6;
     // sql statement to limit and skip
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee LIMIT ? OFFSET ?;';
@@ -170,12 +164,11 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result); // if
     });
   },
 
-  // get class of service by id
+  // get employee by id
   getEmployee(id, callback) {
     // sql query statement
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.employee where EmployeeID=?;';
@@ -189,13 +182,20 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result);
     });
   },
 
-  // update all class of services
-  updateEmployee(EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id, callback) {
+  // update employee
+  updateEmployee(
+    EmployeeName,
+    EmployeeDes,
+    EmployeeImageCloudinaryFileId,
+    EmployeeImgUrl,
+    EmployeeSkills,
+    id,
+    callback,
+  ) {
     // sql query statement
     const sql = `
       UPDATE 
@@ -210,7 +210,14 @@ const Admin = {
         EmployeeID=?;
     `;
     // pool query
-    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id], (err, result) => {
+    pool.query(sql, [
+      EmployeeName,
+      EmployeeDes,
+      EmployeeImageCloudinaryFileId,
+      EmployeeImgUrl,
+      EmployeeSkills,
+      id,
+    ], (err, result) => {
       // error
       if (err) {
         console.log(err);
@@ -220,13 +227,26 @@ const Admin = {
       return callback(null, result);
     });
   },
+
   // feature/addEmployee Model
-  // eslint-disable-next-line max-len
-  addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, callback) {
-    // sql statemetn to insert new employee
+  addEmployee(
+    EmployeeName,
+    EmployeeDes,
+    EmployeeImgageCloudinaryFileId,
+    EmployeeImageUrl,
+    Skillsets,
+    callback,
+  ) {
+    // sql statement to insert new employee
     const sql = 'INSERT INTO heroku_6b49aedb7855c0b.employee (EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, Skillsets) VALUES (?,?,?,?,?);';
     // pool query
-    pool.query(sql, [EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets], (err, result) => {
+    pool.query(sql, [
+      EmployeeName,
+      EmployeeDes,
+      EmployeeImgageCloudinaryFileId,
+      EmployeeImageUrl,
+      Skillsets,
+    ], (err, result) => {
       // error
       if (err) {
         console.log(err);
@@ -237,9 +257,8 @@ const Admin = {
     });
   },
 
-  // delete all class of services
+  // delete employee
   deleteEmployee(id, callback) {
-    console.log(` admin.js employee delete method start ${id}`);
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.employee where EmployeeID =?;';
 
@@ -434,7 +453,7 @@ const Admin = {
       join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID where b.Status='Assigned' or b.Status='Pending'  LIMIT ? OFFSET ?;
     
       `;
-      // values to pass for the query number of employee per page and number of employee to skip
+    // values to pass for the query number of employee per page and number of employee to skip
     const values = [limitPerPage, numberOfValueToSkip];
     // query
     pool.query(sql, values, (err, result) => {
@@ -462,7 +481,7 @@ const Admin = {
                BookingID=?
                ;
               `;
-      // pool query
+    // pool query
     pool.query(sql, [bookingId], (err, result) => {
       // error
       if (err) {
@@ -477,7 +496,60 @@ const Admin = {
   // ---------------------------------------------------
   //                 Feature/adminCustomer
   // ---------------------------------------------------
+  // get available employee for scheduling
+  getAvailableEmployee(date, callback) {
+    // sql query statement
+    const sql = `
+      SELECT DISTINCT
+        e.EmployeeID, e.EmployeeName, e.EmployeeDes, e.EmployeeImgUrl, e.EmployeeImageCloudinaryFileId
+      FROM 
+        heroku_6b49aedb7855c0b.employee AS e
+      LEFT JOIN 
+        heroku_6b49aedb7855c0b.schedule AS s 
+      ON 
+        s.Employee = e.EmployeeID 
+      WHERE
+        ScheduleDate IS NULL OR ScheduleDate != ? 
+      AND 
+        Employee NOT IN (SELECT s.Employee FROM heroku_6b49aedb7855c0b.schedule s WHERE ScheduleDate = ?);
+      `;
 
+    const values = [date, date];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
+  // add employee availability
+  addEmployeeAvailability(employeeId, date, time, callback) {
+    // sql query statement
+    const sql = `
+      INSERT INTO
+        heroku_6b49aedb7855c0b.schedule (
+          ScheduleDate,
+          TimeSlot, 
+          Employee)
+      VALUES
+        (?,?,?);
+    `;
+    // pool query
+    pool.query(sql, [date, time, employeeId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+      // pool.end()
+    });
+  },
   // get all Customer
   getAllCustomer(callback) {
     // sql query statement
@@ -490,7 +562,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result); // if
     });
   },
@@ -509,7 +580,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result);
     });
   },
@@ -520,10 +590,9 @@ const Admin = {
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
 
-    const values = [id];
     // pool query
     pool.query(sql, [id], (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -535,7 +604,7 @@ const Admin = {
 
   // update customer
   updateCustomer(CustomerPassword, CustomerStatus, id, callback) {
-  // sql query statement
+    // sql query statement
     const sql = `
     UPDATE 
       heroku_6b49aedb7855c0b.customer
@@ -547,7 +616,7 @@ const Admin = {
   `;
     // pool query
     pool.query(sql, [CustomerPassword, CustomerStatus, id], (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -675,11 +744,11 @@ const Admin = {
   //= ======================================================
   // get all extra services
   getAllExtraServices(callback) {
-  // sql query statement
+    // sql query statement
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice;';
     // pool query
     pool.query(sql, (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -692,13 +761,13 @@ const Admin = {
 
   // get extra service by id
   getExtraService(id, callback) {
-  // sql query statement
+    // sql query statement
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice where ExtraServiceID=?;';
 
     const values = [id];
     // pool query
     pool.query(sql, values, (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -711,7 +780,7 @@ const Admin = {
 
   // add new extra service
   addExtraService(ExtraServiceName, ExtraServicePrice, callback) {
-  // sql query statement
+    // sql query statement
     const sql = `
       INSERT INTO
              heroku_6b49aedb7855c0b.extraservice (
@@ -733,13 +802,13 @@ const Admin = {
 
       return callback(null, result);
 
-    // pool.end()
+      // pool.end()
     });
   },
 
   // update existing extra service
   updateExtraService(ExtraServiceName, ExtraServicePrice, id, callback) {
-  // sql query statement
+    // sql query statement
     const sql = `
           UPDATE 
           heroku_6b49aedb7855c0b.extraservice
@@ -752,7 +821,7 @@ const Admin = {
           `;
     // pool query
     pool.query(sql, [ExtraServiceName, ExtraServicePrice, id], (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -764,13 +833,13 @@ const Admin = {
 
   // delete existing extra service
   deleteExtraService(id, callback) {
-  // sql query statement
+    // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.extraservice where ExtraServiceID =?;';
 
     const values = [id];
     // pool query
     pool.query(sql, values, (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);

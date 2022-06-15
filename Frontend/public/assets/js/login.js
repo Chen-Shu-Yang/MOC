@@ -7,8 +7,10 @@
 
 // const res = require("express/lib/response");
 
-const frontEndUrl = 'http://localhost:3001';
-const backEndUrl = 'http://localhost:5000';
+//const frontEndUrl = 'http://localhost:3001';
+//const backEndUrl = 'http://localhost:5000';
+const frontEndUrl = 'https://moc-fa.herokuapp.com';
+const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 $(document).ready(() => {
   // Login
@@ -35,10 +37,10 @@ $(document).ready(() => {
           console.log('Data');
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
-            localStorage.setItem('CustomerID', JSON.stringify(data.CustomerID));
-            window.location.replace(`${frontEndUrl}/customer/booking`);
-          } else if (data.UserID != null) {
-            localStorage.setItem('EmployeeID', JSON.stringify(data.UserID));
+            localStorage.setItem('customerID', JSON.stringify(data.CustomerID));
+            window.location.replace(`${frontEndUrl}/homepage`);
+          } else if (data.AdminID != null) {
+            localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/booking`);
           } else {

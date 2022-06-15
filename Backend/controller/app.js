@@ -1,13 +1,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable brace-style */
 /* eslint-disable consistent-return */
-/* eslint-disable no-restricted-globals */
 /* eslint-disable no-console */
-/* eslint-disable no-shadow */
-/* eslint-disable block-scoped-var */
-/* eslint-disable max-len */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-undef */
 
 //= ======================================================
 //              Imports
@@ -98,7 +92,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     } else {
       console.log(`Token: ${result}`);
       msg = {
-        UserID: result.UserID,
+        AdminID: result.AdminID,
         token,
         CustomerID: result.CustomerID,
         SuperAdminID: result.SuperAdminID,
@@ -267,28 +261,40 @@ app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
   Admin.pageEmployee(pageNumber, (err, result) => {
     // if no error send result
     if (!err) {
-      res.status(200).send(result);
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
     }
     // if error send error message
     else {
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
+      res.status(500).send('Some error');
     }
   });
 });
 
 // get all employee
 app.get('/employee', printDebugInfo, async (req, res) => {
-  // calling getAllClassOfService method from admin model
+  // calling getAllEmployee method from admin model
   Admin.getAllEmployee((err, result) => {
     // if no error send result
     if (!err) {
-      console.log('==================================');
-      console.log('get class work');
-      console.log('==================================');
-      res.status(200).send(result);
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
     }
     // if error send error message
     else {
@@ -302,7 +308,7 @@ app.get('/oneemployee/:id', printDebugInfo, async (req, res) => {
   // extract id from params
   const employeeId = req.params.id;
 
-  // calling getClass method from admin model
+  // calling getEmployee method from admin model
   Admin.getEmployee(employeeId, (err, result) => {
     if (!err) {
       // if id not found detect and return error message
@@ -335,7 +341,7 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
   const { EmployeeSkills } = req.body;
   const { EmployeeImg } = req.body;
 
-  // calling updateClass method from admin model
+  // calling updateEmployee method from admin model
   Admin.updateEmployee(
     EmployeeName,
     EmployeeSkills,
@@ -408,8 +414,7 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
     }
   });
 
-  // calling deleteClass method from admin model
-
+  // calling deleteEmployee method from admin model
   Admin.deleteEmployee(employeeId, (err, result1) => {
     if (!err) {
       console.log('DELETE EMPLOYEE STATEMENT');
@@ -457,7 +462,7 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, as
         res.status(404).send(output);
       } else {
         // output
-        output1 = {
+        const output1 = {
           EmployeeId: result[0].EmployeeID,
           EmployeeImageCloudinaryFileId: result[0].EmployeeImageCloudinaryFileId,
 
@@ -478,11 +483,8 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, as
   try {
     // cloudinary image upload method to the folder employee
     const result = await cloudinary.uploader.upload(req.file.path, { folder: 'employee' });
-    // eslint-disable-next-line prefer-const
-    // eslint-disable-next-line spaced-comment
-    //retrieve EmployeeName from body
+    // retrieve EmployeeName from body
     const EmployeeName = req.body.employeeName;
-    // // eslint-disable-next-line no-var
     // retrieve EmployeeDes from body
     const EmployeeDes = req.body.employeeDes;
     // retrieve Skillsets from body
@@ -491,20 +493,24 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, as
     const EmployeeImgageCloudinaryFileId = result.public_id;
     // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
     const EmployeeImageUrl = result.secure_url;
-    // // eslint-disable-next-line no-shadow
     // invoking Admin.addEmployee
-    // eslint-disable-next-line no-shadow
-    // eslint-disable-next-line no-unused-vars
-    Admin.updateEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, employeeId, (err, result) => {
-      // if there is no error
-      if (!err) {
-        // eslint-disable-next-line no-var
-        var output = 'done';
-        return res.status(201).send(output);
-      }
-    });
+    Admin.updateEmployee(
+      EmployeeName,
+      EmployeeDes,
+      EmployeeImgageCloudinaryFileId,
+      EmployeeImageUrl,
+      Skillsets,
+      employeeId,
+      (err) => {
+        // if there is no error
+        if (!err) {
+          const output = 'done';
+          return res.status(201).send(output);
+        }
+      },
+    );
   } catch (error) {
-    output = {
+    const output = {
       Error: 'Internal sever issues',
     };
     return res.status(500).send(output);
@@ -531,15 +537,23 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
     // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
     const EmployeeImageUrl = result.secure_url;
     // invoking Admin.addEmployee
-    Admin.addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, (err, result) => {
-      // if there is no error
-      if (!err) {
-        const output = 'done';
-        return res.status(201).send(output + result);
-      }
-    });
+    Admin.addEmployee(
+      EmployeeName,
+      EmployeeDes,
+      EmployeeImgageCloudinaryFileId,
+      EmployeeImageUrl,
+      Skillsets,
+      // eslint-disable-next-line no-shadow
+      (err, result) => {
+        // if there is no error
+        if (!err) {
+          const output = 'done';
+          return res.status(201).send(output + result);
+        }
+      },
+    );
   } catch (error) {
-    output = {
+    const output = {
       Error: 'Internal sever issues',
     };
     return res.status(500).send(output);
@@ -745,7 +759,7 @@ app.post('/class', printDebugInfo, (req, res) => {
         res.status(500).send('Internal Server Error');
       }
     });
-  // eslint-disable-next-line brace-style
+    // eslint-disable-next-line brace-style
   }
   // if class pricing is not float
   else {
@@ -776,7 +790,8 @@ app.put('/class/:id', printDebugInfo, (req, res) => {
 
         res.status(201).send(result);
       }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
         res.status(406).send('Inappropriate value');
       }
@@ -803,7 +818,8 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
   // calling deleteClass method from admin model
   Admin.deleteClass(id, (err, result) => {
     if (!err) {
-      // result.affectedRows indicates that id to be deleted cannot be found hence send as error message
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
       }
@@ -907,7 +923,7 @@ app.get('/availemployee/:date', printDebugInfo, async (req, res) => {
   // extract id from params
   const { date } = req.params;
 
-  // calling getClass method from admin model
+  // calling getAvailableEmployee method from admin model
   Admin.getAvailableEmployee(date, (err, result) => {
     if (!err) {
       // if id not found detect and return error message
@@ -937,7 +953,7 @@ app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
   const { date } = req.body;
   const { time } = req.body;
 
-  // calling addClass method from admin model
+  // calling addEmployeeAvailability method from admin model
   Admin.addEmployeeAvailability(employeeId, date, time, (err, result) => {
     // if no error send results as positive
     if (!err) {
@@ -974,7 +990,16 @@ app.get('/customer', printDebugInfo, async (req, res) => {
   Admin.getAllCustomer((err, result) => {
     // if no error send result
     if (!err) {
-      res.status(200).send(result);
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
     }
     // if error send error message
     else {
@@ -983,7 +1008,7 @@ app.get('/customer', printDebugInfo, async (req, res) => {
   });
 });
 
-// get a Customer
+// get an customer
 app.get('/onecustomer/:id', printDebugInfo, async (req, res) => {
   // extract id from params
   const customerId = req.params.id;
@@ -1050,7 +1075,7 @@ app.put('/customer/:id', printDebugInfo, (req, res) => {
 app.delete('/customer/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const { id } = req.params;
-  // calling deleteClass method from admin model
+  // calling deleteCustomer method from admin model
   Admin.deleteCustomer(id, (err, result) => {
     if (!err) {
       // result.affectedRows indicates that id to be deleted
@@ -1148,7 +1173,7 @@ app.post('/extraService', printDebugInfo, (req, res) => {
         res.status(500).send('Internal Server Error');
       }
     });
-  // eslint-disable-next-line brace-style
+    // eslint-disable-next-line brace-style
   }
   // if class pricing is not float
   else {
@@ -1178,7 +1203,8 @@ app.put('/extraService/:id', printDebugInfo, (req, res) => {
 
         res.status(201).send(result);
       }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
         res.status(406).send('Inappropriate value');
       }
@@ -1205,7 +1231,8 @@ app.delete('/extraService/:id', printDebugInfo, (req, res) => {
   // calling deleteExtraService method from admin model
   Admin.deleteExtraService(id, (err, result) => {
     if (!err) {
-      // result.affectedRows indicates that id to be deleted cannot be found hence send as error message
+      // result.affectedRows indicates that id to be
+      // deleted cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
       }
@@ -1300,7 +1327,7 @@ app.post('/rate', printDebugInfo, (req, res) => {
         res.status(500).send('Internal Server Error');
       }
     });
-  // eslint-disable-next-line brace-style
+    // eslint-disable-next-line brace-style
   }
   // if class pricing is not float
   else {
@@ -1331,7 +1358,8 @@ app.put('/rate/:id', printDebugInfo, (req, res) => {
 
         res.status(201).send(result);
       }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
         res.status(406).send('Inappropriate value');
       }
@@ -1358,7 +1386,8 @@ app.delete('/rate/:id', printDebugInfo, (req, res) => {
   // calling deleteRate method from admin model
   Admin.deleteRate(id, (err, result) => {
     if (!err) {
-      // result.affectedRows indicates that id to be deleted cannot be found hence send as error message
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
       }
