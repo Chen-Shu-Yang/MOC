@@ -43,8 +43,25 @@ function cancelBooking(bookingId) {
 }
 
 function createRow(cardInfo) {
-    //   console.log(cardInfo);
-    const card = `
+    console.log("**************************inside card****************************");
+    var bookingID=cardInfo.bookingID
+    var scheduleDate=cardInfo.scheduleDate
+    console.log("Booking id: "+bookingID)
+    console.log("Date of booking: "+scheduleDate)
+    var dateToBeChecked = new Date();
+
+// add a day
+dateToBeChecked.setDate(dateToBeChecked.getDate() + 1)
+console.log("Tomorrow's date: "+dateToBeChecked)
+if(scheduleDate<dateToBeChecked){
+    console.log("Don't show button")
+}
+else{
+    console.log("show button")
+}
+console.log("***************************************************************************")
+    var card;
+ card = `
         <div class="card">
                         <div class="card-header bg-white"># Booking ${cardInfo.bookingID}</div>
                         <div class="row">
