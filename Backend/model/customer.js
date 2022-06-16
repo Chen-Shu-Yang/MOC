@@ -64,7 +64,7 @@ const Customer = {
   // Get all customer bookings
   getBookingDetails(id, callback) {
     // sql query statement
-    const sql = `SELECT b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,p.PackageName,cl.ClassName,c.DayOfService,c.DayOfService2,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,r.RateName,e.EmployeeName,c.contractStatus
+    const sql = `SELECT b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,p.PackageName,cl.ClassName,c.DayOfService,c.DayOfService2,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,r.RateName,e.EmployeeName,b.Status
     FROM heroku_6b49aedb7855c0b.booking as b
     join heroku_6b49aedb7855c0b.contract as c on b.ContractID = c.ContractID
     join heroku_6b49aedb7855c0b.customer as cu on c.Customer = cu.CustomerID
