@@ -127,7 +127,7 @@ function loadAllBooking() {
                     estimatePricing: booking.EstimatedPricing,
                     address: booking.Address,
                     employee: booking.EmployeeName,
-                    status: booking.contractStatus,
+                    status: booking.Status,
                     extraNotes: booking.ExtraNotes,
                     dayOfService: booking.DayOfService,
                     dayOfService2: booking.DayOfService2
