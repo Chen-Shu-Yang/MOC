@@ -59,6 +59,73 @@ const Customer = {
       return callback(null, result);
     });
   },
+
+  // add contract of services
+  addContract(
+    // eslint-disable-next-line no-shadow
+    Customer,
+    StartDate,
+    Package,
+    DayOfService,
+    DayOfService2,
+    TimeOfService,
+    EstimatedPricing,
+    ExtraNotes,
+    NoOfRooms,
+    NoOfBathrooms,
+    Address,
+    Class,
+    Rate,
+    ExtraService,
+    callback,
+  ) {
+    // sql query statement
+    const sql = `
+      INSERT INTO
+        heroku_6b49aedb7855c0b.contract (
+          Customer,
+          StartDate, 
+          Package,
+          DayOfService,
+          DayOfService2,
+          TimeOfService,
+          EstimatedPricing,
+          ExtraNotes,
+          NoOfRooms,
+          NoOfBathrooms,
+          Address,
+          Class,
+          Rate,
+          ExtraService)
+      VALUES
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+    `;
+    // pool query
+    pool.query(sql, [
+      Customer,
+      StartDate,
+      Package,
+      DayOfService,
+      DayOfService2,
+      TimeOfService,
+      EstimatedPricing,
+      ExtraNotes,
+      NoOfRooms,
+      NoOfBathrooms,
+      Address,
+      Class,
+      Rate,
+      ExtraService,
+      callback], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+      // pool.end()
+    });
+  },
 };
 
 //= ======================================================
