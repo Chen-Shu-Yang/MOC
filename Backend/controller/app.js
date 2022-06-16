@@ -22,7 +22,7 @@ const upload = require('../utils/multer');
 const Login = require('../model/login');
 const Admin = require('../model/admin');
 const Register = require('../model/register');
-const { register } = require('../model/register');
+
 // MF function
 /**
  * prints useful debugging information about an endpoint we are going to service

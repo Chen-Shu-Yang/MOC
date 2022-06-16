@@ -17,7 +17,6 @@ const Register = {
   // eslint-disable-next-line max-len
   registerCustomer(FirstName, LastName, Password, Email, Address, PhoneNumber, PostalCode, callback) {
     // sql query statement
-
     const sql = `
         INSERT INTO
         heroku_6b49aedb7855c0b.customer (
