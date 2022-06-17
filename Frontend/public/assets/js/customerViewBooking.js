@@ -45,21 +45,36 @@ function cancelBooking(bookingId) {
 function createRow(cardInfo) {
     console.log("**************************inside card****************************");
     var bookingID=cardInfo.bookingID
-    var scheduleDate=cardInfo.scheduleDate
-    console.log("Booking id: "+bookingID)
-    console.log("Date of booking: "+scheduleDate)
-    var dateToBeChecked = new Date();
+    var scheduleDate=new Date(cardInfo.scheduleDate)
+    let showBtn=1
+    var statusOfAppointment=cardInfo.status
+ var dateToBeChecked = new Date();
 
-// add a day
+   console.log("Booking id: "+bookingID)
+   console.log("Booking status: "+statusOfAppointment)
+
+
+ // add a day
 dateToBeChecked.setDate(dateToBeChecked.getDate() + 1)
-console.log("Tomorrow's date: "+dateToBeChecked)
+
+
 if(scheduleDate<dateToBeChecked){
-    console.log("Don't show button")
+   showBtn=0
 }
 else{
-    console.log("show button")
+    if(statusOfAppointment==='Cancelled'){
+        showBtn=0
+
+    }
+    else{
+        showBtn=1
+    }
+  
 }
-console.log("***************************************************************************")
+ console.log("***************************************************************************")
+
+
+
     var card;
  card = `
         <div class="card">
@@ -109,7 +124,8 @@ console.log("*******************************************************************
                                 Extra Notes : ${(cardInfo.extraNotes) === null ? 'No Extra notes' : cardInfo.extraNotes}
                             </div>
                             <div class="col-md-5 mx-auto py-1">
-                                <button class="btn btn-danger" type="button" onClick=cancelBooking(${cardInfo.bookingID})>Cancel</button>
+                            ${Boolean(showBtn)?'   <button class="btn btn-danger" type="button" onClick=cancelBooking(${cardInfo.bookingID})>Cancel</button>':''}
+                             
                             </div>
                         </div>
                     </div>
