@@ -15,9 +15,7 @@ const backEndUrl = 'http://localhost:5000';
 $(document).ready(() => {
     // When sign up button is clicked
     $('#SignUp').click(() => {
-
         // == data extraction ==
-
         // get customer email from html
         const customerEmail = $('#customerEmailInput').val();
         // get customer password from html
@@ -32,7 +30,6 @@ $(document).ready(() => {
         const customerAddress = $('#addressInput').val();
         // get customer postal code from html
         const customerPostalCode = $('#postalCodeInput').val();
-
         //  pattern for email
         let emailPattern = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$");
         //  pattern for pasword
@@ -96,7 +93,7 @@ $(document).ready(() => {
                                 type: 'error',
                                 layout: 'topCenter',
                                 theme: 'sunset',
-                                text: 'Please check your Username and Password',
+                                text: 'Invalid Input',
                             }).show();
                         },
                     });
