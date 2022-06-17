@@ -1661,94 +1661,21 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
         // If the same, no need for auto-booking
         // As auto-booking will be done on the super-admin side
         if (start.isSame(firstDayOfMonth)) {
-          // Declares ScheduleDate constant to store the contract start date
-          const ScheduleDate = StartDate;
-          // AddBooking function called to add booking
-          AddBooking(newContractId, ScheduleDate);
-        }
-        // check if DayOfService includes 'Mon' which represents monday
-        if (DayOfService.includes('Mon')) {
-          getDateRange(1);
-          // loop through the mondays and extract the date
-          for (let x = 0; x < dateArray.length - 1; x++) {
-            // Stores the date into ScheduleDate const
-            const ScheduleDate = dateArray[x];
-            // call addbooking function
+          // Get contract start date day name
+          const startDay = start.format('ddd');
+          if (startDay === DayOfService) {
+            console.log('hello');
+            // Declares ScheduleDate constant to store the contract start date
+            const ScheduleDate = StartDate;
+            // AddBooking function called to add booking
             AddBooking(newContractId, ScheduleDate);
+          } else {
+            console.log('bye');
           }
-        }
-        // check if DayOfService includes 'Tue' which represents tuesday
-        else if (DayOfService.includes('Tue')) {
-          getDateRange(2);
-          // loop through the tuesday and extract the date
-          for (let x = 0; x < dateArray.length - 1; x++) {
-            // Stores the date into ScheduleDate const
-            const ScheduleDate = dateArray[x];
-            // call addbooking function
-            AddBooking(newContractId, ScheduleDate);
-          }
-        }
-        // check if DayOfService includes 'Wed' which represents tuesday
-        else if (DayOfService.includes('Wed')) {
-          getDateRange(3);
-          // loop through the wednesday and extract the date
-          for (let x = 0; x < dateArray.length - 1; x++) {
-            // Stores the date into ScheduleDate const
-            const ScheduleDate = dateArray[x];
-            // call addbooking function
-            AddBooking(newContractId, ScheduleDate);
-          }
-        }
-        // check if DayOfService includes 'Thu' which represents tuesday
-        else if (DayOfService.includes('Thu')) {
-          getDateRange(4);
-          // loop through the thursday and extract the date
-          for (let x = 0; x < dateArray.length - 1; x++) {
-            // Stores the date into ScheduleDate const
-            const ScheduleDate = dateArray[x];
-            // call addbooking function
-            AddBooking(newContractId, ScheduleDate);
-          }
-        }
-        // check if DayOfService includes 'Fri' which represents tuesday
-        else if (DayOfService.includes('Fri')) {
-          getDateRange(5);
-          // loop through the friday and extract the date
-          for (let x = 0; x < dateArray.length - 1; x++) {
-            // Stores the date into ScheduleDate const
-            const ScheduleDate = dateArray[x];
-            // call addbooking function
-            AddBooking(newContractId, ScheduleDate);
-          }
-        }
-        // check if DayOfService includes 'Sat' which represents tuesday
-        else if (DayOfService.includes('Sat')) {
-          getDateRange(6);
-          // loop through the saturday and extract the date
-          for (let x = 0; x < dateArray.length - 1; x++) {
-            // Stores the date into ScheduleDate const
-            const ScheduleDate = dateArray[x];
-            // call addbooking function
-            AddBooking(newContractId, ScheduleDate);
-          }
-        }
-        // check if DayOfService includes 'Sun' which represents tuesday
-        else if (DayOfService.includes('Sun')) {
-          getDateRange(0);
-          // loop through the sunday and extract the date
-          for (let x = 0; x < dateArray.length - 1; x++) {
-            // Stores the date into ScheduleDate const
-            const ScheduleDate = dateArray[x];
-            // call addbooking function
-            AddBooking(newContractId, ScheduleDate);
-          }
-        }
-
-        // check if Pakage equals to 2
-        if (Package === '2') {
-          // check if DayOfService2 includes 'Mon' which represents monday
-          if (DayOfService2.includes('Mon')) {
-            getDateRange2(1);
+        } else {
+          // check if DayOfService includes 'Mon' which represents monday
+          if (DayOfService.includes('Mon')) {
+            getDateRange(1);
             // loop through the mondays and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
               // Stores the date into ScheduleDate const
@@ -1757,9 +1684,9 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               AddBooking(newContractId, ScheduleDate);
             }
           }
-          // check if DayOfService2 includes 'Tue' which represents tuesday
-          else if (DayOfService2.includes('Tue')) {
-            getDateRange2(2);
+          // check if DayOfService includes 'Tue' which represents tuesday
+          else if (DayOfService.includes('Tue')) {
+            getDateRange(2);
             // loop through the tuesday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
               // Stores the date into ScheduleDate const
@@ -1768,9 +1695,9 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               AddBooking(newContractId, ScheduleDate);
             }
           }
-          // check if DayOfService2 includes 'Wed' which represents tuesday
-          else if (DayOfService2.includes('Wed')) {
-            getDateRange2(3);
+          // check if DayOfService includes 'Wed' which represents tuesday
+          else if (DayOfService.includes('Wed')) {
+            getDateRange(3);
             // loop through the wednesday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
               // Stores the date into ScheduleDate const
@@ -1779,9 +1706,9 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               AddBooking(newContractId, ScheduleDate);
             }
           }
-          // check if DayOfService2 includes 'Thu' which represents tuesday
-          else if (DayOfService2.includes('Thu')) {
-            getDateRange2(4);
+          // check if DayOfService includes 'Thu' which represents tuesday
+          else if (DayOfService.includes('Thu')) {
+            getDateRange(4);
             // loop through the thursday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
               // Stores the date into ScheduleDate const
@@ -1790,9 +1717,9 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               AddBooking(newContractId, ScheduleDate);
             }
           }
-          // check if DayOfService2 includes 'Fri' which represents tuesday
-          else if (DayOfService2.includes('Fri')) {
-            getDateRange2(5);
+          // check if DayOfService includes 'Fri' which represents tuesday
+          else if (DayOfService.includes('Fri')) {
+            getDateRange(5);
             // loop through the friday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
               // Stores the date into ScheduleDate const
@@ -1801,9 +1728,9 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               AddBooking(newContractId, ScheduleDate);
             }
           }
-          // check if DayOfService2 includes 'Sat' which represents tuesday
-          else if (DayOfService2.includes('Sat')) {
-            getDateRange2(6);
+          // check if DayOfService includes 'Sat' which represents tuesday
+          else if (DayOfService.includes('Sat')) {
+            getDateRange(6);
             // loop through the saturday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
               // Stores the date into ScheduleDate const
@@ -1812,9 +1739,9 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               AddBooking(newContractId, ScheduleDate);
             }
           }
-          // check if DayOfService2 includes 'Sun' which represents tuesday
-          else if (DayOfService2.includes('Sun')) {
-            getDateRange2(0);
+          // check if DayOfService includes 'Sun' which represents tuesday
+          else if (DayOfService.includes('Sun')) {
+            getDateRange(0);
             // loop through the sunday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
               // Stores the date into ScheduleDate const
@@ -1823,7 +1750,89 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               AddBooking(newContractId, ScheduleDate);
             }
           }
+
+          // check if Pakage equals to 2
+          if (Package === '2') {
+            // check if DayOfService2 includes 'Mon' which represents monday
+            if (DayOfService2.includes('Mon')) {
+              getDateRange2(1);
+              // loop through the mondays and extract the date
+              for (let x = 0; x < dateArray.length - 1; x++) {
+                // Stores the date into ScheduleDate const
+                const ScheduleDate = dateArray[x];
+                // call addbooking function
+                AddBooking(newContractId, ScheduleDate);
+              }
+            }
+            // check if DayOfService2 includes 'Tue' which represents tuesday
+            else if (DayOfService2.includes('Tue')) {
+              getDateRange2(2);
+              // loop through the tuesday and extract the date
+              for (let x = 0; x < dateArray.length - 1; x++) {
+                // Stores the date into ScheduleDate const
+                const ScheduleDate = dateArray[x];
+                // call addbooking function
+                AddBooking(newContractId, ScheduleDate);
+              }
+            }
+            // check if DayOfService2 includes 'Wed' which represents tuesday
+            else if (DayOfService2.includes('Wed')) {
+              getDateRange2(3);
+              // loop through the wednesday and extract the date
+              for (let x = 0; x < dateArray.length - 1; x++) {
+                // Stores the date into ScheduleDate const
+                const ScheduleDate = dateArray[x];
+                // call addbooking function
+                AddBooking(newContractId, ScheduleDate);
+              }
+            }
+            // check if DayOfService2 includes 'Thu' which represents tuesday
+            else if (DayOfService2.includes('Thu')) {
+              getDateRange2(4);
+              // loop through the thursday and extract the date
+              for (let x = 0; x < dateArray.length - 1; x++) {
+                // Stores the date into ScheduleDate const
+                const ScheduleDate = dateArray[x];
+                // call addbooking function
+                AddBooking(newContractId, ScheduleDate);
+              }
+            }
+            // check if DayOfService2 includes 'Fri' which represents tuesday
+            else if (DayOfService2.includes('Fri')) {
+              getDateRange2(5);
+              // loop through the friday and extract the date
+              for (let x = 0; x < dateArray.length - 1; x++) {
+                // Stores the date into ScheduleDate const
+                const ScheduleDate = dateArray[x];
+                // call addbooking function
+                AddBooking(newContractId, ScheduleDate);
+              }
+            }
+            // check if DayOfService2 includes 'Sat' which represents tuesday
+            else if (DayOfService2.includes('Sat')) {
+              getDateRange2(6);
+              // loop through the saturday and extract the date
+              for (let x = 0; x < dateArray.length - 1; x++) {
+                // Stores the date into ScheduleDate const
+                const ScheduleDate = dateArray[x];
+                // call addbooking function
+                AddBooking(newContractId, ScheduleDate);
+              }
+            }
+            // check if DayOfService2 includes 'Sun' which represents tuesday
+            else if (DayOfService2.includes('Sun')) {
+              getDateRange2(0);
+              // loop through the sunday and extract the date
+              for (let x = 0; x < dateArray.length - 1; x++) {
+                // Stores the date into ScheduleDate const
+                const ScheduleDate = dateArray[x];
+                // call addbooking function
+                AddBooking(newContractId, ScheduleDate);
+              }
+            }
+          }
         }
+
         // respond
         res.status(201).send(result);
       }
