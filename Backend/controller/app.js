@@ -1664,13 +1664,10 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
           // Get contract start date day name
           const startDay = start.format('ddd');
           if (startDay === DayOfService) {
-            console.log('hello');
             // Declares ScheduleDate constant to store the contract start date
             const ScheduleDate = StartDate;
             // AddBooking function called to add booking
             AddBooking(newContractId, ScheduleDate);
-          } else {
-            console.log('bye');
           }
         } else {
           // check if DayOfService includes 'Mon' which represents monday
