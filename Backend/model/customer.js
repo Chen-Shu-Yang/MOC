@@ -60,6 +60,7 @@ const Customer = {
     });
   },
 
+<<<<<<< Updated upstream
   // add contract of services
   addContract(
     // eslint-disable-next-line no-shadow
@@ -117,13 +118,78 @@ const Customer = {
       Rate,
       ExtraService,
       callback], (err, result) => {
+=======
+  // get all class of services
+  getAllClassOfService(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.class;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+>>>>>>> Stashed changes
       if (err) {
         console.log(err);
         return callback(err);
       }
       // result accurate
+<<<<<<< Updated upstream
       return callback(null, result);
       // pool.end()
+=======
+
+      return callback(null, result); // if
+    });
+  },
+
+  // get all packages
+  getAllPackage(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.package;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // get all rates
+  getAllRates(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.rates;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // get all additional service
+  getAllAdditionalService(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+>>>>>>> Stashed changes
     });
   },
 };

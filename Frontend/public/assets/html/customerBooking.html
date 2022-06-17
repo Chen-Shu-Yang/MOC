@@ -86,7 +86,8 @@
             <div class="col-6" >
                 <div class="bookingCol"id="serviceCol">
                     <h2>Choose your Service Preference:</h2>
-                </div>
+                    <div id="class"></div><br>
+                </div><br>
                 <div class="row"id="serviceCol">
 
                     <div class="col">
@@ -96,6 +97,14 @@
                     <div class="col">
                         <h5>Postal Code: </h5>
                         <input type="text" id="cPostalCode">
+                    </div>
+                </div><br>
+                <div class="row" id="serviceCol">
+
+                    <div class="col">
+                        <h5>Housekeeping Package</h5>
+                        <select class="form-control" id="package" onchange="updatedPackage()">
+                        </select></td>
                     </div>
 
                 </div>
@@ -114,17 +123,52 @@
                         <button onclick="decrementBR()">-</button>
                     </div>
 
-
                 </div>
                 <div class="row" id="serviceCol">
 
                     <div class="col">
-                        <h5>Start Date:</h5>
-
+                        <h5>Rate</h5>
+                        <select class="form-control" id="rates" onchange="updatedRates()">
+                        </select></td><br>
                     </div>
-                    <div class="col">
-                        <h5>Day : </h5>
 
+                </div>
+                <div class="row" id="serviceCol">
+
+                    <h5>Additional Service</h5>
+                    <form action="" method="get" id="additionalService">
+                    </form>
+
+                </div><br><br>
+                <div class="row" id="serviceCol">
+
+                    <div class="col">
+                        <h5>Start Date:</h5>
+                        <input type="date" id="startDate" name="startDate" required="Required" onchange="updatedDate()">
+                    </div>
+                    <div class="col" id="day1">
+                        <h5>Day:</h5>
+                        <select name="Day" id="dayOfService1" onchange="updatedDay1()">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                          </select>
+                    </div>
+                    <div class="col" id="day2">
+                        <h5>2nd Day:</h5>
+                        <select name="Day" id="dayOfService2" onchange="updatedDay2()">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                          </select>
                     </div>
                     <div class="col">
                         <h5>Time : </h5>
@@ -138,7 +182,11 @@
                 </div>
                 <div id="serviceCol">
                     <h2>Additional Info</h2>
-                </div>
+                    <textarea id="additionalInfo" name="additionalInfo" rows="4" cols="100" style="resize: none;"></textarea>
+                </div><br>
+                <div style="float: center; margin-left: 350px;">
+                    <button>Continue</button>
+                </div><br>
             </div>
 
 
@@ -170,9 +218,13 @@
                         <h5>Date:</h5>
                         <p id="listDate"></p>
                     </div>
-                    <div class="col">
+                    <div class="col" id="day11">
                         <h5>Day:</h5>
-                        <p id="listDay"></p>
+                        <p id="listDay1"></p>
+                    </div>
+                    <div class="col" id="day22">
+                        <h5>2nd Day:</h5>
+                        <p id="listDay2"></p>
                     </div>
                 </div>
                 <h5>Time</h5>

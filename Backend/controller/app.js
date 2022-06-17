@@ -1526,6 +1526,7 @@ app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
   });
 });
 
+<<<<<<< Updated upstream
 app.post('/customer/autobooking', printDebugInfo, (req, res) => {
   // extract contract data from request body
   const { customer } = req.body;
@@ -1844,6 +1845,70 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
       }
     },
   );
+=======
+//---------------------------------------------------
+//               Feature/ Customer Booking
+//---------------------------------------------------
+
+// get all class of services
+app.get('/classOfService', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from customer model
+  Customer.getAllClassOfService((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get class of service');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get all packages
+app.get('/package', printDebugInfo, async (req, res) => {
+  // calling getAllPackage method from customer model
+  Customer.getAllPackage((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get package');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get all rates
+app.get('/rates', printDebugInfo, async (req, res) => {
+  // calling getAllRates method from customer model
+  Customer.getAllRates((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get rates');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get all additional service
+app.get('/additionalService', printDebugInfo, async (req, res) => {
+  // calling getAllAdditionalService method from customer model
+  Customer.getAllAdditionalService((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get additional service');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+>>>>>>> Stashed changes
 });
 
 // module exports
