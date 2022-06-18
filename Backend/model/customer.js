@@ -62,6 +62,7 @@ const Customer = {
 
   // add contract of services
   addContract(
+    // eslint-disable-next-line no-shadow
     Customer,
     StartDate,
     Package,
@@ -76,7 +77,7 @@ const Customer = {
     Class,
     Rate,
     ExtraService,
-    callback
+    callback,
   ) {
     // sql query statement
     const sql = `
@@ -116,14 +117,14 @@ const Customer = {
       Rate,
       ExtraService,
       callback], (err, result) => {
-        if (err) {
-          console.log(err);
-          return callback(err);
-        }
-        // result accurate
-        return callback(null, result);
-        // pool.end()
-      });
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+      // pool.end()
+    });
   },
 
   // get all class of services
@@ -189,9 +190,7 @@ const Customer = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result); // if
->>>>>>> Stashed changes
     });
   },
 };
