@@ -8,23 +8,35 @@ const backEndUrl = 'http://localhost:5000';
 
 //updateExtraService to update existing extra service
 function cancelBooking(bookingId) {
-    
+
     // ajax method to call the method
     $.ajax({
-            url: `${backEndUrl}/update/customerBooking/` + bookingId,
-            type: 'PUT',
-           
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data, textStatus, xhr) {
-         console.log("updated")
-          
-         
+        url: `${backEndUrl}/update/customerBooking/` + bookingId,
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (data, textStatus, xhr) {
+            console.log("updated")
+            Email.send({
+                Host: 'smtp.gmail.com',
+                Username: 'spfyp@moc.sg',
+                Password: 'Zj8n8J&u',
+                To: `farhanmashudi@gmail.com`,
+                From: 'spfyp@moc.sg',
+                Subject: 'Cancelation Made',
+                Body: `<h3>Name: ${name} </h3> 
+                          <h3>Email: ${email} </h3> 
+                          <h3>Post: ${post} by ${poster}</h3>
+                          <h3>Report: ${purpose}, ${details} </h3>
+                        
+                          `,
+            });
+
         },
         error: function (xhr, textStatus, errorThrown) {
             //set and call error message
             var errMsg = ""
-                if (xhr.status == 500) {
+            if (xhr.status == 500) {
                 console.log("error")
                 errMsg = "Please ensure that your values are accurate"
             }
@@ -37,46 +49,46 @@ function cancelBooking(bookingId) {
             else {
                 errMsg = "There is some other issues here "
             }
-          
+
         }
     });
 }
 
 function createRow(cardInfo) {
     console.log("**************************inside card****************************");
-    var bookingID=cardInfo.bookingID
-    var scheduleDate=new Date(cardInfo.scheduleDate)
-    let showBtn=1
-    var statusOfAppointment=cardInfo.status
- var dateToBeChecked = new Date();
+    var bookingID = cardInfo.bookingID
+    var scheduleDate = new Date(cardInfo.scheduleDate)
+    let showBtn = 1
+    var statusOfAppointment = cardInfo.status
+    var dateToBeChecked = new Date();
 
-   console.log("Booking id: "+bookingID)
-   console.log("Booking status: "+statusOfAppointment)
-
-
- // add a day
-dateToBeChecked.setDate(dateToBeChecked.getDate() + 1)
+    console.log("Booking id: " + bookingID)
+    console.log("Booking status: " + statusOfAppointment)
 
 
-if(scheduleDate<dateToBeChecked){
-   showBtn=0
-}
-else{
-    if(statusOfAppointment==='Cancelled'){
-        showBtn=0
+    // add a day
+    dateToBeChecked.setDate(dateToBeChecked.getDate() + 1)
+
+
+    if (scheduleDate < dateToBeChecked) {
+        showBtn = 0
+    }
+    else {
+        if (statusOfAppointment === 'Cancelled') {
+            showBtn = 0
+
+        }
+        else {
+            showBtn = 1
+        }
 
     }
-    else{
-        showBtn=1
-    }
-  
-}
- console.log("***************************************************************************")
+    console.log("***************************************************************************")
 
 
 
     var card;
- card = `
+    card = `
         <div class="card">
                         <div class="card-header bg-white"># Booking ${cardInfo.bookingID}</div>
                         <div class="row">
@@ -124,7 +136,7 @@ else{
                                 Extra Notes : ${(cardInfo.extraNotes) === null ? 'No Extra notes' : cardInfo.extraNotes}
                             </div>
                             <div class="col-md-5 mx-auto py-1">
-                            ${Boolean(showBtn)?'   <button class="btn btn-danger" type="button" onClick=cancelBooking(${cardInfo.bookingID})>Cancel</button>':''}
+                            ${Boolean(showBtn) ? '   <button class="btn btn-danger" type="button" onClick=cancelBooking(${cardInfo.bookingID})>Cancel</button>' : ''}
                              
                             </div>
                         </div>
