@@ -4,15 +4,18 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
-//loadAllClassOfServices gets all class of services
+//load number of booking for each month
 function loadMonthlyBookingForGraph() {
     $.ajax({
+        //calling the backendUrl
         url: `${backEndUrl}/bookingsByMonth`,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
 
+            //declaring variable for each month
             var numberOfBookingJan, numberOfBookingFeb, numberOfBookingMar, numberOfBookingApr, numberOfBookingMay, numberOfBookingJun, numberOfBookingJul, numberOfBookingAug, numberOfBookingSep, numberOfBookingOct, numberOfBookingNov, numberOfBookingDec;
+            //storing number of booking for each month respectively
             numberOfBookingJan = data[0].numberOfBooking
             numberOfBookingFeb = data[1].numberOfBooking
             numberOfBookingMar = data[2].numberOfBooking
@@ -25,21 +28,26 @@ function loadMonthlyBookingForGraph() {
             numberOfBookingOct = data[9].numberOfBooking
             numberOfBookingNov = data[10].numberOfBooking
             numberOfBookingDec = data[11].numberOfBooking
+
+            //store number of booking made in each month in an array called numberOfBooking
             var numberOfBooking = [numberOfBookingJan, numberOfBookingFeb, numberOfBookingMar, numberOfBookingApr, numberOfBookingMay, numberOfBookingJun, numberOfBookingJul, numberOfBookingAug, numberOfBookingSep, numberOfBookingOct, numberOfBookingNov, numberOfBookingDec];
 
-
+            //values on x-axis
             var xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "October", "Novemeber", "December"];
+            //initialising values on y axis as empty array
             var yValues = [];
+            //get currendate
             const currentDate = new Date();
+            //get current month
             let currentMonth = currentDate.getMonth();
-            console.log(currentMonth)
 
+            // for loop to loop through i and add booking with the index less than or equal to current month
             for (i = 0; i <= currentMonth; i++) {
                 yValues[i] = numberOfBooking[i]
             }
-
+//value of color
             colorVal = "rgb(255, 99, 132)"
-
+//styling chart
             new Chart("myChart", {
                 type: "line",
                 data: {
@@ -144,7 +152,7 @@ function diffInConsecutiveMonthBooking() {
 
             var diffInBooking = numberOfBookingCurrenttMonth - numberOfBookingLastMonth
 
-           
+
 
             if (diffInBooking > 0) {
                 $('#diffInBooking').append(diffInBooking)
@@ -152,7 +160,7 @@ function diffInConsecutiveMonthBooking() {
 
 
             }
-            else if(diffInBooking<0) {
+            else if (diffInBooking < 0) {
                 $('#diffInBooking').append(Math.abs(diffInBooking))
                 $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" id="downTrendIcon"></i>`)
 
@@ -161,7 +169,7 @@ function diffInConsecutiveMonthBooking() {
                 $('#diffInBooking').append(diffInBooking)
                 $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" ></i>`)
             }
-          
+
 
 
 

@@ -917,9 +917,9 @@ const Admin = {
    //= ======================================================
   //              Features / adminDashboard
   //= ======================================================
-  // get all extra services
+  // get number of booking made by therir month
   getBookingByMonth(callback) {
-    // sql query statement
+    // sql query statement to get number of booking made by therir month
     const sql = `select month(ScheduleDate) as month, count(ScheduleDate) as numberOfBooking
     from heroku_6b49aedb7855c0b.booking 
     WHERE     year(ScheduleDate) = year(curdate())
@@ -938,7 +938,7 @@ const Admin = {
     });
   },
   getRevenueOfTheMonth(callback) {
-    // sql query statement
+    // sql query statement to get revenue
     const sql = `
     select c.ContractID ,(c.EstimatedPricing * count(b.BookingID))
     as Revenue,count(b.BookingID) from heroku_6b49aedb7855c0b.contract 
@@ -960,8 +960,6 @@ const Admin = {
       return callback(null, result); // if
     });
   },
-
-
 };
 
 //= ======================================================

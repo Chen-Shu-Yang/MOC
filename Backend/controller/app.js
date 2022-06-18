@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-plusplus */
 /* eslint-disable linebreak-style */
 /* eslint-disable brace-style */
@@ -1478,77 +1479,99 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
 app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getBookingByMonth((err, result) => {
+    // array to store and send the finalOutput
     const finalOutput = [];
+    // array to store and send all the months
     const month = [];
+    // array to store number of booking made in a month
     const numMonthBooking = [];
 
     if (!err) {
+      // loop through the months
       for (let i = 0; i < result.length; i++) {
+        // pushing month and numbber of booking made in january if result for january is available
         if (result[i].month === 1) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in february if result for february is available
         if (result[i].month === 2) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in march if result for march is available
         if (result[i].month === 3) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in april if result for april is available
         if (result[i].month === 4) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in may if result for may is available
         if (result[i].month === 5) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in june if result for june is available
         if (result[i].month === 6) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in july if result for july is available
         if (result[i].month === 7) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in august if result for august is available
         if (result[i].month === 8) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in september if result for september is available
         if (result[i].month === 9) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in october if result for january is available
         if (result[i].month === 10) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in novemeber if result for novemeber is available
         if (result[i].month === 11) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
+        // pushing month and numbber of booking made in december if result for december is available
         if (result[i].month === 12) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
       }
 
+      // setting countNumBooking to 0
       let countNumBooking = 0;
+      // getting length of the number of months that have booking
       const actualCountNumBooking = numMonthBooking.length;
+      // for loop to check if booking for month was retrieved and assigning the
+      // value of number of booking and month into finalOutput as objects
       for (let x = 1; x < 13; x++) {
+        // check if the array month inclues value of x and add the month and number of booking made in
         if (month.includes(x)) {
+          // to ensure that the number of bookings that are equivilent to the number of booking beign added
           countNumBooking++;
           if (countNumBooking <= actualCountNumBooking) {
             finalOutput.push({ month: x, numberOfBooking: numMonthBooking[countNumBooking - 1] });
           }
         }
-
+        // if array does not include month get the month and put it's numberOfBooking as 0
         else {
           finalOutput.push({ month: x, numberOfBooking: 0 });
         }
       }
-
+      // send all the months and number of booking made in month as array of objects called finalOutput
       res.status(200).send(finalOutput);
     } else {
       res.status(500).send('Some error');
@@ -1556,20 +1579,21 @@ app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
   });
 });
 
-// get all rates
+// get revenue of the month
 app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
   // calling getAllRates method from admin model
   Admin.getRevenueOfTheMonth((err, result) => {
     if (!err) {
+      // inistialise sum as 0
       let sum = 0;
-
+      // loop throught the result and add the revenue calculated for each month as the sum
       for (i = 0; i < result.length; i++) {
-        console.log(typeof (result[i].Revenue));
+        // adding value to the sum
         sum += result[i].Revenue;
       }
-      console.log(sum);
-      var output = { totalRevenue: sum };
-
+      // assigning output as a object with the key of totalRevenue and value of sum calculated
+      const output = { totalRevenue: sum };
+      // send output
       res.status(200).send(output);
     } else {
       res.status(500).send('Some error');
