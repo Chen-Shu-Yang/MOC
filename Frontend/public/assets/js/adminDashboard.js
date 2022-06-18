@@ -45,9 +45,9 @@ function loadMonthlyBookingForGraph() {
             for (i = 0; i <= currentMonth; i++) {
                 yValues[i] = numberOfBooking[i]
             }
-//value of color
+            //value of color
             colorVal = "rgb(255, 99, 132)"
-//styling chart
+            //styling chart
             new Chart("myChart", {
                 type: "line",
                 data: {
@@ -100,78 +100,72 @@ function loadMonthlyBookingForGraph() {
 
 
 
-//loadAllClassOfServices gets all class of services
+//get revenue of the mont
 function getRevenueOfTheMonth() {
     $.ajax({
+        //backend url connection
         url: `${backEndUrl}/revenueOfTheMonth`,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
             console.log("-------response data------")
             console.log(data)
-
+            //get vaule of the total revenue and append it to the html id of revenueOfTheMonth
             $('#revenueOfTheMonth').append(data.totalRevenue);
-
-
-
         },
+        //propmpt error
         error: function (xhr, textStatus, errorThrown) {
             //print error
             console.log('Error in Operation');
         }
     });
 
-
-
-
-
 }
 
+//getting different in month booking
 function diffInConsecutiveMonthBooking() {
     $.ajax({
+        //get backend url
         url: `${backEndUrl}/bookingsByMonth`,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, xhr) {
+            //get currentDate
             const currentDate = new Date();
+            //ger current month
             let currentMonth = currentDate.getMonth();
+            //get lastMonth
             let lastMonth;
-
+            //if currentMonth==0 take month of 12
             if (currentMonth == 0) {
                 lastMonth = 12
             }
+            //else lastMonth= currentMonth - 1
             else {
                 lastMonth = currentMonth - 1
             }
-
-
-
+            // var numberOfBookingLastMonth represents booking made previous month 
+            //var numberOfBookingCurrenttMonth represets booking made for this month
             var numberOfBookingLastMonth, numberOfBookingCurrenttMonth;
             numberOfBookingLastMonth = data[lastMonth].numberOfBooking
             numberOfBookingCurrenttMonth = data[currentMonth].numberOfBooking
-
+            //calculating the differnce in booking
             var diffInBooking = numberOfBookingCurrenttMonth - numberOfBookingLastMonth
-
-
-
+            //if diffInBooking>0 append the difference and show that it is positive by colouring the icon in green
             if (diffInBooking > 0) {
                 $('#diffInBooking').append(diffInBooking)
                 $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" id="dollarIcon"></i>`)
-
-
             }
+            //if diffInBooking<0 append the difference and show that it is negative by colouring the icon in red
             else if (diffInBooking < 0) {
                 $('#diffInBooking').append(Math.abs(diffInBooking))
                 $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" id="downTrendIcon"></i>`)
-
             }
+            //if diffInBooking==0 append the difference and show that it is neutral by colouring the icon in grey
             else if (diffInBooking == 0) {
                 $('#diffInBooking').append(diffInBooking)
                 $('#statusOrder').append(`<i class="fa fa-line-chart fa-2xl" ></i>`)
             }
-
-
-
 
 
         },
