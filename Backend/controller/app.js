@@ -1526,7 +1526,6 @@ app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
   });
 });
 
-<<<<<<< Updated upstream
 app.post('/customer/autobooking', printDebugInfo, (req, res) => {
   // extract contract data from request body
   const { customer } = req.body;
@@ -1845,7 +1844,7 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
       }
     },
   );
-=======
+});
 //---------------------------------------------------
 //               Feature/ Customer Booking
 //---------------------------------------------------
@@ -1908,7 +1907,6 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
       res.status(500).send('Some error');
     }
   });
->>>>>>> Stashed changes
 });
 
 // module exports
