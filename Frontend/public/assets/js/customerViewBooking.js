@@ -4,44 +4,6 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
-
-
-//updateExtraService to update existing extra service
-function cancelBooking(bookingId) {
-    
-    // ajax method to call the method
-    $.ajax({
-            url: `${backEndUrl}/update/customerBooking/` + bookingId,
-            type: 'PUT',
-           
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data, textStatus, xhr) {
-         console.log("updated")
-          
-         
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            //set and call error message
-            var errMsg = ""
-                if (xhr.status == 500) {
-                console.log("error")
-                errMsg = "Please ensure that your values are accurate"
-            }
-            else if (xhr.status == 400) {
-                errMsg = " Invalid input "
-            }
-            else if (xhr.status == 406) {
-                errMsg = " Invalid input"
-            }
-            else {
-                errMsg = "There is some other issues here "
-            }
-          
-        }
-    });
-}
-
 function createRow(cardInfo) {
     console.log("**************************inside card****************************");
     var bookingID=cardInfo.bookingID
@@ -133,6 +95,44 @@ else{
     return card;
 
 }
+
+
+//updateExtraService to update existing extra service
+function cancelBooking(bookingId) {
+    
+    // ajax method to call the method
+    $.ajax({
+            url: `${backEndUrl}/update/customerBooking/` + bookingId,
+            type: 'PUT',
+           
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
+         console.log("updated")
+          
+         
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            //set and call error message
+            var errMsg = ""
+                if (xhr.status == 500) {
+                console.log("error")
+                errMsg = "Please ensure that your values are accurate"
+            }
+            else if (xhr.status == 400) {
+                errMsg = " Invalid input "
+            }
+            else if (xhr.status == 406) {
+                errMsg = " Invalid input"
+            }
+            else {
+                errMsg = "There is some other issues here "
+            }
+          
+        }
+    });
+}
+
 
 function loadAllBooking() {
     const customerId = localStorage.getItem('EmployeeID');
