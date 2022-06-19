@@ -172,7 +172,19 @@ function cancelBooking(bookingId) {
             dataType: 'json',
             success: function (data, textStatus, xhr) {
               
-         console.log("updated")
+         console.log("updated");
+ 
+        Email.send({
+            Host : "smtp.gmail.com",
+            Username : "spfyp@moc.sg",
+            Password : "Zj8n8J&u",
+            To : 'farhanmashudi@gmail.com',
+            From : "spfyp@moc.sg",
+            Subject : "This is the subject",
+            Body : "And this is the body"
+        }).then(
+          message => alert(message)
+        );
           
          
         },
