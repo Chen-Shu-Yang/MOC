@@ -113,7 +113,19 @@ function customerAutobooking() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log('Successful');
+      localStorage.removeItem('servicePref');
+      localStorage.removeItem('address');
+      localStorage.removeItem('servicePackage');
+      localStorage.removeItem('rooms');
+      localStorage.removeItem('bathRooms');
+      localStorage.removeItem('serviceRates');
+      localStorage.removeItem('addService');
+      localStorage.removeItem('contractStart');
+      localStorage.removeItem('serviceDay1');
+      localStorage.removeItem('serviceDay2');
+      localStorage.removeItem('serviceTime');
+      localStorage.removeItem('addInfo');
+      window.location.replace(`${frontEndUrl}/`);
     },
     error(xhr, textStatus, errorThrown) {
       // set and call error message
