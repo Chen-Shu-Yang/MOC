@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable linebreak-style */
 /* eslint-disable brace-style */
 /* eslint-disable consistent-return */
@@ -1554,15 +1555,12 @@ app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
   });
 });
 
-// Update own account details
+// cancel booking for customer
 app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const bookingId = req.params.id;
-  // const startTime = moment();
-  // const end = moment('2021-02-01');
-  // const duration = moment.duration(end.diff(startTime));
-  // const hours = duration.asHours();
-  // console.log(hours);
+
+  // cancel booking function that update the status of booking
   function cancelBooking(bookingId) {
     Customer.updateBookingStatus(bookingId, (err, result) => {
       // if there is no errorsend the following as result
@@ -1575,51 +1573,62 @@ app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
     });
   }
 
+  // get currentDate
   const currentDate = new Date();
+  // ger currentTime
   const currentTime = moment().format('HH:MM:SS');
-  console.log(`Current Date: ${currentDate}`);
-  console.log(`Current time: ${currentTime}`);
+  // initialising variables for bookingDate
   let bookingDate;
+  // initialising variables for bookingTime
   let bookingTime;
+  // initialising variables for diffInDates
   let diffInDates;
+  // initialising variables for diffInHours
   let diffInHours;
+  // initialising variables for diffInTime
   let diffInTime;
+  // initialising variables for statusOfAppointment
   let statusOfAppointment;
 
+  // get a cusotmer by id
   Customer.getABookingById(bookingId, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
+      // get bookingDate from the result
       bookingDate = result[0].ScheduleDate;
+      // get bookingTIme from the result
       bookingTime = result[0].TimeOfService;
+      // get statusOfAppointment from the result
       statusOfAppointment = result[0].Status;
+      // calculating diffInDates
       diffInDates = moment(bookingDate).diff(moment(currentDate), 'days');
+      // calculating diffInHours
       diffInHours = moment(bookingDate).diff(moment(currentDate), 'hours');
-      // diffInTime = moment(bookingTime).diff(moment(currentDate), 'hours');
 
-      // console.log(`Booking date: ${bookingDate}`);
-      // console.log(`Time of booking: ${bookingTime}`);
-
-      // console.log(`diffInDate for date: ${diffInDates}`);
-      // console.log(`difeeInHours for date: ${diffInHours}`);
-      console.log(result[0].Status);
+      // check if status of appointment is cancelled and send result as already cancelled
       if (statusOfAppointment === 'Cancelled') {
         console.log('Already cancelled');
         res.status(200).send('Already cancelled');
       }
+      // check if diffInDates equals to 0
       else if (diffInDates === 0) {
+        // check if diffInHours equals to 0 and send result Cannot cancel as appointment is today
         if (diffInHours === 0) {
           console.log('Cannot cancel as appointment is today');
           res.status(200).send('Cannot cancel as appointment is today');
         }
+        // else send result Cannot cancel as appointment is tmr
         else {
           console.log('Cannot cancel as appointment is tmr');
           res.status(200).send('Cannot cancel as appointment is tmr');
         }
       }
+      // check if diffInDates less than 0 and send result Cannot cancel as appointment is finished
       else if (diffInDates < 0) {
         console.log('Cannot cancel as appointment is finished');
         res.status(200).send('Cannot cancel as appointment is finished');
       }
+      // else call the cancelBooking() function with it's id
       else {
         console.log('Cancel');
         cancelBooking(bookingId);
