@@ -8,52 +8,10 @@
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
-const CustomerID = localStorage.getItem('CustomerID');
+const CustomerID = localStorage.getItem('customerID');
 const token = localStorage.getItem('token');
 
-function loadUserDetails() {
-  // extract user details from local storage
-  const CustomerIDs = localStorage.getItem('CustomerID');
-  console.log(CustomerIDs);
-  let userInfo;
-
-  // call the web service endpoint
-  $.ajax({
-    url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
-    type: 'GET',
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data) {
-      console.log('back to frontend back with data');
-      console.log('---------Response Data ------------');
-      console.log(data);
-      for (let i = 0; i < data.length; i++) {
-        const user = data[i];
-
-        // compile the data that the card needs for its creation
-        userInfo = {
-          userAddress: user.Address,
-          userPostalCode: user.PostalCode,
-        };
-      }
-
-      $('#cAddress').val(userInfo.userAddress);
-      $('#cPostalCode').val(userInfo.userPostalCode);
-    },
-    // errorhandling
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
-    },
-  });
-}
-$(document).ready(() => {
+function fillUpConfirmationCard() {
   // const servicePreference = localStorage.getItem('servicePref');
   const servicePreference = 'Class B';
   const customerAddress = localStorage.getItem('address');
@@ -111,4 +69,75 @@ $(document).ready(() => {
   }
   $('#serviceTiming').html(time);
   $('#additionalInfo').html(additionalInfo);
+}
+
+function customerAutobooking() {
+  const ServiceClass = $('#serviceClassId').val();
+  const ServicePackage = $('#servicePackageId').val();
+  const NoOfRooms = $('#noOfRooms').html();
+  const NoOfBathrooms = $('#noOfBath').html();
+  const Address = $('#address').html();
+  const StartDate = $('#startDate').html();
+  const ServiceDay = $('#serviceDay').html();
+  const ServiceDay2 = $('#serviceDay2').html();
+  const ServiceTiming = $('#serviceTiming').html();
+  const SizeRating = $('#sizeRatingsId').val();
+  const ExtraServices = $('#extraServicesId').val();
+  const AdditionalInfo = $('#additionalInfo').html();
+  const EstimatedTotal = $('#estimatedTotal').val();
+
+  const requestBody = {
+    customer: CustomerID,
+    StartDate,
+    Package: ServicePackage,
+    DayOfService: ServiceDay,
+    DayOfService2: ServiceDay2,
+    TimeOfService: ServiceTiming,
+    EstimatedPricing: EstimatedTotal,
+    ExtraNotes: AdditionalInfo,
+    NoOfRooms,
+    NoOfBathrooms,
+    Address,
+    Class: 2,
+    Rate: SizeRating,
+    ExtraService: ExtraServices,
+  };
+
+  console.log(requestBody);
+  const reqBody = JSON.stringify(requestBody);
+
+  $.ajax({
+    url: `${backEndUrl}/customer/autobooking`,
+    type: 'POST',
+    data: reqBody,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      console.log('Successful');
+    },
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else if (xhr.status === 400) {
+        errMsg = ' Input not accepted';
+      } else if (xhr.status === 406) {
+        errMsg = ' Input not accepted';
+      } else {
+        errMsg = 'There is some other issues here';
+      }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+      $('#classServiceTableBody').html('');
+    },
+  });
+}
+
+$(document).ready(() => {
+  fillUpConfirmationCard();
+
+  $('#confirmBookingBtn').click(() => {
+    customerAutobooking();
+  });
 });

@@ -324,7 +324,7 @@ $(document).ready(function () {
     $("#day2").hide();
     $("#day22").hide();
 
-    // update button
+    // Confirm button
     $('#confirmContract').click(() => {
         const servicePref = $('#listService').html();
         const address = $('#cAddress').val();
