@@ -35,7 +35,7 @@ $(document).ready(() => {
         //  pattern for pasword
         let pwdPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
         // pattern for postal code
-        let postalCodePattern = new RegExp("\d{6}");
+        let postalCodePattern = new RegExp("[0-9]{6}");
 
         // check if the value is empty
         if (customerFirstName == "" && customerAddress == "" && customerEmail == "" && customerPassword == "" && customerNumber == "" && customerPostalCode == "") {
