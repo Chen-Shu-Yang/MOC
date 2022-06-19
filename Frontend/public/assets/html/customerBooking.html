@@ -184,8 +184,10 @@
                 </div>
 
 
-                <div class="col-md-4">
-                    <div id="serviceCol">
+                <div class="col-md-4" style=" position: -webkit-sticky;
+                position: sticky;
+                top: 0;">
+                    <div id="receiptCol">
                         <h2 style="text-align: center;">Your Booking</h2>
                         <hr>
                         <h5>Service Preference</h5>
@@ -193,11 +195,11 @@
                         <h5>Package: </h5>
                         <p id="listPackage"></p>
                         <div class="row">
-                            <div class="col">
+                            <div class="col-md-6">
                                 <h5>Rooms:</h5>
                                 <p id="listRooms"></p>
                             </div>
-                            <div class="col">
+                            <div class="col-md-6">
                                 <h5>Bathrooms:</h5>
                                 <p id="listBathrooms"></p>
                             </div>
@@ -210,22 +212,28 @@
                         </div>
 
                         <div class="row">
-                            <div class="col">
+                            <div class="col-md-4">
                                 <h5>Date:</h5>
                                 <p id="listDate"></p>
                             </div>
-                            <div class="col" id="day11">
+                            <div class="col-md-4" id="day11">
                                 <h5>Day:</h5>
                                 <p id="listDay1"></p>
                             </div>
-                            <div class="col" id="day22">
+                            <div class="col-md-4" id="day22">
                                 <h5>2nd Day:</h5>
                                 <p id="listDay2"></p>
                             </div>
                         </div>
                         <h5>Time</h5>
                         <p id="listTime"></p>
+                        <hr style=" border:none;
+border-top:1px dashed black;
+color:#fff;
+background-color:#fff;
+height:1px;">
 
+<p id="estTotal"><b>Estimated Total:</b>&#36;</p>
                     </div>
                 </div>
 

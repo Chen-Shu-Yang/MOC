@@ -33,29 +33,46 @@
       background-color:#448788 ;
       color: white;
   } */
+  
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;800&family=Poppins:wght@200;300;400;500&family=Ubuntu:wght@300;400;500&display=swap');
 
 * {
     font-family: 'Poppins', sans-serif;
 }
-
+hr {
+  border:none;
+  border-top:1px dashed black;
+  color:#fff;
+  background-color:#fff;
+  height:1px;
+  
+}
 #timeOfService{
   width: 30%;
   background-color: #2E6869;
   color: white;
   border-radius: 10px;
 }
-
+#estTotal{
+  text-align: center;
+}
 
 #dayOfService1,#dayOfService2,#rates,#package,#container-class {
-  width: 50%;
+  width: 70%;
   background-color: #2E6869;
   color: white;
   border-radius: 10px;
 }
 
+#receiptCol{
+  background-color: #F8F8F8;
+padding-left: 10px;
+}
+
+
 #serviceCol{
   padding-left: 20px;
+  padding-right: 20px;
   background-color: #F8F8F8;
   margin-left: 20px;
   margin-right: 20px;
@@ -70,8 +87,7 @@
 }
 
 .confirmation-section .max-width {
-    padding-left: 120px;
-    padding-right: 120px;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,7 +102,7 @@
 }
 
 .confirmation-content {
-    width: 550px;
+   
     margin-top: 15px;
 }
 
@@ -131,3 +147,5 @@
     background: none;
     text-decoration: none;
 }
+
+
