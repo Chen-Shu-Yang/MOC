@@ -264,11 +264,11 @@ function updatedAddServices(i) {
     //if service found, take the current innerHTML, replace it with blank, then set it back
     if (currentServices.innerHTML.indexOf(additionalServices) != -1) {
         var currentServicesList = currentServices.innerHTML;
-        currentServicesList = currentServicesList.replace(additionalServices + " ", "");
+        currentServicesList = currentServicesList.replace(additionalServices + "", "");
         currentServices.innerHTML = currentServicesList;
     }
     else {
-        currentServices.innerHTML += additionalServices + " ";
+        currentServices.innerHTML += " " + additionalServices ;
     }
 
     //adds the dash back if empty again
@@ -359,7 +359,7 @@ $(document).ready(function () {
         localStorage.setItem('servicePref', servicePref);
         localStorage.setItem('address', address);
         localStorage.setItem('servicePackage', servicePackage);
-        localStorage.setItem('roooms', roooms);
+        localStorage.setItem('rooms', roooms);
         localStorage.setItem('bathRooms', bathRooms);
         localStorage.setItem('serviceRates', serviceRates);
         localStorage.setItem('addService', addService);
