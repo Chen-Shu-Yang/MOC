@@ -22,11 +22,11 @@ function createCard(cardInfo) {
                 <p>$${cardInfo.ClassPricing} per hour</p>
                 <p>Include:</p>
                 <p>${cardInfo.ClassDes}</p>
-                <input type="checkbox" id="classNameButton" value=${cardInfo.ClassName} onchange="updatedService" hidden>
+                <input type="checkbox" id="classNameButton" value="${cardInfo.ClassName} #${cardInfo.ClassID}" onchange="updatedService" hidden>
                 <button onclick="document.getElementById('classNameButton').checked=!document.getElementById('classNameButton').checked;">Select</button>
             </div>
         </div>
-    `; 
+    `;
 
     return card;
 }
@@ -50,16 +50,16 @@ function loadUserDetails() {
             console.log(data);
             for (let i = 0; i < data.length; i++) {
                 const user = data[i];
-        
+
                 // compile the data that the card needs for its creation
                 userInfo = {
                     userAddress: user.Address,
                     userPostalCode: user.PostalCode
                 };
-              }
-        
-              $('#cAddress').val(userInfo.userAddress);
-              $('#cPostalCode').val(userInfo.userPostalCode);
+            }
+
+            $('#cAddress').val(userInfo.userAddress);
+            $('#cPostalCode').val(userInfo.userPostalCode);
 
         },
         // errorhandling
@@ -80,7 +80,7 @@ function loadUserDetails() {
 function populateClass() {
     //call the web service endpoint
     $.ajax({
-        url:  `${backEndUrl}/classOfService/`,
+        url: `${backEndUrl}/classOfService/`,
         type: 'GET',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -123,7 +123,7 @@ function populateClass() {
 function populatePackage() {
     //call the web service endpoint
     $.ajax({
-        url:  `${backEndUrl}/package/`,
+        url: `${backEndUrl}/package/`,
         type: 'GET',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -135,7 +135,7 @@ function populatePackage() {
                 var package = data[i];
 
                 // for loop to generate every data from the database and append to the drop down list
-                $('#package').append('<option value="' + package.PackageName + ' (' + package.PackageDes + ')">' + package.PackageName + ' (' + package.PackageDes + ')</option>');
+                $('#package').append('<option value="' + package.PackageName + ' (' + package.PackageDes + ') #' + package.PackageID + '">' + package.PackageName + ' (' + package.PackageDes + ')</option>');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -154,7 +154,7 @@ function populatePackage() {
 function populateRates() {
     //call the web service endpoint
     $.ajax({
-        url:  `${backEndUrl}/rates/`,
+        url: `${backEndUrl}/rates/`,
         type: 'GET',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -166,7 +166,7 @@ function populateRates() {
                 var rates = data[i];
 
                 // for loop to generate every data from the database and append to the drop down list
-                $('#rates').append('<option value="' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')">' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')</option>');
+                $('#rates').append('<option value="' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID + '">' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')</option>');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -185,7 +185,7 @@ function populateRates() {
 function populateAdditonalService() {
     //call the web service endpoint
     $.ajax({
-        url:  `${backEndUrl}/additionalService/`,
+        url: `${backEndUrl}/additionalService/`,
         type: 'GET',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -197,9 +197,9 @@ function populateAdditonalService() {
             for (var i = 0; i < data.length; i++) {
                 var extraservice = data[i];
 
-                $('#additionalService').append(extraservice.ExtraServiceName 
-                + '<input id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + ')">'
-                + ' (Additonal S$' + extraservice.ExtraServicePrice + ')<br>');
+                $('#additionalService').append(extraservice.ExtraServiceName
+                    + '<input id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + ') #' + extraservice.ExtraServiceID + '">'
+                    + ' (Additonal S$' + extraservice.ExtraServicePrice + ')<br>');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -257,25 +257,25 @@ function updatedAddServices(i) {
     var currentServices = document.getElementById("listAddService");
 
     //get rids of the dash if its the only one
-    if(currentServices.innerHTML == "-"){
+    if (currentServices.innerHTML == "-") {
         currentServices.innerHTML = "";
     }
 
     //if service found, take the current innerHTML, replace it with blank, then set it back
-    if(currentServices.innerHTML.indexOf(additionalServices) != -1){
+    if (currentServices.innerHTML.indexOf(additionalServices) != -1) {
         var currentServicesList = currentServices.innerHTML;
-        currentServicesList = currentServicesList.replace(additionalServices+" ","");
+        currentServicesList = currentServicesList.replace(additionalServices + " ", "");
         currentServices.innerHTML = currentServicesList;
     }
-    else{
+    else {
         currentServices.innerHTML += additionalServices + " ";
     }
 
     //adds the dash back if empty again
-    if(currentServices.innerHTML == ""){
+    if (currentServices.innerHTML == "") {
         currentServices.innerHTML = "-";
     }
-    
+
 }
 function updatedDate() {
     var date = document.getElementById("startDate").value;
@@ -322,18 +322,63 @@ $(document).ready(() => {
     // });
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
     $("#day2").hide();
     $("#day22").hide();
- 
- });
 
-$(document).on('change',"#package", function () {
-    if ($(this).val() == "Sassafras (Twice a week, 8 times a month)") {
+    // update button
+    $('#confirmContract').click(() => {
+        const servicePref = $('#listService').html();
+        const address = $('#cAddress').val();
+        const servicePackage = $('#package').val();
+        const roooms = $('#rooms').val();
+        const bathRooms = $('#bathRooms').val();
+        const serviceRates = $('#rates').val();
+        const addService = $('#listAddService').html();
+        const contractStart = $('#startDate').val();
+        const serviceDay1 = $('#dayOfService1').val();
+        const serviceDay2 = $('#dayOfService2').val();
+        const serviceTime = $('#timeOfService').val();
+        const addInfo = $('#additionalInfo').val();
+
+        console.log(`
+        servicePref: ${servicePref}
+        address: ${address}
+        servicePackage: ${servicePackage}
+        roooms: ${roooms}
+        bathRooms: ${bathRooms}
+        serviceRates: ${serviceRates}
+        addService: ${addService}
+        contractStart: ${contractStart}
+        serviceDay1: ${serviceDay1}
+        serviceDay2: ${serviceDay2}
+        serviceTime: ${serviceTime}
+        addInfo: ${addInfo}
+        `);
+        
+        localStorage.setItem('servicePref', servicePref);
+        localStorage.setItem('address', address);
+        localStorage.setItem('servicePackage', servicePackage);
+        localStorage.setItem('roooms', roooms);
+        localStorage.setItem('bathRooms', bathRooms);
+        localStorage.setItem('serviceRates', serviceRates);
+        localStorage.setItem('addService', addService);
+        localStorage.setItem('contractStart', contractStart);
+        localStorage.setItem('serviceDay1', serviceDay1);
+        localStorage.setItem('serviceDay2', serviceDay2);
+        localStorage.setItem('serviceTime', serviceTime);
+        localStorage.setItem('addInfo', addInfo);
+        window.location.replace(`${frontEndUrl}/customer/confirm`);
+    });
+
+});
+
+$(document).on('change', "#package", function () {
+    if ($(this).val() == "Sassafras (Twice a week, 8 times a month) #2") {
         $("#day2").show();
         $("#day22").show();
     } else {
         $("#day2").hide();
         $("#day22").hide();
     }
- });
+});
