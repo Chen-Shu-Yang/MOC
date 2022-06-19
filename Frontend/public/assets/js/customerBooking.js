@@ -33,48 +33,46 @@ function createCard(cardInfo) {
 
 function loadUserDetails() {
     // extract user details from local storage
-    const CustomerIDs = localStorage.getItem('customerID')
+    const CustomerIDs = localStorage.getItem('customerID');
     console.log(CustomerIDs);
     let userInfo;
-
+  
     // call the web service endpoint
     $.ajax({
-        url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
-        type: 'GET',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success(data) {
-
-            console.log('back to frontend back with data');
-            console.log('---------Response Data ------------');
-            console.log(data);
-            for (let i = 0; i < data.length; i++) {
-                const user = data[i];
-
-                // compile the data that the card needs for its creation
-                userInfo = {
-                    userAddress: user.Address,
-                    userPostalCode: user.PostalCode
-                };
-            }
-
-            $('#cAddress').val(userInfo.userAddress);
-            $('#cPostalCode').val(userInfo.userPostalCode);
-
-        },
-        // errorhandling
-        error(xhr, textStatus, errorThrown) {
-            console.log('Error in Operation');
-            console.log('-----------------------');
-            console.log(xhr);
-            console.log(textStatus);
-            console.log(errorThrown);
-
-            console.log(xhr.status);
-            console.log(xhr.responseText);
-        },
+      url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
+      type: 'GET',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success(data) {
+        console.log('back to frontend back with data');
+        console.log('---------Response Data ------------');
+        console.log(data);
+        for (let i = 0; i < data.length; i++) {
+          const user = data[i];
+  
+          // compile the data that the card needs for its creation
+          userInfo = {
+            userAddress: user.Address,
+            userPostalCode: user.PostalCode,
+          };
+        }
+  
+        $('#cAddress').val(userInfo.userAddress);
+        $('#cPostalCode').val(userInfo.userPostalCode);
+      },
+      // errorhandling
+      error(xhr, textStatus, errorThrown) {
+        console.log('Error in Operation');
+        console.log('-----------------------');
+        console.log(xhr);
+        console.log(textStatus);
+        console.log(errorThrown);
+  
+        console.log(xhr.status);
+        console.log(xhr.responseText);
+      },
     });
-}
+  }
 
 // function to display all class of services by card
 function populateClass() {
