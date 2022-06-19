@@ -58,9 +58,11 @@ function loadUserDetails() {
                 userInfo = {
                     userAddress: user.Address,
                     userPostalCode: user.PostalCode,
+                    userNameInfo: user.FirstName,
                 };
             }
-
+            console.log(userInfo.userNameInfo);
+            $('#cUserNameInfo').val(userInfo.userNameInfo);
             $('#cAddress').val(userInfo.userAddress);
             $('#cPostalCode').val(userInfo.userPostalCode);
         },
