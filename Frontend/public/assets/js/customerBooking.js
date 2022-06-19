@@ -9,7 +9,7 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
 
-var CustomerID = localStorage.getItem('CustomerID')
+var CustomerID = localStorage.getItem('customerID')
 var token = localStorage.getItem('token');
 
 var myArray = [];
@@ -33,7 +33,7 @@ function createCard(cardInfo) {
 
 function loadUserDetails() {
     // extract user details from local storage
-    const CustomerIDs = localStorage.getItem('CustomerID')
+    const CustomerIDs = localStorage.getItem('customerID')
     console.log(CustomerIDs);
     let userInfo;
 
@@ -313,13 +313,6 @@ $(document).ready(() => {
     updatedPackage();
     loadUserDetails();
 
-    // //update button 
-    // $("#Update").click(function () {
-    //     updateProfile();
-    //     loadUserDetails();
-    //     // disable the normal behavior of a form submit
-    //     return false;
-    // });
 });
 
 $(document).ready(function () {
