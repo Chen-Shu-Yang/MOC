@@ -113,7 +113,7 @@ function customerAutobooking() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log('Successful');
+      window.location.replace(`${frontEndUrl}/`);
     },
     error(xhr, textStatus, errorThrown) {
       // set and call error message
