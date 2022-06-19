@@ -16,15 +16,19 @@ var myArray = [];
 
 function createCard(cardInfo) {
     var card = `
+    <div class="col-md-4">
         <div class="card">
-            <div class="container">
+            <div class="container-class" style="  background-color: #2E6869;
+            color: white; border-radius: 10px;">
                 <h4><b>${cardInfo.ClassName}</b></h4> 
                 <p>$${cardInfo.ClassPricing} per hour</p>
                 <p>Include:</p>
                 <p>${cardInfo.ClassDes}</p>
                 <input type="checkbox" id="classNameButton" value="${cardInfo.ClassName} #${cardInfo.ClassID}" onchange="updatedService" hidden>
-                <button onclick="document.getElementById('classNameButton').checked=!document.getElementById('classNameButton').checked;">Select</button>
+                
+                <button class="confirm-btn" onclick="document.getElementById('classNameButton').checked=!document.getElementById('classNameButton').checked;">Select</button>
             </div>
+        </div>
         </div>
     `;
 
@@ -36,43 +40,43 @@ function loadUserDetails() {
     const CustomerIDs = localStorage.getItem('customerID');
     console.log(CustomerIDs);
     let userInfo;
-  
+
     // call the web service endpoint
     $.ajax({
-      url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
-      type: 'GET',
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      success(data) {
-        console.log('back to frontend back with data');
-        console.log('---------Response Data ------------');
-        console.log(data);
-        for (let i = 0; i < data.length; i++) {
-          const user = data[i];
-  
-          // compile the data that the card needs for its creation
-          userInfo = {
-            userAddress: user.Address,
-            userPostalCode: user.PostalCode,
-          };
-        }
-  
-        $('#cAddress').val(userInfo.userAddress);
-        $('#cPostalCode').val(userInfo.userPostalCode);
-      },
-      // errorhandling
-      error(xhr, textStatus, errorThrown) {
-        console.log('Error in Operation');
-        console.log('-----------------------');
-        console.log(xhr);
-        console.log(textStatus);
-        console.log(errorThrown);
-  
-        console.log(xhr.status);
-        console.log(xhr.responseText);
-      },
+        url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success(data) {
+            console.log('back to frontend back with data');
+            console.log('---------Response Data ------------');
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                const user = data[i];
+
+                // compile the data that the card needs for its creation
+                userInfo = {
+                    userAddress: user.Address,
+                    userPostalCode: user.PostalCode,
+                };
+            }
+
+            $('#cAddress').val(userInfo.userAddress);
+            $('#cPostalCode').val(userInfo.userPostalCode);
+        },
+        // errorhandling
+        error(xhr, textStatus, errorThrown) {
+            console.log('Error in Operation');
+            console.log('-----------------------');
+            console.log(xhr);
+            console.log(textStatus);
+            console.log(errorThrown);
+
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+        },
     });
-  }
+}
 
 // function to display all class of services by card
 function populateClass() {
@@ -102,7 +106,7 @@ function populateClass() {
 
                 var newCard = createCard(cardInfo);
 
-                $('#class').append(newCard);
+                $('#class-container').append(newCard);
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -196,7 +200,7 @@ function populateAdditonalService() {
                 var extraservice = data[i];
 
                 $('#additionalService').append(extraservice.ExtraServiceName
-                    + '<input id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + ') #' + extraservice.ExtraServiceID + '">'
+                    + '<input class="col-md-1" id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + ') #' + extraservice.ExtraServiceID + '">'
                     + ' (Additonal S$' + extraservice.ExtraServicePrice + ')<br>');
             }
         },
@@ -266,7 +270,7 @@ function updatedAddServices(i) {
         currentServices.innerHTML = currentServicesList;
     }
     else {
-        currentServices.innerHTML += " " + additionalServices ;
+        currentServices.innerHTML += " " + additionalServices;
     }
 
     //adds the dash back if empty again
@@ -292,6 +296,7 @@ function updatedTime() {
     document.getElementById("listTime").innerHTML = time;
 }
 $(document).ready(() => {
+    loadUserDetails();
     populateClass()
     populatePackage();
     populateRates();
@@ -309,7 +314,7 @@ $(document).ready(() => {
     updatedRates();
     updatedService();
     updatedPackage();
-    loadUserDetails();
+
 
 });
 
@@ -346,7 +351,7 @@ $(document).ready(function () {
         serviceTime: ${serviceTime}
         addInfo: ${addInfo}
         `);
-        
+
         localStorage.setItem('servicePref', servicePref);
         localStorage.setItem('address', address);
         localStorage.setItem('servicePackage', servicePackage);
