@@ -1,12 +1,15 @@
+
+
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
+// Take value from local storage and get information on the admin with that ID
 function loadProfileDetails() {
-    const customerId = localStorage.getItem('customerID')
+    const adminID = localStorage.getItem('AdminID')
     $.ajax({
-        url: `${backEndUrl}/user/customer/${customerId}`,
+        url: `${backEndUrl}/admin/profile/${adminID}`,
         type: 'GET',
         contentType: 'application/json; charset=utf-8',
 
@@ -15,13 +18,12 @@ function loadProfileDetails() {
             console.log(data.Email);
             console.log(`LENGTH OF DATA:${data.length}`);
 
-            const custDetail = data[0];
-            $('#firstName').val(custDetail.FirstName);
-            $('#lastName').val(custDetail.LastName);
-            $('#address').val(custDetail.Address);
-            $('#postal').val(custDetail.PostalCode);
-            $('#phone').val(custDetail.PhoneNumber);
-            $('#email').val(custDetail.Email);
+            const adminDetails = data[0];
+            // Loads data into input element
+            $('#firstName').val(adminDetails.FirstName);
+            $('#lastName').val(adminDetails.LastName);
+            $('#phone').val(adminDetails.PhoneNumber);
+            $('#email').val(adminDetails.Email);
         },
 
         error(xhr, textStatus, errorThrown) {
@@ -41,24 +43,19 @@ $('#updateProfile').click(() => {
     // data extraction
     const firstName = $('#firstName').val();
     const lastName = $('#lastName').val();
-    const address = $('#address').val();
-    const postal = $('#postal').val();
-    const phoneNumber = $('#phone').val();
+    // const phoneNumber = $('#phone').val();
     const email = $('#email').val();
-    const customerId = localStorage.getItem('customerID')
+    const adminID = localStorage.getItem('AdminID')
     // data compilation
     const info = {
         firstName: firstName,
         lastName: lastName,
-        address: address,
-        postal: postal,
-        phoneNumber: phoneNumber,
         email: email,
     };
 
     // call web service endpoint
     $.ajax({
-        url: `${backEndUrl}/update/customer/${customerId}`,
+        url: `${backEndUrl}/update/admin/${adminID}`,
         type: 'PUT',
         data: JSON.stringify(info),
         contentType: 'application/json; charset=utf-8',
@@ -91,11 +88,12 @@ $('#updateProfile').click(() => {
         },
     });
 });
+
 $(document).ready(() => {
     const queryParams = new URLSearchParams(window.location.search);
     console.log('--------Query Params----------');
     console.log(`Query Param (source): ${window.location.search}`);
     console.log(`Query Param (extraction): ${queryParams}`);
-
+    // On page loaded, start function below
     loadProfileDetails();
 });

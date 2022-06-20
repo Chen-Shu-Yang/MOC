@@ -85,6 +85,11 @@ app.get('/admin/pricing', (req, res) => {
   res.sendFile('/public/assets/html/adminPricing.html', { root: __dirname });
 });
 
+// go to admin Profile
+app.get('/admin/profile', (req, res) => {
+  res.sendFile('/public/assets/html/adminProfile.html', { root: __dirname });
+});
+
 //= ======================================================
 //                   Customer
 //= ======================================================

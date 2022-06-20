@@ -914,6 +914,57 @@ const Admin = {
       return callback(null, result);
     });
   },
+
+  //= ======================================================
+  //              Features / Profile
+  //= ======================================================
+  getAdminById(cID, callback) {
+    // sql query statement
+    const sql = 'SELECT FirstName, LastName, Email FROM heroku_6b49aedb7855c0b.admin WHERE AdminID = ?;';
+
+    // pool query
+    pool.query(sql, [cID], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      // any results?
+      if (result.length === 0) {
+        // no results - callback with no err & results
+        console.log('this is null');
+        return callback(null, null);
+      }
+      // one result - returns result
+      console.log(result);
+      return callback(null, result);
+    });
+  },
+
+  updateAdminProfile(firstName, lastName, email, id, callback) {
+    // sql query statement
+    const sql = `
+            UPDATE 
+            heroku_6b49aedb7855c0b.admin
+         SET
+            FirstName=?,
+            LastName=?,
+            Email=?
+        where
+            AdminID=?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [firstName, lastName, email, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================

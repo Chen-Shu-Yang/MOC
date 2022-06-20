@@ -1532,5 +1532,59 @@ app.put('/update/customer/:id', printDebugInfo, (req, res) => {
     }
   });
 });
+
+//= ======================================================
+//              Features / adminProfile
+//= ======================================================
+
+app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const adminID = req.params.id;
+
+  // calling getAdminById method from Admin model
+  Admin.getAdminById(adminID, (err, result) => {
+    if (!err) {
+      // if admin id is not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+app.put('/update/admin/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const adminID = req.params.id;
+  // extract all details needed
+  const { firstName } = req.body;
+  const { lastName } = req.body;
+  const { email } = req.body;
+
+  // calling updateAdminProfile method from admin model
+  // eslint-disable-next-line max-len
+  Admin.updateAdminProfile(firstName, lastName, email, adminID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
 // module exports
 module.exports = app;
