@@ -179,7 +179,7 @@ function cancelBooking(bookingId) {
             Username : "farhanmashudi@gmail.com",
             Password : "vhogisplgwvuanrz",
             To : 'farhanmashudi@gmail.com',
-            From : "spfyp@moc.sg",
+            From : "farhanmashudi@gmail.com",
             Subject : "This is the subject",
             Body : "And this is the body"
         }).then(
