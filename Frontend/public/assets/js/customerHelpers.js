@@ -1,3 +1,7 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-undef */
+/* eslint-disable no-plusplus */
+
 // const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com/';
@@ -5,7 +9,7 @@ const backEndUrl = 'http://localhost:5000';
 // Display the helper card
 // Helpers' information will be passed in as cardInfo
 function createRow(cardInfo) {
-    const card = `
+  const card = `
         <div class="helper-card">
             <div class="helper-pic">
                 <img src="${cardInfo.EmployeeImg}" alt="">
@@ -22,58 +26,59 @@ function createRow(cardInfo) {
             </div>
         </div>
     `;
-    return card;
+  return card;
 }
 
 // Load the possible helpers available for
 // The most recent booking
 function loadPossibleHelpers(date) {
-    // Ajax function to call GET method to get the data
-    $.ajax({
-        url: `${backEndUrl}/helpers/${date}`,
-        type: 'GET',
-        contentType: 'application/json; charset=utf-8',
+  // Ajax function to call GET method to get the data
+  $.ajax({
+    url: `${backEndUrl}/helpers/${date}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
 
-        success(data) {
-            // Clears helpers-list container
-            $('#helpers-list').html('');
+    success(data) {
+      // Clears helpers-list container
+      $('#helpers-list').html('');
 
-            for (i = 0; i < data.length; i++) {
-                // Assign each helper data into employee
-                const employee = data[i];
+      for (let i = 0; i < data.length; i++) {
+        // Assign each helper data into employee
+        const employee = data[i];
 
-                // Extracting information
-                const RowInfo = {
-                    EmployeeID: employee.EmployeeID,
-                    EmployeeName: employee.EmployeeName,
-                    EmployeeDes: employee.EmployeeDes,
-                    EmployeeImg: employee.EmployeeImgUrl,
-                    Skillsets: employee.Skillsets,
-                };
+        // Extracting information
+        const RowInfo = {
+          EmployeeID: employee.EmployeeID,
+          EmployeeName: employee.EmployeeName,
+          EmployeeDes: employee.EmployeeDes,
+          EmployeeImg: employee.EmployeeImgUrl,
+          Skillsets: employee.Skillsets,
+        };
 
-                // //calling createRow to display values row by row
-                const newCard = createRow(RowInfo);
+        // //calling createRow to display values row by row
+        const newCard = createRow(RowInfo);
 
-                // appeding row to helpers-list
-                $('#helpers-list').append(newCard);
-            }
-        },
+        // appeding row to helpers-list
+        $('#helpers-list').append(newCard);
+      }
+    },
 
-        error(xhr, textStatus, errorThrown) {
-            console.log('Error in Operation');
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
 
-            console.log(xhr);
-            console.log(textStatus);
-            console.log(errorThrown);
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
 
-            console.log(xhr.responseText);
-            console.log(xhr.status);
-        },
-    });
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+    },
+  });
 }
 
 $(document).ready(() => {
-    // Function to list possible helpers
-    // Date is passed in
-    loadPossibleHelpers('2022-06-09');
+  // Function to list possible helpers
+  // Date is passed in
+  const date = localStorage.getItem('contractStart');
+  loadPossibleHelpers(date);
 });

@@ -120,12 +120,11 @@ function customerAutobooking() {
       localStorage.removeItem('bathRooms');
       localStorage.removeItem('serviceRates');
       localStorage.removeItem('addService');
-      localStorage.removeItem('contractStart');
       localStorage.removeItem('serviceDay1');
       localStorage.removeItem('serviceDay2');
       localStorage.removeItem('serviceTime');
       localStorage.removeItem('addInfo');
-      window.location.replace(`${frontEndUrl}/`);
+      window.location.replace(`${frontEndUrl}/customer/helpers`);
     },
     error(xhr, textStatus, errorThrown) {
       // set and call error message
