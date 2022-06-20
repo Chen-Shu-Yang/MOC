@@ -1547,8 +1547,6 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
   let newContractId;
   // Get contract start date and convert to moment form
   const start = moment(StartDate);
-  // Get first day of current month depending on contract start date
-  const firstDayOfMonth = moment(StartDate).startOf('month');
   // Get last day of current month depending on the contract start date
   const end = moment(StartDate).endOf('month');
   // Declare a date array
