@@ -184,9 +184,7 @@ function cancelBooking(bookingId) {
                       <h3>booking ID:${bookingId} </h3>
                       `,
           }).then(
-              (message)=> alert('Email sent').catch((error) => {
-                console.log(error);
-              })
+              (message)=> alert('Email sent')
             );
      
         },
