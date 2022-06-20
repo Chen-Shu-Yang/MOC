@@ -381,7 +381,7 @@ $(document).on('change', "#package", function () {
     }
 });
 
-
+// Day drop down function to prevent both having the same day
 // Select Elements
 const first = document.getElementById('dayOfService1')
 const second = document.getElementById('dayOfService2')
@@ -540,3 +540,7 @@ second.onchange = () => {
       updatedDay2();
     } 
 }
+
+// cannot select past dates from calendar
+var today = new Date().toISOString().split('T')[0];
+document.getElementsByName("startDate")[0].setAttribute('min', today);
