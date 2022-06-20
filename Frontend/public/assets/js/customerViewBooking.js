@@ -176,14 +176,14 @@ function cancelBooking(bookingId) {
  
         Email.send({
             Host : "smtp.gmail.com",
-            Username : "spfyp@moc.sg",
-            Password : "Zj8n8J&u",
+            Username : "farhanmashudi@gmail.com",
+            Password : "vhogisplgwvuanrz",
             To : 'farhanmashudi@gmail.com',
             From : "spfyp@moc.sg",
             Subject : "This is the subject",
             Body : "And this is the body"
         }).then(
-          message => alert(message)
+          (message )=> alert('Email sent')
         );
           
          
