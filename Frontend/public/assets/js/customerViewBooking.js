@@ -173,18 +173,30 @@ function cancelBooking(bookingId) {
             success: function (data, textStatus, xhr) {
               
          console.log("updated");
- 
-        Email.send({
-            Host : "smtp.gmail.com",
-            Username : "farhanmashudi@gmail.com",
-            Password : "vhogisplgwvuanrz",
-            To : 'farhanmashudi@gmail.com',
-            From : "farhanmashudi@gmail.com",
-            Subject : "This is the subject",
-            Body : "And this is the body"
-        }).then(
-          (message )=> alert('Email sent')
-        );
+         Email.send({
+            Host: 'smtp.gmail.com',
+            Username: 'spforumsofficial@gmail.com',
+            Password: 'qxyosyqkzpijcydj',
+            To: `farhanmashudi@gmail.com`,
+            From: 'spforumsofficial@gmail.com',
+            Subject: 'Report Results',
+            Body: `<h3>Name: </h3> 
+                      <h3>Email: </h3> sendEmail
+                      
+                      `,
+          });
+        // Email
+        // .send({
+        //     Host : "smtp.gmail.com",
+        //     Username : "farhanmashudi@gmail.com",
+        //     Password : "vhogisplgwvuanrz",
+        //     To : 'farhanmashudi@gmail.com',
+        //     From : "farhanmashudi@gmail.com",
+        //     Subject : "This is the subject",
+        //     Body : "And this is the body"
+        // }).then(
+        //   (message )=> alert('Email sent')
+        // );
           
          
         },
