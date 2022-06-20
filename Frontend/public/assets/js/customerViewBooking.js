@@ -186,18 +186,7 @@ function cancelBooking(bookingId) {
           }).then(
               (message )=> alert('Email sent')
             );
-        // Email
-        // .send({
-        //     Host : "smtp.gmail.com",
-        //     Username : "farhanmashudi@gmail.com",
-        //     Password : "vhogisplgwvuanrz",
-        //     To : 'farhanmashudi@gmail.com',
-        //     From : "farhanmashudi@gmail.com",
-        //     Subject : "This is the subject",
-        //     Body : "And this is the body"
-        // }).then(
-        //   (message )=> alert('Email sent')
-        // );
+     
           
          
         },
