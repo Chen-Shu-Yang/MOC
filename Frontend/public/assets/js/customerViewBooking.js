@@ -179,9 +179,9 @@ function cancelBooking(bookingId) {
             Password: '2F86A2CBC29B22A70B627E953FB42FD7CBB1',
             To: 'mnurfarhan13.20@ichat.sp.edu.sg',
             From: 'farhanmashudi@gmail.com',
-            Subject: 'Report Results',
+            Subject: 'Cancel Booking',
             Body: `
-                      <h3>Please download chrome autheticator </h3>
+                      <h3>booking ID:${bookingId} </h3>
                       `,
           }).then(
               (message)=> alert('Email sent').catch((error) => {
