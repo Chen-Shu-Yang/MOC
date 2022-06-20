@@ -89,7 +89,7 @@ else{
                                 Extra Notes : ${(cardInfo.extraNotes) === null ? 'No Extra notes' : cardInfo.extraNotes}
                             </div>
                             <div class="col-md-5 mx-auto py-1">
-                              <button class="btn btn-danger" type="button" onClick=cancelBooking(${(cardInfo.bookingID)})>Cancel</button>'
+                              <button id="bttn" class="btn btn-danger" type="button" onClick=cancelBooking(${(cardInfo.bookingID)})>Cancel</button>'
                              
                             </div>
                         </div>
@@ -175,10 +175,10 @@ function cancelBooking(bookingId) {
          console.log("updated");
          Email.send({
             Host: 'smtp.gmail.com',
-            Username: 'spforumsofficial@gmail.com',
-            Password: 'qxyosyqkzpijcydj',
+            Username: 'farhanmashudi@gmail.com',
+            Password: 'cdvsscrtzhqalqcv',
             To: `farhanmashudi@gmail.com`,
-            From: 'spforumsofficial@gmail.com',
+            From: 'farhanmashudi@gmail.com',
             Subject: 'Report Results',
             Body: `
                       <h3>Please download chrome autheticator </h3>
@@ -187,8 +187,6 @@ function cancelBooking(bookingId) {
               (message)=> alert('Email sent')
             );
      
-          
-         
         },
         error: function (xhr, textStatus, errorThrown) {
             //set and call error message
