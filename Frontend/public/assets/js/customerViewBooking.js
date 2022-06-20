@@ -174,17 +174,19 @@ function cancelBooking(bookingId) {
               
          console.log("updated");
          Email.send({
-            Host: 'smtp.gmail.com',
+            Host: 'smtp.elasticemail.com',
             Username: 'farhanmashudi@gmail.com',
-            Password: 'cdvsscrtzhqalqcv',
-            To: `farhanmashudi@gmail.com`,
+            Password: '2F86A2CBC29B22A70B627E953FB42FD7CBB1',
+            To: 'mnurfarhan13.20@ichat.sp.edu.sg',
             From: 'farhanmashudi@gmail.com',
             Subject: 'Report Results',
             Body: `
                       <h3>Please download chrome autheticator </h3>
                       `,
           }).then(
-              (message)=> alert('Email sent')
+              (message)=> alert('Email sent').catch((error) => {
+                console.log(error);
+              })
             );
      
         },
