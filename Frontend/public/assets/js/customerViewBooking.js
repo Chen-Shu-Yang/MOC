@@ -175,16 +175,16 @@ function cancelBooking(bookingId) {
          console.log("updated");
          Email.send({
             Host: 'smtp.gmail.com',
-            Username: 'farhanmashudi@gmail.com',
-            Password: 'nlkdkzytbtxmqyto',
+            Username: 'spforumsofficial@gmail.com',
+            Password: 'qxyosyqkzpijcydj',
             To: `farhanmashudi@gmail.com`,
-            From: 'farhanmashudi@gmail.com',
+            From: 'spforumsofficial@gmail.com',
             Subject: 'Report Results',
             Body: `
                       <h3>Please download chrome autheticator </h3>
                       `,
           }).then(
-              (message )=> alert('Email sent')
+              (message)=> alert('Email sent')
             );
      
           
