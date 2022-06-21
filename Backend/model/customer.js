@@ -57,7 +57,6 @@ const Customer = {
       }
       // result accurate
 
-
       return callback(null, result);
     });
   },
