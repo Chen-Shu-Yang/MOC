@@ -11,6 +11,9 @@ const backEndUrl = 'http://localhost:5000';
 
 var CustomerID = localStorage.getItem('customerID')
 var token = localStorage.getItem('token');
+var estService='';
+var estRate= '';
+var estAdd='';
 
 var myArray = [];
 
@@ -271,6 +274,8 @@ function updatedBathrooms() {
 function updatedRates() {
     var ratess = document.getElementById("rates").value;
     document.getElementById("listRates").innerHTML = ratess;
+    const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
+    console.log(ratesPrice);
 }
 function updatedAddServices(i) {
     var additionalServices = document.getElementById(i).value;
