@@ -138,6 +138,10 @@ function populatePackage() {
             for (var i = 0; i < data.length; i++) {
                 var package = data[i];
 
+                if (i === 0) {
+                    $('#listPackage').html(package.PackageName + ' (' + package.PackageDes + ') #' + package.PackageID);
+                }
+
                 // for loop to generate every data from the database and append to the drop down list
                 $('#package').append('<option value="' + package.PackageName + ' (' + package.PackageDes + ') #' + package.PackageID + '">' + package.PackageName + ' (' + package.PackageDes + ')</option>');
             }
@@ -168,6 +172,10 @@ function populateRates() {
 
             for (var i = 0; i < data.length; i++) {
                 var rates = data[i];
+
+                if (i === 0) {
+                    $('#listRates').html(rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID);
+                }
 
                 // for loop to generate every data from the database and append to the drop down list
                 $('#rates').append('<option value="' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID + '">' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')</option>');
@@ -407,138 +415,138 @@ const seven2 = document.getElementById('sunday2')
 first.onchange = () => {
     // Checks First Selects Value
     if (first.value === 'Mon') {
-      one2.hidden = true
-      two2.hidden = false
-      three2.hidden = false
-      four2.hidden = false
-      five2.hidden = false
-      six2.hidden = false
-      seven2.hidden = false
-      updatedDay1();
+        one2.hidden = true
+        two2.hidden = false
+        three2.hidden = false
+        four2.hidden = false
+        five2.hidden = false
+        six2.hidden = false
+        seven2.hidden = false
+        updatedDay1();
     } else if (first.value === 'Tue') {
-      one2.hidden = false
-      two2.hidden = true
-      three2.hidden = false
-      four2.hidden = false
-      five2.hidden = false
-      six2.hidden = false
-      seven2.hidden = false
-      updatedDay1();
+        one2.hidden = false
+        two2.hidden = true
+        three2.hidden = false
+        four2.hidden = false
+        five2.hidden = false
+        six2.hidden = false
+        seven2.hidden = false
+        updatedDay1();
     } else if (first.value === 'Wed') {
-      one2.hidden = false
-      two2.hidden = false
-      three2.hidden = true
-      four2.hidden = false
-      five2.hidden = false
-      six2.hidden = false
-      seven2.hidden = false
-      updatedDay1();
+        one2.hidden = false
+        two2.hidden = false
+        three2.hidden = true
+        four2.hidden = false
+        five2.hidden = false
+        six2.hidden = false
+        seven2.hidden = false
+        updatedDay1();
     } else if (first.value === 'Thu') {
-      one2.hidden = false
-      two2.hidden = false
-      three2.hidden = false
-      four2.hidden = true
-      five2.hidden = false
-      six2.hidden = false
-      seven2.hidden = false
-      updatedDay1();
+        one2.hidden = false
+        two2.hidden = false
+        three2.hidden = false
+        four2.hidden = true
+        five2.hidden = false
+        six2.hidden = false
+        seven2.hidden = false
+        updatedDay1();
     } else if (first.value === 'Fri') {
-      one2.hidden = false
-      two2.hidden = false
-      three2.hidden = false
-      four2.hidden = false
-      five2.hidden = true
-      six2.hidden = false
-      seven2.hidden = false
-      updatedDay1();
+        one2.hidden = false
+        two2.hidden = false
+        three2.hidden = false
+        four2.hidden = false
+        five2.hidden = true
+        six2.hidden = false
+        seven2.hidden = false
+        updatedDay1();
     } else if (first.value === 'Sat') {
-      one2.hidden = false
-      two2.hidden = false
-      three2.hidden = false
-      four2.hidden = false
-      five2.hidden = false
-      six2.hidden = true
-      seven2.hidden = false
-      updatedDay1();
+        one2.hidden = false
+        two2.hidden = false
+        three2.hidden = false
+        four2.hidden = false
+        five2.hidden = false
+        six2.hidden = true
+        seven2.hidden = false
+        updatedDay1();
     } else if (first.value === 'Sun') {
-      one2.hidden = false
-      two2.hidden = false
-      three2.hidden = false
-      four2.hidden = false
-      five2.hidden = false
-      six2.hidden = false
-      seven2.hidden = true
-      updatedDay1();
-    } 
-  }
+        one2.hidden = false
+        two2.hidden = false
+        three2.hidden = false
+        four2.hidden = false
+        five2.hidden = false
+        six2.hidden = false
+        seven2.hidden = true
+        updatedDay1();
+    }
+}
 
 // Runs whenever second select has changed
 second.onchange = () => {
     // Checks Second Selects Value
     if (second.value === 'Mon') {
-      one.hidden = true
-      two.hidden = false
-      three.hidden = false
-      four.hidden = false
-      five.hidden = false
-      six.hidden = false
-      seven.hidden = false
-      updatedDay2();
+        one.hidden = true
+        two.hidden = false
+        three.hidden = false
+        four.hidden = false
+        five.hidden = false
+        six.hidden = false
+        seven.hidden = false
+        updatedDay2();
     } else if (second.value === 'Tue') {
-      one.hidden = false
-      two.hidden = true
-      three.hidden = false
-      four.hidden = false
-      five.hidden = false
-      six.hidden = false
-      seven.hidden = false
-      updatedDay2();
+        one.hidden = false
+        two.hidden = true
+        three.hidden = false
+        four.hidden = false
+        five.hidden = false
+        six.hidden = false
+        seven.hidden = false
+        updatedDay2();
     } else if (second.value === 'Wed') {
-      one.hidden = false
-      two.hidden = false
-      three.hidden = true
-      four.hidden = false
-      five.hidden = false
-      six.hidden = false
-      seven.hidden = false
-      updatedDay2();
+        one.hidden = false
+        two.hidden = false
+        three.hidden = true
+        four.hidden = false
+        five.hidden = false
+        six.hidden = false
+        seven.hidden = false
+        updatedDay2();
     } else if (second.value === 'Thu') {
-      one.hidden = false
-      two.hidden = false
-      three.hidden = false
-      four.hidden = true
-      five.hidden = false
-      six.hidden = false
-      seven.hidden = false
-      updatedDay2();
+        one.hidden = false
+        two.hidden = false
+        three.hidden = false
+        four.hidden = true
+        five.hidden = false
+        six.hidden = false
+        seven.hidden = false
+        updatedDay2();
     } else if (second.value === 'Fri') {
-      one.hidden = false
-      two.hidden = false
-      three.hidden = false
-      four.hidden = false
-      five.hidden = true
-      six.hidden = false
-      seven.hidden = false
-      updatedDay2();
+        one.hidden = false
+        two.hidden = false
+        three.hidden = false
+        four.hidden = false
+        five.hidden = true
+        six.hidden = false
+        seven.hidden = false
+        updatedDay2();
     } else if (second.value === 'Sat') {
-      one.hidden = false
-      two.hidden = false
-      three.hidden = false
-      four.hidden = false
-      five.hidden = false
-      six.hidden = true
-      seven.hidden = false
-      updatedDay2();
+        one.hidden = false
+        two.hidden = false
+        three.hidden = false
+        four.hidden = false
+        five.hidden = false
+        six.hidden = true
+        seven.hidden = false
+        updatedDay2();
     } else if (second.value === 'Sun') {
-      one.hidden = false
-      two.hidden = false
-      three.hidden = false
-      four.hidden = false
-      five.hidden = false
-      six.hidden = false
-      seven.hidden = true
-      updatedDay2();
-    } 
+        one.hidden = false
+        two.hidden = false
+        three.hidden = false
+        four.hidden = false
+        five.hidden = false
+        six.hidden = false
+        seven.hidden = true
+        updatedDay2();
+    }
 }
 
 // cannot select past dates from calendar
