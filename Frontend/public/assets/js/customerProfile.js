@@ -67,7 +67,7 @@ $('#updateProfile').click(() => {
             if (data != null) {
                 new Noty({
                     timeout: '5000',
-                    type: 'sucess',
+                    type: 'success',
                     layout: 'topCenter',
                     theme: 'sunset',
                     text: 'Added successfully',
