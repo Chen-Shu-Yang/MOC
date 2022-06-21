@@ -298,7 +298,7 @@ function updatedAddServices(i) {
     //if service found, take the current innerHTML, replace it with blank, then set it back
     if (currentServices.innerHTML.indexOf(additionalServices) != -1) {
         var currentServicesList = currentServices.innerHTML;
-        currentServicesList = currentServicesList.replace(additionalServices + "", "");
+        currentServicesList = currentServicesList.replace(additionalServices + "<br>", "");
         currentServices.innerHTML = currentServicesList;
         const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
         let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
@@ -312,7 +312,7 @@ function updatedAddServices(i) {
         updatedAmt();
     }
     else {
-        currentServices.innerHTML += " " + additionalServices;
+        currentServices.innerHTML += " " + additionalServices + "<br>";
 
         const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
         let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
