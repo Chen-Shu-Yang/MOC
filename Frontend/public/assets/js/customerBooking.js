@@ -11,10 +11,10 @@ const backEndUrl = 'http://localhost:5000';
 
 var CustomerID = localStorage.getItem('customerID')
 var token = localStorage.getItem('token');
-var estService='';
-var estRate= '';
-var estAdd='';
-
+var estService = '';
+var estRate = '';
+var estAdd = '';
+var estTotal = '';
 var myArray = [];
 
 function createCard(cardInfo) {
@@ -177,11 +177,11 @@ function populateRates() {
                 var rates = data[i];
 
                 if (i === 0) {
-                    $('#listRates').html(rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID);
+                    $('#listRates').html(rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ' ) #' + rates.RatesID);
                 }
 
                 // for loop to generate every data from the database and append to the drop down list
-                $('#rates').append('<option value="' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID + '">' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')</option>');
+                $('#rates').append('<option value="' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ' ) #' + rates.RatesID + '">' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')</option>');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -213,7 +213,7 @@ function populateAdditonalService() {
                 var extraservice = data[i];
 
                 $('#additionalService').append(extraservice.ExtraServiceName
-                    + '<input class="col-md-1" id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + ') #' + extraservice.ExtraServiceID + '">'
+                    + '<input class="col-md-1" id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + ' &nbsp;&nbsp;) #' + extraservice.ExtraServiceID + '">'
                     + ' (Additonal S$' + extraservice.ExtraServicePrice + ')<br>');
             }
         },
@@ -264,14 +264,34 @@ function updatedBathrooms() {
     document.getElementById("listBathrooms").innerHTML = bathroomss;
 }
 function updatedRates() {
+    estRate = '';
     var ratess = document.getElementById("rates").value;
     document.getElementById("listRates").innerHTML = ratess;
+    
     const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
-    console.log(ratesPrice);
+    let ratePattern = new RegExp("^\d{1,6}");
+    const final = ratesPrice.substring(ratePattern, 3);
+    console.log(final);
+    estRate = final;
+    console.log(estRate);
+
+    updatedAmt()
+}
+function updatedAmt() {
+    const rateCost = parseInt(estRate);
+
+    estTotal = rateCost;
+    document.getElementById("estAmtt").innerHTML = estTotal;
 }
 function updatedAddServices(i) {
     var additionalServices = document.getElementById(i).value;
     var currentServices = document.getElementById("listAddService");
+
+    const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
+    let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
+    console.log(addServicePrice);
+    const finalprice = addServicePrice.substring(addServicePattern,5);
+    console.log(finalprice);
 
     //get rids of the dash if its the only one
     if (currentServices.innerHTML == "-") {
@@ -281,7 +301,7 @@ function updatedAddServices(i) {
     //if service found, take the current innerHTML, replace it with blank, then set it back
     if (currentServices.innerHTML.indexOf(additionalServices) != -1) {
         var currentServicesList = currentServices.innerHTML;
-        currentServicesList = currentServicesList.replace(additionalServices + "", "");
+        currentServicesList = currentServicesList.replace(additionalServices + "<br>", "");
         currentServices.innerHTML = currentServicesList;
     }
     else {
@@ -310,7 +330,9 @@ function updatedTime() {
     var time = document.getElementById("timeOfService").value;
     document.getElementById("listTime").innerHTML = time;
 }
+
 $(document).ready(() => {
+    updatedAmt();
     loadUserDetails();
     populateClass()
     populatePackage();
