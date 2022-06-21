@@ -268,7 +268,7 @@ function updatedRates() {
     estRate = '';
     var ratess = document.getElementById("rates").value;
     document.getElementById("listRates").innerHTML = ratess;
-    
+
     const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
     let ratePattern = new RegExp("^\d{1,6}");
     const final = ratesPrice.substring(ratePattern, 3);
@@ -289,15 +289,7 @@ function updatedAddServices(i) {
     var currentServices = document.getElementById("listAddService");
 
 
-    const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
-    let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
-    console.log(addServicePrice);
-    const finalprice = addServicePrice.substring(addServicePattern, 5);
-    console.log(finalprice);
-    const estConvert = parseInt(finalprice);
-    console.log(estConvert);
-    estAdd = estAdd + estConvert;
-console.log(estAdd);
+
     //get rids of the dash if its the only one
     if (currentServices.innerHTML == "-") {
         currentServices.innerHTML = "";
@@ -308,9 +300,29 @@ console.log(estAdd);
         var currentServicesList = currentServices.innerHTML;
         currentServicesList = currentServicesList.replace(additionalServices + "", "");
         currentServices.innerHTML = currentServicesList;
+        const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
+        let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
+        console.log(addServicePrice);
+        const finalprice = addServicePrice.substring(addServicePattern, 5);
+        console.log(finalprice);
+        const estConvert = parseInt(finalprice);
+        console.log(estConvert);
+        estAdd = estAdd - estConvert;
+        console.log(estAdd);
+
     }
     else {
         currentServices.innerHTML += " " + additionalServices;
+
+        const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
+        let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
+        console.log(addServicePrice);
+        const finalprice = addServicePrice.substring(addServicePattern, 5);
+        console.log(finalprice);
+        const estConvert = parseInt(finalprice);
+        console.log(estConvert);
+        estAdd = estAdd + estConvert;
+        console.log(estAdd);
     }
 
     //adds the dash back if empty again
