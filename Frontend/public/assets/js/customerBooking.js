@@ -13,7 +13,7 @@ var CustomerID = localStorage.getItem('customerID')
 var token = localStorage.getItem('token');
 var estService = '';
 var estRate = '';
-const estAdd = 0;
+let estAdd = 0;
 var estTotal = '';
 var myArray = [];
 
@@ -267,7 +267,7 @@ function updatedRates() {
     estRate = '';
     var ratess = document.getElementById("rates").value;
     document.getElementById("listRates").innerHTML = ratess;
-    
+
     const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
     let ratePattern = new RegExp("^\d{1,6}");
     const final = ratesPrice.substring(ratePattern, 3);
@@ -290,9 +290,13 @@ function updatedAddServices(i) {
     const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
     let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
     console.log(addServicePrice);
-    const finalprice = addServicePrice.substring(addServicePattern,5);
+    const finalprice = addServicePrice.substring(addServicePattern, 5);
     console.log(finalprice);
+    const estConvert = parseInt(finalprice);
+    console.log(estConvert);
+    estAdd = estAdd + estConvert;
 
+console.log(estAdd);
     //get rids of the dash if its the only one
     if (currentServices.innerHTML == "-") {
         currentServices.innerHTML = "";
