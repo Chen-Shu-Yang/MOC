@@ -13,7 +13,7 @@ var CustomerID = localStorage.getItem('customerID')
 var token = localStorage.getItem('token');
 var estService = '';
 var estRate = '';
-var estAdd = '';
+const estAdd = 0;
 var estTotal = '';
 var myArray = [];
 
@@ -21,19 +21,18 @@ function createCard(cardInfo) {
     var card = `
     <div class="col-md-4">
         <div class="card">
-            <div id="service${cardInfo.ClassID}" class="container-class"  border-radius: 10px;">
+            <div class="container-class" style="  background-color: #FFFFFF; color:#000;
+             border-radius: 10px;">
                 <h4><b>${cardInfo.ClassName}</b></h4> 
                 <p>$${cardInfo.ClassPricing} per hour</p>
                 <p>Include:</p>
                 <p>${cardInfo.ClassDes}</p>
-                <input type="checkbox" id="classNameButton${cardInfo.ClassID}" value="${cardInfo.ClassName} #${cardInfo.ClassID}" onchange="updatedService" hidden>
+                <input type="checkbox" id="classNameButton" value="${cardInfo.ClassName} #${cardInfo.ClassID}" onchange="updatedService" hidden>
                 
-                <button class="confirm-btn" onclick=updatedService(${cardInfo.ClassID})>
-                    Select
-                </button>
+                <button class="confirm-btn" onclick="document.getElementById('classNameButton').checked=!document.getElementById('classNameButton').checked;">Select</button>
             </div>
         </div>
-    </div>
+        </div>
     `;
 
     return card;
@@ -111,12 +110,8 @@ function populateClass() {
                 console.log(cardInfo);
 
                 var newCard = createCard(cardInfo);
+
                 $('#class-container').append(newCard);
-
-                if (i === 0) {
-                    updatedService(cardInfo.ClassID);
-                }
-
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -182,11 +177,11 @@ function populateRates() {
                 var rates = data[i];
 
                 if (i === 0) {
-                    $('#listRates').html(rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ' ) #' + rates.RatesID);
+                    $('#listRates').html(rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID);
                 }
 
                 // for loop to generate every data from the database and append to the drop down list
-                $('#rates').append('<option value="' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ' ) #' + rates.RatesID + '">' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')</option>');
+                $('#rates').append('<option value="' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID + '">' + rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ')</option>');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -218,7 +213,7 @@ function populateAdditonalService() {
                 var extraservice = data[i];
 
                 $('#additionalService').append(extraservice.ExtraServiceName
-                    + '<input class="col-md-1" id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + ' &nbsp;&nbsp;) #' + extraservice.ExtraServiceID + '">'
+                    + '<input class="col-md-1" id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + '         ) #' + extraservice.ExtraServiceID + '">'
                     + ' (Additonal S$' + extraservice.ExtraServicePrice + ')<br>');
             }
         },
@@ -233,6 +228,8 @@ function populateAdditonalService() {
         }
     });
 }
+
+
 
 function incrementR() {
     document.getElementById('rooms').stepUp();
@@ -250,13 +247,8 @@ function decrementBR() {
     document.getElementById('bathRooms').stepDown();
     updatedBathrooms();
 }
-function updatedService(i) {
-    $('.container-class').removeClass('active');
-    const serviceID = '#service' + i;
-    $(serviceID).addClass('active');
-    
-    const serviceNameID = 'classNameButton' + i;
-    var services = document.getElementById(serviceNameID).value;
+function updatedService() {
+    var services = document.getElementById("classNameButton").value;
     document.getElementById("listService").innerHTML = services;
 }
 function updatedPackage() {
