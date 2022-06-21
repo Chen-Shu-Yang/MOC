@@ -419,8 +419,11 @@ $(document).ready(function () {
     $("#day2").hide();
     $("#day22").hide();
 
-    // update button
+    // confirma contract button
+    // Brings contract details to confirmation page
     $('#confirmContract').click(() => {
+        // Extracts the respective values and inputs
+        // Stores them into their respective constants
         const servicePref = $('#listService').html();
         const address = $('#cAddress').val();
         const servicePackage = $('#package').val();
@@ -435,6 +438,7 @@ $(document).ready(function () {
         const addInfo = $('#additionalInfo').val();
         const totalCost = $('#estAmount').html();
 
+        // Stores the constants into localstorage
         localStorage.setItem('servicePref', servicePref);
         localStorage.setItem('address', address);
         localStorage.setItem('servicePackage', servicePackage);
@@ -448,6 +452,8 @@ $(document).ready(function () {
         localStorage.setItem('serviceTime', serviceTime);
         localStorage.setItem('addInfo', addInfo);
         localStorage.setItem('totalCost', totalCost);
+        
+        // Brings users to the confirmation page
         window.location.replace(`${frontEndUrl}/customer/confirm`);
     });
 

@@ -1,18 +1,17 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-use-before-define */
 /* eslint-disable no-plusplus */
-/* eslint-disable no-console */
-/* eslint-disable no-shadow */
 /* eslint-disable no-undef */
 
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 
 const CustomerID = localStorage.getItem('customerID');
-const token = localStorage.getItem('token');
+// const token = localStorage.getItem('token');
 
+// Function will fill up the confirm card
 function fillUpConfirmationCard() {
-  // const servicePreference = localStorage.getItem('servicePref');
+  // Retrieves the necessary details from the localstorage
+  // Stores the values into their respective contant variables
   const servicePreference = localStorage.getItem('servicePref');
   const customerAddress = localStorage.getItem('address');
   const servicePackages = localStorage.getItem('servicePackage');
@@ -27,6 +26,8 @@ function fillUpConfirmationCard() {
   const additionalInfo = localStorage.getItem('addInfo');
   const totalEstCost = localStorage.getItem('totalCost');
 
+  // Some of the values will need to seperate
+  // To get the value and its id
   const servicePrefId = servicePreference.substring(servicePreference.indexOf('#') + 1);
   const ratesId = rates.substring(rates.indexOf('#') + 1);
   const additionalServiceId = additionalService.substring(additionalService.indexOf('#') + 1);
@@ -37,20 +38,7 @@ function fillUpConfirmationCard() {
   const additionalServiceString = additionalService.substring(0, additionalService.indexOf('#'));
   const servicePackagesString = servicePackages.substring(0, servicePackages.indexOf('#'));
 
-  console.log(`  
-    address: ${customerAddress}
-    servicePackage: ${servicePackages}
-    roooms: ${roomNo}
-    bathRooms: ${bathRoomNo}
-    serviceRates: ${rates}
-    addService: ${additionalService}
-    contractStart: ${contractStartDate}
-    serviceDay1: ${day1}
-    serviceDay2: ${day2}
-    serviceTime: ${time}
-    addInfo: ${additionalInfo}
-  `);
-
+  // Fills their respective inputs
   $('#serviceClassId').val(servicePrefId);
   $('#servicePackageId').val(servicePackagesId);
   $('#sizeRatingsId').val(ratesId);
@@ -65,6 +53,8 @@ function fillUpConfirmationCard() {
   $('#extraServices').html(additionalServiceString);
   $('#startDate').html(contractStartDate);
   $('#serviceDay').html(day1);
+
+  // Check package to display second service date
   if (servicePackagesId === '2') {
     $('#serviceDay2').html(day2);
   }
@@ -74,7 +64,9 @@ function fillUpConfirmationCard() {
   $('#estimatedTotal').val(totalEstCost);
 }
 
+// Customer Auto booking function
 function customerAutobooking() {
+  // Extracts the value from the inputs and values
   const ServiceClass = $('#serviceClassId').val();
   const ServicePackage = $('#servicePackageId').val();
   const NoOfRooms = $('#noOfRooms').html();
@@ -89,6 +81,7 @@ function customerAutobooking() {
   const AdditionalInfo = $('#additionalInfo').html();
   const EstimatedTotal = $('#estimatedTotal').val();
 
+  // Compiles the extracted values into an object
   const requestBody = {
     customer: CustomerID,
     StartDate,
@@ -106,9 +99,10 @@ function customerAutobooking() {
     ExtraService: ExtraServices,
   };
 
-  console.log(requestBody);
+  // Stringifies object
   const reqBody = JSON.stringify(requestBody);
 
+  // Ajax function to call web service function
   $.ajax({
     url: `${backEndUrl}/customer/autobooking`,
     type: 'POST',
@@ -116,6 +110,7 @@ function customerAutobooking() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
+      // If successful remove localstorage items
       localStorage.removeItem('servicePref');
       localStorage.removeItem('address');
       localStorage.removeItem('servicePackage');
@@ -128,13 +123,13 @@ function customerAutobooking() {
       localStorage.removeItem('serviceTime');
       localStorage.removeItem('addInfo');
       localStorage.removeItem('totalCost');
+      // Brings customer to the possible list of helpers
       window.location.replace(`${frontEndUrl}/customer/helpers`);
     },
-    error(xhr, textStatus, errorThrown) {
+    error(xhr) {
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else if (xhr.status === 400) {
         errMsg = ' Input not accepted';
@@ -152,6 +147,7 @@ function customerAutobooking() {
 $(document).ready(() => {
   fillUpConfirmationCard();
 
+  // Confirm button to trigger customer auto-booking
   $('#confirmBookingBtn').click(() => {
     customerAutobooking();
   });
