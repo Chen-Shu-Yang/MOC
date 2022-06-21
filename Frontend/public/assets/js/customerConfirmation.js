@@ -13,7 +13,7 @@ const token = localStorage.getItem('token');
 
 function fillUpConfirmationCard() {
   // const servicePreference = localStorage.getItem('servicePref');
-  const servicePreference = 'Class B';
+  const servicePreference = localStorage.getItem('servicePref');
   const customerAddress = localStorage.getItem('address');
   const servicePackages = localStorage.getItem('servicePackage');
   const roomNo = localStorage.getItem('rooms');
@@ -50,7 +50,7 @@ function fillUpConfirmationCard() {
     addInfo: ${additionalInfo}
   `);
 
-  // $('#serviceClassId').val(servicePrefId);
+  $('#serviceClassId').val(servicePrefId);
   $('#servicePackageId').val(servicePackagesId);
   $('#sizeRatingsId').val(ratesId);
   $('#extraServicesId').val(additionalServiceId);
@@ -98,7 +98,7 @@ function customerAutobooking() {
     NoOfRooms,
     NoOfBathrooms,
     Address,
-    Class: 2,
+    Class: ServiceClass,
     Rate: SizeRating,
     ExtraService: ExtraServices,
   };
