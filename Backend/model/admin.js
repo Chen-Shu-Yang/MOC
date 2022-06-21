@@ -965,6 +965,58 @@ const Admin = {
       return callback(null, result);
     });
   },
+
+  checkAdminPassword(cID, currentPassword, callback) {
+    // sql query statement
+    const sql = 'SELECT AdminID FROM heroku_6b49aedb7855c0b.admin WHERE AdminID = ? AND Password = ?;';
+
+    // pool query
+    pool.query(sql, [cID, currentPassword], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      // any results?
+      if (JSON.stringify(result[0].AdminID) !== cID) {
+        // no results - callback with no err & results
+        // console.log(typeof result[0].AdminID);
+        // console.log(typeof cID);
+        console.log('this is null');
+        const error = {
+          message: 'No result',
+        };
+        console.log(error);
+        return callback(error, null);
+      }
+      // one result - returns result
+      console.log(result);
+      return callback(null, result);
+    });
+  },
+
+  updateAdminPassword(password, id, callback) {
+    // sql query statement
+    const sql = `
+            UPDATE 
+            heroku_6b49aedb7855c0b.admin
+         SET
+            Password = ?
+        where
+            AdminID = ?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [password, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================

@@ -89,6 +89,91 @@ $('#updateProfile').click(() => {
     });
 });
 
+// On click of button with id changePassword
+// run the following code below
+$('#changePassword').click(() => {
+    // data extraction
+    const currentPw = $('#currentPassword').val();
+    const newPw = $('#newPassword').val();
+    const confirmPw = $('#confirmPassword').val();
+    const adminID = localStorage.getItem('AdminID');
+
+
+    // data compilation
+    const info = {
+        currentPassword: currentPw,
+        newPassword: newPw,
+        confirmPassword: confirmPw,
+    };
+    // check if new password is the same as confirm password
+    if (newPw == confirmPw) {
+        $.ajax({
+            url: `${backEndUrl}/admin/password/${adminID}`,
+            type: 'PUT',
+            data: JSON.stringify(info),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // if
+            success(data) {
+                if (data.length === null) {
+                    new Noty({
+                        timeout: '5000',
+                        type: 'error',
+                        layout: 'topCenter',
+                        theme: 'sunset',
+                        text: 'Incorrect Password',
+                    }).show();
+                } else {
+                    $.ajax({
+                        url: `${backEndUrl}/admin/editPassword/${adminID}`,
+                        type: 'PUT',
+                        data: JSON.stringify(info),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success(data) {
+                            if (data != null) {
+                                new Noty({
+                                    timeout: '5000',
+                                    type: 'success',
+                                    layout: 'topCenter',
+                                    theme: 'sunset',
+                                    text: 'Changed successfully',
+                                }).show();
+                            } else {
+                                console.log('Error');
+                            }
+                        }
+                    });
+                }
+
+            },
+            error(xhr, textStatus, errorThrown) {
+                console.log('Error in Operation');
+                console.log(`XHR: ${JSON.stringify(xhr)}`);
+                console.log(`Textstatus: ${textStatus}`);
+                console.log(`Errorthorwn${errorThrown}`);
+                new Noty({
+                    timeout: '5000',
+                    type: 'error',
+                    layout: 'topCenter',
+                    theme: 'sunset',
+                    text: 'Please check your Password',
+                }).show();
+            },
+        });
+    } else {
+        new Noty({
+            timeout: '5000',
+            type: 'error',
+            layout: 'topCenter',
+            theme: 'sunset',
+            text: 'Password is not the same',
+        }).show();
+    }
+    // call web service endpoint
+
+});
+
 $(document).ready(() => {
     const queryParams = new URLSearchParams(window.location.search);
     console.log('--------Query Params----------');

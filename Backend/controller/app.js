@@ -1536,7 +1536,7 @@ app.put('/update/customer/:id', printDebugInfo, (req, res) => {
 //= ======================================================
 //              Features / adminProfile
 //= ======================================================
-
+// Get admin profile by AdminID
 app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
   // extract id from params
   const adminID = req.params.id;
@@ -1563,7 +1563,7 @@ app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
-
+// Update admin details with id in web parameter
 app.put('/update/admin/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const adminID = req.params.id;
@@ -1583,6 +1583,58 @@ app.put('/update/admin/:id', printDebugInfo, (req, res) => {
     }
     else {
       res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+// Check admin password and return adminID if true
+app.put('/admin/password/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const adminID = req.params.id;
+  const { currentPassword } = req.body;
+  // calling checkAdminPassword method from Admin model
+  Admin.checkAdminPassword(adminID, currentPassword, (err, result) => {
+    if (!err) {
+      // output
+      res.status(200).send(result);
+    } else if (err.message === 'No result') {
+      // if admin id is not found detect and return error message
+      const output = {
+        Error: 'Wrong password',
+      };
+      res.status(404).send(output);
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+app.put('/admin/editPassword/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const adminID = req.params.id;
+  const { confirmPassword } = req.body;
+  // calling getAdminById method from Admin model
+  Admin.updateAdminPassword(confirmPassword, adminID, (err, result) => {
+    if (!err) {
+      // if admin id is not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
     }
   });
 });
