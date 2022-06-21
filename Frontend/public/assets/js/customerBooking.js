@@ -281,7 +281,7 @@ function updatedRates() {
 function updatedAmt() {
     const rateCost = parseInt(estRate);
 
-    estTotal = rateCost;
+    estTotal = rateCost + estAdd;
     document.getElementById("estAmtt").innerHTML = estTotal;
 }
 function updatedAddServices(i) {
@@ -309,7 +309,7 @@ function updatedAddServices(i) {
         console.log(estConvert);
         estAdd = estAdd - estConvert;
         console.log(estAdd);
-
+        updatedAmt();
     }
     else {
         currentServices.innerHTML += " " + additionalServices;
@@ -323,6 +323,7 @@ function updatedAddServices(i) {
         console.log(estConvert);
         estAdd = estAdd + estConvert;
         console.log(estAdd);
+        updatedAmt()
     }
 
     //adds the dash back if empty again
