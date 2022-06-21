@@ -11,6 +11,9 @@ const backEndUrl = 'http://localhost:5000';
 
 var CustomerID = localStorage.getItem('customerID')
 var token = localStorage.getItem('token');
+var estService='';
+var estRate= '';
+var estAdd='';
 
 var myArray = [];
 
@@ -18,8 +21,8 @@ function createCard(cardInfo) {
     var card = `
     <div class="col-md-4">
         <div class="card">
-            <div class="container-class" style="  background-color: #2E6869;
-            color: white; border-radius: 10px;">
+            <div class="container-class" style="  background-color: #FFFFFF; color:#000;
+             border-radius: 10px;">
                 <h4><b>${cardInfo.ClassName}</b></h4> 
                 <p>$${cardInfo.ClassPricing} per hour</p>
                 <p>Include:</p>
@@ -255,6 +258,8 @@ function updatedBathrooms() {
 function updatedRates() {
     var ratess = document.getElementById("rates").value;
     document.getElementById("listRates").innerHTML = ratess;
+    const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
+    console.log(ratesPrice);
 }
 function updatedAddServices(i) {
     var additionalServices = document.getElementById(i).value;
