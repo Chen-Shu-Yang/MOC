@@ -11,11 +11,10 @@ const backEndUrl = 'http://localhost:5000';
 
 var CustomerID = localStorage.getItem('customerID')
 var token = localStorage.getItem('token');
-var estService = '';
-var estRate = '';
-
-let estAdd = 0;
-var estTotal = '';
+var estService = 0;
+var estRate = 0;
+var estAdd = 0;
+var estTotal = 0;
 var myArray = [];
 
 function createCard(cardInfo) {
@@ -29,9 +28,8 @@ function createCard(cardInfo) {
                 <p>Include:</p>
                 <p>${cardInfo.ClassDes}</p>
              
-                <input type="checkbox" id="classNameButton${cardInfo.ClassID}" value="${cardInfo.ClassName} #${cardInfo.ClassID}" onchange="updatedService" hidden>
-                
-           
+                <input type="checkbox" id="classNameButton${cardInfo.ClassID}" value="${cardInfo.ClassName} $${cardInfo.ClassPricing} #${cardInfo.ClassID}" onchange="updatedService" disabled hidden>
+    
                 <button class="confirm-btn" onclick=updatedService(${cardInfo.ClassID})>
                     Select
                 </button>
@@ -120,7 +118,19 @@ function populateClass() {
                 $('#class-container').append(newCard);
 
                 if (i === 0) {
-                    updatedService(cardInfo.ClassID);
+                    const serviceID = '#service' + cardInfo.ClassID;
+                    $(serviceID).addClass('active');
+
+                    const serviceNameID = 'classNameButton' + cardInfo.ClassID;
+                    var services = document.getElementById(serviceNameID).value;
+                    document.getElementById("listService").innerHTML = services;
+
+                    estService = cardInfo.ClassPricing*4;
+                    
+                    // console.log(typeof(estService));
+                    estTotal += estService 
+
+
                 }
             }
         },
@@ -188,6 +198,12 @@ function populateRates() {
 
                 if (i === 0) {
                     $('#listRates').html(rates.RateName + 'sqft' + ' (From S$' + rates.RatePrice + ') #' + rates.RatesID);
+                    estRate = rates.RatePrice;
+                    console.log("HIIIII" + typeof (estRate));
+                    estTotal += estRate
+
+                    console.log(estTotal);
+                    document.getElementById("estAmount").innerHTML = estTotal;
                 }
 
                 // for loop to generate every data from the database and append to the drop down list
@@ -258,6 +274,10 @@ function decrementBR() {
     updatedBathrooms();
 }
 function updatedService(i) {
+    console.log('hjdf'+ estService);
+
+    estTotal -= estService;
+    
     $('.container-class').removeClass('active');
     const serviceID = '#service' + i;
     $(serviceID).addClass('active');
@@ -265,6 +285,17 @@ function updatedService(i) {
     const serviceNameID = 'classNameButton' + i;
     var services = document.getElementById(serviceNameID).value;
     document.getElementById("listService").innerHTML = services;
+
+    const servicePrice = services.substring((services.indexOf('$') + 1));
+
+    let ratePattern = new RegExp("^\d{1,6}");
+    const final = servicePrice.substring(ratePattern, 3);
+    estService = parseInt(final) *4;
+    console.log('hjdfssss'+ estService);
+
+    estTotal += estService;
+
+    updatedAmt(); 
 }
 function updatedPackage() {
     var packages = document.getElementById("package").value;
@@ -279,26 +310,23 @@ function updatedBathrooms() {
     document.getElementById("listBathrooms").innerHTML = bathroomss;
 }
 function updatedRates() {
-    estRate = '';
+    estTotal -= estRate;
     var ratess = document.getElementById("rates").value;
     document.getElementById("listRates").innerHTML = ratess;
 
     const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
     let ratePattern = new RegExp("^\d{1,6}");
     const final = ratesPrice.substring(ratePattern, 3);
-    console.log(final);
-    estRate = final;
-    console.log(estRate);
-
-    updatedAmt()
+    estRate = parseInt(final);
+    estTotal += estRate;
+    updatedAmt();
 }
 function updatedAmt() {
-    const rateCost = parseInt(estRate);
-
-    estTotal = rateCost + estAdd;
-    document.getElementById("estAmtt").innerHTML = estTotal;
+    document.getElementById("estAmount").innerHTML = estTotal;
+  
 }
 function updatedAddServices(i) {
+
     var additionalServices = document.getElementById(i).value;
     var currentServices = document.getElementById("listAddService");
 
@@ -314,6 +342,7 @@ function updatedAddServices(i) {
         var currentServicesList = currentServices.innerHTML;
         currentServicesList = currentServicesList.replace(additionalServices + "<br>", "");
         currentServices.innerHTML = currentServicesList;
+
         const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
         let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
         console.log(addServicePrice);
@@ -321,7 +350,7 @@ function updatedAddServices(i) {
         console.log(finalprice);
         const estConvert = parseInt(finalprice);
         console.log(estConvert);
-        estAdd = estAdd - estConvert;
+        estTotal -= estConvert;
         console.log(estAdd);
         updatedAmt();
     }
@@ -335,7 +364,7 @@ function updatedAddServices(i) {
         console.log(finalprice);
         const estConvert = parseInt(finalprice);
         console.log(estConvert);
-        estAdd = estAdd + estConvert;
+        estTotal += estConvert;
         console.log(estAdd);
         updatedAmt()
     }
@@ -364,7 +393,7 @@ function updatedTime() {
 }
 
 $(document).ready(() => {
-    updatedAmt();
+
     loadUserDetails();
     populateClass()
     populatePackage();
@@ -383,8 +412,7 @@ $(document).ready(() => {
     updatedRates();
     updatedService();
     updatedPackage();
-
-
+    updatedAmt();
 });
 
 $(document).ready(function () {
