@@ -238,9 +238,9 @@ function populateAdditonalService() {
             for (var i = 0; i < data.length; i++) {
                 var extraservice = data[i];
 
-                $('#additionalService').append(extraservice.ExtraServiceName
+                $('#additionalService').append('<br>'+extraservice.ExtraServiceName
                     + '<input class="col-md-1" id="' + i + '" type="checkbox" onchange="updatedAddServices(' + i + ')" name="' + extraservice.ExtraServiceName + '" value="' + extraservice.ExtraServiceName + ' (Additonal S$' + extraservice.ExtraServicePrice + '   ) #' + extraservice.ExtraServiceID + '">'
-                    + ' (Additonal S$' + extraservice.ExtraServicePrice + ')<br>');
+                    + ' (Additonal S$' + extraservice.ExtraServicePrice + ')');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -340,7 +340,7 @@ function updatedAddServices(i) {
     //if service found, take the current innerHTML, replace it with blank, then set it back
     if (currentServices.innerHTML.indexOf(additionalServices) != -1) {
         var currentServicesList = currentServices.innerHTML;
-        currentServicesList = currentServicesList.replace(additionalServices + "<br>", "");
+        currentServicesList = currentServicesList.replace(additionalServices, "");
         currentServices.innerHTML = currentServicesList;
 
         const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
@@ -355,7 +355,7 @@ function updatedAddServices(i) {
         updatedAmt();
     }
     else {
-        currentServices.innerHTML += " " + additionalServices + "<br>";
+        currentServices.innerHTML += " " + additionalServices;
 
         const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
         let addServicePattern = new RegExp("^\d{1,5}(\.\d{0,2})?");
@@ -433,21 +433,7 @@ $(document).ready(function () {
         const serviceDay2 = $('#dayOfService2').val();
         const serviceTime = $('#timeOfService').val();
         const addInfo = $('#additionalInfo').val();
-
-        console.log(`
-        servicePref: ${servicePref}
-        address: ${address}
-        servicePackage: ${servicePackage}
-        roooms: ${roooms}
-        bathRooms: ${bathRooms}
-        serviceRates: ${serviceRates}
-        addService: ${addService}
-        contractStart: ${contractStart}
-        serviceDay1: ${serviceDay1}
-        serviceDay2: ${serviceDay2}
-        serviceTime: ${serviceTime}
-        addInfo: ${addInfo}
-        `);
+        const totalCost = $('#estAmount').html();
 
         localStorage.setItem('servicePref', servicePref);
         localStorage.setItem('address', address);
@@ -461,6 +447,7 @@ $(document).ready(function () {
         localStorage.setItem('serviceDay2', serviceDay2);
         localStorage.setItem('serviceTime', serviceTime);
         localStorage.setItem('addInfo', addInfo);
+        localStorage.setItem('totalCost', totalCost);
         window.location.replace(`${frontEndUrl}/customer/confirm`);
     });
 

@@ -25,6 +25,7 @@ function fillUpConfirmationCard() {
   const day2 = localStorage.getItem('serviceDay2');
   const time = localStorage.getItem('serviceTime');
   const additionalInfo = localStorage.getItem('addInfo');
+  const totalEstCost = localStorage.getItem('totalCost');
 
   const servicePrefId = servicePreference.substring(servicePreference.indexOf('#') + 1);
   const ratesId = rates.substring(rates.indexOf('#') + 1);
@@ -69,6 +70,8 @@ function fillUpConfirmationCard() {
   }
   $('#serviceTiming').html(time);
   $('#additionalInfo').html(additionalInfo);
+  $('#estimatedTotalCost').html(`$ ${totalEstCost}`);
+  $('#estimatedTotal').val(totalEstCost);
 }
 
 function customerAutobooking() {
@@ -124,6 +127,7 @@ function customerAutobooking() {
       localStorage.removeItem('serviceDay2');
       localStorage.removeItem('serviceTime');
       localStorage.removeItem('addInfo');
+      localStorage.removeItem('totalCost');
       window.location.replace(`${frontEndUrl}/customer/helpers`);
     },
     error(xhr, textStatus, errorThrown) {
