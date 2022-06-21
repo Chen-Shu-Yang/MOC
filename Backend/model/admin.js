@@ -918,6 +918,29 @@ const Admin = {
   //= ======================================================
   //              Features / Profile
   //= ======================================================
+  //= ======================================================
+  //              Features / adminDashboard
+  //= ======================================================
+  // get number of booking made by therir month
+  getBookingByMonth(callback) {
+    // sql query statement to get number of booking made by therir month
+    const sql = `select month(ScheduleDate) as month, count(ScheduleDate) as numberOfBooking
+    from heroku_6b49aedb7855c0b.booking 
+    WHERE     year(ScheduleDate) = year(curdate())
+    group by month(ScheduleDate);
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
   getAdminById(cID, callback) {
     // sql query statement
     const sql = 'SELECT FirstName, LastName, Email FROM heroku_6b49aedb7855c0b.admin WHERE AdminID = ?;';
@@ -1008,6 +1031,27 @@ const Admin = {
             `;
     // pool query
     pool.query(sql, [password, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+  getRevenueOfTheMonth(callback) {
+    // sql query statement to get revenue
+    const sql = `
+    select c.ContractID ,(c.EstimatedPricing * count(b.BookingID))
+    as Revenue,count(b.BookingID) from heroku_6b49aedb7855c0b.contract 
+    as c
+     join heroku_6b49aedb7855c0b.booking as b
+    on  c.ContractID=b.ContractId
+    where month(b.ScheduleDate) = month(CURRENT_DATE()) 
+    group by c.ContractID`;
+    // pool query
+    pool.query(sql, (err, result) => {
       // error
       if (err) {
         console.log(err);
