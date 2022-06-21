@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-plusplus */
 /* eslint-disable brace-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
@@ -14,15 +15,17 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 
+const moment = require('moment');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
-
+// const verifyToken = require('../auth/isLoggedInMiddleWare');
 // model
 
 const Login = require('../model/login');
 const Admin = require('../model/admin');
 const Customer = require('../model/customer');
 const Register = require('../model/register');
+const SuperAdmin = require('../model/superAdmin');
 
 // MF function
 /**
@@ -1468,7 +1471,7 @@ app.post('/employeeList', printDebugInfo, async (req, res) => {
     }
   });
 });
-app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
+app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
   // extract id from params
   const BookingID = req.params.bookingIDs;
   // extract all details needed
@@ -1501,7 +1504,52 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, (req, res) => {
 //= ======================================================
 //              Features / customer
 //= ======================================================
+//---------------------------------------------------
+//                 Feature/adminCustomer
+//---------------------------------------------------
 
+// Get user profile
+app.get('/customerAddBooking/:customerID', printDebugInfo, async (req, res, next) => {
+  const customerId = req.params.customerID;
+
+  Customer.getCustomerById(customerId, (err, result) => {
+    if (!err) {
+      res.status(200).send(result);
+    } else {
+      return next(err);
+    }
+  });
+});
+
+//---------------------------------------------------
+//               Feature/ Customer
+//---------------------------------------------------
+app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
+  const dates = req.params.bookingDates;
+
+  // calling possibleAvailableHelpers method from customer model
+  Customer.possibleAvailableHelpers(dates, (err, result) => {
+    // if no error send result
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
 app.get('/user/customer/:id', printDebugInfo, async (req, res) => {
   // extract id from params
   const customerId = req.params.id;
@@ -1677,5 +1725,373 @@ app.put('/admin/editPassword/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
+
+app.post('/customer/autobooking', printDebugInfo, (req, res) => {
+  // extract contract data from request body
+  const { customer } = req.body;
+  const { StartDate } = req.body;
+  const { Package } = req.body;
+  const { DayOfService } = req.body;
+  const { DayOfService2 } = req.body;
+  const { TimeOfService } = req.body;
+  const { EstimatedPricing } = req.body;
+  const { ExtraNotes } = req.body;
+  const { NoOfRooms } = req.body;
+  const { NoOfBathrooms } = req.body;
+  const { Address } = req.body;
+  const { Class } = req.body;
+  const { Rate } = req.body;
+  const { ExtraService } = req.body;
+
+  // Declare newContractId variable
+  let newContractId;
+  // Get contract start date and convert to moment form
+  const start = moment(StartDate);
+  // Get last day of current month depending on the contract start date
+  const end = moment(StartDate).endOf('month');
+  // Declare a date array
+  let dateArray = [];
+
+  // Function to add a booking record
+  function AddBooking(ContractID, ScheduleDate) {
+    // invokes addBooking method created at superAdmin file in app.js
+    // eslint-disable-next-line no-unused-vars
+    SuperAdmin.addBooking(ContractID, ScheduleDate, (err, result) => {
+      // if no error send result
+      if (!err) {
+        console.log('done');
+      }
+      // if error send error message
+      else {
+        res.status(500).send('Some error');
+      }
+    });
+  }
+
+  // Function to getDateRange from contract start date to last day of month
+  // Gets the date of the wanted days between this range
+  function getDateRange(day) {
+    // Calls an empty dateArray to clear whatever is within it
+    dateArray = [];
+    // Gets the dayname from the contract start day and stores within tmp constant
+    const tmp = start.clone().day(day);
+    // Get the day number of the contract start date
+    const startDay = start.day();
+    // Converts startDay constant into name format
+    // Stores within startDayName constant
+    const startDayName = moment().day(startDay).format('ddd');
+
+    // Check if day of contract start date is equals to the first day of service
+    if (startDayName === DayOfService) {
+      // Pushes contract start date into dateArray
+      dateArray.push(start.format('YYYY-MM-DD'));
+    }
+
+    // Check if tmp is after the contract start date
+    if (tmp.isAfter(start, 'd')) {
+      // Pushes date into dateArray
+      dateArray.push(tmp.format('YYYY-MM-DD'));
+    }
+    // While loop to check if tmp is before last day of the month
+    while (tmp.isBefore(end)) {
+      // Adds one week to the date
+      tmp.add(7, 'days');
+      // Pushes date into dateArray
+      dateArray.push(tmp.format('YYYY-MM-DD'));
+    }
+  }
+
+  // Function to getDateRange from contract start date to last day of month
+  // Gets the date of the wanted days between this range
+  // For those contracts which chose the second package
+  function getDateRange2(day) {
+    // Calls an empty dateArray to clear whatever is within it
+    dateArray = [];
+    // Gets the dayname from the contract start day and stores within tmp constant
+    const tmp = start.clone().day(day);
+    // Get the day number of the contract start date
+    const startDay = start.day();
+    // Converts startDay constant into name format
+    // Stores within startDayName constant
+    const startDayName = moment().day(startDay).format('ddd');
+
+    // Check if day of contract start date is equals to the second day of service
+    if (startDayName === DayOfService2) {
+      // Pushes contract start date into dateArray
+      dateArray.push(start.format('YYYY-MM-DD'));
+    }
+
+    // Check if tmp is after the contract start date
+    if (tmp.isAfter(start, 'd')) {
+      // Pushes date into dateArray
+      dateArray.push(tmp.format('YYYY-MM-DD'));
+    }
+    // While loop to check if tmp is before last day of the month
+    while (tmp.isBefore(end)) {
+      // Adds one week to the date
+      tmp.add(7, 'days');
+      // Pushes date into dateArray
+      dateArray.push(tmp.format('YYYY-MM-DD'));
+    }
+  }
+
+  // invokes addContract method created at Customer model
+  Customer.addContract(
+    customer,
+    StartDate,
+    Package,
+    DayOfService,
+    DayOfService2,
+    TimeOfService,
+    EstimatedPricing,
+    ExtraNotes,
+    NoOfRooms,
+    NoOfBathrooms,
+    Address,
+    Class,
+    Rate,
+    ExtraService,
+    (err, result) => {
+      if (!err) {
+        // stores the contract Id returned into the newContractId variable
+        newContractId = result.insertId;
+        // check if DayOfService includes 'Mon' which represents monday
+        if (DayOfService.includes('Mon')) {
+          getDateRange(1);
+          // loop through the mondays and extract the date
+          for (let x = 0; x < dateArray.length - 1; x++) {
+            // Stores the date into ScheduleDate const
+            const ScheduleDate = dateArray[x];
+            // call addbooking function
+            AddBooking(newContractId, ScheduleDate);
+          }
+        }
+        // check if DayOfService includes 'Tue' which represents tuesday
+        else if (DayOfService.includes('Tue')) {
+          getDateRange(2);
+          // loop through the tuesday and extract the date
+          for (let x = 0; x < dateArray.length - 1; x++) {
+            // Stores the date into ScheduleDate const
+            const ScheduleDate = dateArray[x];
+            // call addbooking function
+            AddBooking(newContractId, ScheduleDate);
+          }
+        }
+        // check if DayOfService includes 'Wed' which represents tuesday
+        else if (DayOfService.includes('Wed')) {
+          getDateRange(3);
+          // loop through the wednesday and extract the date
+          for (let x = 0; x < dateArray.length - 1; x++) {
+            // Stores the date into ScheduleDate const
+            const ScheduleDate = dateArray[x];
+            // call addbooking function
+            AddBooking(newContractId, ScheduleDate);
+          }
+        }
+        // check if DayOfService includes 'Thu' which represents tuesday
+        else if (DayOfService.includes('Thu')) {
+          getDateRange(4);
+          // loop through the thursday and extract the date
+          for (let x = 0; x < dateArray.length - 1; x++) {
+            // Stores the date into ScheduleDate const
+            const ScheduleDate = dateArray[x];
+            // call addbooking function
+            AddBooking(newContractId, ScheduleDate);
+          }
+        }
+        // check if DayOfService includes 'Fri' which represents tuesday
+        else if (DayOfService.includes('Fri')) {
+          getDateRange(5);
+          // loop through the friday and extract the date
+          for (let x = 0; x < dateArray.length - 1; x++) {
+            // Stores the date into ScheduleDate const
+            const ScheduleDate = dateArray[x];
+            // call addbooking function
+            AddBooking(newContractId, ScheduleDate);
+          }
+        }
+        // check if DayOfService includes 'Sat' which represents tuesday
+        else if (DayOfService.includes('Sat')) {
+          getDateRange(6);
+          // loop through the saturday and extract the date
+          for (let x = 0; x < dateArray.length - 1; x++) {
+            // Stores the date into ScheduleDate const
+            const ScheduleDate = dateArray[x];
+            // call addbooking function
+            AddBooking(newContractId, ScheduleDate);
+          }
+        }
+        // check if DayOfService includes 'Sun' which represents tuesday
+        else if (DayOfService.includes('Sun')) {
+          getDateRange(0);
+          // loop through the sunday and extract the date
+          for (let x = 0; x < dateArray.length - 1; x++) {
+            // Stores the date into ScheduleDate const
+            const ScheduleDate = dateArray[x];
+            // call addbooking function
+            AddBooking(newContractId, ScheduleDate);
+          }
+        }
+
+        // check if Pakage equals to 2
+        if (Package === '2') {
+          // check if DayOfService2 includes 'Mon' which represents monday
+          if (DayOfService2.includes('Mon')) {
+            getDateRange2(1);
+            // loop through the mondays and extract the date
+            for (let x = 0; x < dateArray.length - 1; x++) {
+              // Stores the date into ScheduleDate const
+              const ScheduleDate = dateArray[x];
+              // call addbooking function
+              AddBooking(newContractId, ScheduleDate);
+            }
+          }
+          // check if DayOfService2 includes 'Tue' which represents tuesday
+          else if (DayOfService2.includes('Tue')) {
+            getDateRange2(2);
+            // loop through the tuesday and extract the date
+            for (let x = 0; x < dateArray.length - 1; x++) {
+              // Stores the date into ScheduleDate const
+              const ScheduleDate = dateArray[x];
+              // call addbooking function
+              AddBooking(newContractId, ScheduleDate);
+            }
+          }
+          // check if DayOfService2 includes 'Wed' which represents tuesday
+          else if (DayOfService2.includes('Wed')) {
+            getDateRange2(3);
+            // loop through the wednesday and extract the date
+            for (let x = 0; x < dateArray.length - 1; x++) {
+              // Stores the date into ScheduleDate const
+              const ScheduleDate = dateArray[x];
+              // call addbooking function
+              AddBooking(newContractId, ScheduleDate);
+            }
+          }
+          // check if DayOfService2 includes 'Thu' which represents tuesday
+          else if (DayOfService2.includes('Thu')) {
+            getDateRange2(4);
+            // loop through the thursday and extract the date
+            for (let x = 0; x < dateArray.length - 1; x++) {
+              // Stores the date into ScheduleDate const
+              const ScheduleDate = dateArray[x];
+              // call addbooking function
+              AddBooking(newContractId, ScheduleDate);
+            }
+          }
+          // check if DayOfService2 includes 'Fri' which represents tuesday
+          else if (DayOfService2.includes('Fri')) {
+            getDateRange2(5);
+            // loop through the friday and extract the date
+            for (let x = 0; x < dateArray.length - 1; x++) {
+              // Stores the date into ScheduleDate const
+              const ScheduleDate = dateArray[x];
+              // call addbooking function
+              AddBooking(newContractId, ScheduleDate);
+            }
+          }
+          // check if DayOfService2 includes 'Sat' which represents tuesday
+          else if (DayOfService2.includes('Sat')) {
+            getDateRange2(6);
+            // loop through the saturday and extract the date
+            for (let x = 0; x < dateArray.length - 1; x++) {
+              // Stores the date into ScheduleDate const
+              const ScheduleDate = dateArray[x];
+              // call addbooking function
+              AddBooking(newContractId, ScheduleDate);
+            }
+          }
+          // check if DayOfService2 includes 'Sun' which represents tuesday
+          else if (DayOfService2.includes('Sun')) {
+            getDateRange2(0);
+            // loop through the sunday and extract the date
+            for (let x = 0; x < dateArray.length - 1; x++) {
+              // Stores the date into ScheduleDate const
+              const ScheduleDate = dateArray[x];
+              // call addbooking function
+              AddBooking(newContractId, ScheduleDate);
+            }
+          }
+        }
+
+        // respond
+        res.status(201).send(result);
+      }
+      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(406).send('Inappropriate value');
+      }
+      else if (err.code === 'ER_BAD_NULL_ERROR') {
+        res.status(400).send('Null value not allowed');
+      }
+      else {
+        res.status(500).send('Internal Server Error');
+      }
+    },
+  );
+});
+//---------------------------------------------------
+//               Feature/ Customer Booking
+//---------------------------------------------------
+
+// get all class of services
+app.get('/classOfService', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from customer model
+  Customer.getAllClassOfService((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get class of service');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get all packages
+app.get('/package', printDebugInfo, async (req, res) => {
+  // calling getAllPackage method from customer model
+  Customer.getAllPackage((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get package');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get all rates
+app.get('/rates', printDebugInfo, async (req, res) => {
+  // calling getAllRates method from customer model
+  Customer.getAllRates((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get rates');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get all additional service
+app.get('/additionalService', printDebugInfo, async (req, res) => {
+  // calling getAllAdditionalService method from customer model
+  Customer.getAllAdditionalService((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get additional service');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
 // module exports
 module.exports = app;

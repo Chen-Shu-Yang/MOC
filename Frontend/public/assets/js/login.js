@@ -34,7 +34,7 @@ $(document).ready(() => {
 
       success(data) {
         if (data != null) {
-          console.log('HI');
+          console.log('Data');
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('customerID', JSON.stringify(data.CustomerID));
@@ -43,14 +43,11 @@ $(document).ready(() => {
             localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/booking`);
-          }
-          else {
+          } else {
             localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/schedule`);
           }
-
-
         } else {
           console.log('Error');
         }

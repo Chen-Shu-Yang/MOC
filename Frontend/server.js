@@ -97,6 +97,10 @@ app.get('/admin/profile', (req, res) => {
 //= ======================================================
 //                   Customer
 //= ======================================================
+// go to admin Cancel Booking
+app.get('/customer/booking', (req, res) => {
+  res.sendFile('/public/assets/html/customerBooking.html', { root: __dirname });
+});
 
 // go to customer profile
 app.get('/customer/profile', (req, res) => {
@@ -108,6 +112,15 @@ app.get('/customer/history', (req, res) => {
   res.sendFile('/public/assets/html/viewBooking.html', { root: __dirname });
 });
 
+// List of possible Employees
+app.get('/customer/helpers', (req, res) => {
+  res.sendFile('/public/assets/html/customerHelpers.html', { root: __dirname });
+});
+
+// Confirmation Booking Card
+app.get('/customer/confirm', (req, res) => {
+  res.sendFile('/public/assets/html/customerConfirmation.html', { root: __dirname });
+});
 
 //= ======================================================
 //                   Super Admin

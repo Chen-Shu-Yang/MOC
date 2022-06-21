@@ -33,7 +33,34 @@ const Customer = {
       return callback(null, result);
     });
   },
+  // get employees scheduled as available for booking
+  possibleAvailableHelpers(bookingDate, callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,e.EmployeeID, e.Skillsets
+      FROM 
+        heroku_6b49aedb7855c0b.employee AS e
+      LEFT JOIN 
+        heroku_6b49aedb7855c0b.schedule AS s ON e.EmployeeID = s.Employee
+      Having 
+        FormatScheduleDate= ?;`;
 
+    const values = [bookingDate];
+
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+
+      return callback(null, result);
+    });
+  },
   updateCustProfile(firstName, lastName, address, postal, phone, email, id, callback) {
     // sql query statement
     const sql = `
@@ -83,8 +110,141 @@ const Customer = {
         return callback(err);
       }
       // result accurate
-
       return callback(null, result);
+    });
+  },
+
+  // add contract of services
+  addContract(
+    // eslint-disable-next-line no-shadow
+    Customer,
+    StartDate,
+    Package,
+    DayOfService,
+    DayOfService2,
+    TimeOfService,
+    EstimatedPricing,
+    ExtraNotes,
+    NoOfRooms,
+    NoOfBathrooms,
+    Address,
+    Class,
+    Rate,
+    ExtraService,
+    callback,
+  ) {
+    // sql query statement
+    const sql = `
+      INSERT INTO
+        heroku_6b49aedb7855c0b.contract (
+          Customer,
+          StartDate, 
+          Package,
+          DayOfService,
+          DayOfService2,
+          TimeOfService,
+          EstimatedPricing,
+          ExtraNotes,
+          NoOfRooms,
+          NoOfBathrooms,
+          Address,
+          Class,
+          Rate,
+          ExtraService)
+      VALUES
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+    `;
+    // pool query
+    pool.query(sql, [
+      Customer,
+      StartDate,
+      Package,
+      DayOfService,
+      DayOfService2,
+      TimeOfService,
+      EstimatedPricing,
+      ExtraNotes,
+      NoOfRooms,
+      NoOfBathrooms,
+      Address,
+      Class,
+      Rate,
+      ExtraService,
+      callback], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+      // pool.end()
+    });
+  },
+
+  // get all class of services
+  getAllClassOfService(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.class;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+      // pool.end()
+    });
+  },
+
+  // get all packages
+  getAllPackage(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.package;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // get all rates
+  getAllRates(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.rates;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // get all additional service
+  getAllAdditionalService(callback) {
+    // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.extraservice;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
     });
   },
 };
