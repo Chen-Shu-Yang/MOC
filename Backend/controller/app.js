@@ -21,8 +21,8 @@ const moment = require('moment');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 // const verifyToken = require('../auth/isLoggedInMiddleWare');
-// model
 
+// model
 const Login = require('../model/login');
 const Admin = require('../model/admin');
 const Customer = require('../model/customer');
@@ -43,9 +43,8 @@ const SuperAdmin = require('../model/superAdmin');
  *   reference to the next function to call
  */
 
-//= ======================================================
-//              MiddleWare Functions
-//= ======================================================
+// ====================== MiddleWare Functions ======================
+
 function printDebugInfo(req, res, next) {
   console.log();
   console.log('-----------------[Debug Info]----------------');
@@ -75,6 +74,8 @@ app.use(cors());
 app.get('/', (req, res) => {
   res.status(200).send('HelloWorld');
 });
+
+// ====================== User Section ======================
 
 // get all Login
 app.post('/login', printDebugInfo, async (req, res, next) => {
@@ -107,6 +108,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     }
   });
 });
+
 // register
 app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
   const { FirstName } = req.body;
@@ -129,6 +131,8 @@ app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
     res.status(201).send(result);
   });
 });
+
+// ====================== Admin Section ======================
 app.get('/classes', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getAllClassOfService((err, result) => {
@@ -403,10 +407,6 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
   );
 });
 
-//----------------------------------------------------
-//                 Feature/deleteEmployee
-//---------------------------------------------------
-
 // delete employee
 app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
   // extract id from params
@@ -468,10 +468,6 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
     }
   });
 });
-
-//----------------------------------------------------
-//                 Feature/updateEmployee
-//---------------------------------------------------
 
 // update employee
 app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, async (req, res) => {
@@ -544,10 +540,6 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, as
   }
 });
 
-//----------------------------------------------------
-//                 Feature/addEmployee
-//---------------------------------------------------
-
 // upload.single method to upload an image with the key of image
 app.post('/adddEmployee', upload.single('image'), async (req, res) => {
   try {
@@ -586,10 +578,6 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
     return res.status(500).send(output);
   }
 });
-
-//= ======================================================
-//              Features / Booking
-//= ======================================================
 
 // get employee per page
 app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
@@ -710,9 +698,6 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
     }
   });
 });
-//= ======================================================
-//              Class of Service
-//= ======================================================
 
 // get all class of service
 app.get('/classes', printDebugInfo, async (req, res) => {
@@ -865,9 +850,6 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
   });
 });
 
-//= ======================================================
-//              Features / Cancel Booking
-//= ======================================================
 // get booking that are pending or assigned per page
 app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
   // extract pageNumber from params to determine the page we are at
@@ -888,6 +870,7 @@ app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
     }
   });
 });
+
 // get all bookings that are pending or assigned
 app.get('/bookingCancel', printDebugInfo, async (req, res) => {
   // calling getAllBookingCancel method from admin model
@@ -905,6 +888,7 @@ app.get('/bookingCancel', printDebugInfo, async (req, res) => {
     }
   });
 });
+
 // update cancel booking
 app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
   // extract id from params
@@ -940,10 +924,6 @@ app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
     },
   );
 });
-
-//---------------------------------------------------
-//                 Feature/schedule-Employee
-//---------------------------------------------------
 
 // get unassigned available employee
 app.get('/availemployee/:date', printDebugInfo, async (req, res) => {
@@ -1006,10 +986,6 @@ app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
     }
   });
 });
-
-//---------------------------------------------------
-//                 Feature/adminCustomer
-//---------------------------------------------------
 
 // get all customer
 app.get('/customer', printDebugInfo, async (req, res) => {
@@ -1124,10 +1100,6 @@ app.delete('/customer/:id', printDebugInfo, (req, res) => {
     }
   });
 });
-
-//= ======================================================
-//              Extra Services
-//= ======================================================
 
 // get all extra services
 app.get('/extraServices', printDebugInfo, async (req, res) => {
@@ -1277,10 +1249,6 @@ app.delete('/extraService/:id', printDebugInfo, (req, res) => {
     }
   });
 });
-
-//= ======================================================
-//              Rates
-//= ======================================================
 
 // get all rates
 app.get('/rates', printDebugInfo, async (req, res) => {
@@ -1433,10 +1401,6 @@ app.delete('/rate/:id', printDebugInfo, (req, res) => {
   });
 });
 
-//= ======================================================
-//              Features / Assign
-//= ======================================================
-
 app.get('/contract/:id', printDebugInfo, async (req, res) => {
   // calling getBookingdetails method from admin model
   const details = req.params.id;
@@ -1455,6 +1419,7 @@ app.get('/contract/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
+
 app.post('/employeeList', printDebugInfo, async (req, res) => {
   // calling getBookingdetails method from admin model
   const detail = req.body.bookingDates;
@@ -1473,6 +1438,7 @@ app.post('/employeeList', printDebugInfo, async (req, res) => {
     }
   });
 });
+
 app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
   // extract id from params
   const BookingID = req.params.bookingIDs;
@@ -1503,189 +1469,6 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
   });
 });
 
-//= ======================================================
-//              Features / customer
-//= ======================================================
-//---------------------------------------------------
-//                 Feature/adminCustomer
-//---------------------------------------------------
-
-// Get user profile
-app.get('/customerAddBooking/:customerID', printDebugInfo, async (req, res, next) => {
-  const customerId = req.params.customerID;
-
-  Customer.getCustomerById(customerId, (err, result) => {
-    if (!err) {
-      res.status(200).send(result);
-    } else {
-      return next(err);
-    }
-  });
-});
-
-// get all admin
-app.get('/admin', printDebugInfo, async (req, res) => {
-  // calling getAllAdmins method from SuperAdmin model
-  SuperAdmin.getAllAdmins((err, result) => {
-    // if no error send result
-    if (!err) {
-      // if id not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    }
-    // if error send error message
-    else {
-      res.status(500).send('Some error');
-    }
-  });
-});
-
-//---------------------------------------------------
-//               Feature/ Customer
-//---------------------------------------------------
-app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
-  const dates = req.params.bookingDates;
-
-  // calling possibleAvailableHelpers method from customer model
-  Customer.possibleAvailableHelpers(dates, (err, result) => {
-    // if no error send result
-    if (!err) {
-      // if id not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-// get an admin
-app.get('/oneadmin/:id', printDebugInfo, async (req, res) => {
-  // extract id from params
-  const adminId = req.params.id;
-
-  // calling getAdmin method from SuperAdmin model
-  SuperAdmin.getAdmin(adminId, (err, result) => {
-    if (!err) {
-      // if id not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-app.get('/user/customer/:id', printDebugInfo, async (req, res) => {
-  // extract id from params
-  const customerId = req.params.id;
-
-  // calling getCustomerById method from Customer model
-  Customer.getCustomerById(customerId, (err, result) => {
-    if (!err) {
-      // if customer id is not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-// get a super admin
-app.get('/onesuperadmin/:id', printDebugInfo, async (req, res) => {
-  // extract id from params
-  const superAdminId = req.params.id;
-
-  // calling getSuperAdmin method from SuperAdmin model
-  SuperAdmin.getSuperAdmin(superAdminId, (err, result) => {
-    if (!err) {
-      // if id not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-// Update own account details
-app.put('/update/customer/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const customerId = req.params.id;
-  // extract all details needed
-  const { firstName } = req.body;
-  const { lastName } = req.body;
-  const { address } = req.body;
-  const { postal } = req.body;
-  const { phoneNumber } = req.body;
-  const { email } = req.body;
-
-  // calling updateCustProfile method from customer model
-  // eslint-disable-next-line max-len
-  Customer.updateCustProfile(firstName, lastName, address, postal, phoneNumber, email, customerId, (err, result) => {
-    // if there is no errorsend the following as result
-    if (!err) {
-      console.log(`result ${result.affectedRows}`);
-
-      res.status(202).send(result);
-    }
-    else {
-      res.status(500).send('Internal Server Error');
-    }
-  });
-});
-
-//= ======================================================
-//              Features / adminProfile
-//= ======================================================
 // Get admin profile by AdminID
 app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
   // extract id from params
@@ -1713,37 +1496,7 @@ app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
-// update super admin
-app.put('/superadmin/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const AdminID = req.params.id;
-  // extract all details needed
-  const { AdminPwd } = req.body;
 
-  // calling updateSuperAdmin method from SuperAdmin model
-  SuperAdmin.updateSuperAdmin(AdminPwd, AdminID, (err, result) => {
-    // if there is no errorsend the following as result
-    if (!err) {
-      const output = {
-        AdminId: result.insertId,
-      };
-      console.log(`result ${output.AdminId}`);
-      res.status(201).send(result);
-    }
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      res.status(406).send('Inappropriate value');
-    }
-    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
-      res.status(400).send('Null value not allowed');
-    }
-    // else if there is a server error return message
-    else {
-      res.status(500).send('Internal Server Error');
-    }
-  });
-});
 // Update admin details with id in web parameter
 app.put('/update/admin/:id', printDebugInfo, (req, res) => {
   // extract id from params
@@ -1759,23 +1512,6 @@ app.put('/update/admin/:id', printDebugInfo, (req, res) => {
     // if there is no errorsend the following as result
     if (!err) {
       console.log(`result ${result.affectedRows}`);
-
-      res.status(202).send(result);
-    }
-    else {
-      res.status(500).send('Internal Server Error');
-    }
-  });
-});
-app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const customerId = req.params.id;
-  // calling updateCustProfile method from customer model
-  // eslint-disable-next-line max-len
-  Customer.getBookingDetails(customerId, (err, result) => {
-    // if there is no errorsend the following as result
-    if (!err) {
-      console.log(`result ${result}`);
 
       res.status(202).send(result);
     }
@@ -1810,6 +1546,7 @@ app.put('/admin/password/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
+
 app.put('/admin/editPassword/:id', printDebugInfo, async (req, res) => {
   // extract id from params
   const adminID = req.params.id;
@@ -1836,26 +1573,165 @@ app.put('/admin/editPassword/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
-// delete admin
-app.delete('/admin/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const { id } = req.params;
 
-  // calling deleteAdmin method from SuperAdmin model
-  SuperAdmin.deleteAdmin(id, (err, result) => {
+app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from admin model
+  Admin.getBookingByMonth((err, result) => {
+    // array to store and send the finalOutput
+    const finalOutput = [];
+    // array to store and send all the months
+    const month = [];
+    // array to store number of booking made in a month
+    const numMonthBooking = [];
+
     if (!err) {
-      // result.affectedRows indicates that id to be deleted
-      // cannot be found hence send as error message
-      if (result.affectedRows === 0) {
-        res.status(404).send('Item cannot be deleted');
+      // loop through the months
+      for (let i = 0; i < result.length; i++) {
+        // pushing month and numbber of booking made in january if result for january is available
+        if (result[i].month === 1) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in february if result for february is available
+        if (result[i].month === 2) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in march if result for march is available
+        if (result[i].month === 3) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in april if result for april is available
+        if (result[i].month === 4) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in may if result for may is available
+        if (result[i].month === 5) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in june if result for june is available
+        if (result[i].month === 6) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in july if result for july is available
+        if (result[i].month === 7) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in august if result for august is available
+        if (result[i].month === 8) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in september if result for september is available
+        if (result[i].month === 9) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in october if result for january is available
+        if (result[i].month === 10) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in novemeber if result for novemeber is available
+        if (result[i].month === 11) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
+        // pushing month and numbber of booking made in december if result for december is available
+        if (result[i].month === 12) {
+          month.push(result[i].month);
+          numMonthBooking.push(result[i].numberOfBooking);
+        }
       }
-      // else a postitve result
-      else {
+
+      // setting countNumBooking to 0
+      let countNumBooking = 0;
+      // getting length of the number of months that have booking
+      const actualCountNumBooking = numMonthBooking.length;
+      // for loop to check if booking for month was retrieved and assigning the
+      // value of number of booking and month into finalOutput as objects
+      for (let x = 1; x < 13; x++) {
+        // check if the array month inclues value of x and add the month and number of booking made in
+        if (month.includes(x)) {
+          // to ensure that the number of bookings that are equivilent to the number of booking beign added
+          countNumBooking++;
+          if (countNumBooking <= actualCountNumBooking) {
+            finalOutput.push({ month: x, numberOfBooking: numMonthBooking[countNumBooking - 1] });
+          }
+        }
+        // if array does not include month get the month and put it's numberOfBooking as 0
+        else {
+          finalOutput.push({ month: x, numberOfBooking: 0 });
+        }
+      }
+      // send all the months and number of booking made in month as array of objects called finalOutput
+      res.status(200).send(finalOutput);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get revenue of the month
+app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
+  // calling getAllRates method from admin model
+  Admin.getRevenueOfTheMonth((err, result) => {
+    if (!err) {
+      // inistialise sum as 0
+      let sum = 0;
+      // loop throught the result and add the revenue calculated for each month as the sum
+      for (const i = 0; i < result.length; i++) {
+        // adding value to the sum
+        sum += result[i].Revenue;
+      }
+      // assigning output as a object with the key of totalRevenue and value of sum calculated
+      const output = { totalRevenue: sum };
+      // send output
+      res.status(200).send(output);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// ====================== Customer Section ======================
+// Get user profile
+app.get('/customerAddBooking/:customerID', printDebugInfo, async (req, res, next) => {
+  const customerId = req.params.customerID;
+
+  Customer.getCustomerById(customerId, (err, result) => {
+    if (!err) {
+      res.status(200).send(result);
+    } else {
+      return next(err);
+    }
+  });
+});
+
+app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
+  const dates = req.params.bookingDates;
+
+  // calling possibleAvailableHelpers method from customer model
+  Customer.possibleAvailableHelpers(dates, (err, result) => {
+    // if no error send result
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sending output as error message if there is any server issues
       const output = {
         Error: 'Internal sever issues',
       };
@@ -1863,26 +1739,53 @@ app.delete('/admin/:id', printDebugInfo, (req, res) => {
     }
   });
 });
-// delete super admin
-app.delete('/superadmin/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const { id } = req.params;
 
-  // calling deleteSuperAdmin method from SuperAdmin model
-  SuperAdmin.deleteSuperAdmin(id, (err, result) => {
+// Update own account details
+app.put('/update/customer/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+  // extract all details needed
+  const { firstName } = req.body;
+  const { lastName } = req.body;
+  const { address } = req.body;
+  const { postal } = req.body;
+  const { phoneNumber } = req.body;
+  const { email } = req.body;
+
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Customer.updateCustProfile(firstName, lastName, address, postal, phoneNumber, email, customerId, (err, result) => {
+    // if there is no errorsend the following as result
     if (!err) {
-      // result.affectedRows indicates that id to be deleted
-      // cannot be found hence send as error message
-      if (result.affectedRows === 0) {
-        res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.get('/user/customer/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+
+  // calling getCustomerById method from Customer model
+  Customer.getCustomerById(customerId, (err, result) => {
+    if (!err) {
+      // if customer id is not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sending output as error message if there is any server issues
       const output = {
         Error: 'Internal sever issues',
       };
@@ -1890,6 +1793,40 @@ app.delete('/superadmin/:id', printDebugInfo, (req, res) => {
     }
   });
 });
+
+// get all class of services
+app.get('/classOfService', printDebugInfo, async (req, res) => {
+  // calling getAllClassOfService method from customer model
+  Customer.getAllClassOfService((err, result) => {
+    if (!err) {
+      console.log('==================================');
+      console.log('get class of service');
+      console.log('==================================');
+      res.status(200).send(result);
+    } else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Customer.getBookingDetails(customerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result}`);
+
+      res.status(202).send(result);
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
 app.post('/customer/autobooking', printDebugInfo, (req, res) => {
   // extract contract data from request body
   const { customer } = req.body;
@@ -2193,151 +2130,7 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
     },
   );
 });
-//---------------------------------------------------
-//               Feature/ Customer Booking
-//---------------------------------------------------
 
-// get all class of services
-app.get('/classOfService', printDebugInfo, async (req, res) => {
-  // calling getAllClassOfService method from customer model
-  Customer.getAllClassOfService((err, result) => {
-    if (!err) {
-      console.log('==================================');
-      console.log('get class of service');
-      console.log('==================================');
-      res.status(200).send(result);
-    } else {
-      res.status(500).send('Some error');
-    }
-  });
-});
-// add an admin
-app.post('/admin', printDebugInfo, (req, res) => {
-  // extract all details needed
-  const { LastName } = req.body;
-  const { FirstName } = req.body;
-  const { AdminPwd } = req.body;
-  const { AdminEmail } = req.body;
-  const { AdminType } = req.body;
-
-  // calling addAdmin method from SuperAdmin model
-  SuperAdmin.addAdmin(LastName, FirstName, AdminPwd, AdminEmail, AdminType, (err, result) => {
-    if (!err) {
-      res.status(201).send(result);
-    }
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      res.status(406).send('Inappropriate value');
-    }
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
-      res.status(400).send('Null value not allowed');
-    }
-    else {
-      res.status(500).send('Internal Server Error');
-    }
-  });
-});
-app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
-  // calling getAllClassOfService method from admin model
-  Admin.getBookingByMonth((err, result) => {
-    // array to store and send the finalOutput
-    const finalOutput = [];
-    // array to store and send all the months
-    const month = [];
-    // array to store number of booking made in a month
-    const numMonthBooking = [];
-
-    if (!err) {
-      // loop through the months
-      for (let i = 0; i < result.length; i++) {
-        // pushing month and numbber of booking made in january if result for january is available
-        if (result[i].month === 1) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in february if result for february is available
-        if (result[i].month === 2) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in march if result for march is available
-        if (result[i].month === 3) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in april if result for april is available
-        if (result[i].month === 4) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in may if result for may is available
-        if (result[i].month === 5) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in june if result for june is available
-        if (result[i].month === 6) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in july if result for july is available
-        if (result[i].month === 7) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in august if result for august is available
-        if (result[i].month === 8) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in september if result for september is available
-        if (result[i].month === 9) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in october if result for january is available
-        if (result[i].month === 10) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in novemeber if result for novemeber is available
-        if (result[i].month === 11) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-        // pushing month and numbber of booking made in december if result for december is available
-        if (result[i].month === 12) {
-          month.push(result[i].month);
-          numMonthBooking.push(result[i].numberOfBooking);
-        }
-      }
-
-      // setting countNumBooking to 0
-      let countNumBooking = 0;
-      // getting length of the number of months that have booking
-      const actualCountNumBooking = numMonthBooking.length;
-      // for loop to check if booking for month was retrieved and assigning the
-      // value of number of booking and month into finalOutput as objects
-      for (let x = 1; x < 13; x++) {
-        // check if the array month inclues value of x and add the month and number of booking made in
-        if (month.includes(x)) {
-          // to ensure that the number of bookings that are equivilent to the number of booking beign added
-          countNumBooking++;
-          if (countNumBooking <= actualCountNumBooking) {
-            finalOutput.push({ month: x, numberOfBooking: numMonthBooking[countNumBooking - 1] });
-          }
-        }
-        // if array does not include month get the month and put it's numberOfBooking as 0
-        else {
-          finalOutput.push({ month: x, numberOfBooking: 0 });
-        }
-      }
-      // send all the months and number of booking made in month as array of objects called finalOutput
-      res.status(200).send(finalOutput);
-    } else {
-      res.status(500).send('Some error');
-    }
-  });
-});
 // get all packages
 app.get('/package', printDebugInfo, async (req, res) => {
   // calling getAllPackage method from customer model
@@ -2347,27 +2140,6 @@ app.get('/package', printDebugInfo, async (req, res) => {
       console.log('get package');
       console.log('==================================');
       res.status(200).send(result);
-    } else {
-      res.status(500).send('Some error');
-    }
-  });
-});
-// get revenue of the month
-app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
-  // calling getAllRates method from admin model
-  Admin.getRevenueOfTheMonth((err, result) => {
-    if (!err) {
-      // inistialise sum as 0
-      let sum = 0;
-      // loop throught the result and add the revenue calculated for each month as the sum
-      for (const i = 0; i < result.length; i++) {
-        // adding value to the sum
-        sum += result[i].Revenue;
-      }
-      // assigning output as a object with the key of totalRevenue and value of sum calculated
-      const output = { totalRevenue: sum };
-      // send output
-      res.status(200).send(output);
     } else {
       res.status(500).send('Some error');
     }
@@ -2404,6 +2176,199 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
   });
 });
 
+// ====================== Super Admin Section ======================
+// get all admin
+app.get('/admin', printDebugInfo, async (req, res) => {
+  // calling getAllAdmins method from SuperAdmin model
+  SuperAdmin.getAllAdmins((err, result) => {
+    // if no error send result
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get an admin
+app.get('/oneadmin/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const adminId = req.params.id;
+
+  // calling getAdmin method from SuperAdmin model
+  SuperAdmin.getAdmin(adminId, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+// get a super admin
+app.get('/onesuperadmin/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const superAdminId = req.params.id;
+
+  // calling getSuperAdmin method from SuperAdmin model
+  SuperAdmin.getSuperAdmin(superAdminId, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// update super admin
+app.put('/superadmin/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const AdminID = req.params.id;
+  // extract all details needed
+  const { AdminPwd } = req.body;
+
+  // calling updateSuperAdmin method from SuperAdmin model
+  SuperAdmin.updateSuperAdmin(AdminPwd, AdminID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      const output = {
+        AdminId: result.insertId,
+      };
+      console.log(`result ${output.AdminId}`);
+      res.status(201).send(result);
+    }
+    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    // else if there is a server error return message
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+// delete admin
+app.delete('/admin/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params;
+
+  // calling deleteAdmin method from SuperAdmin model
+  SuperAdmin.deleteAdmin(id, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      }
+      // else a postitve result
+      else {
+        res.status(200).send(result);
+      }
+    } else
+    // sever error
+    {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+// delete super admin
+app.delete('/superadmin/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params;
+
+  // calling deleteSuperAdmin method from SuperAdmin model
+  SuperAdmin.deleteSuperAdmin(id, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      }
+      // else a postitve result
+      else {
+        res.status(200).send(result);
+      }
+    } else
+    // sever error
+    {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// add an admin
+app.post('/admin', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { LastName } = req.body;
+  const { FirstName } = req.body;
+  const { AdminPwd } = req.body;
+  const { AdminEmail } = req.body;
+  const { AdminType } = req.body;
+
+  // calling addAdmin method from SuperAdmin model
+  SuperAdmin.addAdmin(LastName, FirstName, AdminPwd, AdminEmail, AdminType, (err, result) => {
+    if (!err) {
+      res.status(201).send(result);
+    }
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Inappropriate value');
+    }
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Null value not allowed');
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
 // add a super admin
 app.post('/superadmin', printDebugInfo, (req, res) => {
   // extract all details needed
@@ -2429,5 +2394,6 @@ app.post('/superadmin', printDebugInfo, (req, res) => {
     }
   });
 });
+
 // module exports
 module.exports = app;
