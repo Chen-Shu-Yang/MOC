@@ -1,10 +1,10 @@
-/* eslint-disable max-len */
-/* eslint-disable no-plusplus */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable brace-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
+/* eslint-disable max-len */
+/* eslint-disable no-plusplus */
 
 //= ======================================================
 //              Imports
@@ -2360,7 +2360,7 @@ app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
       // inistialise sum as 0
       let sum = 0;
       // loop throught the result and add the revenue calculated for each month as the sum
-      for (i = 0; i < result.length; i++) {
+      for (const i = 0; i < result.length; i++) {
         // adding value to the sum
         sum += result[i].Revenue;
       }

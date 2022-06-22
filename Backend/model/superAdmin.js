@@ -349,7 +349,6 @@ const superAdmin = {
   `;
     // pool query
     pool.query(sql, [password, id], (err, result) => {
-
       // error
       if (err) {
         console.log(err);
