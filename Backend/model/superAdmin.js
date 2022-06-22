@@ -5,7 +5,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
-/* eslint-disable max-len */
 
 //= ======================================================
 //              Imports
@@ -193,6 +192,73 @@ const superAdmin = {
       return callback(null, result);
     });
   },
+  getAdmin(id, callback) {
+    // sql query statement
+    const sql = 'SELECT AdminID, FirstName, LastName, Password, Email, AdminType FROM heroku_6b49aedb7855c0b.admin where AdminID=?;';
+
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
+  // get super admin by id
+  getSuperAdmin(id, callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        SuperAdminID, FirstName, LastName, Email, Password, AdminType 
+      FROM 
+        heroku_6b49aedb7855c0b.superadmin 
+      WHERE 
+        SuperAdminID=?;`;
+
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+    });
+  },
+
+  // get all Admins and Super admins
+  getAllAdmins(callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        AdminID, FirstName, LastName, Email, AdminType 
+      FROM 
+        heroku_6b49aedb7855c0b.admin
+      UNION SELECT 
+        SuperAdminID, FirstName, LastName, Email, AdminType 
+      FROM 
+        heroku_6b49aedb7855c0b.superadmin;
+    `;
+
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
 
   // update all class of services
   updateEmployee(EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, EmployeeSkills, id, callback) {
@@ -220,6 +286,7 @@ const superAdmin = {
       return callback(null, result);
     });
   },
+
   // feature/addEmployee Model
   // eslint-disable-next-line max-len
   addEmployee(EmployeeName, EmployeeDes, EmployeeImgageCloudinaryFileId, EmployeeImageUrl, Skillsets, callback) {
@@ -236,7 +303,22 @@ const superAdmin = {
       return callback(null, result); // if
     });
   },
+  // delete a regular admin
+  deleteAdmin(id, callback) {
+    // sql query statement
+    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.admin where AdminID =?;';
 
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
   // delete all class of services
   deleteEmployee(id, callback) {
     console.log(` admin.js employee delete method start ${id}`);
@@ -254,11 +336,50 @@ const superAdmin = {
       return callback(null, result);
     });
   },
+  // update a super admin
+  updateSuperAdmin(password, id, callback) {
+    // sql query statement
+    const sql = `
+    UPDATE 
+      heroku_6b49aedb7855c0b.superadmin
+    SET
+      Password=?
+    WHERE
+      SuperAdminID=?;
+  `;
+    // pool query
+    pool.query(sql, [password, id], (err, result) => {
+
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
 
   //= ======================================================
   //              Features / Booking
   //= ======================================================
+  deleteSuperAdmin(id, callback) {
+    // sql query statement
+    const sql = 'DELETE FROM heroku_6b49aedb7855c0b.superadmin where SuperAdminID =?;';
 
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
   // get all booking
   getAllBooking(callback) {
     // sql query statement

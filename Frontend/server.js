@@ -129,6 +129,10 @@ app.get('/customer/confirm', (req, res) => {
 //= ======================================================
 //                   Super Admin
 //= ======================================================
+// go to admin management
+app.get('/superadmin/admin', (req, res) => {
+  res.sendFile('/public/assets/html/adminManagement.html', { root: __dirname });
+});
 
 // retrieve from public folder
 app.use(serveStatic(`${__dirname}/public`));
