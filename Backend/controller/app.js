@@ -1,28 +1,20 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-plusplus */
-/* eslint-disable brace-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
-/* eslint-disable max-len */
 /* eslint-disable no-plusplus */
 
-//= ======================================================
-//              Imports
-//= ======================================================
+// ====================== Imports ======================
 const express = require('express');
 
 const app = express();
-
 const bodyParser = require('body-parser');
-
 const cors = require('cors');
-
 const moment = require('moment');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 // const verifyToken = require('../auth/isLoggedInMiddleWare');
 
-// model
+// ------------------ model ------------------
 const Login = require('../model/login');
 const Admin = require('../model/admin');
 const Customer = require('../model/customer');
@@ -44,7 +36,6 @@ const SuperAdmin = require('../model/superAdmin');
  */
 
 // ====================== MiddleWare Functions ======================
-
 function printDebugInfo(req, res, next) {
   console.log();
   console.log('-----------------[Debug Info]----------------');
@@ -189,18 +180,15 @@ app.post('/class', printDebugInfo, (req, res) => {
       // if no error send results as positive
       if (!err) {
         res.status(201).send(result);
-      }
-      // eslint-disable-next-line max-len
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // if server issues send this as an error
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
@@ -227,31 +215,21 @@ app.put('/class/:id', printDebugInfo, (req, res) => {
     Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, (err, result) => {
       // if there is no errorsend the following as result
       if (!err) {
-        const output = {
-          classID: result.insertId,
-        };
-
-        console.log(`result ${output.classID}`);
-
         res.status(201).send(result);
-      }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // else if there is a server error return message
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
-  }
-  // if class pricing is not float
-  else {
+  } else {
+    // if class pricing is not float
     res.status(406).send('Inappropriate value');
   }
 });
@@ -267,14 +245,12 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
       // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -302,9 +278,8 @@ app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
         // output
         res.status(200).send(result);
       }
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -326,9 +301,8 @@ app.get('/employee', printDebugInfo, async (req, res) => {
         // output
         res.status(200).send(result);
       }
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -385,22 +359,17 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
         const output = {
           classID: result.insertId,
         };
-
         console.log(`result ${output.classID}`);
-
         res.status(201).send(result);
-      }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
-      // Inappropriate value as return message
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // else if there is a server error return message
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     },
@@ -449,18 +418,14 @@ app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
       // cannot be found hence send as error message
       if (result1.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         console.log(output1.EmployeeImageCloudinaryFileId);
-
         cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
-
         // res.send(result1);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -488,10 +453,8 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, as
         const output1 = {
           EmployeeId: result[0].EmployeeID,
           EmployeeImageCloudinaryFileId: result[0].EmployeeImageCloudinaryFileId,
-
         };
         cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
-
         console.log('previous pic deleted');
       }
     } else {
@@ -589,9 +552,8 @@ app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
     // if no error send result
     if (!err) {
       res.status(200).send(result);
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };
@@ -610,9 +572,8 @@ app.get('/booking', printDebugInfo, async (req, res) => {
       console.log('Bihh');
       console.log('==================================');
       res.status(200).send(result);
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -655,14 +616,11 @@ app.post('/booking', printDebugInfo, (req, res) => {
   Admin.addOneBooking(bookingID, bookingDate, AdminId, (err, result) => {
     if (!err) {
       res.status(201).send(result);
-    }
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       res.status(406).send('Inappropriate value');
-    }
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
       res.status(400).send('Null value not allowed');
-    }
-    else {
+    } else {
       res.status(500).send('Internal Server Error');
     }
   });
@@ -682,18 +640,15 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
     // if there is no errorsend the following as result
     if (!err) {
       res.status(201).send(result);
-    }
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-    // send Inappropriate value as return message
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       res.status(406).send('Inappropriate value');
-    }
-    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    }
-    // else if there is a server error return message
-    else {
+    } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -756,18 +711,15 @@ app.post('/class', printDebugInfo, (req, res) => {
       // if no error send results as positive
       if (!err) {
         res.status(201).send(result);
-      }
-      // eslint-disable-next-line max-len
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // if server issues send this as an error
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
@@ -794,31 +746,21 @@ app.put('/class/:id', printDebugInfo, (req, res) => {
     Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, (err, result) => {
       // if there is no errorsend the following as result
       if (!err) {
-        const output = {
-          classID: result.insertId,
-        };
-
-        console.log(`result ${output.classID}`);
-
         res.status(201).send(result);
-      }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // else if there is a server error return message
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
-  }
-  // if class pricing is not float
-  else {
+  } else {
+    // if class pricing is not float
     res.status(406).send('Inappropriate value');
   }
 });
@@ -834,14 +776,12 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
       // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -860,9 +800,8 @@ app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
     // if no error send result
     if (!err) {
       res.status(200).send(result);
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };
@@ -881,9 +820,8 @@ app.get('/bookingCancel', printDebugInfo, async (req, res) => {
       console.log('Bihh');
       console.log('==================================');
       res.status(200).send(result);
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -900,25 +838,16 @@ app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
     (err, result) => {
       // if there is no errorsend the following as result
       if (!err) {
-        const output = {
-          classID: result.insertId,
-        };
-
-        console.log(`result ${output.classID}`);
-
         res.status(201).send(result);
-      }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
-      // Inappropriate value as return message
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // else if there is a server error return message
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     },
@@ -970,18 +899,15 @@ app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
         'changed rows': result.changedRows,
       };
       res.status(201).send(output);
-    }
-    // eslint-disable-next-line max-len
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       res.status(406).send('Inappropriate value');
-    }
-    // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    }
-    // if server issues send this as an error
-    else {
+    } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -1003,9 +929,8 @@ app.get('/customer', printDebugInfo, async (req, res) => {
         // output
         res.status(200).send(result);
       }
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -1051,24 +976,16 @@ app.put('/customer/:id', printDebugInfo, (req, res) => {
   Admin.updateCustomer(CustomerPassword, CustomerStatus, CustomerID, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
-      const output = {
-        customerId: result.insertId,
-      };
-
-      console.log(`result ${output.customerId}`);
-
       res.status(201).send(result);
-    }
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       res.status(406).send('Inappropriate value');
-    }
-    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    }
-    // else if there is a server error return message
-    else {
+    } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -1085,14 +1002,12 @@ app.delete('/customer/:id', printDebugInfo, (req, res) => {
       // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -1157,18 +1072,15 @@ app.post('/extraService', printDebugInfo, (req, res) => {
       // if no error send results as positive
       if (!err) {
         res.status(201).send(result);
-      }
-      // eslint-disable-next-line max-len
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // if server issues send this as an error
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
@@ -1194,31 +1106,21 @@ app.put('/extraService/:id', printDebugInfo, (req, res) => {
     Admin.updateExtraService(ExtraServiceName, ExtraServicePrice, ExtraServiceID, (err, result) => {
       // if there is no errorsend the following as result
       if (!err) {
-        const output = {
-          ExtraServiceID: result.insertId,
-        };
-
-        console.log(`result ${output.ExtraServiceID}`);
-
         res.status(201).send(result);
-      }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // else if there is a server error return message
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
-  }
-  // if class pricing is not float
-  else {
+  } else {
+    // if class pricing is not float
     res.status(406).send('Inappropriate value');
   }
 });
@@ -1234,14 +1136,12 @@ app.delete('/extraService/:id', printDebugInfo, (req, res) => {
       // deleted cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -1307,18 +1207,15 @@ app.post('/rate', printDebugInfo, (req, res) => {
       // if no error send results as positive
       if (!err) {
         res.status(201).send(result);
-      }
-      // eslint-disable-next-line max-len
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send error response as inappropriate value
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send error response as Null value not allowed
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // if server issues send this as an error
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
@@ -1345,31 +1242,21 @@ app.put('/rate/:id', printDebugInfo, (req, res) => {
     Admin.updateRate(RateName, RatePrice, Package, RatesID, (err, result) => {
       // if there is no errorsend the following as result
       if (!err) {
-        const output = {
-          RatesID: result.insertId,
-        };
-
-        console.log(`result ${output.RatesID}`);
-
         res.status(201).send(result);
-      }
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
         res.status(406).send('Inappropriate value');
-      }
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
         res.status(400).send('Null value not allowed');
-      }
-      // else if there is a server error return message
-      else {
+      } else {
+        // else if there is a server error return message
         res.status(500).send('Internal Server Error');
       }
     });
-  }
-  // if class pricing is not float
-  else {
+  } else {
+    // if class pricing is not float
     res.status(406).send('Inappropriate value');
   }
 });
@@ -1385,14 +1272,12 @@ app.delete('/rate/:id', printDebugInfo, (req, res) => {
       // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -1412,9 +1297,8 @@ app.get('/contract/:id', printDebugInfo, async (req, res) => {
       console.log('Continue');
       console.log('==================================');
       res.status(200).send(result);
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -1431,9 +1315,8 @@ app.post('/employeeList', printDebugInfo, async (req, res) => {
       console.log('Continue');
       console.log('==================================');
       res.status(200).send(result);
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -1451,19 +1334,16 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
   Admin.assignBooking(EmployeeID, BookingID, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
-      res.status(200).send(`${JSON.stringify(result)} Resulted data`);
-    }
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-    // send Inappropriate value as return message
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(201).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
       res.status(406).send('Inappropriate value');
-    }
-    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    }
-    // else if there is a server error return message
-    else {
+    } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -1512,10 +1392,8 @@ app.put('/update/admin/:id', printDebugInfo, (req, res) => {
     // if there is no errorsend the following as result
     if (!err) {
       console.log(`result ${result.affectedRows}`);
-
       res.status(202).send(result);
-    }
-    else {
+    } else {
       res.status(500).send('Internal Server Error');
     }
   });
@@ -1627,7 +1505,8 @@ app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
-        // pushing month and numbber of booking made in september if result for september is available
+        // pushing month and numbber of booking made in
+        // september if result for september is available
         if (result[i].month === 9) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
@@ -1637,7 +1516,8 @@ app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
         }
-        // pushing month and numbber of booking made in novemeber if result for novemeber is available
+        // pushing month and numbber of booking made in
+        // novemeber if result for novemeber is available
         if (result[i].month === 11) {
           month.push(result[i].month);
           numMonthBooking.push(result[i].numberOfBooking);
@@ -1656,20 +1536,22 @@ app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
       // for loop to check if booking for month was retrieved and assigning the
       // value of number of booking and month into finalOutput as objects
       for (let x = 1; x < 13; x++) {
-        // check if the array month inclues value of x and add the month and number of booking made in
+        // check if the array month inclues value of x
+        // and add the month and number of booking made in
         if (month.includes(x)) {
-          // to ensure that the number of bookings that are equivilent to the number of booking beign added
+          // to ensure that the number of bookings that are
+          // equivilent to the number of booking beign added
           countNumBooking++;
           if (countNumBooking <= actualCountNumBooking) {
             finalOutput.push({ month: x, numberOfBooking: numMonthBooking[countNumBooking - 1] });
           }
-        }
-        // if array does not include month get the month and put it's numberOfBooking as 0
-        else {
+        } else {
+          // if array does not include month get the month and put it's numberOfBooking as 0
           finalOutput.push({ month: x, numberOfBooking: 0 });
         }
       }
-      // send all the months and number of booking made in month as array of objects called finalOutput
+      // send all the months and number of booking made
+      // in month as array of objects called finalOutput
       res.status(200).send(finalOutput);
     } else {
       res.status(500).send('Some error');
@@ -1685,7 +1567,7 @@ app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
       // inistialise sum as 0
       let sum = 0;
       // loop throught the result and add the revenue calculated for each month as the sum
-      for (const i = 0; i < result.length; i++) {
+      for (let i = 0; i < result.length; i++) {
         // adding value to the sum
         sum += result[i].Revenue;
       }
@@ -1760,8 +1642,7 @@ app.put('/update/customer/:id', printDebugInfo, (req, res) => {
       console.log(`result ${result.affectedRows}`);
 
       res.status(202).send(result);
-    }
-    else {
+    } else {
       res.status(500).send('Internal Server Error');
     }
   });
@@ -1820,8 +1701,7 @@ app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
       console.log(`result ${result}`);
 
       res.status(202).send(result);
-    }
-    else {
+    } else {
       res.status(500).send('Internal Server Error');
     }
   });
@@ -1861,9 +1741,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
       // if no error send result
       if (!err) {
         console.log('done');
-      }
-      // if error send error message
-      else {
+      } else {
+        // if error send error message
         res.status(500).send('Some error');
       }
     });
@@ -1956,8 +1835,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
       if (!err) {
         // stores the contract Id returned into the newContractId variable
         newContractId = result.insertId;
-        // check if DayOfService includes 'Mon' which represents monday
         if (DayOfService.includes('Mon')) {
+          // check if DayOfService includes 'Mon' which represents monday
           getDateRange(1);
           // loop through the mondays and extract the date
           for (let x = 0; x < dateArray.length - 1; x++) {
@@ -1966,9 +1845,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        }
-        // check if DayOfService includes 'Tue' which represents tuesday
-        else if (DayOfService.includes('Tue')) {
+        } else if (DayOfService.includes('Tue')) {
+          // check if DayOfService includes 'Tue' which represents tuesday
           getDateRange(2);
           // loop through the tuesday and extract the date
           for (let x = 0; x < dateArray.length - 1; x++) {
@@ -1977,9 +1855,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        }
-        // check if DayOfService includes 'Wed' which represents tuesday
-        else if (DayOfService.includes('Wed')) {
+        } else if (DayOfService.includes('Wed')) {
+          // check if DayOfService includes 'Wed' which represents tuesday
           getDateRange(3);
           // loop through the wednesday and extract the date
           for (let x = 0; x < dateArray.length - 1; x++) {
@@ -1988,9 +1865,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        }
-        // check if DayOfService includes 'Thu' which represents tuesday
-        else if (DayOfService.includes('Thu')) {
+        } else if (DayOfService.includes('Thu')) {
+          // check if DayOfService includes 'Thu' which represents tuesday
           getDateRange(4);
           // loop through the thursday and extract the date
           for (let x = 0; x < dateArray.length - 1; x++) {
@@ -1999,9 +1875,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        }
-        // check if DayOfService includes 'Fri' which represents tuesday
-        else if (DayOfService.includes('Fri')) {
+        } else if (DayOfService.includes('Fri')) {
+          // check if DayOfService includes 'Fri' which represents tuesday
           getDateRange(5);
           // loop through the friday and extract the date
           for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2010,9 +1885,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        }
-        // check if DayOfService includes 'Sat' which represents tuesday
-        else if (DayOfService.includes('Sat')) {
+        } else if (DayOfService.includes('Sat')) {
+          // check if DayOfService includes 'Sat' which represents tuesday
           getDateRange(6);
           // loop through the saturday and extract the date
           for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2021,9 +1895,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        }
-        // check if DayOfService includes 'Sun' which represents tuesday
-        else if (DayOfService.includes('Sun')) {
+        } else if (DayOfService.includes('Sun')) {
+          // check if DayOfService includes 'Sun' which represents tuesday
           getDateRange(0);
           // loop through the sunday and extract the date
           for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2046,9 +1919,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          }
-          // check if DayOfService2 includes 'Tue' which represents tuesday
-          else if (DayOfService2.includes('Tue')) {
+          } else if (DayOfService2.includes('Tue')) {
+            // check if DayOfService2 includes 'Tue' which represents tuesday
             getDateRange2(2);
             // loop through the tuesday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2057,9 +1929,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          }
-          // check if DayOfService2 includes 'Wed' which represents tuesday
-          else if (DayOfService2.includes('Wed')) {
+          } else if (DayOfService2.includes('Wed')) {
+            // check if DayOfService2 includes 'Wed' which represents tuesday
             getDateRange2(3);
             // loop through the wednesday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2068,9 +1939,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          }
-          // check if DayOfService2 includes 'Thu' which represents tuesday
-          else if (DayOfService2.includes('Thu')) {
+          } else if (DayOfService2.includes('Thu')) {
+            // check if DayOfService2 includes 'Thu' which represents tuesday
             getDateRange2(4);
             // loop through the thursday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2079,9 +1949,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          }
-          // check if DayOfService2 includes 'Fri' which represents tuesday
-          else if (DayOfService2.includes('Fri')) {
+          } else if (DayOfService2.includes('Fri')) {
+            // check if DayOfService2 includes 'Fri' which represents tuesday
             getDateRange2(5);
             // loop through the friday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2090,9 +1959,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          }
-          // check if DayOfService2 includes 'Sat' which represents tuesday
-          else if (DayOfService2.includes('Sat')) {
+          } else if (DayOfService2.includes('Sat')) {
+            // check if DayOfService2 includes 'Sat' which represents tuesday
             getDateRange2(6);
             // loop through the saturday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2101,9 +1969,8 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          }
-          // check if DayOfService2 includes 'Sun' which represents tuesday
-          else if (DayOfService2.includes('Sun')) {
+          } else if (DayOfService2.includes('Sun')) {
+            // check if DayOfService2 includes 'Sun' which represents tuesday
             getDateRange2(0);
             // loop through the sunday and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
@@ -2114,17 +1981,13 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
             }
           }
         }
-
         // respond
         res.status(201).send(result);
-      }
-      else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
         res.status(406).send('Inappropriate value');
-      }
-      else if (err.code === 'ER_BAD_NULL_ERROR') {
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
         res.status(400).send('Null value not allowed');
-      }
-      else {
+      } else {
         res.status(500).send('Internal Server Error');
       }
     },
@@ -2193,9 +2056,8 @@ app.get('/admin', printDebugInfo, async (req, res) => {
         // output
         res.status(200).send(result);
       }
-    }
-    // if error send error message
-    else {
+    } else {
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -2272,17 +2134,15 @@ app.put('/superadmin/:id', printDebugInfo, (req, res) => {
       };
       console.log(`result ${output.AdminId}`);
       res.status(201).send(result);
-    }
-    // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send Inappropriate value as return message
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+      // Inappropriate value as return message
       res.status(406).send('Inappropriate value');
-    }
-    // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    }
-    // else if there is a server error return message
-    else {
+    } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -2300,14 +2160,12 @@ app.delete('/admin/:id', printDebugInfo, (req, res) => {
       // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -2327,14 +2185,12 @@ app.delete('/superadmin/:id', printDebugInfo, (req, res) => {
       // cannot be found hence send as error message
       if (result.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
-      }
-      // else a postitve result
-      else {
+      } else {
+        // else a postitve result
         res.status(200).send(result);
       }
-    } else
-    // sever error
-    {
+    } else {
+      // sever error
       const output = {
         Error: 'Internal sever issues',
       };
@@ -2355,15 +2211,20 @@ app.post('/admin', printDebugInfo, (req, res) => {
   // calling addAdmin method from SuperAdmin model
   SuperAdmin.addAdmin(LastName, FirstName, AdminPwd, AdminEmail, AdminType, (err, result) => {
     if (!err) {
+      const output = {
+        AdminId: result.insertId,
+      };
+      console.log(`result ${output.AdminId}`);
       res.status(201).send(result);
-    }
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+      // Inappropriate value as return message
       res.status(406).send('Inappropriate value');
-    }
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    }
-    else {
+    } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -2381,19 +2242,24 @@ app.post('/superadmin', printDebugInfo, (req, res) => {
   // calling addSuperAdmin method from SuperAdmin model
   SuperAdmin.addSuperAdmin(LastName, FirstName, AdminPwd, AdminEmail, AdminType, (err, result) => {
     if (!err) {
+      const output = {
+        AdminId: result.insertId,
+      };
+      console.log(`result ${output.AdminId}`);
       res.status(201).send(result);
-    }
-    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+      // Inappropriate value as return message
       res.status(406).send('Inappropriate value');
-    }
-    else if (err.code === 'ER_BAD_NULL_ERROR') {
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    }
-    else {
+    } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
 });
 
-// module exports
+// ====================== Module Exports ======================
 module.exports = app;
