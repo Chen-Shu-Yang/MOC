@@ -3,9 +3,10 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-const frontEndUrl = 'http://localhost:3001';
+
+// const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 function createRow(cardInfo) {
@@ -50,12 +51,12 @@ function loadAllAdmins() {
           FirstName: Admin.FirstName,
           LastName: Admin.LastName,
           Email: Admin.Email,
-          AdminType: Admin.AdminType
+          AdminType: Admin.AdminType,
         };
 
-        //calling createRow to display values row by row
+        // calling createRow to display values row by row
         const newCard = createRow(RowInfo);
-        //appeding row to classTable
+        // appeding row to classTable
         $('#admin-list').append(newCard);
       }
     },
@@ -75,12 +76,13 @@ function loadAllAdmins() {
 }
 
 // loadAnAdmin method to load one admin details
+// eslint-disable-next-line no-unused-vars
 function loadAnAdmin(id, AdminType) {
   // declares a variable endpoint
   let endpoint;
   // Check if the admin extracted is a super admin or a normal admin
   // Change the endpoint and retrieve different data from different tables
-  if (AdminType === "Super Admin") {
+  if (AdminType === 'Super Admin') {
     // Endpoint to retrieve a superadmin details
     endpoint = `onesuperadmin/${id}`;
   } else {
@@ -108,7 +110,7 @@ function loadAnAdmin(id, AdminType) {
 
       // If Else statement to differentiate the admintype
       // Ensure data passed into the inputs are correct
-      if (Admin.AdminType === "Super Admin") {
+      if (Admin.AdminType === 'Super Admin') {
         // Extracting information for a Super Admin
         RowInfo = {
           SuperAdminID: Admin.SuperAdminID,
@@ -116,14 +118,13 @@ function loadAnAdmin(id, AdminType) {
           LastName: Admin.LastName,
           Email: Admin.Email,
           Pwd: Admin.Password,
-          AdminType: Admin.AdminType
+          AdminType: Admin.AdminType,
         };
         // Pre-select dropdown option for admin type
         $('#changeAdminType').val(RowInfo.AdminType);
         // Fills in the input with data extracted
         $('#editAdminID').val(RowInfo.SuperAdminID);
         $('#deleteAdminID').val(RowInfo.SuperAdminID);
-
       } else {
         // Extracting information for an Admin
         RowInfo = {
@@ -132,7 +133,7 @@ function loadAnAdmin(id, AdminType) {
           LastName: Admin.LastName,
           Email: Admin.Email,
           Pwd: Admin.Password,
-          AdminType: Admin.AdminType
+          AdminType: Admin.AdminType,
         };
         // Pre-select dropdown option for admin type
         $('#changeAdminType').val(RowInfo.AdminType);
@@ -153,7 +154,9 @@ function loadAnAdmin(id, AdminType) {
     // Error if otherwise
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
-
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
       // if (xhr.status == 201) {
       //     errMsg = "The id doesn't exist "
       // }
@@ -164,8 +167,7 @@ function loadAnAdmin(id, AdminType) {
 
 // addUpdateAdmin to add the admin to another admin table when admin type is changed
 function addUpdateAdmin() {
-
-  //extract values for add pop-up
+  // extract values for add pop-up
   const FirstName = $('#firstName').html();
   const LastName = $('#lastName').html();
   const email = $('#adminEmail').html();
@@ -176,22 +178,22 @@ function addUpdateAdmin() {
   let endpoint;
   // Check if the admin extracted is a super admin or a normal admin
   // Change the endpoint and add the admins into different admin type table
-  if (adminType === "Super Admin") {
+  if (adminType === 'Super Admin') {
     // Endpoint to add regular admin into superadmin table
-    endpoint = `superadmin`;
+    endpoint = 'superadmin';
   } else {
     // Endpoint to add superadmin into admin table
-    endpoint = `admin`;
+    endpoint = 'admin';
   }
 
-  //store all extracted info into requestBody
+  // store all extracted info into requestBody
   const requestBody = {
-    LastName: LastName,
-    FirstName: FirstName,
+    LastName,
+    FirstName,
     AdminPwd: password,
     AdminEmail: email,
     AdminType: adminType,
-  }
+  };
 
   // Converts requestBody into a String
   const reqBody = JSON.stringify(requestBody);
@@ -201,34 +203,36 @@ function addUpdateAdmin() {
     url: `${backEndUrl}/${endpoint}`,
     type: 'POST',
     data: reqBody,
-    contentType: "application/json; charset=utf-8",
+    contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success: function (data, textStatus, xhr) {
-      //set and call confirmation message
-      msg = "Successfully added!"
+    success(data, textStatus, xhr) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
+      // set and call confirmation message
+      msg = 'Successfully added!';
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      const post = data;
       // Refresh the admin table
-      loadAllAdmins()
+      loadAllAdmins();
     },
-    error: function (xhr, textStatus, errorThrown) {
-      //set and call error message
-      var errMsg = ""
-      if (xhr.status == 500) {
-        console.log("error")
-        errMsg = "Server Issues"
-      }
-      else if (xhr.status == 400) {
-        errMsg = " Input not accepted"
-      }
-      else if (xhr.status == 406) {
-        errMsg = " Input not accepted"
-      }
-      else {
-        errMsg = "There is some other issues here"
+    error(xhr, textStatus, errorThrown) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else if (xhr.status === 400) {
+        errMsg = ' Input not accepted';
+      } else if (xhr.status === 406) {
+        errMsg = ' Input not accepted';
+      } else {
+        errMsg = 'There is some other issues here';
       }
       $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
-    }
+    },
   });
 }
 
@@ -243,7 +247,7 @@ function updateAdmin() {
   let endpoint;
   // Check if the admin extracted is a super admin or a normal admin
   // Change the endpoint to update either the super admin or admin table
-  if (adminType === "Super Admin") {
+  if (adminType === 'Super Admin') {
     // Endpoint to update superadmin
     endpoint = `superadmin/${id}`;
   } else {
@@ -267,6 +271,7 @@ function updateAdmin() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
+      console.log(data);
       console.log('Update Successful');
       // Refresh admin table
       loadAllAdmins();
@@ -293,7 +298,7 @@ function deleteAdmin(id) {
   let endpoint;
   // Check if the admin extracted is a super admin or a normal admin
   // Change the endpoint to delete admin either from the admin or super admin table
-  if (AdminType === "Super Admin") {
+  if (AdminType === 'Super Admin') {
     // Endpoint to delete admin from super admin table
     endpoint = `superadmin/${id}`;
   } else {
@@ -316,9 +321,8 @@ function deleteAdmin(id) {
         // set and call error message
         // eslint-disable-next-line no-use-before-define
         errMsg = 'Not valid id';
-      }
+      } else if (xhr.status === 200) {
       // if the params id is valid and
-      else if (xhr.status === 200) {
         // set and call confirmation message
         msg = 'Successfully deleted!';
 
@@ -328,6 +332,9 @@ function deleteAdmin(id) {
 
     error(xhr, textStatus, errorThrown) {
       // set and call error message
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
         console.log('error');
@@ -340,83 +347,84 @@ function deleteAdmin(id) {
   });
 }
 
-//add new admin
-function addAdmin(){
-    //extract values for add pop-up
-    const addFirstName = $('#addAdminFirstNameInput').val();
-    const addLastName = $('#addAdminLastNameInput').val();
-    const addEmail = $('#addAdminEmailInput').val();
-    const addPassword = $('#addAdminPasswordInput').val();
-    const addAdminType = $('#addAdminTypeInput').val();
-    console.log(addFirstName + addLastName+ addEmail);
-    // declares a variable endpoint
-    let endpoint;
-    // Check if the admin extracted is a super admin or a normal admin
-    // Change the endpoint and add the admins into different admin type table
-    if (addAdminType === "Super Admin") {
-      // Endpoint to add regular admin into superadmin table
-      endpoint = `Superadmin`;
-    } else {
-      // Endpoint to add superadmin into admin table
-      endpoint = `Admin`;
-    }
-    //store all extracted info into requestBody
-    const requestBody = {
-      LastName: addLastName,
-      FirstName: addFirstName,
-      AdminPwd: addPassword,
-      AdminEmail: addEmail,
-      AdminType: addAdminType,
-    }
-    // Converts requestBody into a String
-    const reqtsBody = JSON.stringify(requestBody);
-     console.log(reqtsBody);
-    // call the method to post data
-    $.ajax({
-      url: `${backEndUrl}/add${endpoint}`,
-      type: 'POST',
-      data: reqtsBody,
-      contentType: "application/json; charset=utf-8",
-      dataType: 'json',
-      success: function (data, textStatus, xhr) {
-        //set and call confirmation message
-        msg = "Successfully added!"
-        $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-        const post = data;
-        // Refresh the admin table
-        loadAllAdmins()
-      },
-      error: function (xhr, textStatus, errorThrown) {
-        //set and call error message
-        var errMsg = ""
-        if (xhr.status == 500) {
-          console.log("error")
-          errMsg = "Server Issues"
-        }
-        else if (xhr.status == 400) {
-          errMsg = " Input not accepted"
-        }
-        else if (xhr.status == 406) {
-          errMsg = " Input not accepted"
-        }
-        else {
-          errMsg = "There is some other issues here"
-        }
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+// add new admin
+function addAdmin() {
+  // extract values for add pop-up
+  const addFirstName = $('#addAdminFirstNameInput').val();
+  const addLastName = $('#addAdminLastNameInput').val();
+  const addEmail = $('#addAdminEmailInput').val();
+  const addPassword = $('#addAdminPasswordInput').val();
+  const addAdminType = $('#addAdminTypeInput').val();
+  console.log(addFirstName + addLastName + addEmail);
+  // declares a variable endpoint
+  let endpoint;
+  // Check if the admin extracted is a super admin or a normal admin
+  // Change the endpoint and add the admins into different admin type table
+  if (addAdminType === 'Super Admin') {
+    // Endpoint to add regular admin into superadmin table
+    endpoint = 'Superadmin';
+  } else {
+    // Endpoint to add superadmin into admin table
+    endpoint = 'Admin';
+  }
+  // store all extracted info into requestBody
+  const requestBody = {
+    LastName: addLastName,
+    FirstName: addFirstName,
+    AdminPwd: addPassword,
+    AdminEmail: addEmail,
+    AdminType: addAdminType,
+  };
+  // Converts requestBody into a String
+  const reqtsBody = JSON.stringify(requestBody);
+  console.log(reqtsBody);
+  // call the method to post data
+  $.ajax({
+    url: `${backEndUrl}/add${endpoint}`,
+    type: 'POST',
+    data: reqtsBody,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
+      // set and call confirmation message
+      msg = 'Successfully added!';
+      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+      // Refresh the admin table
+      loadAllAdmins();
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else if (xhr.status === 400) {
+        errMsg = ' Input not accepted';
+      } else if (xhr.status === 406) {
+        errMsg = ' Input not accepted';
+      } else {
+        errMsg = 'There is some other issues here';
       }
-    });
-
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+    },
+  });
 }
 
 // Load datas when page refresh or loads for the first time
 $(document).ready(() => {
   // LoadAllAdmins() called when page is loaded or refreshed
   loadAllAdmins();
-  
+
   // Add Admin button
   $('#addAdminBtn').click(() => {
     // addAdmin()function called upon click event
-    addAdmin()
+    addAdmin();
   });
 
   // Update Admin Type button

@@ -1,16 +1,13 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-var */
-/* eslint-disable max-len */
 /* eslint-disable linebreak-style */
 /* eslint-disable func-names */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 
-//const frontEndUrl = 'http://localhost:3001';
-//const backEndUrl = 'http://localhost:5000';
-const frontEndUrl = 'https://moc-fa.herokuapp.com';
-const backEndUrl = 'https://moc-ba.herokuapp.com';
+// const frontEndUrl = 'http://localhost:3001';
+const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
+// const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 let userSearchChar = [];
 const userSearch = document.getElementById('searchEmployee');
@@ -48,7 +45,6 @@ function pageBtnCreate(totalNumberOfPages) {
 }
 
 function loadAllEmployees() {
-
   $.ajax({
     url: `${backEndUrl}/employee`,
     type: 'GET',
@@ -159,6 +155,9 @@ function loadAnEmployee(id) {
     },
 
     error(xhr, textStatus, errorThrown) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
       console.log('Error in Operation');
 
       // if (xhr.status == 201) {
@@ -172,6 +171,7 @@ function loadAnEmployee(id) {
 function updateEmployee() {
   const id = $('#editEmployeeID').val();
   // get value of the image uploaded from input file
+  // eslint-disable-next-line camelcase
   const image_edit = document.getElementById('image_edit');
   // get value of the employee name from employee name field
   const employeeName = $('#editEmployeeName').val();
@@ -179,7 +179,8 @@ function updateEmployee() {
   const employeeDes = $('#editEmployeeDes').val();
   // get value from skill set field
   const skillSet = $('#editEmployeeSkills').val();
-  // create a variable called webFormData and call the FormData instance all field value to be added will be appended to webFormData
+  // create a variable called webFormData and call the FormData
+  // instance all field value to be added will be appended to webFormData
   const webFormData = new FormData();
   // webFormData.append method to append employeeName to the key of employeeName
   webFormData.append('employeeName', employeeName);
@@ -188,6 +189,7 @@ function updateEmployee() {
   // webFormData.append method to append skillSet to the key of skillSet
   webFormData.append('skillSet', skillSet);
   // webFormData.append method to append image.files[0] to the key of image
+  // eslint-disable-next-line camelcase
   webFormData.append('image_edit', image_edit.files[0]);
   // ajax fuction to connect to the backend
   $.ajax({
@@ -207,19 +209,20 @@ function updateEmployee() {
     enctype: 'multipart/form-data',
     // success method
     success(data, textStatus, xhr) {
-      const post = data;
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
       // set value to empty after getting value
       $('#editEmployeeName').val('');
       $('#editEmployeeDes').val('');
       $('#editEmployeeSkills').val('');
       document.getElementById('image_edit').value = '';
 
-
       // succcess message return
-      if (xhr.status == 201) {
+      if (xhr.status === 201) {
         msg = 'Successfully added!';
-        $('#employeeListing').html("");
-        loadEmployeeByLimit(1)
+        $('#employeeListing').html('');
+        loadEmployeeByLimit(1);
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
@@ -232,9 +235,9 @@ function updateEmployee() {
       console.log(xhr.responseText);
       console.log(xhr.status);
       // error message return
-      if (xhr.status == 500) {
+      if (xhr.status === 500) {
+        let errMsg = '';
         errMsg = 'Server Error';
-        var errMsg = '';
         $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
       }
     },
@@ -250,30 +253,29 @@ function deleteEmployee(id) {
     contentType: 'application/json; charset=utf-8',
     // if data inserted
     success(data, textStatus, xhr) {
-      $('#employeeListing').html("");
-      loadEmployeeByLimit(1)
+      $('#employeeListing').html('');
+      loadEmployeeByLimit(1);
       // if id in the params not valid show error
       if (xhr.status === 404) {
         // set and call error message
         // eslint-disable-next-line no-use-before-define
         errMsg = 'Not valid id';
         // eslint-disable-next-line vars-on-top
-        var errMsg = '';
+        let errMsg = '';
         $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
         $('#employeeListing').html('');
         loadEmployeeByLimit(1);
-      }
+      } else if (xhr.status === 200) {
       // if the params id is valid and
-      else if (xhr.status === 200) {
         // set and call confirmation message
         msg = 'Successfully deleted!';
-
-
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
-
     error(xhr, textStatus, errorThrown) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
@@ -286,8 +288,8 @@ function deleteEmployee(id) {
     },
 
   });
-
 }
+
 function levenshtein(a, b) {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
@@ -324,6 +326,7 @@ function levenshtein(a, b) {
 
   return matrix[b.length][a.length];
 }
+
 userSearch.addEventListener('keyup', (e) => {
   let RowInfo = {};
   const similarResults = [];
@@ -352,12 +355,12 @@ userSearch.addEventListener('keyup', (e) => {
 
       // compile the data that the card needs for its creation
       RowInfo = {
-        "EmployeeID": employee.EmployeeID,
-        "EmployeeName": employee.EmployeeName,
-        "EmployeeDes": employee.EmployeeDes,
-        "EmployeeImg": employee.EmployeeImgUrl,
-        "Skillsets": employee.Skillsets,
-      }
+        EmployeeID: employee.EmployeeID,
+        EmployeeName: employee.EmployeeName,
+        EmployeeDes: employee.EmployeeDes,
+        EmployeeImg: employee.EmployeeImgUrl,
+        Skillsets: employee.Skillsets,
+      };
 
       const newCard = createRow(RowInfo);
       $('#employeeListing').append(newCard);
@@ -370,12 +373,12 @@ userSearch.addEventListener('keyup', (e) => {
 
       // compile the data that the card needs for its creation
       RowInfo = {
-        "EmployeeID": employee.EmployeeID,
-        "EmployeeName": employee.EmployeeName,
-        "EmployeeDes": employee.EmployeeDes,
-        "EmployeeImg": employee.EmployeeImgUrl,
-        "Skillsets": employee.Skillsets,
-      }
+        EmployeeID: employee.EmployeeID,
+        EmployeeName: employee.EmployeeName,
+        EmployeeDes: employee.EmployeeDes,
+        EmployeeImg: employee.EmployeeImgUrl,
+        Skillsets: employee.Skillsets,
+      };
 
       if (distance <= 4) {
         similarResults.push(RowInfo);
@@ -389,6 +392,7 @@ userSearch.addEventListener('keyup', (e) => {
     $('#similarSearch').html(`<p><b>${searchString}</b> not found, do you mean...</p><br>`);
   }
 });
+
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   console.log('--------Query Params----------');
@@ -410,6 +414,7 @@ $(document).ready(() => {
 });
 
 // function to add Employee
+// eslint-disable-next-line no-unused-vars
 function addEmployee() {
   // get value of the image uploaded from input file
   const image = document.getElementById('image');
@@ -419,7 +424,8 @@ function addEmployee() {
   const employeeDes = $('#addEmployeeDes').val();
   // get value from skill set field
   const skillSet = $('#addEmployeeSkills').val();
-  // create a variable called webFormData and call the FormData instance all field value to be added will be appended to webFormData
+  // create a variable called webFormData and call the FormData
+  // instance all field value to be added will be appended to webFormData
   const webFormData = new FormData();
   // webFormData.append method to append employeeName to the key of employeeName
   webFormData.append('employeeName', employeeName);
@@ -447,16 +453,18 @@ function addEmployee() {
     enctype: 'multipart/form-data',
     // success method
     success(data, textStatus, xhr) {
-      const post = data;
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
       // set value to empty after getting value
       $('#addEmployeeName').val('');
       $('#addEmployeeDes').val('');
       $('#addEmployeeSkills').val('');
       document.getElementById('image').value = '';
       // succcess message return
-      if (xhr.status == 201) {
-        $('#employeeListing').html("");
-        loadEmployeeByLimit(1)
+      if (xhr.status === 201) {
+        $('#employeeListing').html('');
+        loadEmployeeByLimit(1);
         msg = 'Successfully added!';
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
@@ -470,9 +478,9 @@ function addEmployee() {
       console.log(xhr.responseText);
       console.log(xhr.status);
       // error message return
-      if (xhr.status == 500) {
+      if (xhr.status === 500) {
+        let errMsg = '';
         errMsg = 'Server Error';
-        var errMsg = '';
         $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
       }
     },
@@ -481,34 +489,34 @@ function addEmployee() {
 
 function readURL(input) {
   if (input.files && input.files[0]) {
-    var reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onload = function (e) {
-      //$('#blah').attr('src', e.target.result);
-      document.getElementById('ppPreview').style.backgroundImage = "url( " + e.target.result + ")";
-    }
+      // $('#blah').attr('src', e.target.result);
+      document.getElementById('ppPreview').style.backgroundImage = `url( ${e.target.result})`;
+    };
 
     reader.readAsDataURL(input.files[0]);
   }
 }
 
-$("#image").change(function () {
+$('#image').change(function () {
   readURL(this);
 });
 
 function readNewURL(input) {
   if (input.files && input.files[0]) {
-    var reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onload = function (e) {
-      //$('#blah').attr('src', e.target.result);
-      document.getElementById('NewProfilePreview').style.backgroundImage = "url( " + e.target.result + ")";
-    }
+      // $('#blah').attr('src', e.target.result);
+      document.getElementById('NewProfilePreview').style.backgroundImage = `url( ${e.target.result})`;
+    };
 
     reader.readAsDataURL(input.files[0]);
   }
 }
 
-$("#image_edit").change(function () {
+$('#image_edit').change(function () {
   readNewURL(this);
 });

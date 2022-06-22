@@ -1,12 +1,14 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
+/* eslint-disable no-nested-ternary */
 
 // const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
+// const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 function createRow(cardInfo) {
   console.log(cardInfo);
@@ -99,7 +101,7 @@ function loadAllBookingByLimit(pageNumber) {
           const booking = data[i];
 
           let date = booking.ScheduleDate;
-          date = date.replace("T16:00:00.000Z", "");
+          date = date.replace('T16:00:00.000Z', '');
           // compile the data that the card needs for its creation
           const bookingstbl = {
             bookingID: booking.BookingID,
@@ -140,63 +142,64 @@ function loadAllBookingByLimit(pageNumber) {
   });
 }
 
-
+// eslint-disable-next-line no-unused-vars
 function loadAllBookingToBECancelledByLimit(pageNumber) {
   // call the web service endpoint
-    $.ajax({
-      url: `${backEndUrl}/bookingCancel/${pageNumber}`,
-      type: 'GET',
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      success(data) {
-        if (data != null) {
-          console.log('-------response data------');
-          console.log(data);
-          console.log(`LENGTH OF DATA:${data.length}`);
-          $('#bookingTableBody').html('');
-          for (let i = 0; i < data.length; i++) {
-            const booking = data[i];
-            // compile the data that the card needs for its creation
-            const bookingstbl = {
-              bookingID: booking.BookingID,
-              FirstName: booking.FirstName,
-              LastName: booking.LastName,
-              Package: booking.PackageName,
-              ClassName: booking.ClassName,
-              StartDate: booking.StartDate,
-              TimeOfService: booking.TimeOfService,
-              NoOfRooms: booking.NoOfRooms,
-              NoOfBathrooms: booking.NoOfBathrooms,
-              RateName: booking.Rate,
-              EstimatePricing: booking.EstimatedPricing,
-              Address: booking.Address,
-              Employee: booking.EmployeeName,
-              Status: booking.Status,
-            };
-            console.log('---------Card INfo data pack------------');
-            console.log(bookingstbl);
-  
-            const newRow = createRow(bookingstbl);
-            $('#bookingTableBody').append(newRow);
-          }
+  $.ajax({
+    url: `${backEndUrl}/bookingCancel/${pageNumber}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      if (data != null) {
+        console.log('-------response data------');
+        console.log(data);
+        console.log(`LENGTH OF DATA:${data.length}`);
+        $('#bookingTableBody').html('');
+        for (let i = 0; i < data.length; i++) {
+          const booking = data[i];
+          // compile the data that the card needs for its creation
+          const bookingstbl = {
+            bookingID: booking.BookingID,
+            FirstName: booking.FirstName,
+            LastName: booking.LastName,
+            Package: booking.PackageName,
+            ClassName: booking.ClassName,
+            StartDate: booking.StartDate,
+            TimeOfService: booking.TimeOfService,
+            NoOfRooms: booking.NoOfRooms,
+            NoOfBathrooms: booking.NoOfBathrooms,
+            RateName: booking.Rate,
+            EstimatePricing: booking.EstimatedPricing,
+            Address: booking.Address,
+            Employee: booking.EmployeeName,
+            Status: booking.Status,
+          };
+          console.log('---------Card INfo data pack------------');
+          console.log(bookingstbl);
+
+          const newRow = createRow(bookingstbl);
+          $('#bookingTableBody').append(newRow);
         }
-        loadAllBooking();
-      },
-  
-      error(xhr, textStatus, errorThrown) {
-        console.log('Error in Operation');
-        console.log('-----------------------');
-        console.log(xhr);
-        console.log(textStatus);
-        console.log(errorThrown);
-  
-        console.log(xhr.status);
-        console.log(xhr.responseText);
-      },
-    });
-  }
-  
+      }
+      loadAllBooking();
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log('-----------------------');
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+    },
+  });
+}
+
 // load gets a booking
+// eslint-disable-next-line no-unused-vars
 function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
@@ -251,7 +254,7 @@ $('#addNewBooking').click(() => {
     dataType: 'json',
     success(data) {
       if (data != null) {
-        loadAllBookingByLimit(1)
+        loadAllBookingByLimit(1);
         console.log('Added');
       } else {
         console.log('Error');
@@ -300,7 +303,7 @@ $('#updateBookingDate').click(() => {
           theme: 'sunset',
           text: 'added successfully',
         }).show();
-        loadAllBookingByLimit(1)
+        loadAllBookingByLimit(1);
       } else {
         console.log('Error');
       }

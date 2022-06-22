@@ -1,11 +1,10 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
-
-const frontEndUrl = 'http://localhost:3001';
+/* eslint-disable no-nested-ternary */
+// const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
@@ -101,7 +100,7 @@ function loadAllBookingByLimit(pageNumber) {
           const booking = data[i];
 
           let date = booking.ScheduleDate;
-          date = date.replace('T16:00:00.000Z', "");
+          date = date.replace('T16:00:00.000Z', '');
           // compile the data that the card needs for its creation
           const bookingstbl = {
             bookingID: booking.BookingID,
@@ -142,7 +141,7 @@ function loadAllBookingByLimit(pageNumber) {
   });
 }
 
-
+// eslint-disable-next-line no-unused-vars
 function loadAllBookingToBECancelledByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
@@ -199,6 +198,7 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
 }
 
 // load gets a booking
+// eslint-disable-next-line no-unused-vars
 function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
@@ -234,52 +234,43 @@ function loadABooking(bookingID) {
   });
 }
 
-//addClassOfService to add new class of service
+// addClassOfService to add new class of service
+// eslint-disable-next-line no-unused-vars
 function addMonthlyBooking() {
-
   $.ajax({
-      url: `${backEndUrl}/autoBooking`,
-      type: 'POST',
-      contentType: "application/json; charset=utf-8",
-      dataType: 'json',
-      success: function (data, textStatus, xhr) {
-          const post = data;
+    url: `${backEndUrl}/autoBooking`,
+    type: 'POST',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
 
-
-          $(bookingTableBody).html("")  
-          loadAllBookingByLimit(1);     
-         
-       
-      },
-      error: function (xhr, textStatus, errorThrown) {
-          //set and call error message
-          var errMsg = ""
-          if (xhr.status == 500) {
-              console.log("error")
-              errMsg = "Server Issues"
-          }
-          else if (xhr.status == 400) {
-              errMsg = " Input not accepted"
-          }
-          else if (xhr.status == 406) {
-              errMsg = " Input not accepted"
-          }
-          else {
-              errMsg = "There is some other issues here"
-          }
-          $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
-          $('#classServiceTableBody').html('')
-          loadAllClassOfServices()
+      $(bookingTableBody).html('');
+      loadAllBookingByLimit(1);
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else if (xhr.status === 400) {
+        errMsg = ' Input not accepted';
+      } else if (xhr.status === 406) {
+        errMsg = ' Input not accepted';
+      } else {
+        errMsg = 'There is some other issues here';
       }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+      $('#classServiceTableBody').html('');
+      loadAllClassOfServices();
+    },
   });
-
-
-
-
 }
-
-
-
 
 // add new booking
 $('#addNewBooking').click(() => {
@@ -295,7 +286,7 @@ $('#addNewBooking').click(() => {
     const info = {
       bookingID: id,
       bookingDate: date,
-      AdminId: Employeeid
+      AdminId: Employeeid,
     };
     $.ajax({
       url: `${backEndUrl}/booking`,
@@ -332,7 +323,7 @@ $('#addNewBooking').click(() => {
     const info = {
       bookingID: id,
       bookingDate: date,
-      Admin: SuperAdminID
+      Admin: SuperAdminID,
     };
     $.ajax({
       url: `${backEndUrl}/booking`,

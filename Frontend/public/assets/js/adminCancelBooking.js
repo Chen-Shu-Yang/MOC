@@ -1,14 +1,13 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-nested-ternary */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
+/* eslint-disable no-nested-ternary */
 
-//const frontEndUrl = 'http://localhost:3001';
-//const backEndUrl = 'http://localhost:5000';
-const frontEndUrl = 'https://moc-fa.herokuapp.com';
+// const frontEndUrl = 'http://localhost:3001';
+// const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
 const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 function createRow(cardInfo) {
@@ -124,6 +123,7 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function cancelBooking(id) {
   console.log(`Booking id to cancel ${id}`);
   // ajax method to call the method
@@ -133,18 +133,22 @@ function cancelBooking(id) {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
       // set and call confirmation message
-     $('#bookingCancelTableBody').html("");
-      loadAllBookingToBeCancelledByLimit(1)
+      $('#bookingCancelTableBody').html('');
+      loadAllBookingToBeCancelledByLimit(1);
       msg = 'Successfully updated!';
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      
-      
+
       // refresh
       // $('#classServiceTableBody').html('')
       // loadAllClassOfServices()
     },
     error(xhr, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {

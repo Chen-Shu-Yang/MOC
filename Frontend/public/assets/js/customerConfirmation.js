@@ -4,7 +4,8 @@
 
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
-
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
+// const backEndUrl = 'https://moc-ba.herokuapp.com';
 const CustomerID = localStorage.getItem('customerID');
 // const token = localStorage.getItem('token');
 
@@ -109,7 +110,7 @@ function customerAutobooking() {
     data: reqBody,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data, textStatus, xhr) {
+    success(data) {
       // If successful remove localstorage items
       localStorage.removeItem('servicePref');
       localStorage.removeItem('address');
@@ -123,6 +124,7 @@ function customerAutobooking() {
       localStorage.removeItem('serviceTime');
       localStorage.removeItem('addInfo');
       localStorage.removeItem('totalCost');
+      console.log(data);
       // Brings customer to the possible list of helpers
       window.location.replace(`${frontEndUrl}/customer/helpers`);
     },

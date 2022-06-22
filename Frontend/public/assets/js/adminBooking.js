@@ -1,13 +1,13 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 
-//const frontEndUrl = 'http://localhost:3001';
-//const backEndUrl = 'http://localhost:5000';
-const frontEndUrl = 'https://moc-fa.herokuapp.com';
+/* eslint-disable no-nested-ternary */
+// const frontEndUrl = 'http://localhost:3001';
+// const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
 const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 function createRow(cardInfo) {
@@ -101,7 +101,7 @@ function loadAllBookingByLimit(pageNumber) {
           const booking = data[i];
 
           let date = booking.ScheduleDate;
-          date = date.replace("T16:00:00.000Z", "");
+          date = date.replace('T16:00:00.000Z', '');
           // compile the data that the card needs for its creation
           const bookingstbl = {
             bookingID: booking.BookingID,
@@ -142,7 +142,7 @@ function loadAllBookingByLimit(pageNumber) {
   });
 }
 
-
+// eslint-disable-next-line no-unused-vars
 function loadAllBookingToBECancelledByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
@@ -199,6 +199,7 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
 }
 
 // load gets a booking
+// eslint-disable-next-line no-unused-vars
 function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
@@ -247,7 +248,7 @@ $('#addNewBooking').click(() => {
     const info = {
       bookingID: id,
       bookingDate: date,
-      AdminId: Employeeid
+      AdminId: Employeeid,
     };
     $.ajax({
       url: `${backEndUrl}/booking`,
@@ -284,7 +285,7 @@ $('#addNewBooking').click(() => {
     const info = {
       bookingID: id,
       bookingDate: date,
-      Admin: SuperAdminID
+      Admin: SuperAdminID,
     };
     $.ajax({
       url: `${backEndUrl}/booking`,

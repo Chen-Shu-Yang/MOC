@@ -3,11 +3,10 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 
-//const frontEndUrl = 'http://localhost:3001';
-//const backEndUrl = 'http://localhost:5000';
-const frontEndUrl = 'https://moc-fa.herokuapp.com';
+// const frontEndUrl = 'http://localhost:3001';
+// const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
 const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 function createRow(cardInfo) {
@@ -92,6 +91,9 @@ function loadACustomer(id) {
     },
 
     error(xhr, textStatus, errorThrown) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
       console.log('Error in Operation');
 
       // if (xhr.status == 201) {
@@ -123,6 +125,7 @@ function updateCustomer() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
+      console.log(data);
       console.log('Update Successful');
       $('#customer-list').html('');
       loadAllCustomers();
@@ -157,9 +160,8 @@ function deleteCustomer(id) {
         // set and call error message
         // eslint-disable-next-line no-use-before-define
         errMsg = 'Not valid id';
-      }
+      } else if (xhr.status === 200) {
       // if the params id is valid and
-      else if (xhr.status === 200) {
         // set and call confirmation message
         msg = 'Successfully deleted!';
 
@@ -168,6 +170,8 @@ function deleteCustomer(id) {
     },
 
     error(xhr, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {

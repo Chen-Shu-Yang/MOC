@@ -246,6 +246,55 @@ const Customer = {
       return callback(null, result); // if
     });
   },
+
+  updateBookingStatus(id, callback) {
+    // sql query statement
+    const sql = `
+            UPDATE 
+            heroku_6b49aedb7855c0b.booking
+         SET
+           Status='Cancelled'
+        where
+            BookingID=?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
+  getABookingById(id, callback) {
+    // sql query statement
+    const sql = ` Select b.BookingID,b.Status,b.ScheduleDate ,b.ContractId,c.TimeOfService 
+    from heroku_6b49aedb7855c0b.booking b
+    inner join heroku_6b49aedb7855c0b.contract c 
+    on b.ContractId=c.ContractID where b.BookingID=?;`;
+
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      // any results?
+      if (result.length === 0) {
+        // no results - callback with no err & results
+        console.log('this is null');
+        return callback(null, null);
+      }
+
+      return callback(null, result);
+    });
+  },
+
 };
 
 //= ======================================================

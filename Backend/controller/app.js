@@ -2038,6 +2038,88 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
     }
   });
 });
+// cancel booking for customer
+app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const bookingId = req.params.id;
+
+  // cancel booking function that update the status of booking
+  // eslint-disable-next-line no-shadow
+  function cancelBooking(bookingId) {
+    Customer.updateBookingStatus(bookingId, (err, result) => {
+      // if there is no errorsend the following as result
+      if (!err) {
+        res.status(202).send(result);
+      } else {
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  }
+
+  // get currentDate
+  const currentDate = new Date();
+  // ger currentTime
+  // eslint-disable-next-line no-unused-vars
+  const currentTime = moment().format('HH:MM:SS');
+  // initialising variables for bookingDate
+  let bookingDate;
+  // initialising variables for bookingTime
+  // eslint-disable-next-line no-unused-vars
+  let bookingTime;
+  // initialising variables for diffInDates
+  let diffInDates;
+  // initialising variables for diffInHours
+  let diffInHours;
+  // initialising variables for diffInTime
+  // eslint-disable-next-line no-unused-vars
+  let diffInTime;
+  // initialising variables for statusOfAppointment
+  let statusOfAppointment;
+
+  // get a cusotmer by id
+  Customer.getABookingById(bookingId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      // get bookingDate from the result
+      bookingDate = result[0].ScheduleDate;
+      // get bookingTIme from the result
+      bookingTime = result[0].TimeOfService;
+      // get statusOfAppointment from the result
+      statusOfAppointment = result[0].Status;
+      // calculating diffInDates
+      diffInDates = moment(bookingDate).diff(moment(currentDate), 'days');
+      // calculating diffInHours
+      diffInHours = moment(bookingDate).diff(moment(currentDate), 'hours');
+
+      // check if status of appointment is cancelled and send result as already cancelled
+      if (statusOfAppointment === 'Cancelled') {
+        console.log('Already cancelled');
+        res.status(200).send('Already cancelled');
+      } else if (diffInDates === 0) {
+        // check if diffInDates equals to 0
+        // check if diffInHours equals to 0 and send result Cannot cancel as appointment is today
+        if (diffInHours === 0) {
+          console.log('Cannot cancel as appointment is today');
+          res.status(200).send('Cannot cancel as appointment is today');
+        } else {
+          // else send result Cannot cancel as appointment is tmr
+          console.log('Cannot cancel as appointment is tmr');
+          res.status(200).send('Cannot cancel as appointment is tmr');
+        }
+      } else if (diffInDates < 0) {
+        // check if diffInDates less than 0 and send result Cannot cancel as appointment is finished
+        console.log('Cannot cancel as appointment is finished');
+        res.status(200).send('Cannot cancel as appointment is finished');
+      } else {
+        // else call the cancelBooking() function with it's id
+        console.log('Cancel');
+        cancelBooking(bookingId);
+      }
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
 
 // ====================== Super Admin Section ======================
 // get all admin

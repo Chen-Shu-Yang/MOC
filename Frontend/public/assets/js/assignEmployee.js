@@ -1,17 +1,18 @@
-/* eslint-disable no-else-return */
-/* eslint-disable no-nested-ternary */
 /* eslint-disable linebreak-style */
 /* eslint-disable func-names */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
+/* eslint-disable no-else-return */
+/* eslint-disable no-nested-ternary */
 
-//const frontEndUrl = 'http://localhost:3001';
-//const backEndUrl = 'http://localhost:5000';
-const frontEndUrl = 'https://moc-fa.herokuapp.com';
-const backEndUrl = 'https://moc-ba.herokuapp.com';
+// const frontEndUrl = 'http://localhost:3001';
+const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
+// const backEndUrl = 'https://moc-ba.herokuapp.com';
 
-function selectEmployee (employee) {
+// eslint-disable-next-line no-unused-vars
+function selectEmployee(employee) {
   document.getElementById('assign').value = employee;
 }
 function createRow(cardInfo) {
@@ -149,7 +150,9 @@ function loadBookingDetails(bookingid) {
 
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
-
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
       // if (xhr.status == 201) {
       //     errMsg = "The id doesn't exist "
       // }
@@ -157,6 +160,7 @@ function loadBookingDetails(bookingid) {
     },
   });
 }
+// eslint-disable-next-line no-unused-vars
 function assignBookingSchedule() {
   // data extraction
   const queryParams = new URLSearchParams(window.location.search);
@@ -173,11 +177,13 @@ function assignBookingSchedule() {
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data,xhr) {
+    // eslint-disable-next-line no-shadow
+    success(data, xhr) {
       if (xhr.status === 200) {
         console.log('Update Successful');
         msg = 'Successfully updated!';
         $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+        console.log(data);
       }
     },
     error(xhr, textStatus, errorThrown) {
