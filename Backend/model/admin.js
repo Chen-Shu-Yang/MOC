@@ -921,25 +921,6 @@ const Admin = {
   //= ======================================================
   //              Features / adminDashboard
   //= ======================================================
-  // get number of booking made by therir month
-  getBookingByMonth(callback) {
-    // sql query statement to get number of booking made by therir month
-    const sql = `select month(ScheduleDate) as month, count(ScheduleDate) as numberOfBooking
-    from heroku_6b49aedb7855c0b.booking 
-    WHERE     year(ScheduleDate) = year(curdate())
-    group by month(ScheduleDate);
-    `;
-    // pool query
-    pool.query(sql, (err, result) => {
-      // error
-      if (err) {
-        console.log(err);
-        return callback(err);
-      }
-      // result accurate
-      return callback(null, result);
-    });
-  },
 
   getAdminById(cID, callback) {
     // sql query statement
@@ -1040,27 +1021,50 @@ const Admin = {
       return callback(null, result);
     });
   },
-  getRevenueOfTheMonth(callback) {
-    // sql query statement to get revenue
-    const sql = `
-    select c.ContractID ,(c.EstimatedPricing * count(b.BookingID))
-    as Revenue,count(b.BookingID) from heroku_6b49aedb7855c0b.contract 
-    as c
-     join heroku_6b49aedb7855c0b.booking as b
-    on  c.ContractID=b.ContractId
-    where month(b.ScheduleDate) = month(CURRENT_DATE()) 
-    group by c.ContractID`;
+  // get number of booking made by therir month
+  getBookingByMonth(callback) {
+  // sql query statement to get number of booking made by therir month
+    const sql = ` select month(ScheduleDate) as month, count(ScheduleDate) as numberOfBooking, Status 
+  from heroku_6b49aedb7855c0b.booking 
+  WHERE     year(ScheduleDate) = year(curdate())  and Status='Completed'
+  group by month(ScheduleDate);
+  `;
     // pool query
     pool.query(sql, (err, result) => {
-      // error
+    // error
       if (err) {
         console.log(err);
         return callback(err);
       }
       // result accurate
-      return callback(null, result);
+
+      return callback(null, result); // if
     });
   },
+  getRevenueOfTheMonth(callback) {
+  // sql query statement to get revenue
+    const sql = `
+  select c.ContractID ,(c.EstimatedPricing * count(b.BookingID))
+  as Revenue,count(b.BookingID) from heroku_6b49aedb7855c0b.contract 
+  as c
+   join heroku_6b49aedb7855c0b.booking as b
+  on  c.ContractID=b.ContractId
+  where (month(b.ScheduleDate) = month(CURRENT_DATE()) and year(b.ScheduleDate)=year(current_date())) and b.Status='Completed'
+  group by c.ContractID
+  `;
+    // pool query
+    pool.query(sql, (err, result) => {
+    // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
 };
 
 //= ======================================================
