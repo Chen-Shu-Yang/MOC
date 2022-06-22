@@ -108,6 +108,7 @@
 
                         <div class="col-md-6">
                             <h5>Rooms:</h5>
+<!-- code added start -->
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default btn-numberRR" disabled="disabled" data-type="minus" data-field="quant[1]" onclick="decrementR()">
@@ -121,12 +122,18 @@
                                     </button>
                                 </span>
                             </div>
+                            <!-- code added end -->
+
+
                             <!-- <button onclick="incrementR()">+</button>
                             <input id=rooms type=number min=1 max=10  onchange="updatedRooms()" readonly>
                             <button  onclick="decrementR()" >-</button> -->
                         </div>
+                       
                         <div class="col-md-6">
                             <h5>Bathrooms: </h5>
+                            
+                            <!-- code added start -->
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default btn-numberBR" disabled="disabled" data-type="minus" data-field="quant[1]"  onclick="decrementBR()">
@@ -140,6 +147,8 @@
                                     </button>
                                 </span>
                             </div>
+                              <!-- code added end -->
+
                             <!-- <button onclick="incrementBR()">+</button>
                             <input id=bathRooms type=number min=1 max=10 onchange="updatedBathrooms()" readonly>
                             <button  onclick="decrementBR()">-</button> -->
@@ -264,15 +273,12 @@ height:1px;">
 <div class="row">
     <div class="col-md-6">
         <h5>Estimated Total: $</h5>
-    
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <p id="estAmount"></p>
-       
     </div>
 </div>
 
-<!-- <p id=""><b>Estimated Total:</b> &#36; <div style="text-align: center;"id="estAmount"></div></p> -->
                     </div>
                 </div>
 

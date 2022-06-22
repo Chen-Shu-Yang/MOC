@@ -384,6 +384,7 @@ function updatedTime() {
 }
 
 $(document).ready(() => {
+  // code added start---------------------------------------------
   $('.btn-numberRR').click(function (e) {
     e.preventDefault();
 
@@ -518,6 +519,7 @@ $(document).ready(() => {
       e.preventDefault();
     }
   });
+  // code added end ---------------------------------------------
   loadUserDetails();
   populateClass();
   populatePackage();
