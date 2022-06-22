@@ -98,7 +98,8 @@ const Customer = {
     left join heroku_6b49aedb7855c0b.employee as e on b.Employee = e.EmployeeID
     join heroku_6b49aedb7855c0b.class as cl on c.Class = cl.ClassID
     join heroku_6b49aedb7855c0b.package as p on c.Package = p.PackageID
-    where cu.CustomerID = ?;`;
+    where cu.CustomerID = ?
+    order by ScheduleDate desc;`;
 
     const values = [id];
     // pool query
