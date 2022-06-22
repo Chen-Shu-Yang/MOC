@@ -2429,5 +2429,57 @@ app.post('/superadmin', printDebugInfo, (req, res) => {
     }
   });
 });
+
+// add an admin
+app.post('/addAdmin', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { FirstName } = req.body;
+  const { LastName } = req.body;
+  const { AdminPwd } = req.body;
+  const { AdminEmail } = req.body;
+  const { AdminType } = req.body;
+
+  // calling addAdmin method from SuperAdmin model
+  SuperAdmin.addAdmin(FirstName, LastName, AdminPwd, AdminEmail, AdminType, (err, result) => {
+    if (!err) {
+      res.status(201).send(result);
+    }
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Unsuitable value');
+    }
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Empty value not allowed');
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+// add a super admin
+app.post('/addSuperadmin', printDebugInfo, (req, res) => {
+  // extract all details needed
+  const { FirstName } = req.body;
+  const { LastName } = req.body;
+  const { AdminPwd } = req.body;
+  const { AdminEmail } = req.body;
+  const { AdminType } = req.body;
+
+  // calling addSuperAdmin method from SuperAdmin model
+  SuperAdmin.addSuperAdmin(FirstName, LastName, AdminPwd, AdminEmail, AdminType, (err, result) => {
+    if (!err) {
+      res.status(201).send(result);
+    }
+    else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(406).send('Unsuitable value');
+    }
+    else if (err.code === 'ER_BAD_NULL_ERROR') {
+      res.status(400).send('Empty value not allowed');
+    }
+    else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
 // module exports
 module.exports = app;
