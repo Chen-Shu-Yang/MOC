@@ -402,7 +402,7 @@ $(document).ready(() => {
         }
       } else if (type === 'plus') {
         if (currentVal < input.attr('max')) {
-          input.val(currentVal + 1).change();  
+          input.val(currentVal + 1).change();
         }
         if (parseInt(input.val(), 10) === input.attr('max')) {
           $(this).attr('disabled', true);
@@ -469,7 +469,7 @@ $(document).ready(() => {
         }
       } else if (type === 'plus') {
         if (currentVal < input.attr('max')) {
-          input.val(currentVal + 1).change();  
+          input.val(currentVal + 1).change();
         }
         if (parseInt(input.val(), 10) === input.attr('max')) {
           $(this).attr('disabled', true);
