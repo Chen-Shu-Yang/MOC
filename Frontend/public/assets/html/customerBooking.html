@@ -108,15 +108,41 @@
 
                         <div class="col-md-6">
                             <h5>Rooms:</h5>
-                            <button onclick="incrementR()">+</button>
-                            <input id=rooms type=number min=1 max=10 onchange="updatedRooms()" readonly>
-                            <button onclick="decrementR()">-</button>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-numberRR" disabled="disabled" data-type="minus" data-field="quant[1]" onclick="decrementR()">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="quant[1]" class="form-control input-numberRR" value="1" min="1" max="10" onchange="updatedRooms()">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-numberRR" data-type="plus" data-field="quant[1]" onclick="incrementR()">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </span>
+                            </div>
+                            <!-- <button onclick="incrementR()">+</button>
+                            <input id=rooms type=number min=1 max=10  onchange="updatedRooms()" readonly>
+                            <button  onclick="decrementR()" >-</button> -->
                         </div>
                         <div class="col-md-6">
                             <h5>Bathrooms: </h5>
-                            <button onclick="incrementBR()">+</button>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-numberBR" disabled="disabled" data-type="minus" data-field="quant[1]"  onclick="decrementBR()">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="quant[1]" class="form-control input-numberBR" value="1" min="1" max="10"  onchange="updatedBathrooms()">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-numberBR" data-type="plus" data-field="quant[1]" onclick="incrementBR()">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </span>
+                            </div>
+                            <!-- <button onclick="incrementBR()">+</button>
                             <input id=bathRooms type=number min=1 max=10 onchange="updatedBathrooms()" readonly>
-                            <button onclick="decrementBR()">-</button>
+                            <button  onclick="decrementBR()">-</button> -->
                         </div>
 
                     </div>
