@@ -66,11 +66,8 @@ function loadPossibleHelpers(date) {
 
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
-
-      console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
