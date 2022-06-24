@@ -4,6 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
+
 // const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -46,6 +47,7 @@ function createRow(cardInfo) {
     `;
   return card;
 }
+
 function pageBtnCreate(totalNumberOfPages) {
   $('#pagination').html('');
   for (i = 1; i <= totalNumberOfPages; i++) {

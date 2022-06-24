@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
@@ -9,7 +10,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const moment = require('moment');
+
+// moment library call
+const moment = require('moment-weekdaysin');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 // const verifyToken = require('../auth/isLoggedInMiddleWare');
@@ -2339,6 +2342,193 @@ app.post('/superadmin', printDebugInfo, (req, res) => {
     } else {
       // else if there is a server error return message
       res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.post('/autoBooking', printDebugInfo, async (req, res) => {
+  const contractsAlreadyBooked = [];
+  let contractsAlreadyBookedNoDuplicate = [];
+  const allValidContracts = [];
+  const contractsYetToBeBooked = [];
+
+  // // add new booking function that takes two parameters ContractID and ScheduleDate
+  function AddBooking(ContractID, ScheduleDate) {
+    // invokes addBooking method created at superAdmin file in app.js
+    SuperAdmin.addBooking(ContractID, ScheduleDate, (err, result) => {
+      // if no error send result
+      if (!err) {
+        console.log('done');
+      } else {
+        // if error send error message
+        res.status(500).send('Some error');
+      }
+    });
+  }
+
+  function dateSelection(ContractID, DayOfService) {
+    if (DayOfService.includes('Mon')) {
+      // find all dates of monday in the month using moment
+      const MondaysInMonth = moment().weekdaysInMonth('Monday');
+
+      // loop through the mondays and extract the date
+      for (x = 0; x < MondaysInMonth.length; x++) {
+        // format date in YYYY-MM-DD format
+        ScheduleDate = MondaysInMonth[x].format('YYYY-MM-DD');
+        // call addbooking function
+        AddBooking(ContractID, ScheduleDate);
+      }
+    } else if (DayOfService.includes('Tue')) {
+      // find all dates of wednesday in the month using moment
+      const TuesdaysInMonth = moment().weekdaysInMonth('Tuesday');
+      // loop through the mondays and extract the date
+      for (x = 0; x < TuesdaysInMonth.length; x++) {
+        // format date in YYYY-MM-DD format
+        ScheduleDate = TuesdaysInMonth[x].format('YYYY-MM-DD');
+        // call addbooking function
+        AddBooking(ContractID, ScheduleDate);
+      }
+    } else if (DayOfService.includes('Wed')) {
+      // find all dates of wednesday in the month using moment
+      const WednesdayInMonth = moment().weekdaysInMonth('Wednesday');
+      // loop through the mondays and extract the date
+      for (x = 0; x < WednesdayInMonth.length; x++) {
+        // format date in YYYY-MM-DD format
+        ScheduleDate = WednesdayInMonth[x].format('YYYY-MM-DD');
+        // call addbooking function
+        AddBooking(ContractID, ScheduleDate);
+      }
+    } else if (DayOfService.includes('Thu')) {
+      // find all dates of wednesday in the month using moment
+      const ThudaysInMonth = moment().weekdaysInMonth('Thursday');
+      // loop through the mondays and extract the date
+      for (x = 0; x < ThudaysInMonth.length; x++) {
+        // format date in YYYY-MM-DD format
+        ScheduleDate = ThudaysInMonth[x].format('YYYY-MM-DD');
+        // call addbooking function
+        AddBooking(ContractID, ScheduleDate);
+      }
+    } else if (DayOfService.includes('Fri')) {
+      // find all dates of wednesday in the month using moment
+      const FridayInMonth = moment().weekdaysInMonth('Friday');
+      // loop through the mondays and extract the date
+      for (x = 0; x < FridayInMonth.length; x++) {
+        // format date in YYYY-MM-DD format
+        ScheduleDate = FridayInMonth[x].format('YYYY-MM-DD');
+        // call addbooking function
+        AddBooking(ContractID, ScheduleDate);
+      }
+    } else if (DayOfService.includes('Sat')) {
+      // find all dates of wednesday in the month using moment
+      const SaturdaysInMonth = moment().weekdaysInMonth('Saturday');
+      // loop through the mondays and extract the date
+      for (x = 0; x < SaturdaysInMonth.length; x++) {
+        // format date in YYYY-MM-DD format
+        ScheduleDate = SaturdaysInMonth[x].format('YYYY-MM-DD');
+        // call addbooking function
+        AddBooking(ContractID, ScheduleDate);
+      }
+    } else if (DayOfService.includes('Sun')) {
+      // find all dates of wednesday in the month using moment
+      const SundaysInMonth = moment().weekdaysInMonth('Sunday');
+      // loop through the mondays and extract the date
+      for (x = 0; x < SundaysInMonth.length; x++) {
+        // format date in YYYY-MM-DD format
+        ScheduleDate = SundaysInMonth[x].format('YYYY-MM-DD');
+        // call addbooking function
+        AddBooking(ContractID, ScheduleDate);
+      }
+    }
+  }
+
+  function getAllValidContacts() {
+    SuperAdmin.getAutoBookingValidContracts((err, result1) => {
+      if (!err) {
+        for (x = 0; x < result1.length; x++) {
+          const contracId = result1[x].ContractID;
+
+          allValidContracts.push(contracId);
+        }
+
+        for (y = 0; y < allValidContracts.length; y++) {
+          console.log('*****************');
+
+          const contractId = allValidContracts[y];
+
+          if (contractsAlreadyBookedNoDuplicate.includes(contractId)) {
+            console.log(`Booked already: ${contractId}`);
+          } else {
+            console.log(`Booked no: ${contractId}`);
+            contractsYetToBeBooked.push(contractId);
+          }
+          console.log('*****************');
+        }
+
+        console.log(`All valid contracts: ${allValidContracts}`);
+        console.log(`Already booked contracts no duplicate: ${contractsAlreadyBookedNoDuplicate}`);
+        console.log(`Already booked contracts: ${contractsAlreadyBooked}`);
+
+        console.log(`Contracts yet to be booked: ${contractsYetToBeBooked}`);
+
+        for (z = 0; z < contractsYetToBeBooked.length; z++) {
+          ContractId = contractsYetToBeBooked[z];
+          // eslint-disable-next-line no-shadow
+          SuperAdmin.getAContract(ContractId, (err, result55) => {
+            // if no error send result
+
+            if (!err) {
+              console.log(result55[0]);
+              //  let  ContractID  = result55[0].ContractID;
+              //   let  Package  = result55[0].Package;
+              //  let  DayOfService  = result55[0].DayOfService;
+              // let  DayOfService2  = result55[0].DayOfService2;
+
+              const { ContractID } = result55[0];
+              const { Package } = result55[0];
+              const { DayOfService } = result55[0];
+              const { DayOfService2 } = result55[0];
+
+              dateSelection(ContractID, DayOfService);
+              if (Package === 2) {
+                dateSelection(ContractID, DayOfService2);
+              }
+            } else {
+              // if error send error message
+              res.status(500).send('Some error');
+            }
+          });
+        }
+        res.status(200).send('done');
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+  }
+
+  SuperAdmin.getAllBookingForAutoBookingFunc((err, result) => {
+    if (!err) {
+      for (i = 0; i < result.length; i++) {
+        const currentYear = moment().year();
+        const currentMonth = moment().month();
+        const scheduleDate = moment(result[i].ScheduleDate);
+        const scheduleMonth = scheduleDate.month();
+        const scheduleYear = scheduleDate.year();
+        const bookingId = result[i].BookingID;
+        const contractId = result[i].ContractId;
+        if ((currentYear === scheduleYear) && (currentMonth === scheduleMonth)) {
+          console.log(bookingId);
+          contractsAlreadyBooked.push(contractId);
+        } else {
+          console.log('______________');
+          console.log(bookingId);
+          console.log('______________');
+        }
+      }
+
+      contractsAlreadyBookedNoDuplicate = [...new Set(contractsAlreadyBooked)];
+      getAllValidContacts();
+    } else {
+      res.status(500).send('Some error');
     }
   });
 });

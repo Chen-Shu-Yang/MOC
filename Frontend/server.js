@@ -134,6 +134,10 @@ app.get('/superadmin/admin', (req, res) => {
   res.sendFile('/public/assets/html/adminManagement.html', { root: __dirname });
 });
 
+app.get('/admin/superBooking', (req, res) => {
+  res.sendFile('/public/assets/html/superAdminBooking.html', { root: __dirname });
+});
+
 // retrieve from public folder
 app.use(serveStatic(`${__dirname}/public`));
 
