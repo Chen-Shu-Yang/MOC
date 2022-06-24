@@ -2175,43 +2175,17 @@ app.get('/oneadmin/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
-// get a super admin
-app.get('/onesuperadmin/:id', printDebugInfo, async (req, res) => {
-  // extract id from params
-  const superAdminId = req.params.id;
 
-  // calling getSuperAdmin method from SuperAdmin model
-  SuperAdmin.getSuperAdmin(superAdminId, (err, result) => {
-    if (!err) {
-      // if id not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-
-// update super admin
-app.put('/superadmin/:id', printDebugInfo, (req, res) => {
+// update admin
+app.put('/admin/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const AdminID = req.params.id;
   // extract all details needed
   const { AdminPwd } = req.body;
+  const { AdminType } = req.body;
 
   // calling updateSuperAdmin method from SuperAdmin model
-  SuperAdmin.updateSuperAdmin(AdminPwd, AdminID, (err, result) => {
+  SuperAdmin.updateAdmin(AdminPwd, AdminType, AdminID, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
       const output = {
@@ -2258,34 +2232,9 @@ app.delete('/admin/:id', printDebugInfo, (req, res) => {
     }
   });
 });
-// delete super admin
-app.delete('/superadmin/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const { id } = req.params;
-
-  // calling deleteSuperAdmin method from SuperAdmin model
-  SuperAdmin.deleteSuperAdmin(id, (err, result) => {
-    if (!err) {
-      // result.affectedRows indicates that id to be deleted
-      // cannot be found hence send as error message
-      if (result.affectedRows === 0) {
-        res.status(404).send('Item cannot be deleted');
-      } else {
-        // else a postitve result
-        res.status(200).send(result);
-      }
-    } else {
-      // sever error
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
 
 // add an admin
-app.post('/admin', printDebugInfo, (req, res) => {
+app.post('/addAdmin', printDebugInfo, (req, res) => {
   // extract all details needed
   const { LastName } = req.body;
   const { FirstName } = req.body;
@@ -2295,37 +2244,6 @@ app.post('/admin', printDebugInfo, (req, res) => {
 
   // calling addAdmin method from SuperAdmin model
   SuperAdmin.addAdmin(LastName, FirstName, AdminPwd, AdminEmail, AdminType, (err, result) => {
-    if (!err) {
-      const output = {
-        AdminId: result.insertId,
-      };
-      console.log(`result ${output.AdminId}`);
-      res.status(201).send(result);
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
-      // Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
-});
-
-// add a super admin
-app.post('/superadmin', printDebugInfo, (req, res) => {
-  // extract all details needed
-  const { LastName } = req.body;
-  const { FirstName } = req.body;
-  const { AdminPwd } = req.body;
-  const { AdminEmail } = req.body;
-  const { AdminType } = req.body;
-
-  // calling addSuperAdmin method from SuperAdmin model
-  SuperAdmin.addSuperAdmin(LastName, FirstName, AdminPwd, AdminEmail, AdminType, (err, result) => {
     if (!err) {
       const output = {
         AdminId: result.insertId,

@@ -19,6 +19,8 @@ function createRow(cardInfo) {
         <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadAnAdmin(${cardInfo.AdminID}, '${cardInfo.AdminType}')">
           <i class="fa-solid fa-pen"></i>
         </button>
+      </td>
+      <td>
         <button type="button" data-toggle="modal" data-target="#deleteModal" onclick="loadAnAdmin(${cardInfo.AdminID}, '${cardInfo.AdminType}')">
           <i class="fa-solid fa-trash-can"></i>
         </button>
@@ -77,22 +79,10 @@ function loadAllAdmins() {
 
 // loadAnAdmin method to load one admin details
 // eslint-disable-next-line no-unused-vars
-function loadAnAdmin(id, AdminType) {
-  // declares a variable endpoint
-  let endpoint;
-  // Check if the admin extracted is a super admin or a normal admin
-  // Change the endpoint and retrieve different data from different tables
-  if (AdminType === 'Super Admin') {
-    // Endpoint to retrieve a superadmin details
-    endpoint = `onesuperadmin/${id}`;
-  } else {
-    // Endpoint to retrieve an admin details
-    endpoint = `oneadmin/${id}`;
-  }
-
+function loadAnAdmin(id) {
   // call the web service endpoint for retrieving an admin details
   $.ajax({
-    url: `${backEndUrl}/${endpoint}`,
+    url: `${backEndUrl}/oneadmin/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -107,43 +97,19 @@ function loadAnAdmin(id, AdminType) {
       const Admin = data[0];
       // Declares the RowInfo Object first
       let RowInfo = {};
-
-      // If Else statement to differentiate the admintype
-      // Ensure data passed into the inputs are correct
-      if (Admin.AdminType === 'Super Admin') {
-        // Extracting information for a Super Admin
-        RowInfo = {
-          SuperAdminID: Admin.SuperAdminID,
-          FirstName: Admin.FirstName,
-          LastName: Admin.LastName,
-          Email: Admin.Email,
-          Pwd: Admin.Password,
-          AdminType: Admin.AdminType,
-        };
-        // Pre-select dropdown option for admin type
-        $('#changeAdminType').val(RowInfo.AdminType);
-        // Fills in the input with data extracted
-        $('#editAdminID').val(RowInfo.SuperAdminID);
-        $('#deleteAdminID').val(RowInfo.SuperAdminID);
-      } else {
-        // Extracting information for an Admin
-        RowInfo = {
-          AdminID: Admin.AdminID,
-          FirstName: Admin.FirstName,
-          LastName: Admin.LastName,
-          Email: Admin.Email,
-          Pwd: Admin.Password,
-          AdminType: Admin.AdminType,
-        };
-        // Pre-select dropdown option for admin type
-        $('#changeAdminType').val(RowInfo.AdminType);
-        // Fills in the input with data extracted
-        $('#editAdminID').val(RowInfo.AdminID);
-        $('#deleteAdminID').val(RowInfo.AdminID);
-      }
-      // Fills in the input with data retrieved
-      // Columns names are the same for both types of admin
-      // Hence it can be shared
+      // Extracting information for an Admin
+      RowInfo = {
+        AdminID: Admin.AdminID,
+        FirstName: Admin.FirstName,
+        LastName: Admin.LastName,
+        Email: Admin.Email,
+        Pwd: Admin.Password,
+        AdminType: Admin.AdminType,
+      };
+      // Pre-select dropdown option for admin type
+      $('#changeAdminType').val(RowInfo.AdminType);
+      $('#editAdminID').val(RowInfo.AdminID);
+      $('#deleteAdminID').val(RowInfo.AdminID);
       $('#firstName').append(RowInfo.FirstName);
       $('#lastName').append(RowInfo.LastName);
       $('#adminEmail').append(RowInfo.Email);
@@ -165,7 +131,7 @@ function loadAnAdmin(id, AdminType) {
   });
 }
 
-// addUpdateAdmin to add the admin to another admin table when admin type is changed
+// Add the admin
 function addUpdateAdmin() {
   // extract values for add pop-up
   const FirstName = $('#firstName').html();
@@ -173,18 +139,6 @@ function addUpdateAdmin() {
   const email = $('#adminEmail').html();
   const password = $('#AdminPwdInput').val();
   const adminType = $('#changeAdminType').val();
-
-  // declares a variable endpoint
-  let endpoint;
-  // Check if the admin extracted is a super admin or a normal admin
-  // Change the endpoint and add the admins into different admin type table
-  if (adminType === 'Super Admin') {
-    // Endpoint to add regular admin into superadmin table
-    endpoint = 'superadmin';
-  } else {
-    // Endpoint to add superadmin into admin table
-    endpoint = 'admin';
-  }
 
   // store all extracted info into requestBody
   const requestBody = {
@@ -200,7 +154,7 @@ function addUpdateAdmin() {
 
   // call the method to post data
   $.ajax({
-    url: `${backEndUrl}/${endpoint}`,
+    url: `${backEndUrl}/admin`,
     type: 'POST',
     data: reqBody,
     contentType: 'application/json; charset=utf-8',
@@ -243,18 +197,6 @@ function updateAdmin() {
   const Password = $('#AdminPwdInput').val();
   const adminType = $('#changeAdminType').val();
 
-  // declares a variable endpoint
-  let endpoint;
-  // Check if the admin extracted is a super admin or a normal admin
-  // Change the endpoint to update either the super admin or admin table
-  if (adminType === 'Super Admin') {
-    // Endpoint to update superadmin
-    endpoint = `superadmin/${id}`;
-  } else {
-    // Endpoint to update regular admin
-    endpoint = `admin/${id}`;
-  }
-
   // Stores data extracted into data object
   const data = {
     AdminPwd: Password,
@@ -264,7 +206,7 @@ function updateAdmin() {
   // call the web service endpoint
   $.ajax({
     // headers: { authorization: `Bearer ${tmpToken}` },
-    url: `${backEndUrl}/${endpoint}`,
+    url: `${backEndUrl}/admin/${id}`,
     type: 'PUT',
     // Data object is converted into String
     data: JSON.stringify(data),
@@ -291,24 +233,9 @@ function updateAdmin() {
 
 // Delete Admin when admin type is changed
 function deleteAdmin(id) {
-  // Data extraction
-  const AdminType = $('#deleteAdminType').val();
-
-  // declares a variable endpoint
-  let endpoint;
-  // Check if the admin extracted is a super admin or a normal admin
-  // Change the endpoint to delete admin either from the admin or super admin table
-  if (AdminType === 'Super Admin') {
-    // Endpoint to delete admin from super admin table
-    endpoint = `superadmin/${id}`;
-  } else {
-    // Endpoint to delete admin from the admin table
-    endpoint = `admin/${id}`;
-  }
-
   // call the web service endpoint for deleting admin by id
   $.ajax({
-    url: `${backEndUrl}/${endpoint}`,
+    url: `${backEndUrl}/admin/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
     // if data inserted
@@ -322,7 +249,7 @@ function deleteAdmin(id) {
         // eslint-disable-next-line no-use-before-define
         errMsg = 'Not valid id';
       } else if (xhr.status === 200) {
-      // if the params id is valid and
+        // if the params id is valid and
         // set and call confirmation message
         msg = 'Successfully deleted!';
 
@@ -355,18 +282,7 @@ function addAdmin() {
   const addEmail = $('#addAdminEmailInput').val();
   const addPassword = $('#addAdminPasswordInput').val();
   const addAdminType = $('#addAdminTypeInput').val();
-  console.log(addFirstName + addLastName + addEmail);
-  // declares a variable endpoint
-  let endpoint;
-  // Check if the admin extracted is a super admin or a normal admin
-  // Change the endpoint and add the admins into different admin type table
-  if (addAdminType === 'Super Admin') {
-    // Endpoint to add regular admin into superadmin table
-    endpoint = 'Superadmin';
-  } else {
-    // Endpoint to add superadmin into admin table
-    endpoint = 'Admin';
-  }
+
   // store all extracted info into requestBody
   const requestBody = {
     LastName: addLastName,
@@ -377,10 +293,10 @@ function addAdmin() {
   };
   // Converts requestBody into a String
   const reqtsBody = JSON.stringify(requestBody);
-  console.log(reqtsBody);
+
   // call the method to post data
   $.ajax({
-    url: `${backEndUrl}/add${endpoint}`,
+    url: `${backEndUrl}/addAdmin`,
     type: 'POST',
     data: reqtsBody,
     contentType: 'application/json; charset=utf-8',
