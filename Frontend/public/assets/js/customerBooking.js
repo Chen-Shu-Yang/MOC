@@ -40,13 +40,18 @@ function createCard(cardInfo) {
 
   return card;
 }
-
+function populateBathroomsRooms() {
+  const bathroomss = document.getElementById('bathRooms').value;
+  document.getElementById('listBathrooms').innerHTML = bathroomss;
+  const roomss = document.getElementById('rooms').value;
+  document.getElementById('listRooms').innerHTML = roomss;
+}
 function loadUserDetails() {
   // extract user details from local storage
   const CustomerIDs = localStorage.getItem('customerID');
   console.log(CustomerIDs);
   let userInfo;
-
+  populateBathroomsRooms();
   // call the web service endpoint
   $.ajax({
     url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
@@ -251,6 +256,7 @@ function populateAdditonalService() {
     },
   });
 }
+
 function updatedAmt() {
   document.getElementById('estAmount').innerHTML = estTotal;
 }
@@ -539,6 +545,7 @@ $(document).ready(() => {
   updatedService();
   updatedPackage();
   updatedAmt();
+  populateBathroomsRooms();
 });
 
 $(document).ready(() => {
