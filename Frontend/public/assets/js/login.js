@@ -7,10 +7,10 @@
 
 // const res = require("express/lib/response");
 
-// const frontEndUrl = 'http://localhost:3001';
-// const backEndUrl = 'http://localhost:5000';
-const frontEndUrl = 'https://moc-fa.herokuapp.com';
-const backEndUrl = 'https://moc-ba.herokuapp.com';
+const frontEndUrl = 'http://localhost:3001';
+const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'https://moc-fa.herokuapp.com';
+// const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 $(document).ready(() => {
   // Login
@@ -39,12 +39,14 @@ $(document).ready(() => {
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('customerID', JSON.stringify(data.CustomerID));
             window.location.replace(`${frontEndUrl}/customer/profile`);
-          } else if (data.AdminID != null) {
+          } else if (data.AdminType === 'Admin') {
             localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
+            localStorage.setItem('adminType', JSON.stringify(data.AdminType));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/dashboard`);
           } else {
-            localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
+            localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
+            localStorage.setItem('adminType', JSON.stringify(data.AdminType));
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/superadmin/admin`);
           }

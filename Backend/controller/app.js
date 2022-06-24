@@ -96,7 +96,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
         AdminID: result.AdminID,
         token,
         CustomerID: result.CustomerID,
-        SuperAdminID: result.SuperAdminID,
+        AdminType: result.AdminType,
       };
       res.status(200).send(msg);
     }
