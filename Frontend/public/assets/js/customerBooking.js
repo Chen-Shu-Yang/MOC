@@ -40,12 +40,14 @@ function createCard(cardInfo) {
 
   return card;
 }
+
 function populateBathroomsRooms() {
   const bathroomss = document.getElementById('bathRooms').value;
   document.getElementById('listBathrooms').innerHTML = bathroomss;
   const roomss = document.getElementById('rooms').value;
   document.getElementById('listRooms').innerHTML = roomss;
 }
+
 function loadUserDetails() {
   // extract user details from local storage
   const CustomerIDs = localStorage.getItem('customerID');
@@ -127,7 +129,10 @@ function populateClass() {
 
           const serviceNameID = `classNameButton${cardInfo.ClassID}`;
           const services = document.getElementById(serviceNameID).value;
-          document.getElementById('listService').innerHTML = services;
+          const serviceValue = services.substring(0, services.indexOf('#'));
+
+          $('#listServiceInput').val(services);
+          document.getElementById('listService').innerHTML = serviceValue;
 
           estService = cardInfo.ClassPricing * 4;
 
@@ -164,7 +169,7 @@ function populatePackage() {
         const packages = data[i];
 
         if (i === 0) {
-          $('#listPackage').html(`${packages.PackageName} (${packages.PackageDes}) #${packages.PackageID}`);
+          $('#listPackage').html(`${packages.PackageName} (${packages.PackageDes})`);
         }
 
         // for loop to generate every data from the database and append to the drop down list
@@ -199,7 +204,7 @@ function populateRates() {
         const rates = data[i];
 
         if (i === 0) {
-          $('#listRates').html(`${rates.RateName}sqft (From S$${rates.RatePrice}) #${rates.RatesID}`);
+          $('#listRates').html(`${rates.RateName}sqft (From S$${rates.RatePrice})`);
           estRate = rates.RatePrice;
           console.log(`HIIIII${typeof (estRate)}`);
           estTotal += estRate;
@@ -272,7 +277,9 @@ function updatedService(i) {
 
   const serviceNameID = `classNameButton${i}`;
   const services = document.getElementById(serviceNameID).value;
-  document.getElementById('listService').innerHTML = services;
+  const servicesValue = services.substring(0, services.indexOf('#'));
+  document.getElementById('listService').innerHTML = servicesValue;
+  $('#listServiceInput').val(services);
 
   const servicePrice = services.substring((services.indexOf('$') + 1));
 
@@ -285,22 +292,28 @@ function updatedService(i) {
 
   updatedAmt();
 }
+
 function updatedPackage() {
   const packages = document.getElementById('package').value;
-  document.getElementById('listPackage').innerHTML = packages;
+  const packagesValue = packages.substring(0, packages.indexOf('#'));
+  document.getElementById('listPackage').innerHTML = packagesValue;
 }
+
 function updatedRooms() {
   const roomss = document.getElementById('rooms').value;
   document.getElementById('listRooms').innerHTML = roomss;
 }
+
 function updatedBathrooms() {
   const bathroomss = document.getElementById('bathRooms').value;
   document.getElementById('listBathrooms').innerHTML = bathroomss;
 }
+
 function updatedRates() {
   estTotal -= estRate;
   const ratess = document.getElementById('rates').value;
-  document.getElementById('listRates').innerHTML = ratess;
+  const ratessValue = ratess.substring(0, ratess.indexOf('#'));
+  document.getElementById('listRates').innerHTML = ratessValue;
 
   const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
   const ratePattern = new RegExp('^\d{1,6}');
@@ -312,6 +325,8 @@ function updatedRates() {
 
 function updatedAddServices(i) {
   const additionalServices = document.getElementById(i).value;
+  $('#listAddServiceInput').val(additionalServices);
+  const additionalServicesValue = additionalServices.substring(0, additionalServices.indexOf('#'));
   const currentServices = document.getElementById('listAddService');
 
   // get rids of the dash if its the only one
@@ -320,12 +335,12 @@ function updatedAddServices(i) {
   }
 
   // if service found, take the current innerHTML, replace it with blank, then set it back
-  if (currentServices.innerHTML.indexOf(additionalServices) !== -1) {
+  if (currentServices.innerHTML.indexOf(additionalServicesValue) !== -1) {
     let currentServicesList = currentServices.innerHTML;
-    currentServicesList = currentServicesList.replace(additionalServices, '');
+    currentServicesList = currentServicesList.replace(additionalServicesValue, '');
     currentServices.innerHTML = currentServicesList;
 
-    const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
+    const addServicePrice = additionalServicesValue.substring((additionalServicesValue.indexOf('$') + 1));
     const addServicePattern = new RegExp('^\d{1,5}(\.\d{0,2})?');
     console.log(addServicePrice);
     const finalprice = addServicePrice.substring(addServicePattern, 5);
@@ -336,9 +351,9 @@ function updatedAddServices(i) {
     console.log(estAdd);
     updatedAmt();
   } else {
-    currentServices.innerHTML += ` ${additionalServices}`;
+    currentServices.innerHTML += ` ${additionalServicesValue}`;
 
-    const addServicePrice = additionalServices.substring((additionalServices.indexOf('$') + 1));
+    const addServicePrice = additionalServicesValue.substring((additionalServicesValue.indexOf('$') + 1));
     const addServicePattern = new RegExp('^\d{1,5}(\.\d{0,2})?');
     console.log(addServicePrice);
     const finalprice = addServicePrice.substring(addServicePattern, 5);
@@ -360,30 +375,37 @@ function incrementR() {
   document.getElementById('rooms').stepUp();
   updatedRooms();
 }
+
 function decrementR() {
   document.getElementById('rooms').stepDown();
   updatedRooms();
 }
+
 function incrementBR() {
   document.getElementById('bathRooms').stepUp();
   updatedBathrooms();
 }
+
 function decrementBR() {
   document.getElementById('bathRooms').stepDown();
   updatedBathrooms();
 }
+
 function updatedDate() {
   const date = document.getElementById('startDate').value;
   document.getElementById('listDate').innerHTML = date;
 }
+
 function updatedDay1() {
   const day1 = document.getElementById('dayOfService1').value;
   document.getElementById('listDay1').innerHTML = day1;
 }
+
 function updatedDay2() {
   const day2 = document.getElementById('dayOfService2').value;
   document.getElementById('listDay2').innerHTML = day2;
 }
+
 function updatedTime() {
   const time = document.getElementById('timeOfService').value;
   document.getElementById('listTime').innerHTML = time;
@@ -557,13 +579,13 @@ $(document).ready(() => {
   $('#confirmContract').click(() => {
     // Extracts the respective values and inputs
     // Stores them into their respective constants
-    const servicePref = $('#listService').html();
+    const servicePref = $('#listServiceInput').val();
     const address = $('#cAddress').val();
     const servicePackage = $('#package').val();
     const roooms = $('#rooms').val();
     const bathRooms = $('#bathRooms').val();
     const serviceRates = $('#rates').val();
-    const addService = $('#listAddService').html();
+    const addService = $('#listAddServiceInput').val();
     const contractStart = $('#startDate').val();
     const serviceDay1 = $('#dayOfService1').val();
     const serviceDay2 = $('#dayOfService2').val();
