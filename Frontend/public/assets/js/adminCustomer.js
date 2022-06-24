@@ -20,6 +20,8 @@ function createRow(cardInfo) {
                 <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadACustomer(${cardInfo.CustomerID})">
                 <i class="fa-solid fa-pen"></i>
                 </button>
+            </td>
+            <td>
                 <button type="button" id="deleteCustomerBtn" onClick="deleteCustomer(${cardInfo.CustomerID})"><i class="fa-solid fa-trash-can"></i></button>
             </td>
         </tr>
