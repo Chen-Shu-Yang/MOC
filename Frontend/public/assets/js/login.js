@@ -38,15 +38,15 @@ $(document).ready(() => {
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('customerID', JSON.stringify(data.CustomerID));
-            window.location.replace(`${frontEndUrl}/homepage`);
+            window.location.replace(`${frontEndUrl}/customer/profile`);
           } else if (data.AdminID != null) {
             localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
             localStorage.setItem('token', JSON.stringify(data.token));
-            window.location.replace(`${frontEndUrl}/admin/booking`);
+            window.location.replace(`${frontEndUrl}/admin/dashboard`);
           } else {
             localStorage.setItem('SuperAdminID', JSON.stringify(data.SuperAdminID));
             localStorage.setItem('token', JSON.stringify(data.token));
-            window.location.replace(`${frontEndUrl}/admin/schedule`);
+            window.location.replace(`${frontEndUrl}/superadmin/admin`);
           }
         } else {
           console.log('Error');
