@@ -2346,10 +2346,6 @@ app.post('/superadmin', printDebugInfo, (req, res) => {
   });
 });
 
-//= ======================================================
-//              Features / autoBooking
-//= ======================================================
-
 app.post('/autoBooking', printDebugInfo, async (req, res) => {
   const contractsAlreadyBooked = [];
   let contractsAlreadyBookedNoDuplicate = [];
