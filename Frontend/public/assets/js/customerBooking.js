@@ -267,8 +267,6 @@ function updatedAmt() {
 }
 
 function updatedService(i) {
-  console.log(`hjdf${estService}`);
-
   estTotal -= estService;
 
   $('.container-class').removeClass('active');
