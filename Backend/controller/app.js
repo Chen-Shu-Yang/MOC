@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
@@ -2274,6 +2273,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
   function AddBooking(ContractID, ScheduleDate) {
     // invokes addBooking method created at superAdmin file in app.js
     SuperAdmin.addBooking(ContractID, ScheduleDate, (err, result) => {
+      console.log(result);
       // if no error send result
       if (!err) {
         console.log('done');
@@ -2388,7 +2388,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
 
         console.log(`Contracts yet to be booked: ${contractsYetToBeBooked}`);
 
-        for (z = 0; z < contractsYetToBeBooked.length; z++) {
+        for (let z = 0; z < contractsYetToBeBooked.length; z++) {
           ContractId = contractsYetToBeBooked[z];
           // eslint-disable-next-line no-shadow
           SuperAdmin.getAContract(ContractId, (err, result55) => {

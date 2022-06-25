@@ -51,7 +51,7 @@ hr {
   width: 30%;
   background-color: #2E6869;
   color: white;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 #estTotal{
   text-align: center;
@@ -61,14 +61,17 @@ hr {
   width: 70%;
   background-color: #2E6869;
   color: white;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #receiptCol{
   background-color: #F8F8F8;
 padding-left: 10px;
 }
+#buttonRest, #buttonBRooms{
+  width: 50%;
 
+}
 
 #serviceCol{
   padding-left: 20px;
@@ -131,9 +134,11 @@ color: #000;
 }
 
 .max-width .confirm-btn {
+  text-align: center;
     font-family: 'Ubuntu', sans-serif;
+   
     margin-top: 10px;
-    padding: 8px 20px;
+    padding: 8px 50px;
     font-size: 17px;
     background: #2E6869;
     border: 2px solid #2E6869;
@@ -169,9 +174,10 @@ color: #000;
  
 } 
   .container-class.active .confirm-btn{
+    text-align: center;
     font-family: 'Ubuntu', sans-serif;
     margin-top: 10px;
-    padding: 8px 20px;
+    padding: 8px 50px;
     font-size: 17px;
     background: #fff;
     border: 2px solid #fff;
@@ -185,3 +191,6 @@ color: #000;
     background: none;
     text-decoration: none;
 } 
+#listAddService{
+  padding-left: 10px;
+}

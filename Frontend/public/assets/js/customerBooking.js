@@ -23,7 +23,7 @@ function createCard(cardInfo) {
 
             <div id="service${cardInfo.ClassID}" class="container-class"  border-radius: 10px;">
                 <h4 style="text-align:center;"><b>${cardInfo.ClassName}</b></h4> 
-                <p style="text-align:center;">$${cardInfo.ClassPricing} per hour</p>
+                <p style="text-align:center;"><b>$${cardInfo.ClassPricing} per hour</b></p>
                 <p>Include:</p>
                 <p>${cardInfo.ClassDes}</p>
              
@@ -351,7 +351,7 @@ function updatedAddServices(i) {
     console.log(estAdd);
     updatedAmt();
   } else {
-    currentServices.innerHTML += ` ${additionalServicesValue}`;
+    currentServices.innerHTML += ` ${additionalServicesValue} `;
 
     const addServicePrice = additionalServicesValue.substring((additionalServicesValue.indexOf('$') + 1));
     const addServicePattern = new RegExp('^\d{1,5}(\.\d{0,2})?');
