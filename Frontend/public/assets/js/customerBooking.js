@@ -278,16 +278,16 @@ function updatedService(i) {
   const servicesValue = services.substring(0, services.indexOf('#'));
   document.getElementById('listService').innerHTML = servicesValue;
   $('#listServiceInput').val(services);
-
+  // get name
   const servicePrice = services.substring((services.indexOf('$') + 1));
-
+  // regex to get amount
   const ratePattern = new RegExp('^\d{1,6}');
   const final = servicePrice.substring(ratePattern, 3);
   estService = parseInt(final, 10) * 4;
   console.log(`hjdfssss${estService}`);
 
   estTotal += estService;
-
+  // get amoutnt
   updatedAmt();
 }
 
@@ -312,19 +312,23 @@ function updatedRates() {
   const ratess = document.getElementById('rates').value;
   const ratessValue = ratess.substring(0, ratess.indexOf('#'));
   document.getElementById('listRates').innerHTML = ratessValue;
-
+  // substring to get name
   const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
+  // regex to get amount
   const ratePattern = new RegExp('^\d{1,6}');
   const final = ratesPrice.substring(ratePattern, 3);
   estRate = parseInt(final, 10);
   estTotal += estRate;
+  // update amunt in receipt
   updatedAmt();
 }
 
 function updatedAddServices(i) {
   const additionalServices = document.getElementById(i).value;
   $('#listAddServiceInput').val(additionalServices);
+  // substring to get name
   const additionalServicesValue = additionalServices.substring(0, additionalServices.indexOf('#'));
+  // regex to get amount
   const currentServices = document.getElementById('listAddService');
 
   // get rids of the dash if its the only one
@@ -337,8 +341,9 @@ function updatedAddServices(i) {
     let currentServicesList = currentServices.innerHTML;
     currentServicesList = currentServicesList.replace(additionalServicesValue, '');
     currentServices.innerHTML = currentServicesList;
-
+    // substring to get name
     const addServicePrice = additionalServicesValue.substring((additionalServicesValue.indexOf('$') + 1));
+    // regex to get amount
     const addServicePattern = new RegExp('^\d{1,5}(\.\d{0,2})?');
     console.log(addServicePrice);
     const finalprice = addServicePrice.substring(addServicePattern, 5);
@@ -347,6 +352,7 @@ function updatedAddServices(i) {
     console.log(estConvert);
     estTotal -= estConvert;
     console.log(estAdd);
+    // update amount in receipt
     updatedAmt();
   } else {
     currentServices.innerHTML += ` ${additionalServicesValue} `;
