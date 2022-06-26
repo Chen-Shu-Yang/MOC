@@ -1584,6 +1584,54 @@ app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
   });
 });
 
+// Get the number of contract abnormalities per customer
+app.get('/abnormality/contracts', printDebugInfo, async (req, res) => {
+  // calling getAllRates method from admin model
+  Admin.getNumOfAbnormalContracts((err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      } else {
+        // else a postitve result
+        res.status(200).send(result);
+      }
+    } else {
+      // sever error
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// Get abnormal contracts
+app.get('/abnormality/contracts/:customerId', printDebugInfo, async (req, res) => {
+  const CustomerID = req.params.customerId;
+
+  // calling getAllRates method from admin model
+  Admin.getAbnormalContracts(CustomerID, (err, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      } else {
+        // else a postitve result
+        res.status(200).send(result);
+      }
+    } else {
+      // sever error
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 // ====================== Customer Section ======================
 // Get user profile
 app.get('/customerAddBooking/:customerID', printDebugInfo, async (req, res, next) => {

@@ -93,9 +93,20 @@ app.get('/admin/pricing', (req, res) => {
 app.get('/admin/profile', (req, res) => {
   res.sendFile('/public/assets/html/adminProfile.html', { root: __dirname });
 });
+
 // go to admin dashboard
 app.get('/admin/dashboard', (req, res) => {
   res.sendFile('/public/assets/html/adminDashboard.html', { root: __dirname });
+});
+
+// go to admin contract abnormality (Number of Contract Abnormality)
+app.get('/admin/abnormality/contract', (req, res) => {
+  res.sendFile('/public/assets/html/AbnCustomerContracts.html', { root: __dirname });
+});
+
+// go to admin contract abnormality
+app.get('/abnormality/contract', (req, res) => {
+  res.sendFile('/public/assets/html/contractAbnormality.html', { root: __dirname });
 });
 
 //= ======================================================

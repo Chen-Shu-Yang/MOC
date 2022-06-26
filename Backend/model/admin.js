@@ -1021,6 +1021,7 @@ const Admin = {
       return callback(null, result);
     });
   },
+
   // get number of booking made by therir month
   getBookingByMonth(callback) {
   // sql query statement to get number of booking made by therir month
@@ -1041,6 +1042,7 @@ const Admin = {
       return callback(null, result); // if
     });
   },
+
   getRevenueOfTheMonth(callback) {
   // sql query statement to get revenue
     const sql = `
@@ -1065,6 +1067,68 @@ const Admin = {
     });
   },
 
+  //= ======================================================
+  //              Features / abnormalities
+  //= ======================================================
+  // Get the number of contract abnormalities per customer
+  getNumOfAbnormalContracts(callback) {
+    // sql query statement
+    const sql = `
+     SELECT 
+      cab.UserID, COUNT(ca.ContractID) AS TotalContract, c.FirstName, c.LastName, c.Email, cab.AbnormalStatus
+     FROM
+      heroku_6b49aedb7855c0b.contract_abnormality AS cab
+     LEFT JOIN
+        heroku_6b49aedb7855c0b.customer AS c
+     ON
+      cab.UserID = c.CustomerID
+     LEFT JOIN
+      heroku_6b49aedb7855c0b.contract AS ca
+     ON
+        ca.Customer = c.CustomerID
+     GROUP BY
+      cab.UserID
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Get the abnormal contract by customer
+  getAbnormalContracts(CustomerID, callback) {
+    // sql query statement
+    const sql = `
+      SELECT
+        ca.ContractID, c.FirstName, c.LastName, c.Email
+      FROM
+        heroku_6b49aedb7855c0b.contract_abnormality AS cab,
+        heroku_6b49aedb7855c0b.customer AS c,
+        heroku_6b49aedb7855c0b.contract AS ca
+      WHERE
+        cab.UserID = c.CustomerID AND
+        ca.Customer = c.CustomerID AND
+        cab.UserID = ?;
+    `;
+    // pool query
+    pool.query(sql, [CustomerID], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
 };
 
 //= ======================================================
