@@ -2264,26 +2264,25 @@ app.post('/addAdmin', printDebugInfo, (req, res) => {
 });
 
 app.post('/autoBooking', printDebugInfo, async (req, res) => {
+  // array that will store all contracts already booked with duplicates
   const contractsAlreadyBooked = [];
+  // array that will store all contracts already booked without duplicates
   let contractsAlreadyBookedNoDuplicate = [];
+  // array that will store all valid contracts
   const allValidContracts = [];
+  // array that will store contracts already booked with duplicates
   const contractsYetToBeBooked = [];
 
   // // add new booking function that takes two parameters ContractID and ScheduleDate
   function AddBooking(ContractID, ScheduleDate) {
     // invokes addBooking method created at superAdmin file in app.js
-    SuperAdmin.addBooking(ContractID, ScheduleDate, (err, result) => {
-      console.log(result);
-      // if no error send result
-      if (!err) {
-        console.log('done');
-      } else {
-        // if error send error message
+    superAdmin.addBooking(ContractID, ScheduleDate, (err, result) => {
+      if (err) {
         res.status(500).send('Some error');
       }
     });
   }
-
+  // select schedule date based on day of service
   function dateSelection(ContractID, DayOfService) {
     if (DayOfService.includes('Mon')) {
       // find all dates of monday in the month using moment
@@ -2296,7 +2295,8 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    } else if (DayOfService.includes('Tue')) {
+    }
+    else if (DayOfService.includes('Tue')) {
       // find all dates of wednesday in the month using moment
       const TuesdaysInMonth = moment().weekdaysInMonth('Tuesday');
       // loop through the mondays and extract the date
@@ -2306,7 +2306,8 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    } else if (DayOfService.includes('Wed')) {
+    }
+    else if (DayOfService.includes('Wed')) {
       // find all dates of wednesday in the month using moment
       const WednesdayInMonth = moment().weekdaysInMonth('Wednesday');
       // loop through the mondays and extract the date
@@ -2316,7 +2317,8 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    } else if (DayOfService.includes('Thu')) {
+    }
+    else if (DayOfService.includes('Thu')) {
       // find all dates of wednesday in the month using moment
       const ThudaysInMonth = moment().weekdaysInMonth('Thursday');
       // loop through the mondays and extract the date
@@ -2326,7 +2328,8 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    } else if (DayOfService.includes('Fri')) {
+    }
+    else if (DayOfService.includes('Fri')) {
       // find all dates of wednesday in the month using moment
       const FridayInMonth = moment().weekdaysInMonth('Friday');
       // loop through the mondays and extract the date
@@ -2336,7 +2339,8 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    } else if (DayOfService.includes('Sat')) {
+    }
+    else if (DayOfService.includes('Sat')) {
       // find all dates of wednesday in the month using moment
       const SaturdaysInMonth = moment().weekdaysInMonth('Saturday');
       // loop through the mondays and extract the date
@@ -2346,7 +2350,8 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    } else if (DayOfService.includes('Sun')) {
+    }
+    else if (DayOfService.includes('Sun')) {
       // find all dates of wednesday in the month using moment
       const SundaysInMonth = moment().weekdaysInMonth('Sunday');
       // loop through the mondays and extract the date
@@ -2358,60 +2363,54 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
       }
     }
   }
-
+  // getAllValideContracts
   function getAllValidContacts() {
-    SuperAdmin.getAutoBookingValidContracts((err, result1) => {
+    // gets all valid contracts including the booked ones
+    superAdmin.getAutoBookingValidContracts((err, result1) => {
       if (!err) {
+        // use for loop to extract it's contractId and push it to the array of allValidContracts
         for (x = 0; x < result1.length; x++) {
           const contracId = result1[x].ContractID;
-
           allValidContracts.push(contracId);
         }
-
+        // for loop to check if contractId that is already booked is part of the valid contracts
         for (y = 0; y < allValidContracts.length; y++) {
-          console.log('*****************');
-
+          // extracting contract
           const contractId = allValidContracts[y];
-
-          if (contractsAlreadyBookedNoDuplicate.includes(contractId)) {
-            console.log(`Booked already: ${contractId}`);
-          } else {
-            console.log(`Booked no: ${contractId}`);
+          // check if contractId is in the array of already booked contract
+          // if it is not push it to the array of contractsYetToBeBooked
+          if (!(contractsAlreadyBookedNoDuplicate.includes(contractId))) {
             contractsYetToBeBooked.push(contractId);
+            // console.log(`Booked already: ${contractId}`);
           }
-          console.log('*****************');
         }
-
-        console.log(`All valid contracts: ${allValidContracts}`);
-        console.log(`Already booked contracts no duplicate: ${contractsAlreadyBookedNoDuplicate}`);
-        console.log(`Already booked contracts: ${contractsAlreadyBooked}`);
-
-        console.log(`Contracts yet to be booked: ${contractsYetToBeBooked}`);
-
-        for (let z = 0; z < contractsYetToBeBooked.length; z++) {
+        // loop through contractsYetToBeBooked
+        for (z = 0; z < contractsYetToBeBooked.length; z++) {
+          // get the contractId
           ContractId = contractsYetToBeBooked[z];
-          // eslint-disable-next-line no-shadow
-          SuperAdmin.getAContract(ContractId, (err, result55) => {
+          // get all fileds related to the contractId
+          superAdmin.getAContract(ContractId, (err, result55) => {
             // if no error send result
-
             if (!err) {
-              console.log(result55[0]);
-              //  let  ContractID  = result55[0].ContractID;
-              //   let  Package  = result55[0].Package;
-              //  let  DayOfService  = result55[0].DayOfService;
-              // let  DayOfService2  = result55[0].DayOfService2;
-
+              // extract ContractID
               const { ContractID } = result55[0];
+              // extract Package
               const { Package } = result55[0];
+              // extract DayOfService
               const { DayOfService } = result55[0];
+              // extract DayOfService2
               const { DayOfService2 } = result55[0];
 
+              // call dateSelection and pass ContractID and DayOfService as params
               dateSelection(ContractID, DayOfService);
+              // check if Package ==2
               if (Package === 2) {
+                // call dateSelection and pass ContractID and DayOfService2 as params
                 dateSelection(ContractID, DayOfService2);
               }
-            } else {
-              // if error send error message
+            }
+            // if error send error message
+            else {
               res.status(500).send('Some error');
             }
           });
@@ -2422,34 +2421,39 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
       }
     });
   }
-
-  SuperAdmin.getAllBookingForAutoBookingFunc((err, result) => {
+  // getAllBookingForAutoBookingFunction
+  superAdmin.getAllBookingForAutoBookingFunc((err, result) => {
     if (!err) {
+      // checks if there is booking made for a contract already
       for (i = 0; i < result.length; i++) {
+        // get value of current year
         const currentYear = moment().year();
+        // get value of current month
         const currentMonth = moment().month();
+        // get scheduleDateOfBooking
         const scheduleDate = moment(result[i].ScheduleDate);
+        // get value of scheduleDate month
         const scheduleMonth = scheduleDate.month();
+        // get value of scheduleDate year
         const scheduleYear = scheduleDate.year();
+        // get booking id
         const bookingId = result[i].BookingID;
+        // get contract id
         const contractId = result[i].ContractId;
+        // check if currentYear equals to scheduleYear and if
+        // current month equals to scheduleMonth if yes push the contract id as already booked
         if ((currentYear === scheduleYear) && (currentMonth === scheduleMonth)) {
-          console.log(bookingId);
           contractsAlreadyBooked.push(contractId);
-        } else {
-          console.log('______________');
-          console.log(bookingId);
-          console.log('______________');
         }
       }
-
+      // remove duplicate bookings
       contractsAlreadyBookedNoDuplicate = [...new Set(contractsAlreadyBooked)];
+      // call getAllValidContacts()
       getAllValidContacts();
     } else {
       res.status(500).send('Some error');
     }
   });
 });
-
 // ====================== Module Exports ======================
 module.exports = app;
