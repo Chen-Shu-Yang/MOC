@@ -51,6 +51,7 @@ const forgetPassword = {
     });
   },
   updateUserPassword(password, id, callback) {
+    console.log(password);
     // sql query statement
     const sql = `
             UPDATE 

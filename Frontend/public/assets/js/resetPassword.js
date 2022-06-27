@@ -7,7 +7,7 @@
 
 // const res = require("express/lib/response");
 
-// const frontEndUrl = 'http://localhost:3001';
+const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
@@ -24,12 +24,12 @@ $(document).ready(() => {
 
     // data compilation
     const info = {
-      Password: password,
+      password,
     };
     // call web service endpoint
     $.ajax({
       url: `${backEndUrl}/resetUserPassword/${id}/${token}`,
-      type: 'POST',
+      type: 'PUT',
       data: JSON.stringify(info),
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',

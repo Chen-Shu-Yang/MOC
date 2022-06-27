@@ -118,9 +118,11 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
 app.put('/resetUserPassword/:id/:token', printDebugInfo, async (req, res) => {
   // extract id from params
   const { id, token } = req.params;
-  const { confirmPassword } = req.body;
+  const { password } = req.body;
+  console.log(password);
+  console.log(id);
   // calling getAdminById method from Admin model
-  forgetPassword.updateUserPassword(confirmPassword, id, (err, result) => {
+  forgetPassword.updateUserPassword(password, id, (err, result) => {
     if (!err) {
       // if admin id is not found detect and return error message
       if (result.length === 0) {
