@@ -94,7 +94,7 @@ app.get('/admin/profile', (req, res) => {
   res.sendFile('/public/assets/html/adminProfile.html', { root: __dirname });
 });
 app.get('/admin/contract', (req, res) => {
-  res.sendFile('/public/assets/html/adminProfile.html', { root: __dirname });
+  res.sendFile('/public/assets/html/adminViewContract.html', { root: __dirname });
 });
 // go to admin dashboard
 app.get('/admin/dashboard', (req, res) => {

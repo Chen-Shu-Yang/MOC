@@ -1350,6 +1350,30 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
     }
   });
 });
+//= ======================================================
+//              Features / Contract
+//= ======================================================
+
+// get Contracts per page
+app.get('/contracts/:pageNumber', printDebugInfo, async (req, res) => {
+  // extract pageNumber from parameter
+  const { pageNumber } = req.params;
+
+  // calling pageContract method from admin model
+  Admin.pageContract(pageNumber, (err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
 
 // Get admin profile by AdminID
 app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
@@ -2119,6 +2143,20 @@ app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
       }
     } else {
       res.status(500).send('Internal Server Error');
+    }
+  });
+});
+// Get all contracts
+app.get('/contracts', printDebugInfo, async (req, res) => {
+  // calling getAllContracts method from admin model
+  Admin.getAllContracts((err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    }
+    // if error send error message
+    else {
+      res.status(500).send('Some error');
     }
   });
 });
