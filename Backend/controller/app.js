@@ -27,7 +27,7 @@ const Admin = require('../model/admin');
 const Customer = require('../model/customer');
 const Register = require('../model/register');
 const SuperAdmin = require('../model/superAdmin');
-
+const forgetPassword = require('../model/forgetPassword');
 // MF function
 /**
  * prints useful debugging information about an endpoint we are going to service
@@ -74,6 +74,73 @@ app.get('/', (req, res) => {
 });
 
 // ====================== User Section ======================
+// forgetPassword
+app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
+  const { email } = req.body;
+
+  forgetPassword.Verify(email, (err, link, result) => {
+    if (err) {
+      // matched with callback (err, null)
+      console.log(err);
+      res.status(500);
+      res.send(err.statusCode);
+      return next(err);
+    }
+    let msg;
+    if (!result) {
+      msg = {
+        Error: 'Invalid login',
+      };
+      res.status(404).send(msg);
+    } else {
+      console.log(`Token: ${result}`);
+
+      msg = {
+        link,
+      };
+      res.status(200).send(msg);
+    }
+  });
+});
+
+// app.get('/reset-password/:id/:token', printDebugInfo, async (req, res) => {
+//   // calling getAllClassOfService method from admin model
+//   const { id, token } = req.params;
+
+//   forgetPassword.checkValid(id, token, (err, result) => {
+//     if (!err) {
+//       res.status(200).send(result);
+//     } else {
+//       res.status(500).send('Some error');
+//     }
+//   });
+// });
+app.put('/resetUserPassword/:id/:token', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const { id, token } = req.params;
+  const { confirmPassword } = req.body;
+  // calling getAdminById method from Admin model
+  forgetPassword.updateUserPassword(confirmPassword, id, (err, result) => {
+    if (!err) {
+      // if admin id is not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
 
 // get all Login
 app.post('/login', printDebugInfo, async (req, res, next) => {
