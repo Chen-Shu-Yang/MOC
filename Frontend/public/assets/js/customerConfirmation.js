@@ -127,7 +127,6 @@ function customerAutobooking() {
   let ExtraServices = $('#extraServicesId').val();
   if (ExtraServices === '') {
     ExtraServices = null;
-    console.log(ExtraServices);
   }
   const AdditionalInfo = $('#additionalInfo').html();
   const EstimatedTotal = $('#estimatedTotal').val();
