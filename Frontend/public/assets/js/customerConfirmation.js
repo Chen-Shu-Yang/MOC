@@ -85,7 +85,12 @@ function fillUpConfirmationCard() {
   $('#noOfRooms').html(roomNo);
   $('#noOfBath').html(bathRoomNo);
   $('#sizeRatings').html(ratesString);
-  $('#extraServices').html(additionalServiceString);
+
+  if (additionalServiceString === '') {
+    $('#extraServices').html('NIL');
+  } else {
+    $('#extraServices').html(additionalServiceString);
+  }
   $('#startDate').html(contractStartDate);
   $('#serviceDay').html(day1);
 
@@ -119,7 +124,11 @@ function customerAutobooking() {
   const ServiceDay2 = $('#serviceDay2').html();
   const ServiceTiming = $('#serviceTiming').html();
   const SizeRating = $('#sizeRatingsId').val();
-  const ExtraServices = $('#extraServicesId').val();
+  let ExtraServices = $('#extraServicesId').val();
+  if (ExtraServices === '') {
+    ExtraServices = null;
+    console.log(ExtraServices);
+  }
   const AdditionalInfo = $('#additionalInfo').html();
   const EstimatedTotal = $('#estimatedTotal').val();
 
