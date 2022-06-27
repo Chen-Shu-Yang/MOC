@@ -67,3 +67,40 @@
     background: none;
     text-decoration: none;
 }
+
+@media (max-width: 630px) {
+    .confirmation-section .max-width {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+
+    .confirmation-card {
+        width: 100%;
+    }
+
+    .confirmation-content {
+        width: 100%;
+    }
+}
+
+@media (max-width: 540px) {
+    .confirmation-section .max-width {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .confirmation-card {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 410px) {
+    .confirmation-section .max-width {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .confirmation-card {
+        padding: 10px;
+    }
+}
