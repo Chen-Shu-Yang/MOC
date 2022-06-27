@@ -6,6 +6,7 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+const CustomerID = localStorage.getItem('customerID');
 
 // Display the helper card
 // Helpers' information will be passed in as cardInfo
@@ -28,6 +29,40 @@ function createRow(cardInfo) {
         </div>
     `;
   return card;
+}
+
+function loadUserDetails(id) {
+  let userInfo;
+  // call the web service endpoint
+  $.ajax({
+    url: `${backEndUrl}/customerAddBooking/${id}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      for (let i = 0; i < data.length; i++) {
+        const user = data[i];
+
+        // compile the data that the card needs for its creation
+        userInfo = {
+          userNameInfo: user.FirstName,
+        };
+      }
+
+      $('#cUserNameInfo').html(userInfo.userNameInfo);
+    },
+    // errorhandling
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log('-----------------------');
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+    },
+  });
 }
 
 // Load the possible helpers available for
@@ -79,4 +114,5 @@ $(document).ready(() => {
   // Date is passed in
   const date = localStorage.getItem('contractStart');
   loadPossibleHelpers(date);
+  loadUserDetails(CustomerID);
 });

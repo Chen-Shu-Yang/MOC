@@ -9,6 +9,40 @@ const backEndUrl = 'http://localhost:5000';
 const CustomerID = localStorage.getItem('customerID');
 // const token = localStorage.getItem('token');
 
+function loadUserDetails(id) {
+  let userInfo;
+  // call the web service endpoint
+  $.ajax({
+    url: `${backEndUrl}/customerAddBooking/${id}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data) {
+      for (let i = 0; i < data.length; i++) {
+        const user = data[i];
+
+        // compile the data that the card needs for its creation
+        userInfo = {
+          userNameInfo: user.FirstName,
+        };
+      }
+
+      $('#cUserNameInfo').html(userInfo.userNameInfo);
+    },
+    // errorhandling
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log('-----------------------');
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+    },
+  });
+}
+
 // Function will fill up the confirm card
 function fillUpConfirmationCard() {
   // Retrieves the necessary details from the localstorage
@@ -148,6 +182,7 @@ function customerAutobooking() {
 
 $(document).ready(() => {
   fillUpConfirmationCard();
+  loadUserDetails(CustomerID);
 
   // Confirm button to trigger customer auto-booking
   $('#confirmBookingBtn').click(() => {

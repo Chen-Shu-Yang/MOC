@@ -114,7 +114,7 @@ app.get('/customer/profile', (req, res) => {
   res.sendFile('/public/assets/html/customerProfile.html', { root: __dirname });
 });
 
-// go to customer profile
+// go to customer booking history
 app.get('/customer/history', (req, res) => {
   res.sendFile('/public/assets/html/viewBooking.html', { root: __dirname });
 });

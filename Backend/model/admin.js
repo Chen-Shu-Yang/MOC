@@ -1082,8 +1082,6 @@ const Admin = {
         return callback(err);
       }
       // result accurate
-
-
       return callback(null, result); // if
     });
   },
