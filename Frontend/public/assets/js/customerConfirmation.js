@@ -92,9 +92,16 @@ function fillUpConfirmationCard() {
   // Check package to display second service date
   if (servicePackagesId === '2') {
     $('#serviceDay2').html(day2);
+  } else {
+    $('#serviceDay2').html('-');
   }
   $('#serviceTiming').html(time);
-  $('#additionalInfo').html(additionalInfo);
+
+  if (additionalInfo === '') {
+    $('#additionalInfo').html('NIL');
+  } else {
+    $('#additionalInfo').html(additionalInfo);
+  }
   $('#estimatedTotalCost').html(`$ ${totalEstCost}`);
   $('#estimatedTotal').val(totalEstCost);
 }
