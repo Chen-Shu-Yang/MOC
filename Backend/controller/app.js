@@ -3,6 +3,11 @@
 /* eslint-disable no-console */
 /* eslint-disable no-plusplus */
 
+// code
+/* eslint-disable no-shadow */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+
 // ====================== Imports ======================
 const express = require('express');
 
@@ -1364,9 +1369,8 @@ app.get('/contracts/:pageNumber', printDebugInfo, async (req, res) => {
     // if no error send result
     if (!err) {
       res.status(200).send(result);
-    }
+    } else {
     // if error send error message
-    else {
       const output = {
         Error: 'Internal sever issues',
       };
@@ -2153,9 +2157,8 @@ app.get('/contracts', printDebugInfo, async (req, res) => {
     // if no error send result
     if (!err) {
       res.status(200).send(result);
-    }
+    } else {
     // if error send error message
-    else {
       res.status(500).send('Some error');
     }
   });
@@ -2333,8 +2336,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    }
-    else if (DayOfService.includes('Tue')) {
+    } else if (DayOfService.includes('Tue')) {
       // find all dates of wednesday in the month using moment
       const TuesdaysInMonth = moment().weekdaysInMonth('Tuesday');
       // loop through the mondays and extract the date
@@ -2344,8 +2346,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    }
-    else if (DayOfService.includes('Wed')) {
+    } else if (DayOfService.includes('Wed')) {
       // find all dates of wednesday in the month using moment
       const WednesdayInMonth = moment().weekdaysInMonth('Wednesday');
       // loop through the mondays and extract the date
@@ -2355,8 +2356,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    }
-    else if (DayOfService.includes('Thu')) {
+    } else if (DayOfService.includes('Thu')) {
       // find all dates of wednesday in the month using moment
       const ThudaysInMonth = moment().weekdaysInMonth('Thursday');
       // loop through the mondays and extract the date
@@ -2366,8 +2366,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    }
-    else if (DayOfService.includes('Fri')) {
+    } else if (DayOfService.includes('Fri')) {
       // find all dates of wednesday in the month using moment
       const FridayInMonth = moment().weekdaysInMonth('Friday');
       // loop through the mondays and extract the date
@@ -2377,8 +2376,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    }
-    else if (DayOfService.includes('Sat')) {
+    } else if (DayOfService.includes('Sat')) {
       // find all dates of wednesday in the month using moment
       const SaturdaysInMonth = moment().weekdaysInMonth('Saturday');
       // loop through the mondays and extract the date
@@ -2388,8 +2386,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
         // call addbooking function
         AddBooking(ContractID, ScheduleDate);
       }
-    }
-    else if (DayOfService.includes('Sun')) {
+    } else if (DayOfService.includes('Sun')) {
       // find all dates of wednesday in the month using moment
       const SundaysInMonth = moment().weekdaysInMonth('Sunday');
       // loop through the mondays and extract the date
@@ -2446,9 +2443,8 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
                 // call dateSelection and pass ContractID and DayOfService2 as params
                 dateSelection(ContractID, DayOfService2);
               }
-            }
+            } else {
             // if error send error message
-            else {
               res.status(500).send('Some error');
             }
           });
