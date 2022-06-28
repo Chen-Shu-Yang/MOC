@@ -7,7 +7,7 @@
 
 // const res = require("express/lib/response");
 
-// const frontEndUrl = 'http://localhost:3001';
+const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
@@ -50,6 +50,7 @@ $(document).ready(() => {
               text: 'Email Sent',
             }).show(),
           );
+          window.location.replace(`${frontEndUrl}/login`);
           console.log(`${data.link}`);
         } else {
           console.log('Error');
