@@ -21,13 +21,17 @@ $(document).ready(() => {
     const urlParams = new URLSearchParams(idTOken);
     const id = urlParams.get('id');
     const token = urlParams.get('token');
-
+    console.log(token);
+    const tmpToken = token.replaceAll('"', '');
+    console.log(tmpToken);
+    console.log(token);
     // data compilation
     const info = {
       password,
     };
     // call web service endpoint
     $.ajax({
+      headers: { authorization: `Bearer ${tmpToken}` },
       url: `${backEndUrl}/resetUserPassword/${id}/${token}`,
       type: 'PUT',
       data: JSON.stringify(info),

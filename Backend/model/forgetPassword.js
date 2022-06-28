@@ -13,7 +13,7 @@ const frontEndUrl = 'http://localhost:3001';
 //= ======================================================
 // intialising pool
 const pool = require('../controller/databaseConfig');
-// const config = require('../config');
+const config = require('../config');
 
 //= ======================================================
 //              Functions / Objects
@@ -37,13 +37,22 @@ const forgetPassword = {
       // there must only be 1 result here
       // since email is unique
       // confirm if we have the key
-      const secretUser = jwt + result[0].Password;
+      // const secretUser = jwt + result[0].Password;
 
-      const Payload = {
-        email: result[0].email,
-        id: result[0].CustomerID,
-      };
-      const token = jwt.sign(Payload, secretUser, { expiresIn: '15m' });
+      const token = jwt.sign(
+        {
+          // (1)Payload
+          email: result[0].email,
+          id: result[0].CustomerID,
+        },
+        // (2) Secret Key
+        config.key,
+        // (3) Lifetime of a token
+        {
+          // expires in 15min hrs
+          expiresIn: 9000,
+        },
+      );
       const link = `${frontEndUrl}/resetPassword/?id=${result[0].CustomerID}&token=${token}`;
       console.log(link);
 

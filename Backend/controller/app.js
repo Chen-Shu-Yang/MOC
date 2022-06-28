@@ -19,7 +19,7 @@ const cors = require('cors');
 const moment = require('moment-weekdaysin');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
-// const verifyToken = require('../auth/isLoggedInMiddleWare');
+const verifyToken = require('../auth/isLoggedInMiddleWare');
 
 // ------------------ model ------------------
 const Login = require('../model/login');
@@ -103,19 +103,7 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
   });
 });
 
-// app.get('/reset-password/:id/:token', printDebugInfo, async (req, res) => {
-//   // calling getAllClassOfService method from admin model
-//   const { id, token } = req.params;
-
-//   forgetPassword.checkValid(id, token, (err, result) => {
-//     if (!err) {
-//       res.status(200).send(result);
-//     } else {
-//       res.status(500).send('Some error');
-//     }
-//   });
-// });
-app.put('/resetUserPassword/:id/:token', printDebugInfo, async (req, res) => {
+app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const { id, token } = req.params;
   const { password } = req.body;
