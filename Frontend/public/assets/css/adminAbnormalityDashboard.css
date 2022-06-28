@@ -1,20 +1,45 @@
-.profile-section {
-    padding-top: 10px;
-    padding-bottom: 20px;
+
+
+#graphContain{
+   margin-top: 150px !important;
+    background-color: #fff;
+  
+    margin: 40px auto;
+    width: 70%;
+ 
+
+
 }
 
-.profile-section .max-width {
-    margin: 0 80px;
-    display: flex;
-    align-items: left;
-    flex-direction: column;
-    justify-content: center;
+.ic{
+   margin:5px auto;
+}
+.card-body{
+    margin: 20px auto;
+    text-align: center;
+}
+.c1{
+    border: 2px solid black;
+    border-radius:10px !important; 
+}
+.ct1{
+    margin-top: 40px;
+}
+.modal-content .modal-footer .update-btn {
+    background: #84BC9E;
+    color: #fff;
 }
 
-.profile-section .container {
-    max-width: 98%;
+@media (max-width: 729px) {
+    .customer-section .max-width {
+        margin-right: 40px;
+        margin-left: 120px;
+    }
 }
 
-.btn-success {
-    background: #2E6869;
+
+@media (max-width: 580px) {
+    .customer-section .max-width {
+        margin: 0 40px
+    }
 }
