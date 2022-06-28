@@ -38,7 +38,7 @@ $(document).ready(() => {
             To: emails,
             From: 'farhanmashudi@gmail.com',
             Subject: 'Cancel Booking',
-            Body: `<h3>Link:${userLink} </h3>`,
+            Body: `<h3>Link: ${userLink} </h3>`,
           }).then(
             new Noty({
               timeout: '5000',
