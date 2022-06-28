@@ -50,8 +50,6 @@ $(document).ready(() => {
               text: 'Email Sent',
             }).show(),
           );
-          window.location.replace(`${frontEndUrl}/login`);
-          console.log(`${data.link}`);
         } else {
           console.log('Error');
         }
@@ -67,7 +65,7 @@ $(document).ready(() => {
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
-          text: 'Please check your Username and Password',
+          text: 'Please check your Email',
         }).show();
       },
     });
