@@ -665,7 +665,24 @@ const Admin = {
       return callback(null, result);
     });
   },
+  // get rate by id
+  getRateByPackage(id, callback) {
+  // sql query statement
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.rates where Package=?;';
 
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+    // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+    });
+  },
   // add new rate
   addRate(RateName, RatePrice, Package, callback) {
     // sql query statement
