@@ -2165,10 +2165,7 @@ app.get('/contracts', printDebugInfo, async (req, res) => {
 });
 
 app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
-  const contractIds = [];
-  let uniqueContractIds;
-  let customerIdss = [];
-  let uniqueCustomerIdss;
+ const customerIds=[];
 
   // function getCustomerId(contractId) {
   //   let x;
@@ -2187,36 +2184,72 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
 
   // }
 
-  Admin.getAllContractIdOfCancelledBooking((err, result) => {
-    let customerID;
-    if (!err) {
-      for (i = 0; i < result.length; i++) {
-        contractIds.push(result[i].ContractId);
+  function insertCancelAbnormaly(customerID) {
+    Admin.insertCancelAbnormality(customerID, (err, result) => {
+      // if no error send results as positive
+      if (!err) {
+        console.log('inserted');
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
+        res.status(406).send('Inappropriate value');
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+        res.status(400).send('Null value not allowed');
+      } else {
+        // else if there is a server error return message
+        res.status(500).send('Internal Server Error');
       }
-    
-      for (x = 0; x < contractIds.length; x++) {
-        const contractId = contractIds[x];
+    });
+  }
 
-       console.log("contract id: "+contractId)
-        Admin.getAContractByID(contractId, (err, result1) => {
-          // if there is no errorsend the following as result
-          if (err) {
-            res.status(500).send('Internal Server Error');
-          } else {
-          console.log(result1[0].Customer)
-            customerIdss.push(result1[0].Customer);
+  function getCancellationAbnormalyDetails() {
+    Admin.getCancellationAbnormailtyDetails((err, result) => {
+      let customerID;
+      let c=[]
+      let uc;
+      if (!err) {
+        for (i = 0; i < result.length; i++) {
+          customerID = result[i].Customer;
+          c.push(customerID)
+          if(!(customerIds.includes(customerID))){
+            insertCancelAbnormaly(customerID);
           }
-        });
         
-      }
-      console.log('******************************');
-      console.log(customerIdss);
+         
+        }
+         uc = [...new Set(c)];
 
-      res.status(200).send(customerIdss);
-    } else {
-      res.status(500).send('Some error');
-    }
-  });
+
+       
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+  }
+
+  function getAllCancelAbnormaly(){
+    Admin.getAllCancelAbnormalities((err, result) => {
+      let customerID;
+      if (!err) {
+      for(i=0;i<result.length;i++){
+       customerIds.push(result[i].CustomerID)
+      }
+      console.log("Customer ids in abnormality "+customerIds)
+  
+        res.status(200).send(result);
+      } else {
+        res.status(500).send('Some error');
+      }
+    })
+
+  }
+;
+
+//alreadyInDb
+getAllCancelAbnormaly()
+
+  getCancellationAbnormalyDetails()
 });
 
 // ====================== Super Admin Section ======================

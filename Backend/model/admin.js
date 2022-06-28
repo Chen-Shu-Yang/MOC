@@ -1117,11 +1117,62 @@ const Admin = {
       return callback(null, result);
     });
   },
-  getAllContractIdOfCancelledBooking(callback) {
+  getCancellationAbnormailtyDetails(callback) {
     // sql query statement
     const sql = `
-    SELECT distinct ContractId FROM heroku_6b49aedb7855c0b.booking where Status="Cancelled"
- and Month(ScheduleDate)=Month(curdate())  ;
+    SELECT distinct
+    b.ContractId,c.Customer,cu.FirstName,cu.LastName
+  FROM 
+    heroku_6b49aedb7855c0b.booking as b 
+      left join heroku_6b49aedb7855c0b.contract as c
+  on c.ContractId =b.ContractId 
+      left join heroku_6b49aedb7855c0b.customer as cu
+  on c.Customer =cu.CustomerID 
+  where b.Status="Cancelled"
+   and Month(b.ScheduleDate)=Month(curdate()) ;
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
+   // add new extra service
+   insertCancelAbnormality(CustomerID, callback) {
+    // sql query statement
+    const sql = `
+    INSERT INTO
+    heroku_6b49aedb7855c0b.cancel_booking_abnormality (
+     CustomerID
+  )
+VALUES
+(
+?
+);
+`;
+    // pool query
+    pool.query(sql, [CustomerID], (err, result) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result);
+
+      // pool.end()
+    });
+  },
+  getAllCancelAbnormalities(callback) {
+    // sql query statement
+    const sql = `
+    SELECT * FROM heroku_6b49aedb7855c0b.cancel_booking_abnormality;
+
     `;
     // pool query
     pool.query(sql, (err, result) => {
