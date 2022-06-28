@@ -34,6 +34,7 @@ function createRow(cardInfo) {
     ${(cardInfo.Employee === null) ? '-' : cardInfo.Employee}
     
   </td>
+  <td>${(cardInfo.AssignerF === null) ? '-' : cardInfo.AssignerF} ${(cardInfo.AssignerL === null) ? '-' : cardInfo.AssignerL}</td>
    <td class="status"> <div class="status-color ${cardInfo.Status}"></div>${cardInfo.Status}</td>
     <td><a type="button" href="/admin/assign?bookingid=${cardInfo.bookingID}" class="${(cardInfo.Status).includes('Completed') ? 'btn disabled' : (cardInfo.Status).includes('Cancelled') ? 'btn disabled' : 'btn btn-success'} ">Assign</a></td>
     <td>
@@ -119,6 +120,8 @@ function loadAllBookingByLimit(pageNumber) {
             Address: booking.Address,
             Employee: booking.EmployeeName,
             Status: booking.Status,
+            AssignerF: booking.AdminFName,
+            AssignerL: booking.AdminLName,
           };
           console.log('---------Card INfo data pack------------');
           console.log(bookingstbl);
