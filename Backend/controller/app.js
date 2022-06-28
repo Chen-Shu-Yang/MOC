@@ -1370,7 +1370,7 @@ app.get('/contracts/:pageNumber', printDebugInfo, async (req, res) => {
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };
@@ -2158,7 +2158,62 @@ app.get('/contracts', printDebugInfo, async (req, res) => {
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
+  const contractIds = [];
+  let uniqueContractIds;
+  let customerIdss = [];
+  let uniqueCustomerIdss;
+
+  // function getCustomerId(contractId) {
+  //   let x;
+  //   Admin.getAContractByID(contractId, (err, result1) => {
+  //     // if there is no errorsend the following as result
+  //     if (err) {
+  //       res.status(500).send('Internal Server Error');
+  //     } else {
+  //       x = result1[0].Customer;
+
+  //       return x;
+
+  //     }
+
+  //   });
+
+  // }
+
+  Admin.getAllContractIdOfCancelledBooking((err, result) => {
+    let customerID;
+    if (!err) {
+      for (i = 0; i < result.length; i++) {
+        contractIds.push(result[i].ContractId);
+      }
+    
+      for (x = 0; x < contractIds.length; x++) {
+        const contractId = contractIds[x];
+
+       console.log("contract id: "+contractId)
+        Admin.getAContractByID(contractId, (err, result1) => {
+          // if there is no errorsend the following as result
+          if (err) {
+            res.status(500).send('Internal Server Error');
+          } else {
+          console.log(result1[0].Customer)
+            customerIdss.push(result1[0].Customer);
+          }
+        });
+        
+      }
+      console.log('******************************');
+      console.log(customerIdss);
+
+      res.status(200).send(customerIdss);
+    } else {
       res.status(500).send('Some error');
     }
   });
@@ -2444,7 +2499,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
                 dateSelection(ContractID, DayOfService2);
               }
             } else {
-            // if error send error message
+              // if error send error message
               res.status(500).send('Some error');
             }
           });

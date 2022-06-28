@@ -1117,6 +1117,45 @@ const Admin = {
       return callback(null, result);
     });
   },
+  getAllContractIdOfCancelledBooking(callback) {
+    // sql query statement
+    const sql = `
+    SELECT distinct ContractId FROM heroku_6b49aedb7855c0b.booking where Status="Cancelled"
+ and Month(ScheduleDate)=Month(curdate())  ;
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
+
+  getAContractByID(id, callback) {
+    // sql query statement
+    const sql = 'SELECT Customer FROM heroku_6b49aedb7855c0b.contract where ContractID=?;';
+
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      // any results?
+      if (result.length === 0) {
+        // no results - callback with no err & results
+        console.log('this is null');
+        return callback(null, null);
+      }
+   
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================
