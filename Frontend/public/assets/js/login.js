@@ -48,7 +48,7 @@ $(document).ready(() => {
             localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
             localStorage.setItem('adminType', JSON.stringify(data.AdminType));
             localStorage.setItem('token', JSON.stringify(data.token));
-            window.location.replace(`${frontEndUrl}/superadmin/admin`);
+            window.location.replace(`${frontEndUrl}/admin/dashboard`);
           }
         } else {
           console.log('Error');

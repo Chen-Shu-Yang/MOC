@@ -60,7 +60,7 @@
                 </div>
                 <div class="nav-links">
                     <li>
-                        <a href="/admin/dashboard">
+                        <a href="/admin/dashboard" class="active">
                             <i class="fa-solid fa-chart-line"></i>
                             <span class="link_name">Dashboard</span>
                         </a>
@@ -78,7 +78,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/admin/pricing" class="active">
+                        <a href="/admin/pricing">
                             <i class="fa-solid fa-tags"></i>
                             <span class="link_name">Pricing</span>
                         </a>
@@ -113,8 +113,15 @@
                             <span class="link_name">Profile</span>
                         </a>
                     </li>
+                    <li id="adminNav">
+                        <a href="/superadmin/admin">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span class="link_name">Admins</span>
+                        </a>
+                    </li>
                 </div>
             </div>
+
 
             <!-- Home Content -->
             <section class="home-section">
@@ -149,33 +156,33 @@
                 <div class="row">
 
 
-                    <div id="valueContain"  class="card col-sm-6 ">
-                        <div  class="row">
-                        <div class="col-8 ml-5">
-                            <h1 id="revenueOfTheMonth"> </h1><br>
-                            <h6 id="revenueLabel">Revenue</h6>
+                    <div id="valueContain" class="card col-sm-6 ">
+                        <div class="row">
+                            <div class="col-8 ml-5">
+                                <h1 id="revenueOfTheMonth"> </h1><br>
+                                <h6 id="revenueLabel">Revenue</h6>
 
+                            </div>
+
+                            <div class="col-2">
+                                <i class="fa-solid fa-dollar-sign fa-2xl" id="dollarIcon"></i>
+                            </div>
                         </div>
-                       
-                        <div class="col-2">
-                        <i class="fa-solid fa-dollar-sign fa-2xl" id="dollarIcon" ></i>
-                        </div>
-                    </div>
 
                     </div>
-                    <div id="valueContain"  class="card col-sm-6 ">
-                        <div  class="row">
+                    <div id="valueContain" class="card col-sm-6 ">
+                        <div class="row">
                             <div class="col-8 ml-5">
                                 <h1 id="diffInBooking"> </h1><br>
                                 <h6 id="revenueLabel">Order</h6>
-    
+
                             </div>
-                           
+
                             <div class="col-2" id="statusOrder">
-                          
+
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
             </div>
@@ -212,6 +219,12 @@
 
     <script src="../../assets/js/adminNavbar.js"></script>
     <script src="../../assets/js/adminDashboard.js"></script>
+    <script>
+        var userType = localStorage.getItem('adminType');
+        if (userType === 'Admin') {
+           document.getElementById('adminNav').style.display = 'none';
+        }
+    </script>
 
 </body>
 

@@ -101,6 +101,12 @@
                     <span class="link_name">Profile</span>
                 </a>
             </li>
+            <li id="adminNav">
+                <a href="/superadmin/admin">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span class="link_name">Admins</span>
+                </a>
+            </li>
         </div>
     </div>
 
@@ -243,6 +249,13 @@
     </script>
     <script src="../../assets/js/adminNavbar.js"></script>
     <script src="../../assets/js/adminBooking.js"></script>
+    <script>
+        var userType = localStorage.getItem('adminType');
+        if (userType === 'Admin') {
+           document.getElementById('adminNav').style.display = 'none';
+        }
+    </script>
+
 </body>
 
 </html>

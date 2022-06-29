@@ -76,7 +76,7 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/booking">
+                <a href="/admin/superBooking">
                     <i class="fa-solid fa-calendar"></i>
                     <span class="link_name">Booking</span>
                 </a>
@@ -123,7 +123,7 @@
                     <span class="link_name">Profile</span>
                 </a>
             </li>
-            <li>
+            <li id="adminNav">
                 <a href="/superadmin/admin" class="active">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <span class="link_name">Admins</span>
@@ -284,6 +284,13 @@
 
     <script src="../../assets/js/adminNavbar.js"></script>
     <script src="../../assets/js/adminManagement.js"></script>
+    <script>
+        var userType = localStorage.getItem('adminType');
+        if (userType === 'Admin') {
+           document.getElementById('adminNav').style.display = 'none';
+        }
+    </script>
+
 </body>
 
 </html>
