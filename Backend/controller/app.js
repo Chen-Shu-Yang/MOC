@@ -2168,22 +2168,6 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
   const customerIds = [];
   let customerIdsU;
 
-  // function getCustomerId(contractId) {
-  //   let x;
-  //   Admin.getAContractByID(contractId, (err, result1) => {
-  //     // if there is no errorsend the following as result
-  //     if (err) {
-  //       res.status(500).send('Internal Server Error');
-  //     } else {
-  //       x = result1[0].Customer;
-
-  //       return x;
-
-  //     }
-
-  //   });
-
-  // }
 
   function insertCancelAbnormaly(customerID) {
     Admin.insertCancelAbnormality(customerID, (err, result) => {
@@ -2215,7 +2199,9 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
           c.push(customerID);
           customerIdsU = [...new Set(customerIds)];
 
-          if (!(customerIds.includes(customerID))) {
+          if ((customerIds.includes(customerID))) {
+           console.log(customerID+"is already inserted cutomerID")
+          }else{
             insertCancelAbnormaly(customerID);
           }
         }
@@ -2259,6 +2245,44 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
 
   getCancellationAbnormalyDetails();
  
+});
+
+app.put('/updateCancelAbnormality/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+ 
+
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Admin.updateCancelAbnormaityStatus(customerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.put('/updateCustomerStatus/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+ 
+
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Admin.updateCustomerStatus(customerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
 });
 
 // ====================== Super Admin Section ======================

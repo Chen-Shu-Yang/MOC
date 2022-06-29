@@ -1203,7 +1203,8 @@ VALUES
   getAllCancelAbnormalities(callback) {
     // sql query statement
     const sql = `
-    SELECT * FROM heroku_6b49aedb7855c0b.cancel_booking_abnormality;
+    SELECT * FROM heroku_6b49aedb7855c0b.cancel_booking_abnormality
+where month(created_at)=month(curdate());
 
     `;
     // pool query
@@ -1217,7 +1218,44 @@ VALUES
       return callback(null, result); // if
     });
   },
-
+  updateCancelAbnormaityStatus(id, callback) {
+    // sql query statement
+    const sql = `
+    UPDATE heroku_6b49aedb7855c0b.cancel_booking_abnormality
+    SET AbnormalityStatus = "Resolved"
+    WHERE CustomerID=?;
+       
+            `;
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+  updateCustomerStatus(id, callback) {
+    // sql query statement
+    const sql = `
+    UPDATE heroku_6b49aedb7855c0b.customer
+    SET Status = "suspend"
+    WHERE CustomerID=?;
+       
+            `;
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
   getAContractByID(id, callback) {
     // sql query statement
     const sql = 'SELECT Customer FROM heroku_6b49aedb7855c0b.contract where ContractID=?;';

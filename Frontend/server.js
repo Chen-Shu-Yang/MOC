@@ -101,6 +101,11 @@ app.get('/admin/dashboard', (req, res) => {
   res.sendFile('/public/assets/html/adminDashboard.html', { root: __dirname });
 });
 
+// go to admin dashboard
+app.get('/admin/cancelAbnormality', (req, res) => {
+  res.sendFile('/public/assets/html/adminCancelAbnormalityMain.html', { root: __dirname });
+});
+
 //= ======================================================
 //                   Customer
 //= ======================================================
