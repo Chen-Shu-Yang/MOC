@@ -51,6 +51,10 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
   res.sendFile('/public/assets/html/customerRegister.html', { root: __dirname });
 });
+// go to Register
+app.get('/service', (req, res) => {
+  res.sendFile('/public/assets/html/vSerivce.html', { root: __dirname });
+});
 
 //= ======================================================
 //                   Admin
