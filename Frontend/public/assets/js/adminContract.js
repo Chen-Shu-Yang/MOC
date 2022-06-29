@@ -117,6 +117,6 @@ $(document).ready(() => {
     console.log(`Query Param (source): ${window.location.search}`);
     console.log(`Query Param (extraction): ${queryParams}`);
 
-    loadAllContractByLimit(1);
+    loadAllContractByLimit('1');
     loadAllContracts()
 });
