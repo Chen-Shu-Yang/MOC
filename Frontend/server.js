@@ -101,6 +101,11 @@ app.get('/admin/dashboard', (req, res) => {
   res.sendFile('/public/assets/html/adminDashboard.html', { root: __dirname });
 });
 
+// go to admin contract abnormality
+app.get('/user/verified/', (req, res) => {
+  res.sendFile('/public/assets/html/verifyEmail.html', { root: __dirname });
+});
+
 //= ======================================================
 //                   Customer
 //= ======================================================

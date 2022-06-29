@@ -14,9 +14,18 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const moment = require('moment');
+// Email handler
+const nodemailer = require('nodemailer');
 
-// moment library call
-const moment = require('moment-weekdaysin');
+// Unique String
+const { v4: uuidv4 } = require('uuid');
+
+// env variables
+require('dotenv').config();
+
+// bcrypt
+const bcrypt = require('bcrypt');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 // const verifyToken = require('../auth/isLoggedInMiddleWare');
@@ -76,6 +85,222 @@ app.get('/', (req, res) => {
 // ====================== User Section ======================
 
 // get all Login
+
+// nodemailer stuff
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  service: 'gamil',
+  secure: true,
+  auth: {
+    user: process.env.AUTH_EMAIL,
+    pass: process.env.AUTH_PASS,
+  },
+});
+
+// testing success
+transporter.verify((error, success) => {
+  if (error) {
+    console.log(`${error}`);
+  } else {
+    console.log('Ready for messages');
+    console.log(success);
+  }
+});
+
+// send verification email
+const sendVerificationEmail = ({ _id, email }, res) => {
+  // url to be used in the email
+  const currentUrl = 'http://localhost:5000';
+  // const currentUrl = 'https://moc-ba.herokuapp.com;
+
+  const UniqueString = uuidv4() + _id;
+  console.log(`id = ${_id}`);
+  console.log(`UniqueString = ${UniqueString}`);
+
+  // mail options
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL,
+    to: email,
+    subject: 'Verify Your Email',
+    html: `
+    <p>Verify your email address to complete this signup and login to your account.</p>
+    <p>This <b>links expires in 6 hours</b>.</p>
+    <p>Press <a href='${`${currentUrl}/verify/${_id}/${UniqueString}`}'>here</a></p>`,
+  };
+
+  console.log(mailOptions.html);
+
+  // hash the uniqueString
+  const saltRounds = 10;
+  bcrypt
+    .hash(UniqueString, saltRounds)
+    .then((hashedUniqueString) => {
+      const createdAt = Date.now();
+      const expiresAt = Date.now() + 21600000;
+      console.log(`createdAt: ${createdAt}, expiresAt: ${expiresAt}`);
+      // set values in userVerification collection
+      // eslint-disable-next-line max-len
+      Register.verifyCustomerRecord(_id, hashedUniqueString, createdAt, expiresAt, (err, result) => {
+        if (err) {
+          console.log(`error: ${err}`);
+          res.status(200).json({
+            status: 'Failed',
+            message: 'Couldnt save verification email data!',
+          });
+        } else {
+          console.log('sends email');
+          transporter
+            .sendMail(mailOptions)
+            .then(() => {
+              console.log('email sent');
+              // email sent and verification record saved
+              res.status(200).json({
+                status: 'Pending',
+                message: 'Verification email sent',
+              });
+            })
+            .catch((error) => {
+              console.log(`error: ${error}`);
+              res.status(404).json({
+                status: 'Failed',
+                message: 'verification email failed!',
+              });
+            });
+        }
+      });
+    })
+    .catch(() => {
+      res.json({
+        status: 'Failed',
+        message: 'An error occurred while hashing email data!',
+      });
+    });
+};
+
+// verify email
+app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
+  const frontEndUrl = 'http://localhost:3001';
+  // const frontEndUrl = 'https://moc-fa.herokuapp.com';
+
+  const { userId, uniqueString } = req.params;
+  console.log(uniqueString);
+
+  // Check if verification record actually exist
+  Register.verifyCustomer(userId, uniqueString, (err, result) => {
+    if (err) {
+      // Show error
+      const message = 'An error occured while checking for existing user verification record';
+      res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+    } else {
+      console.log(`Verify Record: ${result}`);
+      // Show success
+      if (result.length > 0) {
+        // user verification record exists so we proceed
+        // check if the record expired
+        const expiresAt = result[0].ExpiresAt;
+        const hashedUniqueString = result[0].UniqueString;
+
+        if (expiresAt < Date.now()) {
+          // record has expired so we delete it
+          console.log('delete record');
+          Register.deleteVerificationRecord(userId, (err1, result1) => {
+            if (!err1) {
+              // calling deleteClass method from admin model
+              Register.deleteUnverifiedCustomer(userId, (err2, result2) => {
+                if (!err2) {
+                  const message = 'Link Expired. Sign up again.';
+                  res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+                } else {
+                  const message = 'Clearing user with expired unique string failed';
+                  res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+                }
+              });
+            } else {
+              const message = 'An error occured while clearing expired user verification record';
+              res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+            }
+          });
+        } else {
+          // If success, delete record
+          console.log(`
+          uniqueString: ${uniqueString}
+          hashedUniqueString: ${hashedUniqueString}`);
+          // Fist compare the hashed unique string
+
+          bcrypt
+            .compare(uniqueString, hashedUniqueString)
+            .then((result3) => {
+              console.log(result3);
+              if (result3) {
+                // Strings match
+                // calling updateSuperAdmin method from SuperAdmin model
+                Register.updateVerificationStatus(1, userId, (err4, result4) => {
+                  // if there is no errorsend the following as result
+                  if (!err4) {
+                    Register.deleteVerificationRecord(userId, (err5, result5) => {
+                      if (!err5) {
+                        const message = 'Your email has been successfully been verified. You may proceed to login.';
+                        res.redirect(`${frontEndUrl}/user/verified?error=false&message=${message}`);
+                      } else {
+                        const message = 'An error occured while finalising successful verification';
+                        res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+                      }
+                    });
+                  } else {
+                    console.log(err4);
+                    const message = 'An error occrured while updating user record to show verified.';
+                    res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+                  }
+                });
+              } else {
+                // Existing record but incorrect verification details passed
+                const message = 'Invalid verification details passed. Check your inbox.';
+                res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+              }
+            })
+            .catch((error) => {
+              const message = 'An error occured while comparing unique string';
+              res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+            });
+        }
+      } else {
+        // user verification record does not exist
+        const message = 'Account record does not exist or has been verified already. Please sign up or login.';
+        res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
+      }
+    }
+  });
+});
+
+// register
+app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
+  const { FirstName } = req.body;
+  const { LastName } = req.body;
+  const { Password } = req.body;
+  const { Email } = req.body;
+  const { Address } = req.body;
+  const { PhoneNumber } = req.body;
+  const { PostalCode } = req.body;
+
+  // eslint-disable-next-line max-len
+  Register.registerCustomer(FirstName, LastName, Password, Email, Address, PhoneNumber, PostalCode, (err, result) => {
+    if (err) {
+      // matched with callback (err, null)
+      console.log(err);
+      res.status(500).send(err.statusCode);
+    } else {
+      const returnResult = {
+        _id: result.insertId,
+        email: Email,
+      };
+
+      // Handle account verification
+      sendVerificationEmail(returnResult, res);
+    }
+  });
+});
+
+// get all Login
 app.post('/login', printDebugInfo, async (req, res, next) => {
   const { email } = req.body;
   const { password } = req.body;
@@ -96,37 +321,21 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
       res.status(404).send(msg);
     } else {
       console.log(`Token: ${result}`);
-      msg = {
-        AdminID: result.AdminID,
-        token,
-        CustomerID: result.CustomerID,
-        AdminType: result.AdminType,
-      };
-      res.status(200).send(msg);
-    }
-  });
-});
 
-// register
-app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
-  const { FirstName } = req.body;
-  const { LastName } = req.body;
-  const { Password } = req.body;
-  const { Email } = req.body;
-  const { Address } = req.body;
-  const { PhoneNumber } = req.body;
-  const { PostalCode } = req.body;
-
-  // eslint-disable-next-line max-len
-  Register.registerCustomer(FirstName, LastName, Password, Email, Address, PhoneNumber, PostalCode, (err, result) => {
-    if (err) {
-      // matched with callback (err, null)
-      console.log(err);
-      res.status(500);
-      res.send(err.statusCode);
-      return next(err);
+      // Check if customer email is verified
+      if (result.Verified[0] !== 1) {
+        msg = 'Your email is not verified!';
+        res.status(404).send(msg);
+      } else {
+        msg = {
+          AdminID: result.AdminID,
+          token,
+          CustomerID: result.CustomerID,
+          SuperAdminID: result.SuperAdminID,
+        };
+        res.status(200).send(msg);
+      }
     }
-    res.status(201).send(result);
   });
 });
 
@@ -1370,7 +1579,7 @@ app.get('/contracts/:pageNumber', printDebugInfo, async (req, res) => {
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };
@@ -2158,7 +2367,7 @@ app.get('/contracts', printDebugInfo, async (req, res) => {
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       res.status(500).send('Some error');
     }
   });
@@ -2444,7 +2653,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
                 dateSelection(ContractID, DayOfService2);
               }
             } else {
-            // if error send error message
+              // if error send error message
               res.status(500).send('Some error');
             }
           });
