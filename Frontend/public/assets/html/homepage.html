@@ -279,16 +279,22 @@
 														class="menu_icon blank fa"></i><span>Contact Us</span><span
 														class="plus"></span></a>
 											</li>
-											<li id="nav-menu-item-16424"
+											<li id="nav-menu-item-1642909"
 												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-												<a href="login" class=""><i
+												<a href="/login" class=""><i
 														class="menu_icon blank fa"></i><span>Login</span><span
 														class="plus"></span></a>
 											</li>
-											<li id="nav-menu-item-16424"
+											<li id="nav-menu-item-1642908"
 												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-												<a href="contact/index.html" class=""><i
+												<a href="/register" class=""><i
 														class="menu_icon blank fa"></i><span>Register</span><span
+														class="plus"></span></a>
+											</li>
+											<li id="nav-menu-item-164907"
+												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+												<a href="/customer/history" class=""><i
+														class="menu_icon blank fa"></i><span>Booking History</span><span
 														class="plus"></span></a>
 											</li>
 										</ul>
@@ -358,16 +364,23 @@
 													href="contact/index.html" class=""><span>Contact Us</span></a><span
 													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
 														class="fa fa-angle-down"></i></span></li>
-														<li id="mobile-menu-item-16424"
-														class="menu-item menu-item-type-post_type menu-item-object-page "><a
-															href="login" class=""><span>Login</span></a><span class="mobile_arrow"><i
-																class="fa fa-angle-right"></i><i class="fa fa-angle-down"></i></span>
-													</li>
-													<li id="mobile-menu-item-16424"
-														class="menu-item menu-item-type-post_type menu-item-object-page "><a
-															href="contact/index.html" class=""><span>Register</span></a><span
-															class="mobile_arrow"><i class="fa fa-angle-right"></i><i
-																class="fa fa-angle-down"></i></span></li>
+											<li id="mobile-menu-item-164249"
+												class="menu-item menu-item-type-post_type menu-item-object-page "><a
+													href="/login" class=""><span>Login</span></a><span
+													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
+														class="fa fa-angle-down"></i></span>
+											</li>
+											<li id="mobile-menu-item-164248"
+												class="menu-item menu-item-type-post_type menu-item-object-page "><a
+													href="/register" class=""><span>Register</span></a><span
+													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
+														class="fa fa-angle-down"></i></span></li>
+											<li id="mobile-menu-item-164247"
+												class="menu-item menu-item-type-post_type menu-item-object-page "><a
+													href="/customer/history" class=""><span>Booking
+														History</span></a><span class="mobile_arrow"><i
+														class="fa fa-angle-right"></i><i
+														class="fa fa-angle-down"></i></span></li>
 										</ul>
 									</nav>
 								</div>
@@ -1161,6 +1174,19 @@
 
 		</div>
 	</div>
+
+	<script>
+        var userType = localStorage.getItem('customerID');
+         if (userType != null) {
+            document.getElementById('nav-menu-item-1642909').style.display = 'none';
+            document.getElementById('mobile-menu-item-164249').style.display = 'none';
+			document.getElementById('nav-menu-item-1642908').style.display = 'none';
+            document.getElementById('mobile-menu-item-164248').style.display = 'none';
+         }else{
+             document.getElementById('nav-menu-item-164907').style.display = 'none';
+			 document.getElementById('mobile-menu-item-164247').style.display = 'none';
+         }
+     </script>
 	<script type='text/javascript'>
 		/* <![CDATA[ */
 		var wpcf7 = { "apiSettings": { "root": "http:\/\/moc.sg\/wp-json\/", "namespace": "contact-form-7\/v1" }, "recaptcha": { "messages": { "empty": "Please verify that you are not a robot." } }, "cached": "1" };
