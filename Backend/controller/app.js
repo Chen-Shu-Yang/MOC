@@ -2241,7 +2241,7 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
   }
 
   function finalOp() {
-    Admin.getAllCancelAbnormalities((err, result) => {
+    Admin.getCancellationAbnormailtyDisplay((err, result) => {
    
       if (!err) {
         res.status(200).send(result);
