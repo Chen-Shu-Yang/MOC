@@ -104,7 +104,7 @@ app.get('/admin/dashboard', (req, res) => {
 //= ======================================================
 //                   Customer
 //= ======================================================
-// go to admin Cancel Booking
+// go to  Booking
 app.get('/customer/booking', (req, res) => {
   res.sendFile('/public/assets/html/customerBooking.html', { root: __dirname });
 });
