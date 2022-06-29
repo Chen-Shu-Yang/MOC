@@ -1277,6 +1277,50 @@ where month(created_at)=month(curdate());
       return callback(null, result);
     });
   },
+  getNumberOfBookingCancelledTheMonth(id, callback) {
+    // sql query statement
+    const sql = `SELECT count(BookingID) as NumBookingCancel FROM
+    heroku_6b49aedb7855c0b.booking where (month(cancelled_at)=month(curdate())) and ContractId=?;`
+
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      // any results?
+      if (result.length === 0) {
+        // no results - callback with no err & results
+        console.log('this is null');
+        return callback(null, null);
+      }
+   
+      return callback(null, result);
+    });
+  },
+  getBookingCancelledTheMonthById(id, callback) {
+    // sql query statement
+    const sql = `SELECT * FROM heroku_6b49aedb7855c0b.booking where
+    (month(cancelled_at)=month(curdate())) and ContractId=? ;`
+
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      // any results?
+      if (result.length === 0) {
+        // no results - callback with no err & results
+        console.log('this is null');
+        return callback(null, null);
+      }
+   
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================
