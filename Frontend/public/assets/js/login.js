@@ -38,7 +38,7 @@ $(document).ready(() => {
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('customerID', JSON.stringify(data.CustomerID));
-            window.location.replace(`${frontEndUrl}/customer/history`);
+            window.location.replace(`${frontEndUrl}/customer/profile`);
           } else if (data.AdminType === 'Admin') {
             localStorage.setItem('AdminID', JSON.stringify(data.AdminID));
             localStorage.setItem('adminType', JSON.stringify(data.AdminType));
