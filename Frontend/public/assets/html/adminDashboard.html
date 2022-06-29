@@ -65,8 +65,14 @@
                             <span class="link_name">Dashboard</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="/admin/booking">
+                    <li id="superAdminBooking">
+                        <a href="/admin/superBooking">
+                            <i class="fa-solid fa-calendar"></i>
+                            <span class="link_name">Booking</span>
+                        </a>
+                    </li>
+                    <li id="adminBooking">
+                        <a href="/admin/booking" >
                             <i class="fa-solid fa-calendar"></i>
                             <span class="link_name">Booking</span>
                         </a>
@@ -84,7 +90,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/admin/employee">
+                        <a href="/admin/employee" >
                             <i class="fa-solid fa-users"></i>
                             <span class="link_name">Employee</span>
                         </a>
@@ -114,7 +120,7 @@
                         </a>
                     </li>
                     <li id="adminNav">
-                        <a href="/superadmin/admin">
+                        <a href="/superadmin/admin" >
                             <i class="fa-solid fa-circle-exclamation"></i>
                             <span class="link_name">Admins</span>
                         </a>
@@ -189,32 +195,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- Scripts -->
 
     <script src="../../assets/js/adminNavbar.js"></script>
@@ -223,7 +203,11 @@
         var userType = localStorage.getItem('adminType');
         if (userType === 'Admin') {
            document.getElementById('adminNav').style.display = 'none';
+           document.getElementById('superAdminBooking').style.display = 'none';
+        }else{
+            document.getElementById('adminBooking').style.display = 'none';
         }
+
     </script>
 
 </body>

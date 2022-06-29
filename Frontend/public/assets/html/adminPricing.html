@@ -61,8 +61,14 @@
                             <span class="link_name">Dashboard</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="/admin/booking">
+                    <li id="superAdminBooking">
+                        <a href="/admin/superBooking" >
+                            <i class="fa-solid fa-calendar"></i>
+                            <span class="link_name">Booking</span>
+                        </a>
+                    </li>
+                    <li id="adminBooking">
+                        <a href="/admin/booking" >
                             <i class="fa-solid fa-calendar"></i>
                             <span class="link_name">Booking</span>
                         </a>
@@ -80,7 +86,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/admin/employee">
+                        <a href="/admin/employee" >
                             <i class="fa-solid fa-users"></i>
                             <span class="link_name">Employee</span>
                         </a>
@@ -529,10 +535,13 @@
             <script src="../../assets/js/adminPricing.js"></script>
             <script>
                 var userType = localStorage.getItem('adminType');
-                if (userType === 'Admin') {
-                   document.getElementById('adminNav').style.display = 'none';
-                }
-            </script>
+                 if (userType === 'Admin') {
+                    document.getElementById('adminNav').style.display = 'none';
+                    document.getElementById('superAdminBooking').style.display = 'none';
+                 }else{
+                     document.getElementById('adminBooking').style.display = 'none';
+                 }
+             </script>
         
 </body>
 

@@ -52,7 +52,13 @@
                 <span class="link_name">Dashboard</span>
             </a>
         </li>
-        <li>
+        <li id="superAdminBooking">
+            <a href="/admin/superBooking" class="active">
+                <i class="fa-solid fa-calendar"></i>
+                <span class="link_name">Booking</span>
+            </a>
+        </li>
+        <li id="adminBooking">
             <a href="/admin/booking" class="active">
                 <i class="fa-solid fa-calendar"></i>
                 <span class="link_name">Booking</span>
@@ -213,9 +219,12 @@
     <script src="../assets/js/adminNavbar.js"></script>
     <script src="../assets/js/assignEmployee.js"></script>
     <script>
-        var userType = localStorage.getItem('adminType');
+       var userType = localStorage.getItem('adminType');
         if (userType === 'Admin') {
            document.getElementById('adminNav').style.display = 'none';
+           document.getElementById('superAdminBooking').style.display = 'none';
+        }else{
+            document.getElementById('adminBooking').style.display = 'none';
         }
     </script>
 
