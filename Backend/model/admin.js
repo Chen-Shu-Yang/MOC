@@ -1129,7 +1129,9 @@ const Admin = {
       left join heroku_6b49aedb7855c0b.customer as cu
   on c.Customer =cu.CustomerID 
   where b.Status="Cancelled"
-   and Month(b.ScheduleDate)=Month(curdate()) ;
+   and Month(b.ScheduleDate)=Month(curdate())
+   group by c.Customer
+    
     `;
     // pool query
     pool.query(sql, (err, result) => {

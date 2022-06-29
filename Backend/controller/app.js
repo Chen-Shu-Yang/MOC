@@ -2165,7 +2165,8 @@ app.get('/contracts', printDebugInfo, async (req, res) => {
 });
 
 app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
- const customerIds=[];
+  const customerIds = [];
+  let customerIdsU;
 
   // function getCustomerId(contractId) {
   //   let x;
@@ -2206,50 +2207,55 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
   function getCancellationAbnormalyDetails() {
     Admin.getCancellationAbnormailtyDetails((err, result) => {
       let customerID;
-      let c=[]
+      const c = [];
       let uc;
       if (!err) {
         for (i = 0; i < result.length; i++) {
           customerID = result[i].Customer;
-          c.push(customerID)
-          if(!(customerIds.includes(customerID))){
+          c.push(customerID);
+          customerIdsU = [...new Set(customerIds)];
+
+          if (!(customerIds.includes(customerID))) {
             insertCancelAbnormaly(customerID);
           }
-        
-         
         }
-         uc = [...new Set(c)];
+        finalOp();
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+    
+  }
 
-
-       
+  function getAllCancelAbnormaly() {
+    Admin.getAllCancelAbnormalities((err, result) => {
+      let customerID;
+      if (!err) {
+        for (i = 0; i < result.length; i++) {
+          customerIds.push(result[i].CustomerID);
+        }
       } else {
         res.status(500).send('Some error');
       }
     });
   }
 
-  function getAllCancelAbnormaly(){
+  function finalOp() {
     Admin.getAllCancelAbnormalities((err, result) => {
-      let customerID;
+   
       if (!err) {
-      for(i=0;i<result.length;i++){
-       customerIds.push(result[i].CustomerID)
-      }
-      console.log("Customer ids in abnormality "+customerIds)
-  
         res.status(200).send(result);
       } else {
         res.status(500).send('Some error');
       }
-    })
-
+    });
   }
-;
 
-//alreadyInDb
-getAllCancelAbnormaly()
+  // alreadyInDb
+  getAllCancelAbnormaly();
 
-  getCancellationAbnormalyDetails()
+  getCancellationAbnormalyDetails();
+ 
 });
 
 // ====================== Super Admin Section ======================
