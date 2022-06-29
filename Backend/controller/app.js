@@ -2219,7 +2219,7 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
             insertCancelAbnormaly(customerID);
           }
         }
-        finalOp();
+       finalOp();
       } else {
         res.status(500).send('Some error');
       }
@@ -2249,7 +2249,10 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
         res.status(500).send('Some error');
       }
     });
+  
+
   }
+
 
   // alreadyInDb
   getAllCancelAbnormaly();

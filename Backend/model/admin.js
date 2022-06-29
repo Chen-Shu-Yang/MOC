@@ -1144,6 +1144,36 @@ const Admin = {
       return callback(null, result); // if
     });
   },
+  getCancellationAbnormailtyDisplay(callback) {
+    // sql query statement
+    const sql = `
+    
+ SELECT distinct
+ cab.CancelBookingAbn,c.Customer,cu.FirstName,cu.LastName
+ FROM 
+   heroku_6b49aedb7855c0b.booking as b 
+     left join heroku_6b49aedb7855c0b.contract as c
+ on c.ContractId =b.ContractId 
+     left join heroku_6b49aedb7855c0b.customer as cu
+ on c.Customer =cu.CustomerID 
+ left join heroku_6b49aedb7855c0b.cancel_booking_abnormality as cab
+ on cu.CustomerID=cab.CustomerID
+ where( b.Status="Cancelled"
+  and Month(b.ScheduleDate)=Month(curdate())) and cab.AbnormalityStatus="Unresolved"
+  group by c.Customer;
+    
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
    // add new extra service
    insertCancelAbnormality(CustomerID, callback) {
     // sql query statement
