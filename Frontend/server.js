@@ -34,6 +34,10 @@ app.get('/', (req, res) => {
   res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
 
+app.get('/academy', (req, res) => {
+  res.sendFile('/public/assets/html/academy.html', { root: __dirname });
+});
+
 // go to homepage
 app.get('/homepage', (req, res) => {
   res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
