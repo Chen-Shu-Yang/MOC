@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 // forgetPassword
 app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
   const { email } = req.body;
-
+  console.log(email);
   forgetPassword.Verify(email, (err, link, result) => {
     if (err) {
       // matched with callback (err, null)
@@ -97,6 +97,7 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
 
       msg = {
         link,
+        firstName: result.FirstName,
       };
       res.status(200).send(msg);
     }
