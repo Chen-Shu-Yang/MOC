@@ -120,6 +120,11 @@ app.get('/admin/dashboard', (req, res) => {
   res.sendFile('/public/assets/html/adminDashboard.html', { root: __dirname });
 });
 
+// go to admin dashboard
+app.get('/admin/cancelAbnormality', (req, res) => {
+  res.sendFile('/public/assets/html/adminCancelAbnormalityMain.html', { root: __dirname });
+});
+
 //= ======================================================
 //                   Customer
 //= ======================================================
@@ -158,6 +163,9 @@ app.get('/superadmin/admin', (req, res) => {
 
 app.get('/admin/superBooking', (req, res) => {
   res.sendFile('/public/assets/html/superAdminBooking.html', { root: __dirname });
+});
+app.get('/admin/adminAbnormalityDashboard', (req, res) => {
+  res.sendFile('/public/assets/html/adminAbnormalityDashboard.html', { root: __dirname });
 });
 
 // retrieve from public folder

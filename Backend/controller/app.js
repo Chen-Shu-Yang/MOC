@@ -1454,7 +1454,7 @@ app.get('/contracts/:pageNumber', printDebugInfo, verifyToken, async (req, res) 
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };
@@ -2242,8 +2242,129 @@ app.get('/contracts', printDebugInfo, async (req, res) => {
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       res.status(500).send('Some error');
+    }
+  });
+});
+
+app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
+  const customerIds = [];
+  let customerIdsU;
+
+
+  function insertCancelAbnormaly(customerID) {
+    Admin.insertCancelAbnormality(customerID, (err, result) => {
+      // if no error send results as positive
+      if (!err) {
+        console.log('inserted');
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
+        res.status(406).send('Inappropriate value');
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+        res.status(400).send('Null value not allowed');
+      } else {
+        // else if there is a server error return message
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  }
+
+  function getCancellationAbnormalyDetails() {
+    Admin.getCancellationAbnormailtyDetails((err, result) => {
+      let customerID;
+      const c = [];
+      let uc;
+      if (!err) {
+        for (i = 0; i < result.length; i++) {
+          customerID = result[i].Customer;
+          c.push(customerID);
+          customerIdsU = [...new Set(customerIds)];
+
+          if ((customerIds.includes(customerID))) {
+           console.log(customerID+"is already inserted cutomerID")
+          }else{
+            insertCancelAbnormaly(customerID);
+          }
+        }
+       finalOp();
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+    
+  }
+
+  function getAllCancelAbnormaly() {
+    Admin.getAllCancelAbnormalities((err, result) => {
+      let customerID;
+      if (!err) {
+        for (i = 0; i < result.length; i++) {
+          customerIds.push(result[i].CustomerID);
+        }
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+  }
+
+  function finalOp() {
+    Admin.getCancellationAbnormailtyDisplay((err, result) => {
+   
+      if (!err) {
+        res.status(200).send(result);
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+  
+
+  }
+
+
+  // alreadyInDb
+  getAllCancelAbnormaly();
+
+  getCancellationAbnormalyDetails();
+ 
+});
+
+app.put('/updateCancelAbnormality/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+ 
+
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Admin.updateCancelAbnormaityStatus(customerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.put('/updateCustomerStatus/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+ 
+
+  // calling updateCustProfile method from customer model
+  // eslint-disable-next-line max-len
+  Admin.updateCustomerStatus(customerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      console.log(`result ${result.affectedRows}`);
+
+      res.status(202).send(result);
+    } else {
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -2528,7 +2649,7 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
                 dateSelection(ContractID, DayOfService2);
               }
             } else {
-            // if error send error message
+              // if error send error message
               res.status(500).send('Some error');
             }
           });
