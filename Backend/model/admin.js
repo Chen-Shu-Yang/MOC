@@ -335,13 +335,15 @@ const Admin = {
     // sql statement to limit and skip
     const sql = `
     SELECT
-    b.BookingID,b.Admin,DATE_ADD(b.ScheduleDate, INTERVAL 1 DAY) ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    b.BookingID,b.Admin,DATE_ADD(b.ScheduleDate, INTERVAL 1 DAY) ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,
+    cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address,a.FirstName as AdminFName,a.LastName as AdminLName
     FROM
     heroku_6b49aedb7855c0b.booking b
     join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractId
     join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
     join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
     left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
+    left join heroku_6b49aedb7855c0b.admin a on b.Admin = a.AdminID
     join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID LIMIT ? OFFSET ?;
   
     `;
@@ -1040,7 +1042,7 @@ const Admin = {
   },
   // get number of booking made by therir month
   getBookingByMonth(callback) {
-  // sql query statement to get number of booking made by therir month
+    // sql query statement to get number of booking made by therir month
     const sql = ` select month(ScheduleDate) as month, count(ScheduleDate) as numberOfBooking, Status 
   from heroku_6b49aedb7855c0b.booking 
   WHERE     year(ScheduleDate) = year(curdate())  and Status='Completed'
@@ -1048,7 +1050,7 @@ const Admin = {
   `;
     // pool query
     pool.query(sql, (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -1059,7 +1061,7 @@ const Admin = {
     });
   },
   getRevenueOfTheMonth(callback) {
-  // sql query statement to get revenue
+    // sql query statement to get revenue
     const sql = `
   select c.ContractID ,(c.EstimatedPricing * count(b.BookingID))
   as Revenue,count(b.BookingID) from heroku_6b49aedb7855c0b.contract 
@@ -1071,7 +1073,7 @@ const Admin = {
   `;
     // pool query
     pool.query(sql, (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
