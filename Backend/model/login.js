@@ -53,7 +53,8 @@ const Login = {
           const token = jwt.sign(
             {
               // (1)Payload
-              CustomerID: result[0].CustomerID,
+              email: result[0].email,
+              id: result[0].CustomerID,
             },
             // (2) Secret Key
             config.key,
@@ -76,7 +77,8 @@ const Login = {
         const token = jwt.sign(
           {
           // (1)Payload
-            AdminID: result[0].AdminID,
+            email: result[0].email,
+            id: result[0].AdminID,
           },
           // (2) Secret Key
           config.key,

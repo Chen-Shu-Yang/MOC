@@ -1444,7 +1444,7 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
 //= ======================================================
 
 // get Contracts per page
-app.get('/contracts/:pageNumber', printDebugInfo, async (req, res) => {
+app.get('/contracts/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
   // extract pageNumber from parameter
   const { pageNumber } = req.params;
 

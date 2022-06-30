@@ -9,7 +9,7 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
-
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 // Create a new card for Contracts
 function createRow(cardInfo) {
   // cardInfo data is place in each respective place
@@ -68,7 +68,9 @@ function loadAllContracts() {
 // Load contracts restricted to 6 row per page
 function loadAllContractByLimit(pageNumber) {
   // call the web service endpoint
+
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/contracts/${pageNumber}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
