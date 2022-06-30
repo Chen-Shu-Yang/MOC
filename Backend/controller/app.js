@@ -323,7 +323,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
       console.log(`Token: ${result}`);
 
       // Check if customer email is verified
-      if (result.Verified[0] !== 1) {
+      if (result.Verified !== 1) {
         msg = 'Your email is not verified!';
         res.status(404).send(msg);
       } else {
