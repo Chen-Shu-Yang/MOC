@@ -37,8 +37,12 @@ $(document).ready(() => {
             Password: '2F86A2CBC29B22A70B627E953FB42FD7CBB1',
             To: emails,
             From: 'farhanmashudi@gmail.com',
-            Subject: 'Cancel Booking',
-            Body: `<h3>Link: ${userLink} </h3>`,
+            Subject: 'Reset Password: MOC',
+            Body: `<h3> Hi </h3>
+            <p>Your link will expire in 15 min* </p>
+            <p> To reset your Password, please <a href='${userLink}' class="nav-item nav-link">Click here</a> </p>
+            <p> Or copy and paste the URL into your browser, ${userLink} </p>
+            `,
           }).then(
             new Noty({
               timeout: '5000',
