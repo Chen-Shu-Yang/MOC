@@ -2461,7 +2461,6 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
   const customerIds = [];
   let customerIdsU;
 
-
   function insertCancelAbnormaly(customerID) {
     Admin.insertCancelAbnormality(customerID, (err, result) => {
       // if no error send results as positive
@@ -2480,7 +2479,15 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
       }
     });
   }
-
+  function finalOp() {
+    Admin.getCancellationAbnormailtyDisplay((err, result) => {
+      if (!err) {
+        res.status(200).send(result);
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+  }
   function getCancellationAbnormalyDetails() {
     Admin.getCancellationAbnormailtyDetails((err, result) => {
       let customerID;
@@ -2493,17 +2500,16 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
           customerIdsU = [...new Set(customerIds)];
 
           if ((customerIds.includes(customerID))) {
-           console.log(customerID+"is already inserted cutomerID")
-          }else{
+            console.log(`${customerID}is already inserted cutomerID`);
+          } else {
             insertCancelAbnormaly(customerID);
           }
         }
-       finalOp();
+        finalOp();
       } else {
         res.status(500).send('Some error');
       }
     });
-    
   }
 
   function getAllCancelAbnormaly() {
@@ -2519,31 +2525,15 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
     });
   }
 
-  function finalOp() {
-    Admin.getCancellationAbnormailtyDisplay((err, result) => {
-   
-      if (!err) {
-        res.status(200).send(result);
-      } else {
-        res.status(500).send('Some error');
-      }
-    });
-  
-
-  }
-
-
   // alreadyInDb
   getAllCancelAbnormaly();
 
   getCancellationAbnormalyDetails();
- 
 });
 
 app.put('/updateCancelAbnormality/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const customerId = req.params.id;
- 
 
   // calling updateCustProfile method from customer model
   // eslint-disable-next-line max-len
@@ -2562,7 +2552,6 @@ app.put('/updateCancelAbnormality/:id', printDebugInfo, (req, res) => {
 app.put('/updateCustomerStatus/:id', printDebugInfo, (req, res) => {
   // extract id from params
   const customerId = req.params.id;
- 
 
   // calling updateCustProfile method from customer model
   // eslint-disable-next-line max-len

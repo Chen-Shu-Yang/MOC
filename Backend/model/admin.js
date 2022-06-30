@@ -1193,8 +1193,8 @@ const Admin = {
       return callback(null, result); // if
     });
   },
-   // add new extra service
-   insertCancelAbnormality(CustomerID, callback) {
+  // add new extra service
+  insertCancelAbnormality(CustomerID, callback) {
     // sql query statement
     const sql = `
     INSERT INTO
@@ -1292,14 +1292,13 @@ where month(created_at)=month(curdate());
         console.log('this is null');
         return callback(null, null);
       }
-   
       return callback(null, result);
     });
   },
   getNumberOfBookingCancelledTheMonth(id, callback) {
     // sql query statement
     const sql = `SELECT count(BookingID) as NumBookingCancel FROM
-    heroku_6b49aedb7855c0b.booking where (month(cancelled_at)=month(curdate())) and ContractId=?;`
+    heroku_6b49aedb7855c0b.booking where (month(cancelled_at)=month(curdate())) and ContractId=?;`;
 
     // pool query
     pool.query(sql, [id], (err, result) => {
@@ -1314,14 +1313,13 @@ where month(created_at)=month(curdate());
         console.log('this is null');
         return callback(null, null);
       }
-   
       return callback(null, result);
     });
   },
   getBookingCancelledTheMonthById(id, callback) {
     // sql query statement
     const sql = `SELECT * FROM heroku_6b49aedb7855c0b.booking where
-    (month(cancelled_at)=month(curdate())) and ContractId=? ;`
+    (month(cancelled_at)=month(curdate())) and ContractId=? ;`;
 
     // pool query
     pool.query(sql, [id], (err, result) => {
@@ -1336,7 +1334,6 @@ where month(created_at)=month(curdate());
         console.log('this is null');
         return callback(null, null);
       }
-   
       return callback(null, result);
     });
   },
