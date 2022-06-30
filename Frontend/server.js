@@ -71,6 +71,18 @@ app.get('/service', (req, res) => {
 app.get('/contract', (req, res) => {
   res.sendFile('/public/assets/html/viewContractRates.html', { root: __dirname });
 });
+// Go to Gallery
+app.get('/gallery', (req, res) => {
+  res.sendFile('/public/assets/html/gallery.html', { root: __dirname });
+});
+// Go to Story
+app.get('/story', (req, res) => {
+  res.sendFile('/public/assets/html/story.html', { root: __dirname });
+});
+// Go to contact
+app.get('/contact', (req, res) => {
+  res.sendFile('/public/assets/html/contact.html', { root: __dirname });
+});
 //= ======================================================
 //                   Admin
 //= ======================================================
