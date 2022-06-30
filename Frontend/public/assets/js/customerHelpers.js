@@ -7,7 +7,7 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const CustomerID = localStorage.getItem('customerID');
-
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 // Display the helper card
 // Helpers' information will be passed in as cardInfo
 function createRow(cardInfo) {
@@ -35,6 +35,7 @@ function loadUserDetails(id) {
   let userInfo;
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customerAddBooking/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -70,6 +71,7 @@ function loadUserDetails(id) {
 function loadPossibleHelpers(date) {
   // Ajax function to call GET method to get the data
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/helpers/${date}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',

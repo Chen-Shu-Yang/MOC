@@ -50,6 +50,7 @@ function pageBtnCreate(totalNumberOfPages) {
 
 function loadAllBookingToBeCancelled() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingCancel`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -98,6 +99,7 @@ function loadAllBookingToBeCancelled() {
 function loadAllBookingToBeCancelledByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingCancel/${pageNumber}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -155,6 +157,7 @@ function cancelBooking(id) {
   console.log(`Booking id to cancel ${id}`);
   // ajax method to call the method
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/cancelBooking/${id}`,
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',

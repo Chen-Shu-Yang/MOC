@@ -8,11 +8,13 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 
 // load number of booking for each month
 function loadMonthlyBookingForGraph() {
   $.ajax({
     // calling the backendUrl
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingsByMonth`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -116,6 +118,7 @@ function loadMonthlyBookingForGraph() {
 function getRevenueOfTheMonth() {
   $.ajax({
     // backend url connection
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/revenueOfTheMonth`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -142,6 +145,7 @@ function getRevenueOfTheMonth() {
 function diffInConsecutiveMonthBooking() {
   $.ajax({
     // get backend url
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingsByMonth`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',

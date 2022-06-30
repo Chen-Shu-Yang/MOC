@@ -11,6 +11,7 @@ const backEndUrl = 'http://localhost:5000';
 
 let userSearchChar = [];
 const userSearch = document.getElementById('searchEmployee');
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 
 function createRow(cardInfo) {
   console.log(cardInfo);
@@ -46,6 +47,7 @@ function pageBtnCreate(totalNumberOfPages) {
 
 function loadAllEmployees() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/employee`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -75,6 +77,7 @@ function loadAllEmployees() {
 
 function loadEmployeeByLimit(pageNumber) {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/employee/${pageNumber}`,
     type: 'GET',
 
@@ -123,6 +126,7 @@ function loadEmployeeByLimit(pageNumber) {
 function loadAnEmployee(id) {
   console.log(id);
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/oneemployee/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -193,6 +197,7 @@ function updateEmployee() {
   webFormData.append('image_edit', image_edit.files[0]);
   // ajax fuction to connect to the backend
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     // url to connect to backend api
     url: `${backEndUrl}/employee/${id}`,
     // method type
@@ -247,7 +252,7 @@ function updateEmployee() {
 function deleteEmployee(id) {
   // call the web service endpoint for deleting class of service by id
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/employee/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',

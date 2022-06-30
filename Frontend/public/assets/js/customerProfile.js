@@ -8,10 +8,11 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
-
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 function loadProfileDetails() {
   const customerId = localStorage.getItem('customerID');
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/user/customer/${customerId}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -64,6 +65,7 @@ $('#updateProfile').click(() => {
 
   // call web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/update/customer/${customerId}`,
     type: 'PUT',
     data: JSON.stringify(info),

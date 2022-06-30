@@ -45,6 +45,7 @@ function pageBtnCreate(totalNumberOfPages) {
 function loadAllContracts() {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/contracts`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',

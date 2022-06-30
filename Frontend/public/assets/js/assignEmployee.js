@@ -10,6 +10,7 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 
 // eslint-disable-next-line no-unused-vars
 function selectEmployee(employee) {
@@ -69,6 +70,7 @@ function loadAvailableEmployee(bookingDate) {
   };
 
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/employeeList`,
     type: 'POST',
     data: JSON.stringify(details),
@@ -109,6 +111,7 @@ function loadAvailableEmployee(bookingDate) {
 }
 function loadBookingDetails(bookingid) {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/contract/${bookingid}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -171,7 +174,7 @@ function assignBookingSchedule() {
   };
   // call the web service endpoint
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/assignBooking/${bookingid}`,
     type: 'PUT',
     data: JSON.stringify(data),

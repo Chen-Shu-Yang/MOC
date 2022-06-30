@@ -9,7 +9,7 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
-
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 function createRow(cardInfo) {
   console.log(cardInfo);
   console.log('********');
@@ -57,6 +57,7 @@ function pageBtnCreate(totalNumberOfPages) {
 
 function loadAllBooking() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/booking`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -87,6 +88,7 @@ function loadAllBooking() {
 function loadAllBookingByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/booking/${pageNumber}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -146,6 +148,7 @@ function loadAllBookingByLimit(pageNumber) {
 function loadAllBookingToBECancelledByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingCancel/${pageNumber}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -203,6 +206,7 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
 function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/oneBooking/${bookingID}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -289,6 +293,7 @@ $('#updateBookingDate').click(() => {
 
   // call web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/updateBooking/${bookingIDs}`,
     type: 'PUT',
     data: JSON.stringify(info),

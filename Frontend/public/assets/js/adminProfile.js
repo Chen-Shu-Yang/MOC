@@ -10,11 +10,12 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
-
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 // Take value from local storage and get information on the admin with that ID
 function loadProfileDetails() {
   const adminID = localStorage.getItem('AdminID');
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/admin/profile/${adminID}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -61,6 +62,7 @@ $('#updateProfile').click(() => {
 
   // call web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/update/admin/${adminID}`,
     type: 'PUT',
     data: JSON.stringify(info),
@@ -113,6 +115,7 @@ $('#changePassword').click(() => {
     // check if new password is the same as confirm password
   if (newPw === confirmPw) {
     $.ajax({
+      headers: { authorization: `Bearer ${tmpToken}` },
       url: `${backEndUrl}/admin/password/${adminID}`,
       type: 'PUT',
       data: JSON.stringify(info),

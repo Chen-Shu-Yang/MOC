@@ -509,7 +509,7 @@ app.put('/class/:id', printDebugInfo, (req, res) => {
 });
 
 // delete class of service
-app.delete('/class/:id', printDebugInfo, (req, res) => {
+app.delete('/class/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { id } = req.params;
   // calling deleteClass method from admin model
@@ -534,7 +534,7 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
 });
 
 // get employee per page
-app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
+app.get('/employee/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
   // extract pageNumber from params to determine the page we are at
   const { pageNumber } = req.params;
 
@@ -560,7 +560,7 @@ app.get('/employee/:pageNumber', printDebugInfo, async (req, res) => {
 });
 
 // get all employee
-app.get('/employee', printDebugInfo, async (req, res) => {
+app.get('/employee', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllEmployee method from admin model
   Admin.getAllEmployee((err, result) => {
     // if no error send result
@@ -583,7 +583,7 @@ app.get('/employee', printDebugInfo, async (req, res) => {
 });
 
 // get an employee
-app.get('/oneemployee/:id', printDebugInfo, async (req, res) => {
+app.get('/oneemployee/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const employeeId = req.params.id;
 
@@ -611,7 +611,7 @@ app.get('/oneemployee/:id', printDebugInfo, async (req, res) => {
 });
 
 // update employee
-app.put('/employees/:id', printDebugInfo, (req, res) => {
+app.put('/employees/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const EmployeeID = req.params.id;
   // extract all details needed
@@ -651,7 +651,7 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
 });
 
 // delete employee
-app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
+app.delete('/employee/:employeeId', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { employeeId } = req.params;
   console.log(` app.js employee delete method start ${employeeId}`);
@@ -817,7 +817,7 @@ app.post('/adddEmployee', upload.single('image'), async (req, res) => {
 });
 
 // get employee per page
-app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
+app.get('/booking/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
   // extract pageNumber from params to determine the page we are at
   const { pageNumber } = req.params;
 
@@ -836,15 +836,12 @@ app.get('/booking/:pageNumber', printDebugInfo, async (req, res) => {
   });
 });
 
-// get all employee
-app.get('/booking', printDebugInfo, async (req, res) => {
+// get all booking
+app.get('/booking', verifyToken, printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getAllBooking((err, result) => {
     // if no error send result
     if (!err) {
-      console.log('==================================');
-      console.log('Bihh');
-      console.log('==================================');
       res.status(200).send(result);
     } else {
       // if error send error message
@@ -853,7 +850,7 @@ app.get('/booking', printDebugInfo, async (req, res) => {
   });
 });
 // get a class of sevice
-app.get('/oneBooking/:id', printDebugInfo, async (req, res) => {
+app.get('/oneBooking/:id', verifyToken, printDebugInfo, async (req, res) => {
   // extract id from params
   const bookingID = req.params.id;
 
@@ -881,7 +878,7 @@ app.get('/oneBooking/:id', printDebugInfo, async (req, res) => {
 });
 
 // add a booking
-app.post('/booking', printDebugInfo, (req, res) => {
+app.post('/booking', printDebugInfo, verifyToken, (req, res) => {
   // extract all details needed
   const { bookingID } = req.body;
   const { bookingDate } = req.body;
@@ -901,7 +898,7 @@ app.post('/booking', printDebugInfo, (req, res) => {
 });
 
 // update class of service
-app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
+app.put('/updateBooking/:bookingIDs', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const BookingID = req.params.bookingIDs;
   // extract all details needed
@@ -929,7 +926,7 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, (req, res) => {
 });
 
 // get all class of service
-app.get('/classes', printDebugInfo, async (req, res) => {
+app.get('/classes', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getAllClassOfService((err, result) => {
     if (!err) {
@@ -944,7 +941,7 @@ app.get('/classes', printDebugInfo, async (req, res) => {
 });
 
 // get a class of sevice
-app.get('/classes/:id', printDebugInfo, async (req, res) => {
+app.get('/classes/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const classid = req.params.id;
 
@@ -972,7 +969,7 @@ app.get('/classes/:id', printDebugInfo, async (req, res) => {
 });
 
 // add a class
-app.post('/class', printDebugInfo, (req, res) => {
+app.post('/class', printDebugInfo, verifyToken, (req, res) => {
   // extract all details needed
   const { ClassName } = req.body;
   const { ClassPricing } = req.body;
@@ -1006,7 +1003,7 @@ app.post('/class', printDebugInfo, (req, res) => {
 });
 
 // update class of service
-app.put('/class/:id', printDebugInfo, (req, res) => {
+app.put('/class/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const classID = req.params.id;
   // extract all details needed
@@ -1040,7 +1037,7 @@ app.put('/class/:id', printDebugInfo, (req, res) => {
 });
 
 // delete class of service
-app.delete('/class/:id', printDebugInfo, (req, res) => {
+app.delete('/class/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { id } = req.params;
   // calling deleteClass method from admin model
@@ -1065,7 +1062,7 @@ app.delete('/class/:id', printDebugInfo, (req, res) => {
 });
 
 // get booking that are pending or assigned per page
-app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
+app.get('/bookingCancel/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
   // extract pageNumber from params to determine the page we are at
   const { pageNumber } = req.params;
 
@@ -1085,7 +1082,7 @@ app.get('/bookingCancel/:pageNumber', printDebugInfo, async (req, res) => {
 });
 
 // get all bookings that are pending or assigned
-app.get('/bookingCancel', printDebugInfo, async (req, res) => {
+app.get('/bookingCancel', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllBookingCancel method from admin model
   Admin.getAllBookingCancel((err, result) => {
     // if no error send result
@@ -1102,7 +1099,7 @@ app.get('/bookingCancel', printDebugInfo, async (req, res) => {
 });
 
 // update cancel booking
-app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
+app.put('/cancelBooking/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const bookingId = req.params.id;
   // calling cancelBookingAdmin method from admin model
@@ -1129,7 +1126,7 @@ app.put('/cancelBooking/:id', printDebugInfo, (req, res) => {
 });
 
 // get unassigned available employee
-app.get('/availemployee/:date', printDebugInfo, async (req, res) => {
+app.get('/availemployee/:date', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const { date } = req.params;
 
@@ -1157,7 +1154,7 @@ app.get('/availemployee/:date', printDebugInfo, async (req, res) => {
 });
 
 // schedule employee availability
-app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
+app.post('/availemployee/:employeeId', printDebugInfo, verifyToken, (req, res) => {
   // extract all details needed
   const { employeeId } = req.params;
   const { date } = req.body;
@@ -1188,7 +1185,7 @@ app.post('/availemployee/:employeeId', printDebugInfo, (req, res) => {
 });
 
 // get all customer
-app.get('/customer', printDebugInfo, async (req, res) => {
+app.get('/customer', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllCustomer method from admin model
   Admin.getAllCustomer((err, result) => {
     // if no error send result
@@ -1211,7 +1208,7 @@ app.get('/customer', printDebugInfo, async (req, res) => {
 });
 
 // get an customer
-app.get('/onecustomer/:id', printDebugInfo, async (req, res) => {
+app.get('/onecustomer/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const customerId = req.params.id;
 
@@ -1239,7 +1236,7 @@ app.get('/onecustomer/:id', printDebugInfo, async (req, res) => {
 });
 
 // update customer
-app.put('/customer/:id', printDebugInfo, (req, res) => {
+app.put('/customer/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const CustomerID = req.params.id;
   // extract all details needed
@@ -1266,7 +1263,7 @@ app.put('/customer/:id', printDebugInfo, (req, res) => {
 });
 
 // delete customer
-app.delete('/customer/:id', printDebugInfo, (req, res) => {
+app.delete('/customer/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { id } = req.params;
   // calling deleteCustomer method from admin model
@@ -1291,7 +1288,7 @@ app.delete('/customer/:id', printDebugInfo, (req, res) => {
 });
 
 // get all extra services
-app.get('/extraServices', printDebugInfo, async (req, res) => {
+app.get('/extraServices', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllExtraServices method from admin model
   Admin.getAllExtraServices((err, result) => {
     if (!err) {
@@ -1306,7 +1303,7 @@ app.get('/extraServices', printDebugInfo, async (req, res) => {
 });
 
 // get a class of sevice
-app.get('/extraServices/:id', printDebugInfo, async (req, res) => {
+app.get('/extraServices/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const extraserviceid = req.params.id;
 
@@ -1334,7 +1331,7 @@ app.get('/extraServices/:id', printDebugInfo, async (req, res) => {
 });
 
 // add an extra service
-app.post('/extraService', printDebugInfo, (req, res) => {
+app.post('/extraService', printDebugInfo, verifyToken, (req, res) => {
   // extract all details needed
   const { ExtraServiceName } = req.body;
   const { ExtraServicePrice } = req.body;
@@ -1367,7 +1364,7 @@ app.post('/extraService', printDebugInfo, (req, res) => {
 });
 
 // update extra service
-app.put('/extraService/:id', printDebugInfo, (req, res) => {
+app.put('/extraService/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const ExtraServiceID = req.params.id;
   // extract all details needed
@@ -1400,7 +1397,7 @@ app.put('/extraService/:id', printDebugInfo, (req, res) => {
 });
 
 // delete extra service
-app.delete('/extraService/:id', printDebugInfo, (req, res) => {
+app.delete('/extraService/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { id } = req.params;
   // calling deleteExtraService method from admin model
@@ -1425,7 +1422,7 @@ app.delete('/extraService/:id', printDebugInfo, (req, res) => {
 });
 
 // get all rates
-app.get('/rates', printDebugInfo, async (req, res) => {
+app.get('/rates', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllRates method from admin model
   Admin.getAllRates((err, result) => {
     if (!err) {
@@ -1440,7 +1437,7 @@ app.get('/rates', printDebugInfo, async (req, res) => {
 });
 
 // get a rate
-app.get('/rates/:id', printDebugInfo, async (req, res) => {
+app.get('/rates/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const rateid = req.params.id;
 
@@ -1494,7 +1491,7 @@ app.get('/ratesByPackage/:id', printDebugInfo, async (req, res) => {
   });
 });
 // add new rate
-app.post('/rate', printDebugInfo, (req, res) => {
+app.post('/rate', printDebugInfo, verifyToken, (req, res) => {
   // extract all details needed
   const { RateName } = req.body;
   const { RatePrice } = req.body;
@@ -1528,7 +1525,7 @@ app.post('/rate', printDebugInfo, (req, res) => {
 });
 
 // update existing extra service
-app.put('/rate/:id', printDebugInfo, (req, res) => {
+app.put('/rate/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const RatesID = req.params.id;
   // extract all details needed
@@ -1562,7 +1559,7 @@ app.put('/rate/:id', printDebugInfo, (req, res) => {
 });
 
 // delete existing rate
-app.delete('/rate/:id', printDebugInfo, (req, res) => {
+app.delete('/rate/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { id } = req.params;
   // calling deleteRate method from admin model
@@ -1586,7 +1583,7 @@ app.delete('/rate/:id', printDebugInfo, (req, res) => {
   });
 });
 
-app.get('/contract/:id', printDebugInfo, async (req, res) => {
+app.get('/contract/:id', printDebugInfo, verifyToken, async (req, res) => {
   // calling getBookingdetails method from admin model
   const details = req.params.id;
 
@@ -1604,7 +1601,7 @@ app.get('/contract/:id', printDebugInfo, async (req, res) => {
   });
 });
 
-app.post('/employeeList', printDebugInfo, async (req, res) => {
+app.post('/employeeList', printDebugInfo, verifyToken, async (req, res) => {
   // calling getBookingdetails method from admin model
   const detail = req.body.bookingDates;
 
@@ -1622,7 +1619,7 @@ app.post('/employeeList', printDebugInfo, async (req, res) => {
   });
 });
 
-app.put('/assignBooking/:bookingIDs', printDebugInfo, async (req, res) => {
+app.put('/assignBooking/:bookingIDs', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const BookingID = req.params.bookingIDs;
   // extract all details needed
@@ -1673,7 +1670,7 @@ app.get('/contracts/:pageNumber', printDebugInfo, verifyToken, async (req, res) 
 });
 
 // Get admin profile by AdminID
-app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
+app.get('/admin/profile/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const adminID = req.params.id;
 
@@ -1701,7 +1698,7 @@ app.get('/admin/profile/:id', printDebugInfo, async (req, res) => {
 });
 
 // Update admin details with id in web parameter
-app.put('/update/admin/:id', printDebugInfo, (req, res) => {
+app.put('/update/admin/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const adminID = req.params.id;
   // extract all details needed
@@ -1723,7 +1720,7 @@ app.put('/update/admin/:id', printDebugInfo, (req, res) => {
 });
 
 // Check admin password and return adminID if true
-app.put('/admin/password/:id', printDebugInfo, async (req, res) => {
+app.put('/admin/password/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const adminID = req.params.id;
   const { currentPassword } = req.body;
@@ -1775,7 +1772,7 @@ app.put('/admin/editPassword/:id', printDebugInfo, async (req, res) => {
   });
 });
 
-app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
+app.get('/bookingsByMonth', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getBookingByMonth((err, result) => {
     // array to store and send the finalOutput
@@ -1883,7 +1880,7 @@ app.get('/bookingsByMonth', printDebugInfo, async (req, res) => {
 });
 
 // get revenue of the month
-app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
+app.get('/revenueOfTheMonth', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllRates method from admin model
   Admin.getRevenueOfTheMonth((err, result) => {
     if (!err) {
@@ -1906,7 +1903,7 @@ app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
 
 // ====================== Customer Section ======================
 // Get user profile
-app.get('/customerAddBooking/:customerID', printDebugInfo, async (req, res, next) => {
+app.get('/customerAddBooking/:customerID', printDebugInfo, verifyToken, async (req, res, next) => {
   const customerId = req.params.customerID;
 
   Customer.getCustomerById(customerId, (err, result) => {
@@ -1918,7 +1915,7 @@ app.get('/customerAddBooking/:customerID', printDebugInfo, async (req, res, next
   });
 });
 
-app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
+app.get('/helpers/:bookingDates', printDebugInfo, verifyToken, async (req, res) => {
   const dates = req.params.bookingDates;
 
   // calling possibleAvailableHelpers method from customer model
@@ -1946,7 +1943,7 @@ app.get('/helpers/:bookingDates', printDebugInfo, async (req, res) => {
 });
 
 // Update own account details
-app.put('/update/customer/:id', printDebugInfo, (req, res) => {
+app.put('/update/customer/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const customerId = req.params.id;
   // extract all details needed
@@ -1971,7 +1968,7 @@ app.put('/update/customer/:id', printDebugInfo, (req, res) => {
   });
 });
 
-app.get('/user/customer/:id', printDebugInfo, async (req, res) => {
+app.get('/user/customer/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const customerId = req.params.id;
 
@@ -1999,7 +1996,7 @@ app.get('/user/customer/:id', printDebugInfo, async (req, res) => {
 });
 
 // get all class of services
-app.get('/classOfService', printDebugInfo, async (req, res) => {
+app.get('/classOfService', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllClassOfService method from customer model
   Customer.getAllClassOfService((err, result) => {
     if (!err) {
@@ -2013,7 +2010,7 @@ app.get('/classOfService', printDebugInfo, async (req, res) => {
   });
 });
 
-app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
+app.get('/show/bookings/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const customerId = req.params.id;
   // calling updateCustProfile method from customer model
@@ -2030,7 +2027,7 @@ app.get('/show/bookings/:id', printDebugInfo, (req, res) => {
   });
 });
 
-app.post('/customer/autobooking', printDebugInfo, (req, res) => {
+app.post('/customer/autobooking', printDebugInfo, verifyToken, (req, res) => {
   // extract contract data from request body
   const { customer } = req.body;
   const { StartDate } = req.body;
@@ -2318,7 +2315,7 @@ app.post('/customer/autobooking', printDebugInfo, (req, res) => {
 });
 
 // get all packages
-app.get('/package', printDebugInfo, async (req, res) => {
+app.get('/package', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllPackage method from customer model
   Customer.getAllPackage((err, result) => {
     if (!err) {
@@ -2333,7 +2330,7 @@ app.get('/package', printDebugInfo, async (req, res) => {
 });
 
 // get all rates
-app.get('/rates', printDebugInfo, async (req, res) => {
+app.get('/rates', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllRates method from customer model
   Customer.getAllRates((err, result) => {
     if (!err) {
@@ -2348,7 +2345,7 @@ app.get('/rates', printDebugInfo, async (req, res) => {
 });
 
 // get all additional service
-app.get('/additionalService', printDebugInfo, async (req, res) => {
+app.get('/additionalService', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllAdditionalService method from customer model
   Customer.getAllAdditionalService((err, result) => {
     if (!err) {
@@ -2362,7 +2359,7 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
   });
 });
 // cancel booking for customer
-app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
+app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const bookingId = req.params.id;
 
@@ -2444,7 +2441,7 @@ app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
   });
 });
 // Get all contracts
-app.get('/contracts', printDebugInfo, async (req, res) => {
+app.get('/contracts', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllContracts method from admin model
   Admin.getAllContracts((err, result) => {
     // if no error send result
@@ -2457,7 +2454,7 @@ app.get('/contracts', printDebugInfo, async (req, res) => {
   });
 });
 
-app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
+app.get('/cancelledBookingAbnormality', printDebugInfo, verifyToken, async (req, res) => {
   const customerIds = [];
   let customerIdsU;
 
@@ -2531,7 +2528,7 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, async (req, res) => {
   getCancellationAbnormalyDetails();
 });
 
-app.put('/updateCancelAbnormality/:id', printDebugInfo, (req, res) => {
+app.put('/updateCancelAbnormality/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const customerId = req.params.id;
 
@@ -2549,7 +2546,7 @@ app.put('/updateCancelAbnormality/:id', printDebugInfo, (req, res) => {
   });
 });
 
-app.put('/updateCustomerStatus/:id', printDebugInfo, (req, res) => {
+app.put('/updateCustomerStatus/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const customerId = req.params.id;
 
@@ -2569,7 +2566,7 @@ app.put('/updateCustomerStatus/:id', printDebugInfo, (req, res) => {
 
 // ====================== Super Admin Section ======================
 // get all admin
-app.get('/admin', printDebugInfo, async (req, res) => {
+app.get('/admin', printDebugInfo, verifyToken, async (req, res) => {
   // calling getAllAdmins method from SuperAdmin model
   SuperAdmin.getAllAdmins((err, result) => {
     // if no error send result
@@ -2592,7 +2589,7 @@ app.get('/admin', printDebugInfo, async (req, res) => {
 });
 
 // get an admin
-app.get('/oneadmin/:id', printDebugInfo, async (req, res) => {
+app.get('/oneadmin/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const adminId = req.params.id;
 
@@ -2620,7 +2617,7 @@ app.get('/oneadmin/:id', printDebugInfo, async (req, res) => {
 });
 
 // update admin
-app.put('/admin/:id', printDebugInfo, (req, res) => {
+app.put('/admin/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const AdminID = req.params.id;
   // extract all details needed
@@ -2651,7 +2648,7 @@ app.put('/admin/:id', printDebugInfo, (req, res) => {
 });
 
 // delete admin
-app.delete('/admin/:id', printDebugInfo, (req, res) => {
+app.delete('/admin/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { id } = req.params;
 
@@ -2677,7 +2674,7 @@ app.delete('/admin/:id', printDebugInfo, (req, res) => {
 });
 
 // add an admin
-app.post('/addAdmin', printDebugInfo, (req, res) => {
+app.post('/addAdmin', printDebugInfo, verifyToken, (req, res) => {
   // extract all details needed
   const { LastName } = req.body;
   const { FirstName } = req.body;
@@ -2707,7 +2704,7 @@ app.post('/addAdmin', printDebugInfo, (req, res) => {
   });
 });
 
-app.post('/autoBooking', printDebugInfo, async (req, res) => {
+app.post('/autoBooking', printDebugInfo, verifyToken, async (req, res) => {
   // array that will store all contracts already booked with duplicates
   const contractsAlreadyBooked = [];
   // array that will store all contracts already booked without duplicates

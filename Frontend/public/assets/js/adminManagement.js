@@ -8,7 +8,7 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
-
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 function createRow(cardInfo) {
   const card = `
     <tr>
@@ -34,6 +34,7 @@ function createRow(cardInfo) {
 function loadAllAdmins() {
   // call the web service endpoint for retrieving all admins
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/admin`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -82,6 +83,7 @@ function loadAllAdmins() {
 function loadAnAdmin(id) {
   // call the web service endpoint for retrieving an admin details
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/oneadmin/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -154,6 +156,7 @@ function addUpdateAdmin() {
 
   // call the method to post data
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/admin`,
     type: 'POST',
     data: reqBody,
@@ -205,7 +208,7 @@ function updateAdmin() {
 
   // call the web service endpoint
   $.ajax({
-    // headers: { authorization: `Bearer ${tmpToken}` },
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/admin/${id}`,
     type: 'PUT',
     // Data object is converted into String
@@ -235,6 +238,7 @@ function updateAdmin() {
 function deleteAdmin(id) {
   // call the web service endpoint for deleting admin by id
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/admin/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
@@ -296,6 +300,7 @@ function addAdmin() {
 
   // call the method to post data
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/addAdmin`,
     type: 'POST',
     data: reqtsBody,

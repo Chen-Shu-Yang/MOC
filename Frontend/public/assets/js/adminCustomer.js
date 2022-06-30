@@ -8,6 +8,7 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 
 function createRow(cardInfo) {
   const card = `
@@ -31,7 +32,7 @@ function createRow(cardInfo) {
 
 function loadAllCustomers() {
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customer`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -70,6 +71,7 @@ function loadAllCustomers() {
 // eslint-disable-next-line no-unused-vars
 function loadACustomer(id) {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/onecustomer/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -120,7 +122,7 @@ function updateCustomer() {
 
   // call the web service endpoint
   $.ajax({
-    // headers: { authorization: `Bearer ${tmpToken}` },
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customer/${id}`,
     type: 'PUT',
     data: JSON.stringify(data),
@@ -148,7 +150,7 @@ function updateCustomer() {
 function deleteCustomer(id) {
   // call the web service endpoint for deleting customer by id
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customer/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',

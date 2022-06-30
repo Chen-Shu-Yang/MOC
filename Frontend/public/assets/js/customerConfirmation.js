@@ -7,12 +7,13 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const CustomerID = localStorage.getItem('customerID');
-// const token = localStorage.getItem('token');
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 
 function loadUserDetails(id) {
   let userInfo;
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customerAddBooking/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -154,6 +155,7 @@ function customerAutobooking() {
 
   // Ajax function to call web service function
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customer/autobooking`,
     type: 'POST',
     data: reqBody,

@@ -12,6 +12,7 @@ const backEndUrl = 'http://localhost:5000';
 
 const userSearchChar = [];
 const userSearch = document.getElementById('searchBookingByCustomer');
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 
 function createRow(cardInfo) {
   console.log(cardInfo);
@@ -61,6 +62,7 @@ function pageBtnCreate(totalNumberOfPages) {
 
 function loadAllBooking() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/booking`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -111,6 +113,7 @@ function loadAllBooking() {
 function loadAllBookingByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/booking/${pageNumber}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -170,6 +173,7 @@ function loadAllBookingByLimit(pageNumber) {
 function loadAllBookingToBECancelledByLimit(pageNumber) {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingCancel/${pageNumber}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -363,6 +367,7 @@ userSearch.addEventListener('keyup', (e) => {
 function loadABooking(bookingID) {
   // gets a class of service based on id
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/oneBooking/${bookingID}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -412,6 +417,7 @@ $('#addNewBooking').click(() => {
       AdminId: Employeeid,
     };
     $.ajax({
+      headers: { authorization: `Bearer ${tmpToken}` },
       url: `${backEndUrl}/booking`,
       type: 'POST',
       data: JSON.stringify(info),
@@ -449,6 +455,7 @@ $('#addNewBooking').click(() => {
       Admin: SuperAdminID,
     };
     $.ajax({
+      headers: { authorization: `Bearer ${tmpToken}` },
       url: `${backEndUrl}/booking`,
       type: 'POST',
       data: JSON.stringify(info),
@@ -492,6 +499,7 @@ $('#updateBookingDate').click(() => {
 
   // call web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/updateBooking/${bookingIDs}`,
     type: 'PUT',
     data: JSON.stringify(info),

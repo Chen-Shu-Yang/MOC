@@ -10,7 +10,7 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 // const CustomerID = localStorage.getItem('customerID');
-// const token = localStorage.getItem('token');
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 let estService = 0;
 let estRate = 0;
 const estAdd = 0;
@@ -56,6 +56,7 @@ function loadUserDetails() {
   populateBathroomsRooms();
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -97,6 +98,7 @@ function loadUserDetails() {
 function populateClass() {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/classOfService/`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -157,6 +159,7 @@ function populateClass() {
 function populatePackage() {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/package/`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -192,6 +195,7 @@ function populatePackage() {
 function populateRates() {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/rates/`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -233,6 +237,7 @@ function populateRates() {
 function populateAdditonalService() {
   // call the web service endpoint
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/additionalService/`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',

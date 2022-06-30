@@ -154,6 +154,7 @@ function createRow(cardInfo) {
 function cancelBooking(bookingId) {
   // ajax method to call the method
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/update/customerBooking/${bookingId}`,
     type: 'PUT',
 
@@ -193,6 +194,7 @@ function cancelBooking(bookingId) {
 function loadAllBooking() {
   const customerId = localStorage.getItem('customerID');
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/show/bookings/${customerId}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',

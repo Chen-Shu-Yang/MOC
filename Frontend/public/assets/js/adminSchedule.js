@@ -9,6 +9,8 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
+const tmpToken = JSON.parse(localStorage.getItem('token'));
+
 function createRow(cardInfo) {
   const card = `
         <div class="employee-card">
@@ -25,6 +27,7 @@ function createRow(cardInfo) {
 
 function loadAllAvailEmployees(date) {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/availemployee/${date}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -73,7 +76,7 @@ function ScheduleAvailability(employeeId, date, time) {
 
   // call the web
   $.ajax({
-    // headers: { authorization: `Bearer ${tmpToken}` },
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/availemployee/${employeeId}`,
     type: 'POST',
     contentType: 'application/json; charset=utf-8',

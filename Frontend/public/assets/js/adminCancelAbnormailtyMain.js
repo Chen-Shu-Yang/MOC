@@ -8,6 +8,7 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 // errorToast method display the error
 function errorToast(msg) {
   // error alert div
@@ -60,6 +61,7 @@ function createTable(cardInfo) {
 // loadAllClassOfServices gets all class of services
 function loadAllClassOfServices() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/cancelledBookingAbnormality`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -96,10 +98,11 @@ function loadAllClassOfServices() {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function resolveIssue(id) {
   // call the web service endpoint for deleting class of service by id
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/updateCancelAbnormality/${id}`,
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
@@ -142,10 +145,11 @@ function resolveIssue(id) {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function suspendUser(id) {
   // call the web service endpoint for deleting class of service by id
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/updateCustomerStatus/${id}`,
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
@@ -188,7 +192,6 @@ function suspendUser(id) {
   });
 }
 
-
 // to load datas when page refresh or loads for the first time
 $(document).ready(() => {
   // to debug
@@ -198,5 +201,4 @@ $(document).ready(() => {
   console.log(`Query Param (extraction): ${queryParams}`);
   // load
   loadAllClassOfServices();
-
 });

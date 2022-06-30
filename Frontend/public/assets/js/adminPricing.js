@@ -8,6 +8,8 @@
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 // errorToast method display the error
 function errorToast(msg) {
   // error alert div
@@ -97,6 +99,7 @@ function createRateTable(cardInfo) {
 // loadAllClassOfServices gets all class of services
 function loadAllClassOfServices() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/classes`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -138,7 +141,7 @@ function loadAllClassOfServices() {
 function deleteClassOfService(id) {
   // call the web service endpoint for deleting class of service by id
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/class/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
@@ -204,7 +207,7 @@ function updateClassOfService() {
   };
   // ajax method to call the method
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/class/${classId}`,
     type: 'PUT',
     // data extractex
@@ -248,6 +251,7 @@ function updateClassOfService() {
 function loadAClassOfService(id) {
   // gets a class of service based on id
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/classes/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -309,6 +313,7 @@ function addClassOfService() {
   console.log(reqBody);
   // call the method to post data
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/class`,
     type: 'POST',
     data: reqBody,
@@ -349,6 +354,7 @@ function addClassOfService() {
 // loadAllExtraServices gets all extra services
 function loadAllExtraServices() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/extraServices`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -389,6 +395,7 @@ function loadAllExtraServices() {
 function loadAnExtraService(id) {
   // gets a class of service based on id
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/extraServices/${id}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -448,6 +455,7 @@ function addExtraService() {
   console.log(reqBody);
   // call the method to post data
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/extraService`,
     type: 'POST',
     data: reqBody,
@@ -503,6 +511,7 @@ function updateExtraService() {
   };
   // ajax method to call the method
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/extraService/${extraServiceId}`,
     type: 'PUT',
     // data extracted
@@ -549,7 +558,7 @@ function updateExtraService() {
 function deleteExtraService(id) {
   // call the web service endpoint for deleting class of service by id
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/extraService/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
@@ -594,6 +603,7 @@ function deleteExtraService(id) {
 // loadAllRates gets all rates
 function loadAllRates() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/rates`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -703,6 +713,7 @@ function addRate() {
   console.log(reqBody);
   // call the method to post data
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/rate`,
     type: 'POST',
     data: reqBody,
@@ -760,6 +771,7 @@ function updateRate() {
   };
   // ajax method to call the method
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/rate/${rateId}`,
     type: 'PUT',
     // data extracted
@@ -808,7 +820,7 @@ function updateRate() {
 function deleteRate(id) {
   // call the web service endpoint for deleting class of service by id
   $.ajax({
-
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/rate/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
