@@ -23,7 +23,7 @@
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "node-json-db": "^1.4.1",
-    "nodemailer": "^6.7.5",
+    "nodemailer": "^6.7.6",
     "speakeasy": "^2.0.0",
     "uuid": "^8.3.2"
   },

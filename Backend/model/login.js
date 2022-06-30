@@ -43,6 +43,12 @@ const Login = {
             return callback(err, null);
           }
 
+          if (result[0].Verified !== 1) {
+            console.log(result);
+            const error = 'Your email is not verified. Please Verify your email';
+            return callback(error, null);
+          }
+
           // there must only be 1 result here
           // since email is unique
           // confirm if we have the key

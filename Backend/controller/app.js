@@ -379,20 +379,13 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
       res.status(404).send(msg);
     } else {
       console.log(`Token: ${result}`);
-
-      // Check if customer email is verified
-      if (result.Verified !== 1) {
-        msg = 'Your email is not verified!';
-        res.status(404).send(msg);
-      } else {
-        msg = {
-          AdminID: result.AdminID,
-          token,
-          CustomerID: result.CustomerID,
-          SuperAdminID: result.SuperAdminID,
-        };
-        res.status(200).send(msg);
-      }
+      msg = {
+        AdminID: result.AdminID,
+        token,
+        CustomerID: result.CustomerID,
+        AdminType: result.AdminType,
+      };
+      res.status(200).send(msg);
     }
   });
 });
