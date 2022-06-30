@@ -59,6 +59,10 @@ app.get('/resetPassword', (req, res) => {
   res.sendFile('/public/assets/html/resetPassword.html', { root: __dirname });
 });
 
+// go to Register
+app.get('/contract', (req, res) => {
+  res.sendFile('/public/assets/html/viewContractRates.html', { root: __dirname });
+});
 //= ======================================================
 //                   Admin
 //= ======================================================

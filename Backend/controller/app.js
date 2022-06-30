@@ -1257,7 +1257,33 @@ app.get('/rates/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
+// get a rate
+app.get('/ratesByPackage/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const rateid = req.params.id;
 
+  // calling getClass method from admin model
+  Admin.getRateByPackage(rateid, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
 // add new rate
 app.post('/rate', printDebugInfo, (req, res) => {
   // extract all details needed
