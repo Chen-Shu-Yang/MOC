@@ -46,10 +46,10 @@ function verifyToken(req, res, next) {
       });
     }
     // decode the userid and store in req for use
-    req.userid = decoded.userid;
+    req.id = decoded.id;
     // decode the role and store in req for use
-    req.role = decoded.role;
-    req.decoded = decoded;
+    req.email = decoded.email;
+    // req.decoded = decoded;
     next();
   });
 }

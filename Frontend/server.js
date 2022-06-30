@@ -51,6 +51,13 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
   res.sendFile('/public/assets/html/customerRegister.html', { root: __dirname });
 });
+// go to forget password
+app.get('/forgetPassword', (req, res) => {
+  res.sendFile('/public/assets/html/forgetPassword.html', { root: __dirname });
+});
+app.get('/resetPassword', (req, res) => {
+  res.sendFile('/public/assets/html/resetPassword.html', { root: __dirname });
+});
 
 //= ======================================================
 //                   Admin
