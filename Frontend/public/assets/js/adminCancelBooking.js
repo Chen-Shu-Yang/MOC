@@ -86,6 +86,9 @@ function loadAllBookingToBeCancelled() {
       pageBtnCreate(totalNumberOfPages);
     },
     error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
       console.log('Error in Operation');
       console.log(xhr);
       console.log(textStatus);

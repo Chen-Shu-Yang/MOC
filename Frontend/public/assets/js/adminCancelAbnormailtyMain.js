@@ -89,6 +89,9 @@ function loadAllClassOfServices() {
       }
     },
     error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
       // print error
       console.log('Error in Operation');
       console.log(xhr);

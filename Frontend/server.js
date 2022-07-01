@@ -164,7 +164,10 @@ app.get('/customer/helpers', (req, res) => {
 app.get('/customer/confirm', (req, res) => {
   res.sendFile('/public/assets/html/customerConfirmation.html', { root: __dirname });
 });
-
+// Confirmation Booking Card
+app.get('/unAuthorize', (req, res) => {
+  res.sendFile('/public/assets/html/unauthorized.html', { root: __dirname });
+});
 //= ======================================================
 //                   Super Admin
 //= ======================================================

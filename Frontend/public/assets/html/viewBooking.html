@@ -95,6 +95,18 @@
         </div>
 
     </section>
+    <script>
+        var userType = localStorage.getItem('customerID');
+         if (userType != null) {
+            document.getElementById('nav-menu-item-1642909').style.display = 'none';
+            document.getElementById('mobile-menu-item-164249').style.display = 'none';
+			document.getElementById('nav-menu-item-1642908').style.display = 'none';
+            document.getElementById('mobile-menu-item-164248').style.display = 'none';
+         }else{
+             document.getElementById('nav-menu-item-164907').style.display = 'none';
+			 document.getElementById('mobile-menu-item-164247').style.display = 'none';
+         }
+     </script>
     <script src="https://smtpjs.com/v3/smtp.js">
     </script>
     <!--Section booking history end-->

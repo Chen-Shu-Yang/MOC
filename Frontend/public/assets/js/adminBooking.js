@@ -157,6 +157,9 @@ function loadAllBookingByLimit(pageNumber) {
     },
 
     error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
       console.log('Error in Operation');
       console.log('-----------------------');
       console.log(xhr);

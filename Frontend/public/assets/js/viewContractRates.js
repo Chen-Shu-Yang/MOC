@@ -25,7 +25,7 @@ function createCard(rates) {
 function populateRatesMullBerry() {
   // call the web service endpoint
   $.ajax({
-    url: `${backEndUrl}/ratesByPackage/1`,
+    url: `${backEndUrl}/ratesByPackagePublic/1`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data, textStatus, xhr) {
@@ -63,7 +63,7 @@ function populateRatesMullBerry() {
 function populateRatesSaffaras() {
   // call the web service endpoint
   $.ajax({
-    url: `${backEndUrl}/ratesByPackage/2`,
+    url: `${backEndUrl}/ratesByPackagePublic/2`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data, textStatus, xhr) {

@@ -887,6 +887,18 @@
 
         </div>
     </div>
+    <script>
+        var userType = localStorage.getItem('customerID');
+         if (userType != null) {
+            document.getElementById('nav-menu-item-1642909').style.display = 'none';
+            document.getElementById('mobile-menu-item-164249').style.display = 'none';
+			document.getElementById('nav-menu-item-1642908').style.display = 'none';
+            document.getElementById('mobile-menu-item-164248').style.display = 'none';
+         }else{
+             document.getElementById('nav-menu-item-164907').style.display = 'none';
+			 document.getElementById('mobile-menu-item-164247').style.display = 'none';
+         }
+     </script>
     <script src="../../assets/js/viewContractRates.js"></script>
     <link rel='stylesheet' id='nivo-slider-css-css'
         href='/assets/MOC/moc.sg/wp-content/plugins/js_composer/assets/lib/bower/nivoslider/nivo-slider.minc422.css?ver=4.11.1'

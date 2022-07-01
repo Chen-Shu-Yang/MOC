@@ -384,6 +384,33 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
   });
 });
 
+app.get('/ratesByPackagePublic/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const rateid = req.params.id;
+
+  // calling getClass method from admin model
+  Admin.getRateByPackage(rateid, (err, result) => {
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 // ====================== Admin Section ======================
 app.get('/classes', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
@@ -1591,7 +1618,11 @@ app.get('/rates/:id', printDebugInfo, async (req, res) => {
   });
 });
 // get a rate
-app.get('/ratesByPackage/:id', printDebugInfo, async (req, res) => {
+app.get('/ratesByPackage/:id', printDebugInfo, verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   // extract id from params
   const rateid = req.params.id;
 

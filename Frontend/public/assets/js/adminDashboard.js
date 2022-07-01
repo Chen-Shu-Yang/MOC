@@ -4,7 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 /* eslint-disable no-new */
-// const frontEndUrl = 'http://localhost:3001';
+const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
@@ -132,6 +132,9 @@ function getRevenueOfTheMonth() {
     },
     // propmpt error
     error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
       // print error
       console.log(xhr);
       console.log(textStatus);
