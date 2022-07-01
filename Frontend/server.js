@@ -42,10 +42,6 @@ app.get('/academy', (req, res) => {
 app.get('/homepage', (req, res) => {
   res.sendFile('/public/assets/html/homepage.html', { root: __dirname });
 });
-// Display NavBar
-app.get('/admin/adminNavbar.html', (req, res) => {
-  res.sendFile('/public/assets/html/adminNavbar.html', { root: __dirname });
-});
 
 // go to login
 app.get('/login', (req, res) => {
@@ -68,7 +64,7 @@ app.get('/service', (req, res) => {
 });
 
 // go to Register
-app.get('/contract', (req, res) => {
+app.get('/contractService', (req, res) => {
   res.sendFile('/public/assets/html/viewContractRates.html', { root: __dirname });
 });
 // Go to Gallery

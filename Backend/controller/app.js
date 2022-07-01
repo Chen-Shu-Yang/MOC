@@ -430,6 +430,7 @@ app.get('/classes/:id', printDebugInfo, async (req, res) => {
 // add a class
 app.post('/class', printDebugInfo, verifyToken, (req, res) => {
   if (req.role == null) {
+    
     res.status(403).send();
     return;
   }
