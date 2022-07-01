@@ -5,7 +5,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 
-// const frontEndUrl = 'http://localhost:3001';
+const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
@@ -98,8 +98,10 @@ function loadAllBooking() {
     },
 
     error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
       console.log('Error in Operation');
-
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
