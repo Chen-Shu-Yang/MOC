@@ -3174,7 +3174,11 @@ app.post('/autoBooking', printDebugInfo, verifyToken, async (req, res) => {
 
 // ====================== InActive Customer ======================
 // Get admin profile by AdminID
-app.get('/inactiveCustomers', printDebugInfo, async (req, res) => {
+app.get('/inactiveCustomers', printDebugInfo, verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   // extract id from params
   const adminID = req.params.id;
 
@@ -3215,7 +3219,11 @@ app.get('/inactiveCustomers', printDebugInfo, async (req, res) => {
 });
 
 // get Contracts per page
-app.get('/inactiveCustomers/:pageNumber', printDebugInfo, async (req, res) => {
+app.get('/inactiveCustomers/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   // extract pageNumber from parameter
   const { pageNumber } = req.params;
 
@@ -3234,8 +3242,12 @@ app.get('/inactiveCustomers/:pageNumber', printDebugInfo, async (req, res) => {
   });
 });
 
-app.put('/activateCustomer/:id', printDebugInfo, (req, res) => {
+app.put('/activateCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   const CustomerId = req.params.id;
 
   // calling updateSuperAdmin method from SuperAdmin model
@@ -3258,7 +3270,11 @@ app.put('/activateCustomer/:id', printDebugInfo, (req, res) => {
 });
 
 // delete admin
-app.delete('/inActiveCustomer/:id', printDebugInfo, (req, res) => {
+app.delete('/inActiveCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   // extract id from params
   const customerId = req.params.id;
 
