@@ -86,7 +86,6 @@ app.get('/', (req, res) => {
 // forgetPassword
 app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
   const { email } = req.body;
-  console.log(email);
   forgetPassword.Verify(email, (err, link, result) => {
     if (err) {
       // matched with callback (err, null)
@@ -117,8 +116,6 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyToken, async (req
   // extract id from params
   const { id, token } = req.params;
   const { password } = req.body;
-  console.log(password);
-  console.log(id);
   // calling getAdminById method from Admin model
   forgetPassword.updateUserPassword(password, id, (err, result) => {
     if (!err) {
@@ -172,8 +169,6 @@ const sendVerificationEmail = ({ _id, email }, res) => {
   // const currentUrl = 'https://moc-ba.herokuapp.com;
 
   const UniqueString = uuidv4() + _id;
-  console.log(`id = ${_id}`);
-  console.log(`UniqueString = ${UniqueString}`);
 
   // mail options
   const mailOptions = {
@@ -185,8 +180,6 @@ const sendVerificationEmail = ({ _id, email }, res) => {
     <p>This <b>links expires in 6 hours</b>.</p>
     <p>Press <a href='${`${currentUrl}/verify/${_id}/${UniqueString}`}'>here</a></p>`,
   };
-
-  console.log(mailOptions.html);
 
   // hash the uniqueString
   const saltRounds = 10;

@@ -30,31 +30,6 @@ const superAdmin = {
     });
   },
 
-  // get super admin by id
-  // getSuperAdmin(id, callback) {
-  //   // sql query statement
-  //   const sql = `
-  //     SELECT 
-  //       SuperAdminID, FirstName, LastName, Email, Password, AdminType 
-  //     FROM 
-  //       heroku_6b49aedb7855c0b.superadmin 
-  //     WHERE 
-  //       SuperAdminID=?;`;
-
-  //   const values = [id];
-  //   // pool query
-  //   pool.query(sql, values, (err, result) => {
-  //     // error
-  //     if (err) {
-  //       console.log(err);
-  //       return callback(err);
-  //     }
-  //     // result accurate
-
-  //     return callback(null, result);
-  //   });
-  // },
-
   // get all Admins and Super admins
   getAllAdmins(callback) {
     // sql query statement
