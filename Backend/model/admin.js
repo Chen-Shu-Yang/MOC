@@ -669,13 +669,13 @@ const Admin = {
   },
   // get rate by id
   getRateByPackage(id, callback) {
-  // sql query statement
+    // sql query statement
     const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.rates where Package=?;';
 
     const values = [id];
     // pool query
     pool.query(sql, values, (err, result) => {
-    // error
+      // error
       if (err) {
         console.log(err);
         return callback(err);
@@ -1337,6 +1337,120 @@ where month(created_at)=month(curdate());
       return callback(null, result);
     });
   },
+  //= ======================================================
+  //              Features / inActiveCustomer
+  //= ======================================================
+  getAllInActiveCustomer(callback) {
+    // sql query statement
+    const sql = `
+    SELECT CustomerID,FirstName,LastName,PhoneNumber FROM heroku_6b49aedb7855c0b.customer
+    where CustomerID not in
+     (SELECT distinct Customer FROM heroku_6b49aedb7855c0b.contract);
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
+  pageInactiveCustomers(pageNumber, callback) {
+    // the page number from parameter
+    pageNumber = parseInt(pageNumber, 10);
+    // Number of Contract showed per page
+    const limitPerPage = 6;
+    // Prevent displaying repetitive information
+    const numberOfValueToSkip = (pageNumber - 1) * 6;
+
+    // sql statement to limit and skip
+    const sql = `
+    SELECT CustomerID,FirstName,LastName,PhoneNumber FROM heroku_6b49aedb7855c0b.customer
+    where CustomerID not in
+     (SELECT distinct Customer FROM heroku_6b49aedb7855c0b.contract) LIMIT ? OFFSET ?;
+
+  `;
+    // values to pass for the query number of contract per page and number of contract to skip
+    const values = [limitPerPage, numberOfValueToSkip];
+    // query
+    pool.query(sql, values, (err, result) => {
+      // if error send error message
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // else send result
+      return callback(null, result);
+    });
+  },
+  updateCustomerStatusInactive(id, callback) {
+    // sql query statement
+    const sql = `
+    UPDATE 
+    heroku_6b49aedb7855c0b.customer
+ SET
+    Status = 'inactive'
+where
+    CustomerID = ?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+  updateCustomerStatusActive(id, callback) {
+    // sql query statement
+    const sql = `
+    UPDATE 
+    heroku_6b49aedb7855c0b.customer
+ SET
+    Status = 'active'
+where
+    CustomerID = ?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+  deleteInactiveCustomer(id, callback) {
+    // sql query statement
+    const sql = `
+    DELETE from
+    heroku_6b49aedb7855c0b.customer
+where
+    CustomerID = ?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
 };
 
 //= ======================================================

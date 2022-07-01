@@ -3171,5 +3171,117 @@ app.post('/autoBooking', printDebugInfo, verifyToken, async (req, res) => {
     }
   });
 });
+
+// ====================== InActive Customer ======================
+// Get admin profile by AdminID
+app.get('/inactiveCustomers', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const adminID = req.params.id;
+
+  // calling getAdminById method from Admin model
+  Admin.getAllInActiveCustomer((err, result) => {
+    if (!err) {
+      for (i = 0; i < result.length; i++) {
+        const CustomerId = result[i].CustomerID;
+        // calling updateSuperAdmin method from SuperAdmin model
+        Admin.updateCustomerStatusInactive(CustomerId, (err, result) => {
+          // if there is no errorsend the following as result
+
+          if (err) {
+            if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+              // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+              // Inappropriate value as return message
+              res.status(406).send('Inappropriate value');
+            } else if (err.code === 'ER_BAD_NULL_ERROR') {
+              // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+              res.status(400).send('Null value not allowed');
+            } else {
+              // else if there is a server error return message
+              res.status(500).send('Internal Server Error');
+            }
+          }
+        });
+      }
+
+      res.status(200).send(result);
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// get Contracts per page
+app.get('/inactiveCustomers/:pageNumber', printDebugInfo, async (req, res) => {
+  // extract pageNumber from parameter
+  const { pageNumber } = req.params;
+
+  // calling pageContract method from admin model
+  Admin.pageInactiveCustomers(pageNumber, (err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    } else {
+    // if error send error message
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+app.put('/activateCustomer/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const CustomerId = req.params.id;
+
+  // calling updateSuperAdmin method from SuperAdmin model
+  Admin.updateCustomerStatusActive(CustomerId, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      res.status(201).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+      // Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
+    } else {
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+// delete admin
+app.delete('/inActiveCustomer/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const customerId = req.params.id;
+
+  // calling deleteAdmin method from SuperAdmin model
+  Admin.deleteInactiveCustomer(customerId, (req, result) => {
+    if (!err) {
+      // result.affectedRows indicates that id to be deleted
+      // cannot be found hence send as error message
+      if (result.affectedRows === 0) {
+        res.status(404).send('Item cannot be deleted');
+      } else {
+        // else a postitve result
+        res.status(200).send(result);
+      }
+    } else {
+      // sever error
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 // ====================== Module Exports ======================
 module.exports = app;

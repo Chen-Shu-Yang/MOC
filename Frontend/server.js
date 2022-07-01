@@ -82,6 +82,9 @@ app.get('/contact', (req, res) => {
 //= ======================================================
 //                   Admin
 //= ======================================================
+app.get('/admin/inactiveCustomer', (req, res) => {
+  res.sendFile('/public/assets/html/adminViewInactiveCustomer.html', { root: __dirname });
+});
 
 // go to admin Employee
 app.get('/admin/employee', (req, res) => {
