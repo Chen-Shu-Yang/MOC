@@ -12,7 +12,7 @@ const backEndUrl = 'http://localhost:5000';
 
 const userSearchChar = [];
 const userSearch = document.getElementById('searchCancelledBookingByCustomer');
-
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 function createRow(cardInfo) {
   console.log(cardInfo);
   console.log('********');
