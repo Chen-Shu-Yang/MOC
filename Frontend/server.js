@@ -99,7 +99,7 @@ app.get('/admin/dashboard', (req, res) => {
   res.sendFile('/public/assets/html/adminDashboard.html', { root: __dirname });
 });
 
-// go to admin contract abnormality (Number of Contract Abnormality)
+// go to admin contract abnormality
 app.get('/admin/abnormality/contract', (req, res) => {
   res.sendFile('/public/assets/html/AbnCustomerContracts.html', { root: __dirname });
 });
@@ -107,6 +107,11 @@ app.get('/admin/abnormality/contract', (req, res) => {
 // go to admin contract abnormality
 app.get('/abnormality/contract', (req, res) => {
   res.sendFile('/public/assets/html/contractAbnormality.html', { root: __dirname });
+});
+
+// go to admin contract abnormality
+app.get('/admin/abnormality', (req, res) => {
+  res.sendFile('/public/assets/html/adminAbnormalityDashboard.html', { root: __dirname });
 });
 
 //= ======================================================

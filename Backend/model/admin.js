@@ -1070,24 +1070,22 @@ const Admin = {
   //= ======================================================
   //              Features / abnormalities
   //= ======================================================
-  // Get the number of contract abnormalities per customer
-  getNumOfAbnormalContracts(callback) {
+  // Scan through contract table to find contract abnormality records
+  scanAbnormalContract(callback) {
     // sql query statement
     const sql = `
-     SELECT 
-      cab.UserID, COUNT(ca.ContractID) AS TotalContract, c.FirstName, c.LastName, c.Email, cab.AbnormalStatus
-     FROM
-      heroku_6b49aedb7855c0b.contract_abnormality AS cab
-     LEFT JOIN
-        heroku_6b49aedb7855c0b.customer AS c
-     ON
-      cab.UserID = c.CustomerID
-     LEFT JOIN
-      heroku_6b49aedb7855c0b.contract AS ca
-     ON
-        ca.Customer = c.CustomerID
-     GROUP BY
-      cab.UserID
+      SELECT 
+	      cu.FirstName, cu.LastName, cu.Email, c.Customer, count(c.Customer) AS TotalContract
+      FROM 
+	      heroku_6b49aedb7855c0b.contract as c,
+        heroku_6b49aedb7855c0b.customer as cu
+      WHERE 
+	      c.Customer = cu.CustomerID
+        AND c.contractStatus != 'inactive'
+      GROUP BY 
+	      Customer
+      HAVING 
+	      count(Customer) >= 5
     `;
     // pool query
     pool.query(sql, (err, result) => {
@@ -1102,20 +1100,120 @@ const Admin = {
     });
   },
 
-  // Get the abnormal contract by customer
+  // Insert new found contract abnormality record into contract_abnormality table
+  newContractAbnormality(CustomerID, NoOfAbnContracts, callback) {
+    // sql query statement
+    const sql = `
+      INSERT INTO
+        heroku_6b49aedb7855c0b.contract_abnormality (
+          UserID,
+          TotalAbnContracts)
+      VALUES
+        (?,?);
+    `;
+    // pool query
+    pool.query(sql, [CustomerID, NoOfAbnContracts], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Get contract abnormality by customer
+  checkAbnContractById(CustomerID, callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        *
+      FROM
+        heroku_6b49aedb7855c0b.contract_abnormality
+      WHERE
+        UserID = ?;
+    `;
+    // pool query
+    pool.query(sql, [CustomerID], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Update Total Abnormal contract by customer
+  updateNumOfAbnContracts(numOfContracts, CustomerID, status, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE 
+        heroku_6b49aedb7855c0b.contract_abnormality
+      SET
+        TotalAbnContracts = ?
+      where
+        UserID = ? AND 
+        AbnormalStatus = ?;
+     ;
+    `;
+    // pool query
+    pool.query(sql, [numOfContracts, CustomerID, status], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Get the number of contract abnormalities per customer
+  getNumOfAbnormalContracts(callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        cab.UserID, TotalAbnContracts, c.FirstName, c.LastName, c.Email, cab.AbnormalStatus
+      FROM
+        heroku_6b49aedb7855c0b.contract_abnormality AS cab,
+        heroku_6b49aedb7855c0b.customer AS c
+      WHERE
+        cab.UserID = c.CustomerID;
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
   getAbnormalContracts(CustomerID, callback) {
     // sql query statement
     const sql = `
-      SELECT
-        ca.ContractID, c.FirstName, c.LastName, c.Email
-      FROM
-        heroku_6b49aedb7855c0b.contract_abnormality AS cab,
-        heroku_6b49aedb7855c0b.customer AS c,
-        heroku_6b49aedb7855c0b.contract AS ca
-      WHERE
-        cab.UserID = c.CustomerID AND
-        ca.Customer = c.CustomerID AND
-        cab.UserID = ?;
+    SELECT
+      ca.ContractID, c.FirstName, c.LastName, c.Email, ca.Created_At
+    FROM
+      heroku_6b49aedb7855c0b.contract_abnormality AS cab,
+      heroku_6b49aedb7855c0b.customer AS c,
+      heroku_6b49aedb7855c0b.contract AS ca
+    WHERE
+	    cab.UserID = c.CustomerID AND
+      ca.Customer = c.CustomerID AND
+      ca.contractStatus != 'inactive' AND
+      DATE(ca.Created_At) >= DATE(NOW()) - INTERVAL 30 DAY AND
+      cab.UserID = ?;
     `;
     // pool query
     pool.query(sql, [CustomerID], (err, result) => {

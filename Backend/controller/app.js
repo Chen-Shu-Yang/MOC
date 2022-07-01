@@ -1584,6 +1584,113 @@ app.get('/revenueOfTheMonth', printDebugInfo, async (req, res) => {
   });
 });
 
+// Scan through contract table to insert the contract abnormality record
+app.get('/abnormality/contracts/checks', printDebugInfo, async (req, res) => {
+  // Get the total abnormal contracts and group by customer in contract table
+  Admin.scanAbnormalContract((err, result) => {
+    if (!err) {
+      // Get all details in the contract table
+      Admin.getNumOfAbnormalContracts((err1, result1) => {
+        if (!err) {
+          // Loop through the contract table record
+          for (let i = 0; i < result.length; i++) {
+            // Get the customer ID of the returned contract table record
+            const CustomerID = result[i].Customer;
+            // Get the total contract from the returned contract table record
+            const { TotalContract } = result[i];
+
+            // Get contract abnormality by customer
+            Admin.checkAbnContractById(CustomerID, (err2, result2) => {
+              if (!err) {
+                // If customer is not found
+                if (result2.length === 0) {
+                  // Add the customer into the abnormality table
+                  Admin.newContractAbnormality(CustomerID, TotalContract, (err3, result3) => {
+                    if (!err) {
+                      console.log('New customer added');
+                    } else {
+                      console.log(err3);
+                    }
+                  });
+                } else {
+                  // Get the total num of abnormal contracts in contract_abnormality table
+                  // const { TotalAbnContracts } = result2[0];
+
+                  // Get the status of the abnormal contract
+                  const status = result2[0].AbnormalStatus;
+                  console.log(`status: ${status}`);
+                  if (status === 'Abnormal') {
+                    // There should only have 1 abnormal per customer
+                    // If abnormal contract status is abnormal,
+                    // jus update the total abnormal contract num
+                    Admin.updateNumOfAbnContracts(
+                      TotalContract,
+                      CustomerID,
+                      status,
+                      (err4, result4) => {
+                        if (!err) {
+                          console.log('Total Updated');
+                        } else {
+                          console.log('internal error');
+                          console.log(err4);
+                        }
+                      },
+                    );
+                  }
+
+                  if (status === 'Resolved') {
+                    // For loop will add up the total abnormal contract in
+                    // the contract abnormality table where the status is resolved
+                    // There might be more than 1 resolved record
+                    let initialContractNo = 0;
+                    for (let x = 0; x < result2.length; x++) {
+                      if (status === 'Resolved') {
+                        // If abnormal contract status add the total abnormal contract
+                        initialContractNo += result2[i].TotalAbnContracts;
+                      }
+                    }
+                    console.log(`initialContractNo: ${initialContractNo}`);
+                    // Totalcontract: Num of abnormal contracts in contract table for each customer
+                    const contractNoDiff = TotalContract - initialContractNo;
+                    console.log(`contractNoDiff: ${contractNoDiff}`);
+                    // If the remainder if still more than 5,
+                    // insert another record in contract_abnormality
+                    if (contractNoDiff >= 5) {
+                      // Insert the record in
+                      Admin.newContractAbnormality(CustomerID, contractNoDiff, (err5, result5) => {
+                        if (!err) {
+                          console.log('New customer added');
+                        } else {
+                          console.log(err5);
+                        }
+                      });
+                    }
+                  }
+                }
+              } else {
+                console.log('internal error');
+              }
+            });
+          }
+          res.send('Contract Abnormality Retrieved Successfully');
+        } else {
+          // sending output as error message if there is any server issues
+          const output = {
+            Error: 'Internal sever issues',
+          };
+          res.status(500).send(output);
+        }
+      });
+    } else {
+      // sever error
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
 // Get the number of contract abnormalities per customer
 app.get('/abnormality/contracts', printDebugInfo, async (req, res) => {
   // calling getAllRates method from admin model

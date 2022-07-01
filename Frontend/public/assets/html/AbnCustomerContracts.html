@@ -45,10 +45,10 @@
             const card = `
                 <div class="contract-card">
                     <div class="contract-content">
-                        <div>
+                        <div class="customer-details">
                             <span><b>Customer Name:</b></span>
                             <p id="customerName">${cardInfo.FirstName} ${cardInfo.LastName}</p>
-                            <span id="customerEmail"><b>Email:</b></span>
+                            <span><b>Email:</b></span>
                             <p id="customerEmail">${cardInfo.Email}</p>
                         </div>
                         <div class="total-contract-abn">
@@ -83,7 +83,7 @@
                             FirstName: contract.FirstName,
                             LastName: contract.LastName,
                             AbnormalStatus: contract.AbnormalStatus,
-                            TotalContract: contract.TotalContract
+                            TotalContract: contract.TotalAbnContracts
                         };
 
                         const newCard = createRow(RowInfo);
@@ -193,108 +193,7 @@
         <section class="contract-list">
             <div class="max-width">
                 <div class="abn-contract-content" id="abnContractContent">
-                    <!-- <div class="contract-card">
-                        <div class="contract-content">
-                            <div>
-                                <span><b>Customer Name:</b></span>
-                                <p id="customerName">Tina</p>
-                                <span id="customerEmail"><b>Email:</b></span>
-                                <p id="customerEmail">Tina@gmail.com</p>
-                            </div>
-                            <div class="total-contract-abn">
-                                <span><b>Number of Contracts:</b></span>
-                                <p class="contractNo" id="contractNo">25</p>
-                                <div class="btn-section">
-                                    <button type="button" class="view-details-btn">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contract-card">
-                        <div class="contract-content">
-                            <div>
-                                <span><b>Customer Name:</b></span>
-                                <p id="customerName">Tina</p>
-                                <span id="customerEmail"><b>Email:</b></span>
-                                <p id="customerEmail">Tina@gmail.com</p>
-                            </div>
-                            <div class="total-contract-abn">
-                                <span><b>Number of Contracts:</b></span>
-                                <p class="contractNo" id="contractNo">25</p>
-                                <div class="btn-section">
-                                    <button type="button" class="view-details-btn">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contract-card">
-                        <div class="contract-content">
-                            <div>
-                                <span><b>Customer Name:</b></span>
-                                <p id="customerName">Tina</p>
-                                <span id="customerEmail"><b>Email:</b></span>
-                                <p id="customerEmail">Tina@gmail.com</p>
-                            </div>
-                            <div class="total-contract-abn">
-                                <span><b>Number of Contracts:</b></span>
-                                <p class="contractNo" id="contractNo">25</p>
-                                <div class="btn-section">
-                                    <button type="button" class="view-details-btn">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contract-card">
-                        <div class="contract-content">
-                            <div>
-                                <span><b>Customer Name:</b></span>
-                                <p id="customerName">Tina</p>
-                                <span id="customerEmail"><b>Email:</b></span>
-                                <p id="customerEmail">Tina@gmail.com</p>
-                            </div>
-                            <div class="total-contract-abn">
-                                <span><b>Number of Contracts:</b></span>
-                                <p class="contractNo" id="contractNo">25</p>
-                                <div class="btn-section">
-                                    <button type="button" class="view-details-btn">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contract-card">
-                        <div class="contract-content">
-                            <div>
-                                <span><b>Customer Name:</b></span>
-                                <p id="customerName">Tina</p>
-                                <span id="customerEmail"><b>Email:</b></span>
-                                <p id="customerEmail">Tina@gmail.com</p>
-                            </div>
-                            <div class="total-contract-abn">
-                                <span><b>Number of Contracts:</b></span>
-                                <p class="contractNo" id="contractNo">25</p>
-                                <div class="btn-section">
-                                    <button type="button" class="view-details-btn">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contract-card">
-                        <div class="contract-content">
-                            <div>
-                                <span><b>Customer Name:</b></span>
-                                <p id="customerName">Tina</p>
-                                <span id="customerEmail"><b>Email:</b></span>
-                                <p id="customerEmail">Tina@gmail.com</p>
-                            </div>
-                            <div class="total-contract-abn">
-                                <span><b>Number of Contracts:</b></span>
-                                <p class="contractNo" id="contractNo">25</p>
-                                <div class="btn-section">
-                                    <button type="button" class="view-details-btn">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+                    
                 </div>
             </div>
         </section>
