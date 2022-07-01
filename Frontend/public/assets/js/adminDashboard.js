@@ -10,10 +10,10 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 
-const type = JSON.parse(localStorage.getItem('AdminType'));
-
+const type = JSON.parse(localStorage.getItem('adminType'));
+console.log(type);
 if (type === null) {
-  window.location.replace(`${frontEndUrl}/unAuthorize`);
+  // window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 
 // load number of booking for each month
