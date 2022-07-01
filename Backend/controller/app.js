@@ -1946,7 +1946,8 @@ app.put('/admin/password/:id', printDebugInfo, verifyToken, async (req, res) => 
   });
 });
 
-app.put('/admin/editPassword/:id', printDebugInfo, async (req, res) => {
+app.put('/admin/editPassword/:id', printDebugInfo, verifyToken, async (req, res) => {
+  console.log(req.role);
   if (req.role == null) {
     res.status(403).send();
     return;
