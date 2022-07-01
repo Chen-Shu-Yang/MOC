@@ -219,13 +219,13 @@
     <script src="../assets/js/adminNavbar.js"></script>
     <script src="../assets/js/assignEmployee.js"></script>
     <script>
-       var userType = localStorage.getItem('adminType');
-        if (userType === 'Admin') {
-           document.getElementById('adminNav').style.display = 'none';
-           document.getElementById('superAdminBooking').style.display = 'none';
-        }else{
-            
+        const userType = localStorage.getItem('adminType');
+        if (userType === '"Admin"') {
+            document.getElementById('adminNav').style.display = 'none';
+            document.getElementById('superAdminBooking').style.display = 'none';
+        } else {
             document.getElementById('adminBooking').style.display = 'none';
+
         }
     </script>
 
