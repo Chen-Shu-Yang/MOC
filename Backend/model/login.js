@@ -85,6 +85,7 @@ const Login = {
           // (1)Payload
             email: result[0].email,
             id: result[0].AdminID,
+            role: result[0].AdminType,
           },
           // (2) Secret Key
           config.key,

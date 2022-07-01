@@ -49,8 +49,6 @@ function verifyToken(req, res, next) {
     req.id = decoded.id;
     // decode the role and store in req for use
     req.email = decoded.email;
-    // req.decoded = decoded;
-    req.role = decoded.role;
     next();
   });
 }
