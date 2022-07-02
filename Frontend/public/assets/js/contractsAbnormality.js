@@ -4,11 +4,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 
-// const frontEndUrl = 'http://localhost:3001';
+const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 let abnContractNum = '';
+let abnormalcontract = '';
 
 function createRow(cardInfo) {
   const card = `
@@ -18,8 +19,6 @@ function createRow(cardInfo) {
         <td>${cardInfo.Email}</td>
         <td>
             <button type="button" class="cancel-btn" onclick="cancelAbnormalContract(${cardInfo.ContractID})">Cancel</button>
-        <td>
-            <button type="button" class="resolve-btn">Resolve</button>
         </td>
     </tr>
   `;
@@ -94,13 +93,42 @@ function cancelAbnormalContract(id) {
   });
 }
 
+function resolveAbnContracts(id) {
+  $.ajax({
+    url: `${backEndUrl}/abnormalcontracts/${id}`,
+    type: 'PUT',
+    contentType: 'application/json; charset=utf-8',
+
+    success(data) {
+      console.log(data);
+      window.location.replace(`${frontEndUrl}/admin/abnormality/contract`);
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+    },
+  });
+}
+
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   const customerID = queryParams.get('id');
+  abnormalcontract = queryParams.get('abnContract');
   abnContractNum = queryParams.get('contractnum');
 
   console.log('--------Query Params----------');
   console.log(`Query Param (source): ${window.location.search}`);
   console.log(`Query Param (extraction): ${queryParams}`);
   loadAllAbnContracts(customerID);
+
+  $('#resolveBtn').click(() => {
+    resolveAbnContracts(abnormalcontract);
+  });
 });
