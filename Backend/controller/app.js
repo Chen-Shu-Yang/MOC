@@ -1694,7 +1694,7 @@ app.get('/abnormality/contracts/checks', printDebugInfo, async (req, res) => {
 // Get the number of contract abnormalities per customer
 app.get('/abnormality/contracts', printDebugInfo, async (req, res) => {
   // calling getAllRates method from admin model
-  Admin.getNumOfAbnormalContracts((err, result) => {
+  Admin.getAbnormalContracts((err, result) => {
     if (!err) {
       // result.affectedRows indicates that id to be deleted
       // cannot be found hence send as error message
@@ -1715,11 +1715,12 @@ app.get('/abnormality/contracts', printDebugInfo, async (req, res) => {
 });
 
 // Get abnormal contracts
-app.get('/abnormality/contracts/:customerId', printDebugInfo, async (req, res) => {
+app.get('/abnormality/contracts/:customerId/:contractnum', printDebugInfo, async (req, res) => {
   const CustomerID = req.params.customerId;
+  const AbnContractNum = parseInt(req.params.contractnum, 10);
 
   // calling getAllRates method from admin model
-  Admin.getAbnormalContracts(CustomerID, (err, result) => {
+  Admin.getAbnormalContractsByID(CustomerID, AbnContractNum, (err, result) => {
     if (!err) {
       // result.affectedRows indicates that id to be deleted
       // cannot be found hence send as error message
@@ -1729,6 +1730,53 @@ app.get('/abnormality/contracts/:customerId', printDebugInfo, async (req, res) =
         // else a postitve result
         res.status(200).send(result);
       }
+    } else {
+      // sever error
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// Resolve abnormal contracts
+app.put('/abnormalcontracts/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const contractId = req.params.id;
+
+  // calling resolveAbnormalContract method from Admin model
+  Admin.resolveAbnormalContract(contractId, (err, result) => {
+    if (!err) {
+      // if admin id is not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// Cancel abnormal contracts
+app.put('/cancelAbnContract/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const { id } = req.params;
+
+  // calling resolveAbnormalContract method from SuperAdmin model
+  Admin.cancelAbnormalContract(id, (err, result) => {
+    if (!err) {
+      res.status(200).send(result);
     } else {
       // sever error
       const output = {

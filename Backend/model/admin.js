@@ -1199,24 +1199,97 @@ const Admin = {
     });
   },
 
-  getAbnormalContracts(CustomerID, callback) {
+  getAbnormalContracts(callback) {
     // sql query statement
     const sql = `
-    SELECT
-      ca.ContractID, c.FirstName, c.LastName, c.Email, ca.Created_At
-    FROM
-      heroku_6b49aedb7855c0b.contract_abnormality AS cab,
-      heroku_6b49aedb7855c0b.customer AS c,
-      heroku_6b49aedb7855c0b.contract AS ca
-    WHERE
-	    cab.UserID = c.CustomerID AND
-      ca.Customer = c.CustomerID AND
-      ca.contractStatus != 'inactive' AND
-      DATE(ca.Created_At) >= DATE(NOW()) - INTERVAL 30 DAY AND
-      cab.UserID = ?;
+      SELECT 
+      cab.ContractAbnId, cab.UserID, TotalAbnContracts, c.FirstName, c.LastName, c.Email, cab.AbnormalStatus
+      FROM
+        heroku_6b49aedb7855c0b.contract_abnormality AS cab,
+        heroku_6b49aedb7855c0b.customer AS c
+      WHERE
+        cab.UserID = c.CustomerID AND 
+        cab.AbnormalStatus != 'Resolved';
     `;
     // pool query
-    pool.query(sql, [CustomerID], (err, result) => {
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  getAbnormalContractsByID(CustomerID, contractNum, callback) {
+    // sql query statement
+    const sql = `
+      SELECT DISTINCT
+	      ca.ContractID, c.FirstName, c.LastName, c.Email, ca.Created_At
+      FROM 
+	      heroku_6b49aedb7855c0b.contract AS ca,
+        heroku_6b49aedb7855c0b.customer AS c,
+        heroku_6b49aedb7855c0b.contract_abnormality AS cab
+      WHERE
+	      ca.Customer = c.CustomerID AND
+        cab.UserID = c.CustomerID AND
+        cab.AbnormalStatus != 'Resolved' AND
+        ca.contractStatus != 'inactive' AND
+        c.CustomerID = ?
+      ORDER BY
+ 	      ca.Created_At DESC LIMIT ?;
+    `;
+    // pool query
+    pool.query(sql, [CustomerID, contractNum], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  resolveAbnormalContract(ContractId, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE
+        heroku_6b49aedb7855c0b.contract_abnormality
+      SET
+        AbnormalStatus = 'Resolved'
+      WHERE
+        ContractAbnId = ?;
+    `;
+    // pool query
+    pool.query(sql, [ContractId], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  cancelAbnormalContract(ContractId, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE
+        heroku_6b49aedb7855c0b.contract
+      SET
+        contractStatus = 'inactive'
+      WHERE
+        ContractID = ?;
+    `;
+    // pool query
+    pool.query(sql, [ContractId], (err, result) => {
       // error
       if (err) {
         console.log(err);

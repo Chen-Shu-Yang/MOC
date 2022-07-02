@@ -54,6 +54,7 @@
     padding: 3px 8px;
     border-radius: 5px; 
     outline: none;
+    cursor: pointer;
     border: 2px solid #D38984;
 }
 
@@ -63,6 +64,7 @@
     padding: 3px 8px;
     border-radius: 5px;
     outline: none;
+    cursor: pointer;
     border: 2px solid #74A2A3; 
 }
 

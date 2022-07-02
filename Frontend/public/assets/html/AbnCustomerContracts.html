@@ -50,12 +50,18 @@
                             <p id="customerName">${cardInfo.FirstName} ${cardInfo.LastName}</p>
                             <span><b>Email:</b></span>
                             <p id="customerEmail">${cardInfo.Email}</p>
+                            <div class="btn-section">
+                                <a onclick="resolveAbnContracts(${cardInfo.AbnContractsId})" class="resolve-btn">
+                                    Resolve
+                                </a>
+                            </div>
                         </div>
                         <div class="total-contract-abn">
                             <span><b>Number of Contracts:</b></span>
                             <p class="contractNo" id="contractNo">${cardInfo.TotalContract}</p>
                             <div class="btn-section">
-                                <a href="/abnormality/contract?id=${cardInfo.UserID}" class="view-details-btn">
+                                <a href="/abnormality/contract?id=${cardInfo.UserID}&abnContract=${cardInfo.AbnContractsId}&contractnum=${cardInfo.TotalContract}" 
+                                class="view-details-btn">
                                     View Details
                                 </a>
                             </div>
@@ -73,11 +79,13 @@
                 contentType: 'application/json; charset=utf-8',
 
                 success(data) {
+                    $('#abnContractContent').html('');
                     console.log(data);
                     for (let i = 0; i < data.length; i++) {
                         const contract = data[i];
 
                         const RowInfo = {
+                            AbnContractsId: contract.ContractAbnId,
                             UserID: contract.UserID,
                             Email: contract.Email,
                             FirstName: contract.FirstName,
@@ -89,6 +97,30 @@
                         const newCard = createRow(RowInfo);
                         $('#abnContractContent').append(newCard);
                     }
+                },
+
+                error(xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+
+                    console.log(xhr.responseText);
+                    console.log(xhr.status);
+                },
+            });
+        }
+
+        function resolveAbnContracts(id) {
+            $.ajax({
+                url: `${backEndUrl}/abnormalcontracts/${id}`,
+                type: 'PUT',
+                contentType: 'application/json; charset=utf-8',
+
+                success(data) {
+                    console.log(data);
+                    loadAbnContractsNum();
                 },
 
                 error(xhr, textStatus, errorThrown) {
