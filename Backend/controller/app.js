@@ -103,7 +103,7 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
       res.status(404).send(msg);
     } else {
       console.log(`Token: ${result}`);
-
+      // message consist of name and the link to be sent via an email
       msg = {
         link,
         firstName: result.FirstName,
