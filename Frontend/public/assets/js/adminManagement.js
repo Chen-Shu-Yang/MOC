@@ -8,13 +8,13 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
-
-const type = JSON.parse(localStorage.getItem('AdminType'));
-
-if (type === null) {
+const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
+const tempType = JSON.parse(localStorage.getItem('adminType'));
+console.log(tempType);
+if (tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
-if (type === '"Admin"') {
+if (tempType === 'Admin') {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 const tmpToken = JSON.parse(localStorage.getItem('token'));

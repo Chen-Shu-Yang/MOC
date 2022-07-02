@@ -9,8 +9,10 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
-// const CustomerID = localStorage.getItem('customerID');
 const tmpToken = JSON.parse(localStorage.getItem('token'));
+if (tmpToken === null) {
+  window.location.replace(`${frontEndUrl}/unAuthorize`);
+}
 let estService = 0;
 let estRate = 0;
 const estAdd = 0;
