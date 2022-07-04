@@ -383,6 +383,74 @@ app.put('/employees/:id', printDebugInfo, (req, res) => {
   );
 });
 
+// get an employee availability (shuyang)
+app.get('/employee/availability/:id/:date', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const employeeId = req.params.id;
+  const dateExtracted = req.params.date;
+
+  // calling getEmployeeAvailabilty method from admin model
+  Admin.getEmployeeAvailByID(employeeId, dateExtracted, (err, result) => {
+    if (!err) {
+      // output
+      res.status(200).send(result);
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// get an employee skills (shuyang)
+app.get('/employee/skills/:id', printDebugInfo, async (req, res) => {
+  // extract id from params
+  const employeeId = req.params.id;
+
+  // calling getEmployeeSkillsByID method from admin model
+  Admin.getEmployeeSkillsByID(employeeId, (err, result) => {
+    if (!err) {
+      // output
+      res.status(200).send(result);
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+// update employee skills (shuyang)
+app.put('/employees/skills/:id', printDebugInfo, (req, res) => {
+  // extract id from params
+  const EmployeeID = req.params.id;
+  // extract all details needed
+  const { EmployeeSkills } = req.body;
+
+  // calling deleteEmployeeSkills method from admin model
+  Admin.updateEmployeeSkills(EmployeeSkills, EmployeeID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      res.status(201).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
+    } else {
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
+    }
+  },
+  );
+});
+
 // delete employee
 app.delete('/employee/:employeeId', printDebugInfo, (req, res) => {
   // extract id from params

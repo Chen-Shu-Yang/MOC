@@ -23,8 +23,8 @@ function createRow(cardInfo) {
           </div>
           <p class="employee-des">${cardInfo.EmployeeDes}</p>
           <div class="employee-links">
-              <a href="" data-toggle="modal" data-target="#">View Skillsets</a>
-              <a href="" data-toggle="modal" data-target="#viewEmpAvailabilityModal">View Availability</a>
+              <a href="" data-toggle="modal" data-target="#skillsetsModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">View Skillsets</a>
+              <a href="" data-toggle="modal" data-target="#viewEmpAvailabilityModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">View Availability</a>
           </div>
           <div class="employee-btn">
               <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Edit</button>
@@ -33,6 +33,19 @@ function createRow(cardInfo) {
           </div>
       </div>
 `;
+  return card;
+}
+
+function createSkillRow(cardInfo) {
+  const card = `
+    <div class="skillsets">
+      <div class="skillset-name">
+        <i class="fa-solid fa-check"></i>
+          <span>${cardInfo}</span>
+      </div>
+      <i class="fa-solid fa-trash-can" onclick="deleteSkills('${cardInfo}')"></i>
+    </div>
+  `;
   return card;
 }
 
@@ -119,6 +132,110 @@ function loadEmployeeByLimit(pageNumber) {
   });
 }
 
+function loadEmployeeAvailability() {
+  const employeeId = $('#availEmployeeID').val();
+  const dateExtracted = $('#datepicker').val();
+
+  if (dateExtracted === '') {
+    new Noty({
+      timeout: '3000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Date is not Selected!',
+    }).show();
+    return;
+  }
+
+  $.ajax({
+    url: `${backEndUrl}/employee/availability/${employeeId}/${dateExtracted}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+
+    success(data) {
+      console.log('-------response data------');
+      console.log(data);
+      console.log(`LENGTH OF DATA:${data.length}`);
+      // $('#availabilityTimeslots').html('');
+
+      if (data.length === 0) {
+        // Ensure the color of the timeslot changes
+        $('#eightThirtySlot').removeClass('unavailable');
+        $('#twelveThirtySlot').removeClass('unavailable');
+        $('#eightThirtySlot').removeClass('available');
+        $('#twelveThirtySlot').removeClass('available');
+        $('#eightThirtySlot').addClass('unavailable');
+        $('#twelveThirtySlot').addClass('unavailable');
+
+        new Noty({
+          timeout: '3000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Employee is not available on this date',
+        }).show();
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          const employee = data[i];
+
+          const RowInfo = {
+            EmployeeID: employee.Employee,
+            ScheduleDate: employee.ScheduleDate,
+            TimeSlot: employee.TimeSlot,
+            ScheduleID: employee.ScheduleID,
+          };
+
+          console.log('---------Card INfo data pack------------');
+          console.log(RowInfo);
+
+          if (RowInfo.TimeSlot === '08:30:00') {
+            // Ensure the color of the timeslot changes
+            $('#eightThirtySlot').removeClass('unavailable');
+            $('#twelveThirtySlot').removeClass('unavailable');
+            $('#eightThirtySlot').removeClass('available');
+            $('#twelveThirtySlot').removeClass('available');
+            $('#eightThirtySlot').addClass('available');
+            $('#twelveThirtySlot').addClass('unavailable');
+            new Noty({
+              timeout: '3000',
+              type: 'success',
+              layout: 'topCenter',
+              theme: 'sunset',
+              text: 'Employee is available at 08:30:00 today!',
+            }).show();
+          } else {
+            // Ensure the color of the timeslot changes
+            $('#eightThirtySlot').removeClass('unavailable');
+            $('#twelveThirtySlot').removeClass('unavailable');
+            $('#eightThirtySlot').removeClass('available');
+            $('#twelveThirtySlot').removeClass('available');
+            $('#eightThirtySlot').addClass('unavailable');
+            $('#twelveThirtySlot').addClass('available');
+            new Noty({
+              timeout: '3000',
+              type: 'success',
+              layout: 'topCenter',
+              theme: 'sunset',
+              text: 'Employee is available at 12:30:00 today!',
+            }).show();
+          }
+        }
+      }
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+    },
+  });
+}
+
 // eslint-disable-next-line no-unused-vars
 function loadAnEmployee(id) {
   console.log(id);
@@ -142,11 +259,19 @@ function loadAnEmployee(id) {
         Skillsets: employee.Skillsets,
       };
 
-      console.log('---------Card INfo data pack------------');
-      console.log(RowInfo);
+      const skillsString = RowInfo.Skillsets;
+      skillsArray = skillsString.split(',');
+      $('#skillsModalContent').html('');
+
+      for (let i = 0; i < skillsArray.length; i++) {
+        const newRow = createSkillRow(skillsArray[i]);
+        $('#skillsModalContent').append(newRow);
+      }
 
       document.getElementById('NewProfilePreview').style.backgroundImage = `url(${RowInfo.EmployeeImg})`;
       $('#editEmployeeID').val(RowInfo.EmployeeID);
+      $('#employeeSkillsID').val(RowInfo.EmployeeID);
+      $('#availEmployeeID').val(RowInfo.EmployeeID);
       $('#deleteEmployeeID').val(RowInfo.EmployeeID);
       $('#editEmployeeName').val(RowInfo.Name);
       $('#editEmployeeDes').val(RowInfo.Description);
@@ -242,6 +367,62 @@ function updateEmployee() {
       }
     },
   });
+}
+
+function updateSkills(skills) {
+  const id = $('#employeeSkillsID').val();
+  const EmployeeSkills = skills.toString();
+
+  const extractedData = {
+    EmployeeSkills,
+  };
+
+  // ajax fuction to connect to the backend
+  $.ajax({
+    url: `${backEndUrl}/employees/skills/${id}`,
+    type: 'PUT',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(extractedData),
+
+    // success method
+    success() {
+      $('#skillsModalContent').html('');
+      $('#newSkillsInput').val('');
+      for (let x = 0; x < skillsArray.length; x++) {
+        const newRow = createSkillRow(skillsArray[x]);
+        $('#skillsModalContent').append(newRow);
+      }
+
+      new Noty({
+        timeout: '3000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Skills list is updated!',
+      }).show();
+    },
+    // error method
+    error(xhr, textStatus, errorThrown) {
+      console.log('Error in Operation');
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+    },
+  });
+}
+
+// eslint-disable-next-line no-unused-vars
+function deleteSkills(skill) {
+  for (let i = 0; i < skillsArray.length; i++) {
+    if (skillsArray[i] === skill) {
+      skillsArray.splice(i, 1);
+      i--;
+    }
+  }
+
+  updateSkills(skillsArray);
 }
 
 function deleteEmployee(id) {
@@ -404,6 +585,24 @@ $(document).ready(() => {
   // update button
   $('#editEmployeeBtn').click(() => {
     updateEmployee();
+  });
+
+  // Get employee Availability date button
+  $('#employeAvailBtn').click(() => {
+    loadEmployeeAvailability();
+  });
+
+  // Open add skillsets input
+  $('#addSkillsInputBtn').click(() => {
+    $('.addEmployeeSkills').toggleClass('active');
+  });
+
+  // add skillsets button
+  $('#addSkillsBtn').click(() => {
+    const newSkill = $('#newSkillsInput').val();
+    skillsArray.push(newSkill);
+
+    updateSkills(skillsArray);
   });
 
   // delete button
