@@ -12,6 +12,10 @@ const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
+const tempCustomerID = JSON.parse(localStorage.getItem('customerID'));
+if (tempCustomerID === null) {
+  window.location.replace(`${frontEndUrl}/unAuthorize`);
+}
 
 function createRow(cardInfo) {
   console.log('*********inside card*********');

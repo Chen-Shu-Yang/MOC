@@ -11,6 +11,10 @@ const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
+const tempCustomerID = JSON.parse(localStorage.getItem('customerID'));
+if (tempCustomerID === null) {
+  window.location.replace(`${frontEndUrl}/unAuthorize`);
+}
 // Display the helper card
 // Helpers' information will be passed in as cardInfo
 function createRow(cardInfo) {
