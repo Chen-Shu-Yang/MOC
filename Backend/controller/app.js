@@ -145,7 +145,7 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
 // nodemailer stuff
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  service: 'gamil',
+  service: 'gmail',
   secure: true,
   auth: {
     user: process.env.AUTH_EMAIL,
