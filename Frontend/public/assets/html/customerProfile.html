@@ -182,7 +182,7 @@
 
 <body>
     <!--Nav bar Start-->
-    <header class=" scroll_header_top_area  fixed scrolled_not_transparent page_header">
+	<header class=" scroll_header_top_area  fixed scrolled_not_transparent page_header">
         <div class="header_inner clearfix">
 
             <div class="header_top_bottom_holder">
@@ -307,10 +307,17 @@
                                     </li>
                                     <li id="nav-menu-item-164907"
                                         class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-                                        <a href="/customer/profile" class=""><i
-                                                class="menu_icon blank fa"></i><span>Profile</span><span
+                                        <a href="/customer/Profile" class=""><i
+                                                class="menu_icon blank fa"></i><span>Profile </span><span
                                                 class="plus"></span></a>
                                     </li>
+                                    <li id="nav-menu-item-164906"
+                                        class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+                                        <a href="#" class=""><i
+                                                class="menu_icon blank fa"></i><span>Logout</span><span
+                                                class="plus"></span></a>
+                                    </li>
+
                                 </ul>
                             </nav>
                             <nav class="mobile_menu">
@@ -364,9 +371,8 @@
                                     </li>
                                     <li id="mobile-menu-item-16426"
                                         class="menu-item menu-item-type-post_type menu-item-object-page "><a
-                                            href="/gallery"
-                                            class=""><span>Gallery</span></a><span class="mobile_arrow"><i
-                                                class="fa fa-angle-right"></i><i
+                                            href="/gallery" class=""><span>Gallery</span></a><span
+                                            class="mobile_arrow"><i class="fa fa-angle-right"></i><i
                                                 class="fa fa-angle-down"></i></span></li>
                                     <li id="mobile-menu-item-16427"
                                         class="menu-item menu-item-type-post_type menu-item-object-page "><a
@@ -391,8 +397,14 @@
                                                 class="fa fa-angle-down"></i></span></li>
                                     <li id="mobile-menu-item-164247"
                                         class="menu-item menu-item-type-post_type menu-item-object-page "><a
-                                            href="/customer/history" class=""><span>Booking
+                                            href="/customer/profile" class=""><span>Profile
                                                 History</span></a><span class="mobile_arrow"><i
+                                                class="fa fa-angle-right"></i><i
+                                                class="fa fa-angle-down"></i></span></li>
+                                    <li id="mobile-menu-item-164246"
+                                        class="menu-item menu-item-type-post_type menu-item-object-page "><a
+                                            href="" class=""><span>Logout
+                                                </span></a><span class="mobile_arrow"><i
                                                 class="fa fa-angle-right"></i><i
                                                 class="fa fa-angle-down"></i></span></li>
                                 </ul>
@@ -474,18 +486,7 @@
 
     </section>
     
-	<script>
-        var userType = localStorage.getItem('customerID');
-         if (userType != null) {
-            document.getElementById('nav-menu-item-1642909').style.display = 'none';
-            document.getElementById('mobile-menu-item-164249').style.display = 'none';
-			document.getElementById('nav-menu-item-1642908').style.display = 'none';
-            document.getElementById('mobile-menu-item-164248').style.display = 'none';
-         }else{
-             document.getElementById('nav-menu-item-164907').style.display = 'none';
-			 document.getElementById('mobile-menu-item-164247').style.display = 'none';
-         }
-     </script>
+    <script src="../../assets/js/customerNav.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
     <script src="../../assets/js/customerProfile.js"></script>
     <script type='text/javascript'>

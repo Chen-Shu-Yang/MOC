@@ -138,9 +138,6 @@
 		href="/assets/MOC/moc.sg/wp-json/oembed/1.0/embeda612.json?url=http%3A%2F%2Fmoc.sg%2F" />
 	<link rel="alternate" type="text/xml+oembed"
 		href="/assets/MOC/moc.sg/wp-json/oembed/1.0/embed7ff3?url=http%3A%2F%2Fmoc.sg%2F&amp;format=xml" />
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
 	<style type="text/css">
 		.recentcomments a {
 			display: inline !important;
@@ -310,10 +307,17 @@
                                     </li>
                                     <li id="nav-menu-item-164907"
                                         class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-                                        <a href="/customer/history" class=""><i
-                                                class="menu_icon blank fa"></i><span>Booking History</span><span
+                                        <a href="/customer/Profile" class=""><i
+                                                class="menu_icon blank fa"></i><span>Profile </span><span
                                                 class="plus"></span></a>
                                     </li>
+                                    <li id="nav-menu-item-164906"
+                                        class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+                                        <a href="#" class=""><i
+                                                class="menu_icon blank fa"></i><span>Logout</span><span
+                                                class="plus"></span></a>
+                                    </li>
+
                                 </ul>
                             </nav>
                             <nav class="mobile_menu">
@@ -367,9 +371,8 @@
                                     </li>
                                     <li id="mobile-menu-item-16426"
                                         class="menu-item menu-item-type-post_type menu-item-object-page "><a
-                                            href="/gallery"
-                                            class=""><span>Gallery</span></a><span class="mobile_arrow"><i
-                                                class="fa fa-angle-right"></i><i
+                                            href="/gallery" class=""><span>Gallery</span></a><span
+                                            class="mobile_arrow"><i class="fa fa-angle-right"></i><i
                                                 class="fa fa-angle-down"></i></span></li>
                                     <li id="mobile-menu-item-16427"
                                         class="menu-item menu-item-type-post_type menu-item-object-page "><a
@@ -394,8 +397,14 @@
                                                 class="fa fa-angle-down"></i></span></li>
                                     <li id="mobile-menu-item-164247"
                                         class="menu-item menu-item-type-post_type menu-item-object-page "><a
-                                            href="/customer/history" class=""><span>Booking
+                                            href="/customer/profile" class=""><span>Profile
                                                 History</span></a><span class="mobile_arrow"><i
+                                                class="fa fa-angle-right"></i><i
+                                                class="fa fa-angle-down"></i></span></li>
+                                    <li id="mobile-menu-item-164246"
+                                        class="menu-item menu-item-type-post_type menu-item-object-page "><a
+                                            href="" class=""><span>Logout
+                                                </span></a><span class="mobile_arrow"><i
                                                 class="fa fa-angle-right"></i><i
                                                 class="fa fa-angle-down"></i></span></li>
                                 </ul>
@@ -455,18 +464,7 @@
 /* ]]> */
 	</script>
     
-	<script>
-        var userType = localStorage.getItem('customerID');
-         if (userType != null) {
-            document.getElementById('nav-menu-item-1642909').style.display = 'none';
-            document.getElementById('mobile-menu-item-164249').style.display = 'none';
-			document.getElementById('nav-menu-item-1642908').style.display = 'none';
-            document.getElementById('mobile-menu-item-164248').style.display = 'none';
-         }else{
-             document.getElementById('nav-menu-item-164907').style.display = 'none';
-			 document.getElementById('mobile-menu-item-164247').style.display = 'none';
-         }
-     </script>
+    <script src="../../assets/js/customerNav.js"></script>
 	<script type='text/javascript'
 		src='/assets/MOC/moc.sg/wp-content/themes/bridge/js/qode-like.min62a7.js?ver=4.8.19'></script>
 	<script type='text/javascript'

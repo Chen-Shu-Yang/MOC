@@ -9,7 +9,7 @@ if (userType != null) {
   document.getElementById('mobile-menu-item-164248').style.display = 'none';
 } else {
   document.getElementById('nav-menu-item-164906').style.display = 'none';
-  document.getElementById('mobile-menu-item-164245').style.display = 'none';
+  document.getElementById('mobile-menu-item-164246').style.display = 'none';
   document.getElementById('nav-menu-item-164907').style.display = 'none';
   document.getElementById('mobile-menu-item-164247').style.display = 'none';
 }
@@ -19,7 +19,7 @@ $(document).ready(() => {
     window.location.assign('/login');
   });
 
-  $('#mobile-menu-item-164245').click(() => {
+  $('#mobile-menu-item-164246').click(() => {
     window.localStorage.clear();
     window.location.assign('/login');
   });
