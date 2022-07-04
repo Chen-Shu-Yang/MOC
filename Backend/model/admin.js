@@ -1040,6 +1040,7 @@ const Admin = {
       return callback(null, result);
     });
   },
+
   // get number of booking made by therir month
   getBookingByMonth(callback) {
     // sql query statement to get number of booking made by therir month
@@ -1060,6 +1061,7 @@ const Admin = {
       return callback(null, result); // if
     });
   },
+
   getRevenueOfTheMonth(callback) {
     // sql query statement to get revenue
     const sql = `
@@ -1451,6 +1453,239 @@ where
     });
   },
 
+  //= ======================================================
+  //              Features / abnormalities
+  //= ======================================================
+  // Scan through contract table to find contract abnormality records
+  scanAbnormalContract(callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+	      cu.FirstName, cu.LastName, cu.Email, c.Customer, count(c.Customer) AS TotalContract
+      FROM 
+	      heroku_6b49aedb7855c0b.contract as c,
+        heroku_6b49aedb7855c0b.customer as cu
+      WHERE 
+	      c.Customer = cu.CustomerID
+        AND c.contractStatus != 'inactive'
+      GROUP BY 
+	      Customer
+      HAVING 
+	      count(Customer) >= 5
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Insert new found contract abnormality record into contract_abnormality table
+  newContractAbnormality(CustomerID, NoOfAbnContracts, callback) {
+    // sql query statement
+    const sql = `
+      INSERT INTO
+        heroku_6b49aedb7855c0b.contract_abnormality (
+          UserID,
+          TotalAbnContracts)
+      VALUES
+        (?,?);
+    `;
+    // pool query
+    pool.query(sql, [CustomerID, NoOfAbnContracts], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Get contract abnormality by customer
+  checkAbnContractById(CustomerID, callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        *
+      FROM
+        heroku_6b49aedb7855c0b.contract_abnormality
+      WHERE
+        UserID = ?;
+    `;
+    // pool query
+    pool.query(sql, [CustomerID], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Update Total Abnormal contract by customer
+  updateNumOfAbnContracts(numOfContracts, CustomerID, status, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE 
+        heroku_6b49aedb7855c0b.contract_abnormality
+      SET
+        TotalAbnContracts = ?
+      where
+        UserID = ? AND 
+        AbnormalStatus = ?;
+     ;
+    `;
+    // pool query
+    pool.query(sql, [numOfContracts, CustomerID, status], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  // Get the number of contract abnormalities per customer
+  getNumOfAbnormalContracts(callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        cab.UserID, TotalAbnContracts, c.FirstName, c.LastName, c.Email, cab.AbnormalStatus
+      FROM
+        heroku_6b49aedb7855c0b.contract_abnormality AS cab,
+        heroku_6b49aedb7855c0b.customer AS c
+      WHERE
+        cab.UserID = c.CustomerID;
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  getAbnormalContracts(callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+      cab.ContractAbnId, cab.UserID, TotalAbnContracts, c.FirstName, c.LastName, c.Email, cab.AbnormalStatus
+      FROM
+        heroku_6b49aedb7855c0b.contract_abnormality AS cab,
+        heroku_6b49aedb7855c0b.customer AS c
+      WHERE
+        cab.UserID = c.CustomerID AND 
+        cab.AbnormalStatus != 'Resolved';
+    `;
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  getAbnormalContractsByID(CustomerID, contractNum, callback) {
+    // sql query statement
+    const sql = `
+      SELECT DISTINCT
+	      ca.ContractID, c.FirstName, c.LastName, c.Email, ca.Created_At
+      FROM 
+	      heroku_6b49aedb7855c0b.contract AS ca,
+        heroku_6b49aedb7855c0b.customer AS c,
+        heroku_6b49aedb7855c0b.contract_abnormality AS cab
+      WHERE
+	      ca.Customer = c.CustomerID AND
+        cab.UserID = c.CustomerID AND
+        cab.AbnormalStatus != 'Resolved' AND
+        ca.contractStatus != 'inactive' AND
+        c.CustomerID = ?
+      ORDER BY
+ 	      ca.Created_At DESC LIMIT ?;
+    `;
+    // pool query
+    pool.query(sql, [CustomerID, contractNum], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  resolveAbnormalContract(ContractId, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE
+        heroku_6b49aedb7855c0b.contract_abnormality
+      SET
+        AbnormalStatus = 'Resolved'
+      WHERE
+        ContractAbnId = ?;
+    `;
+    // pool query
+    pool.query(sql, [ContractId], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
+
+  cancelAbnormalContract(ContractId, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE
+        heroku_6b49aedb7855c0b.contract
+      SET
+        contractStatus = 'inactive'
+      WHERE
+        ContractID = ?;
+    `;
+    // pool query
+    pool.query(sql, [ContractId], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+
+      return callback(null, result); // if
+    });
+  },
 };
 
 //= ======================================================

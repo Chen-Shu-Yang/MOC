@@ -123,9 +123,11 @@ app.get('/admin/pricing', (req, res) => {
 app.get('/admin/profile', (req, res) => {
   res.sendFile('/public/assets/html/adminProfile.html', { root: __dirname });
 });
+
 app.get('/admin/contract', (req, res) => {
   res.sendFile('/public/assets/html/adminViewContract.html', { root: __dirname });
 });
+
 // go to admin dashboard
 app.get('/admin/dashboard', (req, res) => {
   res.sendFile('/public/assets/html/adminDashboard.html', { root: __dirname });
@@ -135,9 +137,25 @@ app.get('/admin/dashboard', (req, res) => {
 app.get('/admin/cancelAbnormality', (req, res) => {
   res.sendFile('/public/assets/html/adminCancelAbnormalityMain.html', { root: __dirname });
 });
+
 // go to admin contract abnormality
 app.get('/user/verified/', (req, res) => {
   res.sendFile('/public/assets/html/verifyEmail.html', { root: __dirname });
+});
+
+// go to admin contract abnormality
+app.get('/admin/abnormality/contract', (req, res) => {
+  res.sendFile('/public/assets/html/AbnCustomerContracts.html', { root: __dirname });
+});
+
+// go to admin contract abnormality
+app.get('/abnormality/contract', (req, res) => {
+  res.sendFile('/public/assets/html/contractAbnormality.html', { root: __dirname });
+});
+
+// go to admin contract abnormality
+app.get('/admin/abnormality', (req, res) => {
+  res.sendFile('/public/assets/html/adminAbnormalityDashboard.html', { root: __dirname });
 });
 
 //= ======================================================
