@@ -1461,17 +1461,17 @@ where
     // sql query statement
     const sql = `
       SELECT 
-	      cu.FirstName, cu.LastName, cu.Email, c.Customer, count(c.Customer) AS TotalContract
+      cu.FirstName, cu.LastName, cu.Email, c.Customer, count(c.Customer) AS TotalContract
       FROM 
-	      heroku_6b49aedb7855c0b.contract as c,
+       heroku_6b49aedb7855c0b.contract as c,
         heroku_6b49aedb7855c0b.customer as cu
       WHERE 
-	      c.Customer = cu.CustomerID
-        AND c.contractStatus != 'inactive'
+      c.Customer = cu.CustomerID
+       AND c.contractStatus != 'inactive'
       GROUP BY 
-	      Customer
+      Customer
       HAVING 
-	      count(Customer) >= 5
+     count(Customer) >= 5
     `;
     // pool query
     pool.query(sql, (err, result) => {
@@ -1614,19 +1614,19 @@ where
     // sql query statement
     const sql = `
       SELECT DISTINCT
-	      ca.ContractID, c.FirstName, c.LastName, c.Email, ca.Created_At
+      ca.ContractID, c.FirstName, c.LastName, c.Email, ca.Created_At
       FROM 
-	      heroku_6b49aedb7855c0b.contract AS ca,
+      heroku_6b49aedb7855c0b.contract AS ca,
         heroku_6b49aedb7855c0b.customer AS c,
         heroku_6b49aedb7855c0b.contract_abnormality AS cab
       WHERE
-	      ca.Customer = c.CustomerID AND
+     ca.Customer = c.CustomerID AND
         cab.UserID = c.CustomerID AND
         cab.AbnormalStatus != 'Resolved' AND
         ca.contractStatus != 'inactive' AND
         c.CustomerID = ?
       ORDER BY
- 	      ca.Created_At DESC LIMIT ?;
+      ca.Created_At DESC LIMIT ?;
     `;
     // pool query
     pool.query(sql, [CustomerID, contractNum], (err, result) => {
