@@ -13,6 +13,7 @@ function storeContractAbnormality() {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
+      console.log(data);
       window.location.replace(`${frontEndUrl}/admin/abnormality/contract`);
     },
 

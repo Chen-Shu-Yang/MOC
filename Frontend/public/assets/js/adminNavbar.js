@@ -11,7 +11,6 @@ sidebarBtn.onclick = function () {
 $(document).ready(() => {
   $('#logout').click(() => {
     window.localStorage.clear();
-    // window.location.assign("https://localhost:3001/login");
     window.location.assign('/login');
   });
 });
