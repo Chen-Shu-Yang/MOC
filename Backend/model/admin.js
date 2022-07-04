@@ -875,7 +875,7 @@ const Admin = {
     // sql query statement
     const sql = `SELECT b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,cu.FirstName,cu.LastName,r.RateName,e.EmployeeName
     FROM heroku_6b49aedb7855c0b.booking as b
-    join heroku_6b49aedb7855c0b.contract as c on b.Contract = c.ContractID
+    join heroku_6b49aedb7855c0b.contract as c on b.ContractId = c.ContractID
     join heroku_6b49aedb7855c0b.customer as cu on c.Customer = cu.CustomerID
     join heroku_6b49aedb7855c0b.rates as r on c.Rate = r.RatesID
     left join heroku_6b49aedb7855c0b.employee as e on b.Employee = e.EmployeeID
@@ -916,14 +916,14 @@ const Admin = {
       return callback(null, result);
     });
   },
-  assignBooking(EmployeeID, BookingID, callback) {
+  assignBooking(EmployeeID, AdminID, BookingID, callback) {
     // sql query statement
     console.log(`${EmployeeID + BookingID} suPPP`);
     const sql = `
-          UPDATE heroku_6b49aedb7855c0b.booking SET Employee= ? WHERE BookingID= ?;  
+    UPDATE heroku_6b49aedb7855c0b.booking SET Employee = ? , Admin = ? , Status = 'Assigned' WHERE BookingID= ?;  
               `;
     // pool query
-    pool.query(sql, [EmployeeID, BookingID], (err, result) => {
+    pool.query(sql, [EmployeeID, AdminID, BookingID], (err, result) => {
       // error
       if (err) {
         console.log(err);

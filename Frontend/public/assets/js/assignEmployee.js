@@ -11,6 +11,7 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
@@ -152,7 +153,7 @@ function loadBookingDetails(bookingid) {
       $('#noOfBathroom').val(RowInfo.contractBathroom);
       $('#sizing').val(RowInfo.contractSizing);
       $('#pricing').val(RowInfo.contractPricing);
-      $('#assign').val(RowInfo.EmployeeName);
+      $('#assign').val(RowInfo.contractEmployee);
       $('#extraNotes').val(RowInfo.ExtraNotes);
       loadAvailableEmployee(RowInfo.bookingDate);
     },
@@ -174,9 +175,11 @@ function assignBookingSchedule() {
   // data extraction
   const queryParams = new URLSearchParams(window.location.search);
   const bookingid = queryParams.get('bookingid');
+  const adminID = localStorage.getItem('AdminID');
   const employeeID = $('#assign').val();
   const data = {
     EmployeeID: employeeID,
+    AdminID: adminID,
   };
   // call the web service endpoint
   $.ajax({
@@ -187,12 +190,17 @@ function assignBookingSchedule() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     // eslint-disable-next-line no-shadow
-    success(data, xhr) {
-      if (xhr.status === 200) {
-        console.log('Update Successful');
-        msg = 'Successfully updated!';
-        $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-        console.log(data);
+    success(data) {
+      if (data != null) {
+        new Noty({
+          timeout: '5000',
+          type: 'success',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Assigned successfully',
+        }).show();
+      } else {
+        console.log('Error');
       }
     },
     error(xhr, textStatus, errorThrown) {

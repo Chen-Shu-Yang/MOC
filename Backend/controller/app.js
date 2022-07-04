@@ -1807,14 +1807,15 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, verifyToken, async (req, r
   const BookingID = req.params.bookingIDs;
   // extract all details needed
   const { EmployeeID } = req.body;
+  const { AdminID } = req.body;
   console.log('Im HERE');
   // check if class pricing is float value and execute code
 
   // calling updateClass method from admin model
-  Admin.assignBooking(EmployeeID, BookingID, (err, result) => {
+  Admin.assignBooking(EmployeeID, AdminID, BookingID, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
-      res.status(201).send(result);
+      res.status(200).send(result);
     } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
       // send Inappropriate value as return message
