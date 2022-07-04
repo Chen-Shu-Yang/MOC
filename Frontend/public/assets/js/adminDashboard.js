@@ -188,12 +188,12 @@ function diffInConsecutiveMonthBooking() {
       // if diffInBooking<0 append the difference and show
       // that it is negative by colouring the icon in red
         $('#diffInBooking').append(Math.abs(diffInBooking));
-        $('#statusOrder').append('<i class="fa fa-line-chart fa-2xl" id="downTrendIcon"></i>');
+        $('#statusOrder').append('<i class="fa fa-line-chart fa-2xl" id="downTrendIcon" ></i>');
       } else if (diffInBooking === 0) {
       // if diffInBooking==0 append the difference
       // and show that it is neutral by colouring the icon in grey
         $('#diffInBooking').append(diffInBooking);
-        $('#statusOrder').append('<i class="fa fa-line-chart fa-2xl" ></i>');
+        $('#statusOrder').append('<i class="fa fa-line-chart fa-2xl" id="chart"></i>');
       }
     },
     error(xhr, textStatus, errorThrown) {
