@@ -186,6 +186,73 @@ const Admin = {
     });
   },
 
+  // Get employee availability for admin to view in employee page (shuyang)
+  getEmployeeAvailByID(id, date, callback) {
+    // sql query statement
+    const sql = `
+      SELECT 
+        DATE_FORMAT(ScheduleDate,'%Y-%m-%d') AS ScheduleDate, ScheduleID, TimeSlot, Employee
+      FROM 
+        heroku_6b49aedb7855c0b.schedule 
+      WHERE 
+        ScheduleDate = ? AND 
+        Employee = ?;
+    `;
+
+    const values = [date, id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
+  // get employee skills by id (shuyang)
+  getEmployeeSkillsByID(id, callback) {
+    // sql query statement
+    const sql = 'SELECT Skillsets FROM heroku_6b49aedb7855c0b.employee where EmployeeID=?;';
+
+    const values = [id];
+    // pool query
+    pool.query(sql, values, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
+  // update employee skills (shuyang)
+  updateEmployeeSkills(EmployeeSkills, id, callback) {
+    // sql query statement
+    const sql = `
+      UPDATE 
+        heroku_6b49aedb7855c0b.employee
+      SET
+        Skillsets=?
+      WHERE
+        EmployeeID=?;
+    `;
+    // pool query
+    pool.query(sql, [EmployeeSkills, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
   // update employee
   updateEmployee(
     EmployeeName,
