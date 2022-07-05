@@ -607,6 +607,22 @@ $(document).ready(() => {
     const serviceTime = $('#timeOfService').val();
     const addInfo = $('#additionalInfo').val();
     const totalCost = $('#estAmount').html();
+    const postalCode = $('#cPostalCode').html();
+
+    // eslint-disable-next-line prefer-const
+    let currentDate = new Date();
+    currentDate.setDate(currentDate.getDate());
+    const currentDates = currentDate.toISOString().split('T')[0];
+
+    // eslint-disable-next-line prefer-const
+    let currentDate2 = new Date();
+    currentDate2.setDate(currentDate2.getDate() + 1);
+    const currentDates2 = currentDate2.toISOString().split('T')[0];
+
+    // eslint-disable-next-line prefer-const
+    let currentDate3 = new Date();
+    currentDate3.setDate(currentDate3.getDate() + 2);
+    const currentDates3 = currentDate3.toISOString().split('T')[0];
 
     if (address === '' || contractStart === '') {
       new Noty({
@@ -617,23 +633,35 @@ $(document).ready(() => {
         text: 'Please put in your address or contract start date',
       }).show();
     } else {
-    // Stores the constants into localstorage
-      localStorage.setItem('servicePref', servicePref);
-      localStorage.setItem('address', address);
-      localStorage.setItem('servicePackage', servicePackage);
-      localStorage.setItem('rooms', roooms);
-      localStorage.setItem('bathRooms', bathRooms);
-      localStorage.setItem('serviceRates', serviceRates);
-      localStorage.setItem('addService', addService);
-      localStorage.setItem('contractStart', contractStart);
-      localStorage.setItem('serviceDay1', serviceDay1);
-      localStorage.setItem('serviceDay2', serviceDay2);
-      localStorage.setItem('serviceTime', serviceTime);
-      localStorage.setItem('addInfo', addInfo);
-      localStorage.setItem('totalCost', totalCost);
+      // eslint-disable-next-line max-len, no-lonely-if
+      if (contractStart === currentDates || contractStart === currentDates2 || contractStart === currentDates3) {
+        new Noty({
+          timeout: '10000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Please ensure the date is 3 days after today date',
+        }).show();
+      } else {
+        // Stores the constants into localstorage
+        localStorage.setItem('servicePref', servicePref);
+        localStorage.setItem('address', address);
+        localStorage.setItem('servicePackage', servicePackage);
+        localStorage.setItem('rooms', roooms);
+        localStorage.setItem('bathRooms', bathRooms);
+        localStorage.setItem('serviceRates', serviceRates);
+        localStorage.setItem('addService', addService);
+        localStorage.setItem('contractStart', contractStart);
+        localStorage.setItem('serviceDay1', serviceDay1);
+        localStorage.setItem('serviceDay2', serviceDay2);
+        localStorage.setItem('serviceTime', serviceTime);
+        localStorage.setItem('addInfo', addInfo);
+        localStorage.setItem('totalCost', totalCost);
+        localStorage.setItem('postalCode', postalCode);
 
-      // Brings users to the confirmation page
-      window.location.replace(`${frontEndUrl}/customer/confirm`);
+        // Brings users to the confirmation page
+        window.location.replace(`${frontEndUrl}/customer/confirm`);
+      }
     }
   });
 });
