@@ -254,7 +254,7 @@ const Customer = {
             UPDATE 
             heroku_6b49aedb7855c0b.booking
          SET
-           Status='Cancelled'
+           Status='Cancelled',cancelled_at=CURDATE()
         where
             BookingID=?
              ;
