@@ -53,15 +53,47 @@ function createSkillRow(cardInfo) {
   return card;
 }
 
-function pageBtnCreate(totalNumberOfPages) {
+function pageBtnCreate(totalNumberOfPages, activePage) {
   $('#pagination').html('');
-  for (i = 1; i <= totalNumberOfPages; i++) {
-    divPaginBtn = `<button type="button" onClick="loadEmployeeByLimit(${i})">${i}</button>`;
+  let maxLeft = (activePage - Math.floor(5 / 2));
+  let maxRight = (activePage + Math.floor(5 / 2));
+
+  if (maxLeft < 1) {
+    maxLeft = 1;
+    maxRight = 5;
+  }
+
+  if (maxRight > totalNumberOfPages) {
+    maxLeft = totalNumberOfPages - (5 - 1);
+    maxRight = totalNumberOfPages;
+
+    if (maxLeft < 1) {
+      maxLeft = 1;
+    }
+  }
+
+  if (activePage !== 1) {
+    divPaginBtn = `<button type="button" onClick="loadEmployeeByLimit(${1})"><<</button>`;
+    $('#pagination').append(divPaginBtn);
+  }
+
+  for (i = maxLeft; i <= maxRight; i++) {
+    if (i === activePage) {
+      divPaginBtn = `<button type="button" class="active" onClick="loadEmployeeByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    } else {
+      divPaginBtn = `<button type="button" onClick="loadEmployeeByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    }
+  }
+
+  if (activePage !== totalNumberOfPages) {
+    divPaginBtn = `<button type="button" onClick="loadEmployeeByLimit(${totalNumberOfPages})">>></button>`;
     $('#pagination').append(divPaginBtn);
   }
 }
 
-function loadAllEmployees() {
+function loadAllEmployees(activePage) {
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/employee`,
@@ -75,7 +107,7 @@ function loadAllEmployees() {
       userSearchChar = data;
       const totalNumberOfPages = Math.ceil(data.length / 6);
 
-      pageBtnCreate(totalNumberOfPages);
+      pageBtnCreate(totalNumberOfPages, activePage);
     },
 
     error(xhr, textStatus, errorThrown) {
@@ -125,7 +157,7 @@ function loadEmployeeByLimit(pageNumber) {
         const newRow = createRow(RowInfo);
         $('#employeeListing').append(newRow);
       }
-      loadAllEmployees();
+      loadAllEmployees(pageNumber);
     },
 
     error(xhr, textStatus, errorThrown) {
