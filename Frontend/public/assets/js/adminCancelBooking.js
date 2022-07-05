@@ -43,15 +43,47 @@ function createRow(cardInfo) {
   return card;
 }
 
-function pageBtnCreate(totalNumberOfPages) {
+function pageBtnCreate(totalNumberOfPages, activePage) {
   $('#paginationCancel').html('');
-  for (i = 1; i <= totalNumberOfPages; i++) {
-    divPaginBtn = `<button type="button" onClick="loadAllBookingToBeCancelledByLimit(${i})">${i}</button>`;
+  let maxLeft = (activePage - Math.floor(5 / 2));
+  let maxRight = (activePage + Math.floor(5 / 2));
+
+  if (maxLeft < 1) {
+    maxLeft = 1;
+    maxRight = 5;
+  }
+
+  if (maxRight > totalNumberOfPages) {
+    maxLeft = totalNumberOfPages - (5 - 1);
+    maxRight = totalNumberOfPages;
+
+    if (maxLeft < 1) {
+      maxLeft = 1;
+    }
+  }
+
+  if (activePage !== 1) {
+    divPaginBtn = `<button type="button" onClick="loadAllBookingToBeCancelledByLimit(${1})"><<</button>`;
+    $('#paginationCancel').append(divPaginBtn);
+  }
+
+  for (i = maxLeft; i <= maxRight; i++) {
+    if (i === activePage) {
+      divPaginBtn = `<button type="button" class="active" onClick="loadAllBookingToBeCancelledByLimit(${i})">${i}</button>`;
+      $('#paginationCancel').append(divPaginBtn);
+    } else {
+      divPaginBtn = `<button type="button" onClick="loadAllBookingToBeCancelledByLimit(${i})">${i}</button>`;
+      $('#paginationCancel').append(divPaginBtn);
+    }
+  }
+
+  if (activePage !== totalNumberOfPages) {
+    divPaginBtn = `<button type="button" onClick="loadAllBookingToBeCancelledByLimit(${totalNumberOfPages})">>></button>`;
     $('#paginationCancel').append(divPaginBtn);
   }
 }
 
-function loadAllBookingToBeCancelled() {
+function loadAllBookingToBeCancelled(activePage) {
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingCancel`,
@@ -86,7 +118,7 @@ function loadAllBookingToBeCancelled() {
       }
 
       const totalNumberOfPages = Math.ceil(data.length / 6);
-      pageBtnCreate(totalNumberOfPages);
+      pageBtnCreate(totalNumberOfPages, activePage);
     },
     error(xhr, textStatus, errorThrown) {
       if (errorThrown === 'Forbidden') {
@@ -141,7 +173,7 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
           const newRow = createRow(bookingstbl);
           $('#bookingCancelTableBody').append(newRow);
         }
-        loadAllBookingToBeCancelled();
+        loadAllBookingToBeCancelled(pageNumber);
       }
     },
 
