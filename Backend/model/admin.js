@@ -350,7 +350,7 @@ const Admin = {
     // sql query statement
     const sql = `
     SELECT
-    b.BookingID,b.Admin,DATE_ADD(b.ScheduleDate, INTERVAL 1 DAY) ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') As ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.booking b
     join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractId
@@ -402,8 +402,8 @@ const Admin = {
     // sql statement to limit and skip
     const sql = `
     SELECT
-    b.BookingID,b.Admin,DATE_ADD(b.ScheduleDate, INTERVAL 1 DAY) ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,
-    cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address,a.FirstName as AdminFName,a.LastName as AdminLName
+    b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') AS ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,
+    cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address,a.FirstName as AdminFName,a.LastName as AdminLName
     FROM
     heroku_6b49aedb7855c0b.booking b
     join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractId
@@ -479,7 +479,7 @@ const Admin = {
     // sql query statement
     const sql = `
         SELECT
-        b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+        b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
         FROM
         heroku_6b49aedb7855c0b.booking b
         join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractID
@@ -512,7 +512,7 @@ const Admin = {
     // sql statement to limit and skip
     const sql = `
       SELECT
-      b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+      b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
       FROM
       heroku_6b49aedb7855c0b.booking b
       join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractID
@@ -1155,7 +1155,7 @@ const Admin = {
   getAllContracts(callback) {
     // sql query statement
     const sql = `
-    select c.ContractId,c.StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    select c.ContractId,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.contract c
     join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
@@ -1183,7 +1183,7 @@ const Admin = {
 
     // sql statement to limit and skip
     const sql = `
-    select c.ContractId,c.StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,r.RateName,c.StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    select c.ContractId,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,r.RateName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.contract c
     join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
