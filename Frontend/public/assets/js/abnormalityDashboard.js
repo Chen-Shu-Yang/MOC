@@ -5,9 +5,15 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
+const tmpToken = JSON.parse(localStorage.getItem('token'));
+if (tmpToken === null || tempAdminID === null) {
+  window.location.replace(`${frontEndUrl}/unAuthorize`);
+}
 
 function storeContractAbnormality() {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/abnormality/contracts/checks`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',

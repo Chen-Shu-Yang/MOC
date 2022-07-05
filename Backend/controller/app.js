@@ -764,8 +764,7 @@ app.put('/employees/skills/:id', printDebugInfo, (req, res) => {
       // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
-  },
-  );
+  });
 });
 
 // delete employee
@@ -2188,7 +2187,12 @@ app.get('/revenueOfTheMonth', printDebugInfo, verifyToken, async (req, res) => {
 });
 
 // Scan through contract table to insert the contract abnormality record
-app.get('/abnormality/contracts/checks', printDebugInfo, async (req, res) => {
+app.get('/abnormality/contracts/checks', printDebugInfo, verifyToken, async (req, res) => {
+  console.log(req.role);
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   // Get the total abnormal contracts and group by customer in contract table
   Admin.scanAbnormalContract((err, result) => {
     if (!err) {
@@ -2295,7 +2299,12 @@ app.get('/abnormality/contracts/checks', printDebugInfo, async (req, res) => {
 });
 
 // Get the number of contract abnormalities per customer
-app.get('/abnormality/contracts', printDebugInfo, async (req, res) => {
+app.get('/abnormality/contracts', printDebugInfo, verifyToken, async (req, res) => {
+  console.log(req.role);
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   // calling getAllRates method from admin model
   Admin.getAbnormalContracts((err, result) => {
     if (!err) {
@@ -2318,9 +2327,14 @@ app.get('/abnormality/contracts', printDebugInfo, async (req, res) => {
 });
 
 // Get abnormal contracts
-app.get('/abnormality/contracts/:customerId/:contractnum', printDebugInfo, async (req, res) => {
+app.get('/abnormality/contracts/:customerId/:contractnum', printDebugInfo, verifyToken, async (req, res) => {
   const CustomerID = req.params.customerId;
   const AbnContractNum = parseInt(req.params.contractnum, 10);
+  console.log(req.role);
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
 
   // calling getAllRates method from admin model
   Admin.getAbnormalContractsByID(CustomerID, AbnContractNum, (err, result) => {
@@ -2344,9 +2358,14 @@ app.get('/abnormality/contracts/:customerId/:contractnum', printDebugInfo, async
 });
 
 // Resolve abnormal contracts
-app.put('/abnormalcontracts/:id', printDebugInfo, async (req, res) => {
+app.put('/abnormalcontracts/:id', printDebugInfo, verifyToken, async (req, res) => {
   // extract id from params
   const contractId = req.params.id;
+  console.log(req.role);
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
 
   // calling resolveAbnormalContract method from Admin model
   Admin.resolveAbnormalContract(contractId, (err, result) => {
@@ -2372,10 +2391,14 @@ app.put('/abnormalcontracts/:id', printDebugInfo, async (req, res) => {
 });
 
 // Cancel abnormal contracts
-app.put('/cancelAbnContract/:id', printDebugInfo, (req, res) => {
+app.put('/cancelAbnContract/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
   const { id } = req.params;
-
+  console.log(req.role);
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
   // calling resolveAbnormalContract method from SuperAdmin model
   Admin.cancelAbnormalContract(id, (err, result) => {
     if (!err) {

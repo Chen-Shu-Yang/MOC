@@ -13,7 +13,7 @@ const backEndUrl = 'http://localhost:5000';
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
-if (tempAdminID === null) {
+if (tmpToken === null || tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 // Take value from local storage and get information on the admin with that ID

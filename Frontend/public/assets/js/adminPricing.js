@@ -8,11 +8,12 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+const tmpToken = JSON.parse(localStorage.getItem('token'));
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
-if (tempAdminID === null) {
+if (tmpToken === null || tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
-const tmpToken = JSON.parse(localStorage.getItem('token'));
+
 // errorToast method display the error
 function errorToast(msg) {
   // error alert div

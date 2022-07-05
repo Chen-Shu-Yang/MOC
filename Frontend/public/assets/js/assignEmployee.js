@@ -12,7 +12,7 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 const tmpToken = JSON.parse(localStorage.getItem('token'));
-if (tempAdminID === null) {
+if (tmpToken === null || tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 

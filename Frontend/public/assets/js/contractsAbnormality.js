@@ -11,6 +11,11 @@ const backEndUrl = 'http://localhost:5000';
 let abnContractNum = '';
 let abnormalcontract = '';
 
+const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
+const tmpToken = JSON.parse(localStorage.getItem('token'));
+if (tmpToken === null || tempAdminID === null) {
+  window.location.replace(`${frontEndUrl}/unAuthorize`);
+}
 function createRow(cardInfo) {
   const card = `
     <tr>
@@ -30,6 +35,7 @@ function loadAllAbnContracts(CustomerID) {
   console.log(typeof (CustomerId));
 
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/abnormality/contracts/${CustomerId}/${abnContractNum}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
@@ -69,6 +75,7 @@ function loadAllAbnContracts(CustomerID) {
 // eslint-disable-next-line no-unused-vars
 function cancelAbnormalContract(id) {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/cancelAbnContract/${id}`,
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
@@ -95,6 +102,7 @@ function cancelAbnormalContract(id) {
 
 function resolveAbnContracts(id) {
   $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/abnormalcontracts/${id}`,
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
