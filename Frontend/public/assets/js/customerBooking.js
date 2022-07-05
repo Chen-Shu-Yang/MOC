@@ -614,7 +614,7 @@ $(document).ready(() => {
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: 'Please put in your address or contract the start date',
+        text: 'Please put in your address or contract start date',
       }).show();
     } else {
     // Stores the constants into localstorage
