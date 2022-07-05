@@ -2555,6 +2555,8 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
   const { Class } = req.body;
   const { Rate } = req.body;
   const { ExtraService } = req.body;
+  const { PostalCode } = req.body;
+  console.log(PostalCode);
 
   // Declare newContractId variable
   let newContractId;
@@ -2663,6 +2665,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
     Class,
     Rate,
     ExtraService,
+    PostalCode,
     (err, result) => {
       if (!err) {
         // stores the contract Id returned into the newContractId variable

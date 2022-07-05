@@ -131,6 +131,7 @@ const Customer = {
     Class,
     Rate,
     ExtraService,
+    PostalCode,
     callback,
   ) {
     // sql query statement
@@ -150,9 +151,10 @@ const Customer = {
           Address,
           Class,
           Rate,
-          ExtraService)
+          ExtraService,
+          PostalCode)
       VALUES
-        (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
     `;
     // pool query
     pool.query(sql, [
@@ -170,6 +172,7 @@ const Customer = {
       Class,
       Rate,
       ExtraService,
+      PostalCode,
       callback], (err, result) => {
       if (err) {
         console.log(err);

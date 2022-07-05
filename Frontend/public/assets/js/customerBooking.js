@@ -607,7 +607,8 @@ $(document).ready(() => {
     const serviceTime = $('#timeOfService').val();
     const addInfo = $('#additionalInfo').val();
     const totalCost = $('#estAmount').html();
-    const postalCode = $('#cPostalCode').html();
+    const postalCode = $('#cPostalCode').val();
+    console.log(postalCode);
 
     // eslint-disable-next-line prefer-const
     let currentDate = new Date();

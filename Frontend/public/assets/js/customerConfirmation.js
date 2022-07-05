@@ -67,6 +67,7 @@ function fillUpConfirmationCard() {
   const time = localStorage.getItem('serviceTime');
   const additionalInfo = localStorage.getItem('addInfo');
   const totalEstCost = localStorage.getItem('totalCost');
+  const custPostalCode = localStorage.getItem('postalCode');
 
   // Some of the values will need to seperate
   // To get the value and its id
@@ -88,6 +89,7 @@ function fillUpConfirmationCard() {
 
   $('#serviceClass').html(servicePrefString);
   $('#address').html(customerAddress);
+  $('#postalCode').html(custPostalCode);
   $('#servicePackage').html(servicePackagesString);
   $('#noOfRooms').html(roomNo);
   $('#noOfBath').html(bathRoomNo);
@@ -126,6 +128,7 @@ function customerAutobooking() {
   const NoOfRooms = $('#noOfRooms').html();
   const NoOfBathrooms = $('#noOfBath').html();
   const Address = $('#address').html();
+  const PostalCode = $('#postalCode').html();
   const StartDate = $('#startDate').html();
   const ServiceDay = $('#serviceDay').html();
   const ServiceDay2 = $('#serviceDay2').html();
@@ -154,6 +157,7 @@ function customerAutobooking() {
     Class: ServiceClass,
     Rate: SizeRating,
     ExtraService: ExtraServices,
+    PostalCode,
   };
 
   // Stringifies object
@@ -181,6 +185,7 @@ function customerAutobooking() {
       localStorage.removeItem('serviceTime');
       localStorage.removeItem('addInfo');
       localStorage.removeItem('totalCost');
+      localStorage.removeItem('postalCode');
       console.log(data);
       // Brings customer to the possible list of helpers
       window.location.replace(`${frontEndUrl}/customer/helpers`);
