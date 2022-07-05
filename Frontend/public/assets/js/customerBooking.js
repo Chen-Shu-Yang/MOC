@@ -27,7 +27,7 @@ function createCard(cardInfo) {
     <div class="col-md-4">
         <div class="card">
 
-            <div id="service${cardInfo.ClassID}" class="container-class"  border-radius: 10px;">
+            <div id="service${cardInfo.ClassID}" class="container-class"  border-radius: 10px;>
                 <h4 style="text-align:center;"><b>${cardInfo.ClassName}</b></h4> 
                 <p style="text-align:center;"><b>$${cardInfo.ClassPricing} per hour</b></p>
                 <p>Include:</p>
@@ -608,23 +608,33 @@ $(document).ready(() => {
     const addInfo = $('#additionalInfo').val();
     const totalCost = $('#estAmount').html();
 
+    if (address === '' || contractStart === '') {
+      new Noty({
+        timeout: '10000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Please put in your address or contract the start date',
+      }).show();
+    } else {
     // Stores the constants into localstorage
-    localStorage.setItem('servicePref', servicePref);
-    localStorage.setItem('address', address);
-    localStorage.setItem('servicePackage', servicePackage);
-    localStorage.setItem('rooms', roooms);
-    localStorage.setItem('bathRooms', bathRooms);
-    localStorage.setItem('serviceRates', serviceRates);
-    localStorage.setItem('addService', addService);
-    localStorage.setItem('contractStart', contractStart);
-    localStorage.setItem('serviceDay1', serviceDay1);
-    localStorage.setItem('serviceDay2', serviceDay2);
-    localStorage.setItem('serviceTime', serviceTime);
-    localStorage.setItem('addInfo', addInfo);
-    localStorage.setItem('totalCost', totalCost);
+      localStorage.setItem('servicePref', servicePref);
+      localStorage.setItem('address', address);
+      localStorage.setItem('servicePackage', servicePackage);
+      localStorage.setItem('rooms', roooms);
+      localStorage.setItem('bathRooms', bathRooms);
+      localStorage.setItem('serviceRates', serviceRates);
+      localStorage.setItem('addService', addService);
+      localStorage.setItem('contractStart', contractStart);
+      localStorage.setItem('serviceDay1', serviceDay1);
+      localStorage.setItem('serviceDay2', serviceDay2);
+      localStorage.setItem('serviceTime', serviceTime);
+      localStorage.setItem('addInfo', addInfo);
+      localStorage.setItem('totalCost', totalCost);
 
-    // Brings users to the confirmation page
-    window.location.replace(`${frontEndUrl}/customer/confirm`);
+      // Brings users to the confirmation page
+      window.location.replace(`${frontEndUrl}/customer/confirm`);
+    }
   });
 });
 
