@@ -38,8 +38,8 @@
                 <li>
                     <a href="/customer/profile">
                         <i class="fa-solid fa-user"></i>
-                        <span ><input style="border: none;" id="cUserNameInfo"></span>
-                        
+                        <span><input style="border: none;" id="cUserNameInfo"></span>
+
                     </a>
                 </li>
             </ul>
@@ -97,7 +97,7 @@
                             <h5>Postal Code: </h5>
                             <input type="text" id="cPostalCode">
                         </div>
-                        
+
                     </div>
                     <br>
                     <div class="row" id="serviceCol">
@@ -113,16 +113,19 @@
 
                         <div class="col-md-6">
                             <h5>Rooms:</h5>
-<!-- code added start -->
+                            <!-- code added start -->
                             <div class="input-group" id="buttonRest">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-numberRR"  data-type="minus" data-field="quant[1]" onclick="decrementR()">
+                                    <button type="button" class="btn btn-default btn-numberRR" data-type="minus"
+                                        data-field="quant[1]" onclick="decrementR()">
                                         <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
-                                <input type="text" id=rooms name="quant[1]" class="form-control input-numberRR" value="1" min="1" max="10"  readonly onchange="updatedRooms()">
+                                <input type="text" id=rooms name="quant[1]" class="form-control input-numberRR"
+                                    value="1" min="1" max="10" readonly onchange="updatedRooms()">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-numberRR" data-type="plus" data-field="quant[1]" onclick="incrementR()">
+                                    <button type="button" class="btn btn-default btn-numberRR" data-type="plus"
+                                        data-field="quant[1]" onclick="incrementR()">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 </span>
@@ -134,25 +137,28 @@
                             <input id=rooms type=number min=1 max=10  onchange="updatedRooms()" readonly>
                             <button  onclick="decrementR()" >-</button> -->
                         </div>
-                       
+
                         <div class="col-md-6">
                             <h5>Bathrooms: </h5>
-                            
+
                             <!-- code added start -->
                             <div class="input-group" id="buttonBRooms">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-numberBR"  data-type="minus" data-field="quant[2]"  onclick="decrementBR()">
+                                    <button type="button" class="btn btn-default btn-numberBR" data-type="minus"
+                                        data-field="quant[2]" onclick="decrementBR()">
                                         <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
-                                <input type="text" id=bathRooms name="quant[2]" class="form-control input-numberBR" value="1" min="1" max="10"  readonly  onchange="updatedBathrooms()">
+                                <input type="text" id=bathRooms name="quant[2]" class="form-control input-numberBR"
+                                    value="1" min="1" max="10" readonly onchange="updatedBathrooms()">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-numberBR" data-type="plus" data-field="quant[2]" onclick="incrementBR()">
+                                    <button type="button" class="btn btn-default btn-numberBR" data-type="plus"
+                                        data-field="quant[2]" onclick="incrementBR()">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 </span>
                             </div>
-                              <!-- code added end -->
+                            <!-- code added end -->
 
                             <!-- <button onclick="incrementBR()">+</button>
                             <input id=bathRooms type=number min=1 max=10 onchange="updatedBathrooms()" readonly>
@@ -277,14 +283,14 @@ color:#fff;
 background-color:#fff;
 height:1px;">
 
-<div class="row">
-    <div class="col-md-6">
-        <h5>Estimated Total: $</h5>
-    </div>
-    <div class="col-md-4">
-        <p id="estAmount"></p>
-    </div>
-</div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Estimated Total: $</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p id="estAmount"></p>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -299,10 +305,10 @@ height:1px;">
     </section>
     <!-- Confirmation Section End -->
     <script src="../../assets/js/customerBooking.js"></script>
-        <!-- Noty JS-->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js">
-        </script>
-    
+    <!-- Noty JS-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js">
+    </script>
+
 </body>
 
 </html>
