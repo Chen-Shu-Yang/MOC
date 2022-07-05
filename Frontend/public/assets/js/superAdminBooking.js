@@ -296,6 +296,43 @@ function addMonthlyBooking() {
   });
 }
 
+function addMonthlyBookingNext() {
+  $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
+    url: `${backEndUrl}/autoBookingNextMonth`,
+    type: 'POST',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
+
+      $(bookingTableBody).html('');
+      loadAllBookingByLimit(1);
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else if (xhr.status === 400) {
+        errMsg = ' Input not accepted';
+      } else if (xhr.status === 406) {
+        errMsg = ' Input not accepted';
+      } else {
+        errMsg = 'There is some other issues here';
+      }
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+      $('#classServiceTableBody').html('');
+      loadAllClassOfServices();
+    },
+  });
+}
+
 // add new booking
 $('#addNewBooking').click(() => {
   // data extraction

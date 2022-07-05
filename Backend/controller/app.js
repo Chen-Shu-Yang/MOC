@@ -3252,16 +3252,16 @@ app.post('/addAdmin', printDebugInfo, verifyToken, (req, res) => {
   });
 });
 
-app.post('/autoBooking', printDebugInfo, async (req, res) => {
-  // if (req.role == null) {
-  //   res.status(403).send();
-  //   return;
-  // }
+app.post('/autoBooking', printDebugInfo, verifyToken,async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
 
-  // if (req.role !== 'Super Admin') {
-  //   res.status(403).send();
-  //   return;
-  // }
+  if (req.role !== 'Super Admin') {
+    res.status(403).send();
+    return;
+  }
   // array that will store all contracts already booked with duplicates
   const contractsAlreadyBooked = [];
   // array that will store all contracts already booked without duplicates
@@ -3447,16 +3447,16 @@ app.post('/autoBooking', printDebugInfo, async (req, res) => {
   });
 });
 
-app.post('/autoBookingNextMonth', printDebugInfo, async (req, res) => {
-  // if (req.role == null) {
-  //   res.status(403).send();
-  //   return;
-  // }
+app.post('/autoBookingNextMonth', printDebugInfo,verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
 
-  // if (req.role !== 'Super Admin') {
-  //   res.status(403).send();
-  //   return;
-  // }
+  if (req.role !== 'Super Admin') {
+    res.status(403).send();
+    return;
+  }
   // array that will store all contracts already booked with duplicates
   const contractsAlreadyBooked = [];
   // array that will store all contracts already booked without duplicates
