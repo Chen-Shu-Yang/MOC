@@ -104,39 +104,44 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
    `,
     };
 
-    if (err) {
-      // matched with callback (err, null)
-      console.log(err);
-      res.status(500);
-      res.send(err.statusCode);
-      return next(err);
-    }
     let msg;
-    if (!result) {
-      msg = {
-        Error: 'Invalid login',
-      };
-      res.status(404).send(msg);
-    } else {
+    if (!err) {
+      if (!result) {
+        msg = {
+          Error: 'Invalid login',
+        };
+        res.status(404).send(msg);
+      } else {
       // eslint-disable-next-line no-use-before-define
-      transporter
-        .sendMail(mailOptions)
-        .then(() => {
-          msg = 'sent';
-          console.log('email sent');
-          // email sent and verification record saved
-          res.status(200).send({
-            status: 'Pending',
-            message: 'Verification email sent',
+        transporter
+          .sendMail(mailOptions)
+          .then(() => {
+            msg = 'sent';
+            console.log('email sent');
+            // email sent and verification record saved
+            res.status(200).send({
+              status: 'Pending',
+              message: 'Verification email sent',
+            });
+          })
+          .catch((error) => {
+            console.log(`error: ${error}`);
+            res.status(404).json({
+              status: 'Failed',
+              message: 'verification email failed!',
+            });
           });
-        })
-        .catch((error) => {
-          console.log(`error: ${error}`);
-          res.status(404).json({
-            status: 'Failed',
-            message: 'verification email failed!',
-          });
-        });
+      }
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
+    } else {
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -158,12 +163,16 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
         // output
         res.status(200).send(result);
       }
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -365,11 +374,7 @@ app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
 
   // eslint-disable-next-line max-len
   Register.registerCustomer(FirstName, LastName, Password, Email, Address, PhoneNumber, PostalCode, (err, result) => {
-    if (err) {
-      // matched with callback (err, null)
-      console.log(err);
-      res.status(500).send(err.statusCode);
-    } else {
+    if (!err) {
       const returnResult = {
         _id: result.insertId,
         email: Email,
@@ -377,6 +382,16 @@ app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
 
       // Handle account verification
       sendVerificationEmail(returnResult, res);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
+    } else {
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -387,28 +402,33 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
   const { password } = req.body;
 
   Login.Verify(email, password, (err, token, result) => {
-    if (err) {
-      // matched with callback (err, null)
-      console.log(err);
-      res.status(500);
-      res.send(err.statusCode);
-      return next(err);
-    }
-    let msg;
-    if (!result) {
-      msg = {
-        Error: 'Invalid login',
-      };
-      res.status(404).send(msg);
+    if (!err) {
+      let msg;
+      if (!result) {
+        msg = {
+          Error: 'Invalid login',
+        };
+        res.status(404).send(msg);
+      } else {
+        console.log(`Token: ${result}`);
+        msg = {
+          AdminID: result.AdminID,
+          token,
+          CustomerID: result.CustomerID,
+          AdminType: result.AdminType,
+        };
+        res.status(200).send(msg);
+      }
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
-      console.log(`Token: ${result}`);
-      msg = {
-        AdminID: result.AdminID,
-        token,
-        CustomerID: result.CustomerID,
-        AdminType: result.AdminType,
-      };
-      res.status(200).send(msg);
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -882,12 +902,16 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
         cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
         console.log('previous pic deleted');
       }
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      console.log(output);
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 
@@ -956,10 +980,19 @@ app.post('/adddEmployee', upload.single('image'), verifyToken, async (req, res) 
       Skillsets,
       // eslint-disable-next-line no-shadow
       (err, result) => {
-        // if there is no error
         if (!err) {
           const output = 'done';
-          return res.status(201).send(output + result);
+          res.status(201).send(output + result);
+        } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+          // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+          // send Inappropriate value as return message
+          res.status(406).send('Inappropriate value');
+        } else if (err.code === 'ER_BAD_NULL_ERROR') {
+          // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+          res.status(400).send('Null value not allowed');
+        } else {
+          // else if there is a server error return message
+          res.status(500).send('Internal Server Error');
         }
       },
     );
@@ -2007,7 +2040,15 @@ app.put('/update/admin/:id', printDebugInfo, verifyToken, (req, res) => {
     if (!err) {
       console.log(`result ${result.affectedRows}`);
       res.status(202).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -2033,12 +2074,16 @@ app.put('/admin/password/:id', printDebugInfo, verifyToken, async (req, res) => 
         Error: 'Wrong password',
       };
       res.status(404).send(output);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -2065,12 +2110,16 @@ app.put('/admin/editPassword/:id', printDebugInfo, verifyToken, async (req, res)
         // output
         res.status(200).send(result);
       }
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -2406,12 +2455,16 @@ app.put('/abnormalcontracts/:id', printDebugInfo, verifyToken, async (req, res) 
         // output
         res.status(200).send(result);
       }
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -2429,12 +2482,16 @@ app.put('/cancelAbnContract/:id', printDebugInfo, verifyToken, (req, res) => {
   Admin.cancelAbnormalContract(id, (err, result) => {
     if (!err) {
       res.status(200).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
-      // sever error
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
     }
   });
 });
@@ -2500,7 +2557,15 @@ app.put('/update/customer/:id', printDebugInfo, verifyTokenCustomer, (req, res) 
       console.log(`result ${result.affectedRows}`);
 
       res.status(202).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -2980,7 +3045,15 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyTokenCustomer, (req
         console.log('Cancel');
         cancelBooking(bookingId);
       }
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -3096,7 +3169,15 @@ app.put('/updateCancelAbnormality/:id', printDebugInfo, verifyToken, (req, res) 
       console.log(`result ${result.affectedRows}`);
 
       res.status(202).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
@@ -3114,7 +3195,15 @@ app.put('/updateCustomerStatus/:id', printDebugInfo, verifyToken, (req, res) => 
       console.log(`result ${result.affectedRows}`);
 
       res.status(202).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
     } else {
+      // else if there is a server error return message
       res.status(500).send('Internal Server Error');
     }
   });
