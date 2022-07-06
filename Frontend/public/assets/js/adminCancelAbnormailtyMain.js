@@ -126,6 +126,14 @@ function resolveIssue(id) {
       } else if (xhr.status === 200) {
       // if the params id is valid and
         // set and call confirmation message
+
+        new Noty({
+          timeout: '10000',
+          type: 'success',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Succesfully Deleted',
+        }).show();
         msg = 'Successfully deleted!';
 
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);

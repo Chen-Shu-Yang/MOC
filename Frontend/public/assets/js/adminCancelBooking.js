@@ -210,6 +210,13 @@ function cancelBooking(id) {
       $('#bookingCancelTableBody').html('');
       loadAllBookingToBeCancelledByLimit(1);
       msg = 'Successfully updated!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
 
       // refresh
@@ -232,6 +239,13 @@ function cancelBooking(id) {
         errMsg = 'There is some other issues here ';
       }
       $('#classServiceTableBody').html('');
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
       $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
