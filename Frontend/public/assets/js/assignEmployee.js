@@ -21,12 +21,12 @@ function selectEmployee(employee) {
   document.getElementById('assign').value = employee;
 }
 function createRow(cardInfo) {
-//   console.log(cardInfo);
+  //   console.log(cardInfo);
   if (cardInfo.EmployeeStatus === 'Assigned') {
     const card = `
     <div class="card mb-3" style="max-width: 93%;">
-    <div class="row no-gutters ">
-    <button type="button" class="btn bg-danger" onclick="selectEmployee(${cardInfo.EmployeeID})">
+    <button type="button" class="btn bg-assigned" onclick="selectEmployee(${cardInfo.EmployeeID})">
+      <div class="row no-gutters ">
         <div class="col-sm-3">
             <img src="${cardInfo.EmployeeImg}" class="card-img rounded-circle " alt="...">
         </div>
@@ -38,17 +38,17 @@ function createRow(cardInfo) {
                 </p>
             </div>
         </div>
+      </div>
     </button>
-    </div>
 </div>
   `;
     return card;
   } else {
     const card = `
     <div class="card mb-3" style="max-width: 93%;">
-    <div class="row no-gutters ">
-    <button type="button" class="btn " onclick="selectEmployee(${cardInfo.EmployeeID})">
-        <div class="col-sm-3">
+    <button type="button" class="btn" onclick="selectEmployee(${cardInfo.EmployeeID})">
+      <div class="row no-gutters ">
+        <div class="col-md-3">
             <img src="${cardInfo.EmployeeImg}" class="card-img rounded-circle " alt="...">
         </div>
         <div class="col-sm-9 ">
@@ -59,8 +59,8 @@ function createRow(cardInfo) {
                 </p>
             </div>
         </div>
+      </div>
     </button>
-    </div>
 </div>
   `;
     return card;

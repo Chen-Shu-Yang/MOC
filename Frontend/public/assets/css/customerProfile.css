@@ -40,3 +40,7 @@ form .btn {
     padding-bottom: 5px;
     margin-bottom: 10px;
 }
+
+.navList .nav-item {
+    background-color: rgb(255, 255, 255);
+}
