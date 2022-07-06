@@ -127,6 +127,13 @@ function activateUser(id) {
       $('#customerTableBody').html('');
       loadAllInactiveCustomerByLimit(1);
       msg = 'Successfully updated!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
     },
     error(xhr, textStatus, errorThrown) {
@@ -144,6 +151,13 @@ function activateUser(id) {
       } else {
         errMsg = 'There is some other issues here ';
       }
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
       $('#customerTableBody').html('');
       $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
@@ -168,6 +182,13 @@ function deleteCustomer(id) {
       $('#customerTableBody').html('');
       loadAllInactiveCustomerByLimit(1);
       msg = 'Successfully updated!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
     },
     error(xhr, textStatus, errorThrown) {
@@ -185,6 +206,13 @@ function deleteCustomer(id) {
       } else {
         errMsg = 'There is some other issues here ';
       }
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
       $('#customerTableBody').html('');
       $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },

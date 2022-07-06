@@ -126,15 +126,14 @@ function resolveIssue(id) {
       } else if (xhr.status === 200) {
       // if the params id is valid and
         // set and call confirmation message
-
+        msg = 'Successfully deleted!';
         new Noty({
-          timeout: '10000',
+          timeout: '5000',
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
-          text: 'Succesfully Deleted',
+          text: msg,
         }).show();
-        msg = 'Successfully deleted!';
 
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
         // to refresh
@@ -202,6 +201,13 @@ function suspendUser(id) {
       } else {
         errMsg = 'There is some other issues here';
       }
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
       $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
