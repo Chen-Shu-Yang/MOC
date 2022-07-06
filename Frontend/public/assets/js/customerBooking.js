@@ -48,6 +48,10 @@ function createCard(cardInfo) {
 
   return card;
 }
+function updatedDay1() {
+  const day1 = document.getElementById('dayOfService1').value;
+  document.getElementById('listDay1').innerHTML = day1;
+}
 
 function populateBathroomsRooms() {
   const bathroomss = document.getElementById('bathRooms').value;
@@ -55,12 +59,18 @@ function populateBathroomsRooms() {
   const roomss = document.getElementById('rooms').value;
   document.getElementById('listRooms').innerHTML = roomss;
 }
+function updatedTime() {
+  const time = document.getElementById('timeOfService').value;
+  document.getElementById('listTime').innerHTML = time;
+}
 
 function loadUserDetails() {
   // extract user details from local storage
   const CustomerIDs = localStorage.getItem('customerID');
   console.log(CustomerIDs);
   let userInfo;
+  updatedDay1();
+  updatedTime();
   populateBathroomsRooms();
   // call the web service endpoint
   $.ajax({
@@ -419,19 +429,9 @@ function updatedDate() {
   document.getElementById('listDate').innerHTML = date;
 }
 
-function updatedDay1() {
-  const day1 = document.getElementById('dayOfService1').value;
-  document.getElementById('listDay1').innerHTML = day1;
-}
-
 function updatedDay2() {
   const day2 = document.getElementById('dayOfService2').value;
   document.getElementById('listDay2').innerHTML = day2;
-}
-
-function updatedTime() {
-  const time = document.getElementById('timeOfService').value;
-  document.getElementById('listTime').innerHTML = time;
 }
 
 $(document).ready(() => {
