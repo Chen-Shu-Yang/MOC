@@ -56,7 +56,7 @@
                     <div class="line"></div>
                     <i class="fa-solid fa-angle-right"></i>
                 </div>
-                <a href="/customer/confirm" class="steps">
+                <a href="" class="steps">
                     <span>2. Confirmation</span>
                     <i class="fa-solid fa-check"></i>
                 </a>
@@ -64,7 +64,7 @@
                     <div class="line"></div>
                     <i class="fa-solid fa-angle-right"></i>
                 </div>
-                <a href="/customer/helpers" class="steps">
+                <a href="" class="steps">
                     <span>3. List of Helpers</span>
                     <i class="fa-solid fa-check"></i>
                 </a>
@@ -173,6 +173,11 @@
 
                         <h5>Additional Service</h5>
                         <form action="" method="get" id="additionalService">
+                            <input class="col-md-1" id="addServiceCheck"
+                                onchange="updatedAddServices('addServiceCheck')" name="extraserviceChecking" type="checkbox"
+                                value="Yes">
+                            I Want Additional Services<br>
+                            <div id="additionalService"></div>
                         </form>
 
                     </div><br><br>
@@ -251,7 +256,7 @@
                         <p id="listRates"></p>
                         <h5>Additional Service:</h5>
                         <div class="row">
-                            <p id="listAddService">-</p>
+                            <p id="listAddService"></p>
                             <input type="text" id="listAddServiceInput" value="" disabled hidden>
                         </div>
 
