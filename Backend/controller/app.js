@@ -38,6 +38,10 @@ const Customer = require('../model/customer');
 const Register = require('../model/register');
 const SuperAdmin = require('../model/superAdmin');
 const forgetPassword = require('../model/forgetPassword');
+
+const currentUrl = 'http://localhost:5000';
+// const currentUrl = 'https://moc-ba.herokuapp.com;
+
 // MF function
 /**
  * prints useful debugging information about an endpoint we are going to service
@@ -134,14 +138,6 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
           });
         });
     }
-
-    // console.log(`Token: ${result}`);
-    // // message consist of name and the link to be sent via an email
-    // msg = {
-    //   link,
-    //   firstName: result.FirstName,
-    // };
-    // res.status(200).send(msg);
   });
 });
 
@@ -201,8 +197,6 @@ transporter.verify((error, success) => {
 // send verification email
 const sendVerificationEmail = ({ _id, email }, res) => {
   // url to be used in the email
-  const currentUrl = 'http://localhost:5000';
-  // const currentUrl = 'https://moc-ba.herokuapp.com;
 
   const UniqueString = uuidv4() + _id;
 
