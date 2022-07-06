@@ -346,6 +346,7 @@ function updatedAddServices(i) {
 
   // if service found, take the current innerHTML, replace it with blank, then set it back
   if (currentServices.innerHTML.indexOf(additionalServices) !== -1) {
+    $('#extraAdditionalService').html('');
     let currentServicesList = currentServices.innerHTML;
     currentServicesList = currentServicesList.replace(additionalServices, '');
     currentServices.innerHTML = currentServicesList;
@@ -354,10 +355,10 @@ function updatedAddServices(i) {
     updatedAmt();
   } else {
     currentServices.innerHTML += ` ${additionalServices}`;
-    $('#additionalService').append('<br><h5>Please indicate any Unwanted Services:</h5>');
+    $('#extraAdditionalService').append('<br><h5>Please indicate any Unwanted Services:</h5>');
 
     for (let x = 0; x < extraServiceArr.length; x++) {
-      $('#additionalService').append(
+      $('#extraAdditionalService').append(
         `<input class="col-md-1" id="excludeSer${extraServiceArr[x].ServiceId}" onchange="updatedExcludedAddSer('excludeSer${extraServiceArr[x].ServiceId}')" 
         name="excludeExtraservice" type="checkbox"
         value="${extraServiceArr[x].ServiceName} (Additonal S$${extraServiceArr[x].ServicePrice})">${extraServiceArr[x].ServiceName} (Additonal S$${extraServiceArr[x].ServicePrice})<br>`,
