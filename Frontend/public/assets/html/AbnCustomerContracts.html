@@ -36,10 +36,16 @@
     <title>Employee</title>
 
     <script>
+
         // const frontEndUrl = 'http://localhost:3001';
         const backEndUrl = 'http://localhost:5000';
         // const frontEndUrl = 'https://moc-fa.herokuapp.com';
         // const backEndUrl = 'https://moc-ba.herokuapp.com';
+        const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
+        const tmpToken = JSON.parse(localStorage.getItem('token'));
+        if (tmpToken === null || tempAdminID === null) {
+            window.location.replace(`${frontEndUrl}/unAuthorize`);
+        }
 
         function createRow(cardInfo) {
             const card = `
@@ -74,6 +80,7 @@
 
         function loadAbnContractsNum() {
             $.ajax({
+                headers: { authorization: `Bearer ${tmpToken}` },
                 url: `${backEndUrl}/abnormality/contracts`,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -114,6 +121,7 @@
 
         function resolveAbnContracts(id) {
             $.ajax({
+                headers: { authorization: `Bearer ${tmpToken}` },
                 url: `${backEndUrl}/abnormalcontracts/${id}`,
                 type: 'PUT',
                 contentType: 'application/json; charset=utf-8',
@@ -225,7 +233,7 @@
         <section class="contract-list">
             <div class="max-width">
                 <div class="abn-contract-content" id="abnContractContent">
-                    
+
                 </div>
             </div>
         </section>
@@ -233,8 +241,8 @@
     </section>
 
     <script src="../../assets/js/adminNavbar.js"></script>
-       <!-- Noty JS-->
-       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js">
+    <!-- Noty JS-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js">
     </script>
 
 </body>
