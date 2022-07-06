@@ -19,8 +19,10 @@ if (tempCustomerID === null) {
 }
 let estService = 0;
 let estRate = 0;
-const estAdd = 0;
+let estAdd = 0;
 let estTotal = 0;
+const extraServiceArr = [];
+const excludedServiceArr = [];
 
 function createCard(cardInfo) {
   const card = `
@@ -256,9 +258,13 @@ function populateAdditonalService() {
       for (let i = 0; i < data.length; i++) {
         const extraservice = data[i];
 
-        $('#additionalService').append(`<br>${extraservice.ExtraServiceName
-        }<input class="col-md-1" id="${i}" type="checkbox" onchange="updatedAddServices(${i})" name="${extraservice.ExtraServiceName}" value="${extraservice.ExtraServiceName} (Additonal S$${extraservice.ExtraServicePrice}   ) #${extraservice.ExtraServiceID}">`
-                    + ` (Additonal S$${extraservice.ExtraServicePrice})`);
+        const extraService = {
+          ServiceId: extraservice.ExtraServiceID,
+          ServiceName: extraservice.ExtraServiceName,
+          ServicePrice: extraservice.ExtraServicePrice,
+        };
+        extraServiceArr.push(extraService);
+        estAdd += extraservice.ExtraServicePrice;
       }
     },
     error(xhr, textStatus, errorThrown) {
@@ -336,53 +342,54 @@ function updatedRates() {
 
 function updatedAddServices(i) {
   const additionalServices = document.getElementById(i).value;
-  $('#listAddServiceInput').val(additionalServices);
-  // substring to get name
-  const additionalServicesValue = additionalServices.substring(0, additionalServices.indexOf('#'));
-  // regex to get amount
   const currentServices = document.getElementById('listAddService');
 
-  // get rids of the dash if its the only one
-  if (currentServices.innerHTML === '-') {
-    currentServices.innerHTML = '';
-  }
-
   // if service found, take the current innerHTML, replace it with blank, then set it back
-  if (currentServices.innerHTML.indexOf(additionalServicesValue) !== -1) {
+  if (currentServices.innerHTML.indexOf(additionalServices) !== -1) {
     let currentServicesList = currentServices.innerHTML;
-    currentServicesList = currentServicesList.replace(additionalServicesValue, '');
+    currentServicesList = currentServicesList.replace(additionalServices, '');
     currentServices.innerHTML = currentServicesList;
-    // substring to get name
-    const addServicePrice = additionalServicesValue.substring((additionalServicesValue.indexOf('$') + 1));
-    // regex to get amount
-    const addServicePattern = new RegExp('^\d{1,5}(\.\d{0,2})?');
-    console.log(addServicePrice);
-    const finalprice = addServicePrice.substring(addServicePattern, 5);
-    console.log(finalprice);
-    const estConvert = parseInt(finalprice, 10);
-    console.log(estConvert);
-    estTotal -= estConvert;
-    console.log(estAdd);
-    // update amount in receipt
+
+    estTotal -= estAdd;
     updatedAmt();
   } else {
-    currentServices.innerHTML += ` ${additionalServicesValue} `;
+    currentServices.innerHTML += ` ${additionalServices}`;
+    $('#additionalService').append('<br><h5>Please indicate any Unwanted Services:</h5>');
 
-    const addServicePrice = additionalServicesValue.substring((additionalServicesValue.indexOf('$') + 1));
-    const addServicePattern = new RegExp('^\d{1,5}(\.\d{0,2})?');
-    console.log(addServicePrice);
-    const finalprice = addServicePrice.substring(addServicePattern, 5);
-    console.log(finalprice);
-    const estConvert = parseInt(finalprice, 10);
-    console.log(estConvert);
-    estTotal += estConvert;
-    console.log(estAdd);
+    for (let x = 0; x < extraServiceArr.length; x++) {
+      $('#additionalService').append(
+        `<input class="col-md-1" id="excludeSer${extraServiceArr[x].ServiceId}" onchange="updatedExcludedAddSer('excludeSer${extraServiceArr[x].ServiceId}')" 
+        name="excludeExtraservice" type="checkbox"
+        value="${extraServiceArr[x].ServiceName} (Additonal S$${extraServiceArr[x].ServicePrice})">${extraServiceArr[x].ServiceName} (Additonal S$${extraServiceArr[x].ServicePrice})<br>`,
+      );
+    }
+    estTotal += estAdd;
     updatedAmt();
   }
+}
 
-  // adds the dash back if empty again
-  if (currentServices.innerHTML === '') {
-    currentServices.innerHTML = '-';
+// eslint-disable-next-line no-unused-vars
+function updatedExcludedAddSer(x) {
+  const excludeServices = document.getElementById(x).value;
+  const id = `#${x}`;
+  const extraserviceCheck = $(id).is(':checked');
+  console.log(extraserviceCheck);
+  const excludeServicesValue = excludeServices.substring((excludeServices.indexOf('$') + 1));
+
+  if (extraserviceCheck) {
+    excludedServiceArr.push(excludeServices);
+    console.log(excludedServiceArr);
+    estTotal -= parseFloat(excludeServicesValue, 10);
+    updatedAmt();
+  } else if (!extraserviceCheck) {
+    for (let y = 0; y < excludedServiceArr.length; y++) {
+      if (excludedServiceArr[y] === excludeServices) {
+        excludedServiceArr.splice(y, 1);
+      }
+    }
+    console.log(excludedServiceArr);
+    estTotal += parseFloat(excludeServicesValue, 10);
+    updatedAmt();
   }
 }
 
@@ -481,10 +488,10 @@ $(document).ready(() => {
   $('.input-numberBR').keydown((e) => {
     // Allow: backspace, delete, tab, escape, enter and .
     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1
-    // Allow: Ctrl+A
-            || (e.keyCode === 65 && e.ctrlKey === true)
-    // Allow: home, end, left, right
-            || (e.keyCode >= 35 && e.keyCode <= 39)) {
+      // Allow: Ctrl+A
+      || (e.keyCode === 65 && e.ctrlKey === true)
+      // Allow: home, end, left, right
+      || (e.keyCode >= 35 && e.keyCode <= 39)) {
       // let it happen, don't do anything
       return;
     }
@@ -546,10 +553,10 @@ $(document).ready(() => {
   $('.input-numberBR').keydown((e) => {
     // Allow: backspace, delete, tab, escape, enter and .
     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1
-    // Allow: Ctrl+A
-            || (e.keyCode === 65 && e.ctrlKey === true)
-    // Allow: home, end, left, right
-            || (e.keyCode >= 35 && e.keyCode <= 39)) {
+      // Allow: Ctrl+A
+      || (e.keyCode === 65 && e.ctrlKey === true)
+      // Allow: home, end, left, right
+      || (e.keyCode >= 35 && e.keyCode <= 39)) {
       // let it happen, don't do anything
       return;
     }
@@ -596,7 +603,7 @@ $(document).ready(() => {
     const roooms = $('#rooms').val();
     const bathRooms = $('#bathRooms').val();
     const serviceRates = $('#rates').val();
-    const addService = $('#listAddServiceInput').val();
+    const addService = $('#addServiceCheck').val();
     const contractStart = $('#startDate').val();
     const serviceDay1 = $('#dayOfService1').val();
     const serviceDay2 = $('#dayOfService2').val();
@@ -604,7 +611,7 @@ $(document).ready(() => {
     const addInfo = $('#additionalInfo').val();
     const totalCost = $('#estAmount').html();
     const postalCode = $('#cPostalCode').val();
-    console.log(postalCode);
+    const excludedAddServices = excludedServiceArr;
 
     // eslint-disable-next-line prefer-const
     let currentDate = new Date();
@@ -629,36 +636,38 @@ $(document).ready(() => {
         theme: 'sunset',
         text: 'Please put in your address or contract start date',
       }).show();
+    } else if (
+      contractStart === currentDates
+      || contractStart === currentDates2
+      || contractStart === currentDates3
+    ) {
+      new Noty({
+        timeout: '10000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Please ensure the date is 3 days after today date',
+      }).show();
     } else {
-      // eslint-disable-next-line max-len, no-lonely-if
-      if (contractStart === currentDates || contractStart === currentDates2 || contractStart === currentDates3) {
-        new Noty({
-          timeout: '10000',
-          type: 'error',
-          layout: 'topCenter',
-          theme: 'sunset',
-          text: 'Please ensure the date is 3 days after today date',
-        }).show();
-      } else {
-        // Stores the constants into localstorage
-        localStorage.setItem('servicePref', servicePref);
-        localStorage.setItem('address', address);
-        localStorage.setItem('servicePackage', servicePackage);
-        localStorage.setItem('rooms', roooms);
-        localStorage.setItem('bathRooms', bathRooms);
-        localStorage.setItem('serviceRates', serviceRates);
-        localStorage.setItem('addService', addService);
-        localStorage.setItem('contractStart', contractStart);
-        localStorage.setItem('serviceDay1', serviceDay1);
-        localStorage.setItem('serviceDay2', serviceDay2);
-        localStorage.setItem('serviceTime', serviceTime);
-        localStorage.setItem('addInfo', addInfo);
-        localStorage.setItem('totalCost', totalCost);
-        localStorage.setItem('postalCode', postalCode);
+      // Stores the constants into localstorage
+      localStorage.setItem('servicePref', servicePref);
+      localStorage.setItem('address', address);
+      localStorage.setItem('servicePackage', servicePackage);
+      localStorage.setItem('rooms', roooms);
+      localStorage.setItem('bathRooms', bathRooms);
+      localStorage.setItem('serviceRates', serviceRates);
+      localStorage.setItem('addService', addService);
+      localStorage.setItem('excludedAddService', excludedAddServices);
+      localStorage.setItem('contractStart', contractStart);
+      localStorage.setItem('serviceDay1', serviceDay1);
+      localStorage.setItem('serviceDay2', serviceDay2);
+      localStorage.setItem('serviceTime', serviceTime);
+      localStorage.setItem('addInfo', addInfo);
+      localStorage.setItem('totalCost', totalCost);
+      localStorage.setItem('postalCode', postalCode);
 
-        // Brings users to the confirmation page
-        window.location.replace(`${frontEndUrl}/customer/confirm`);
-      }
+      // Brings users to the confirmation page
+      window.location.replace(`${frontEndUrl}/customer/confirm`);
     }
   });
 });
