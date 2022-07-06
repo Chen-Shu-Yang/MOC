@@ -541,15 +541,14 @@ const Admin = {
     // sql query statement
 
     const sql = `
-              UPDATE 
-              heroku_6b49aedb7855c0b.booking
-           SET
-              Status="Cancelled"
-            
-          where
-               BookingID=?
-               ;
-              `;
+      UPDATE 
+        heroku_6b49aedb7855c0b.booking
+      SET
+        Status = "Cancelled",
+        cancelled_at = CURDATE()
+      WHERE
+        BookingID = ?;
+    `;
     // pool query
     pool.query(sql, [bookingId], (err, result) => {
       // error
