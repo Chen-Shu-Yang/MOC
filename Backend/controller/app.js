@@ -88,6 +88,18 @@ app.get('/', (req, res) => {
 app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
   const { email } = req.body;
   forgetPassword.Verify(email, (err, link, result) => {
+    // mail options
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: 'MOC - Forget Password Link',
+      html: `
+    <p>Hi ${result.FirstName}</p>
+    <p>This <b>links expires in 15 Min</b>.</p>
+    <p>Press <a href='${`${link}`}'>here</a> to reset your password</p>
+   `,
+    };
+
     if (err) {
       // matched with callback (err, null)
       console.log(err);
@@ -102,14 +114,34 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
       };
       res.status(404).send(msg);
     } else {
-      console.log(`Token: ${result}`);
-      // message consist of name and the link to be sent via an email
-      msg = {
-        link,
-        firstName: result.FirstName,
-      };
-      res.status(200).send(msg);
+      // eslint-disable-next-line no-use-before-define
+      transporter
+        .sendMail(mailOptions)
+        .then(() => {
+          msg = 'sent';
+          console.log('email sent');
+          // email sent and verification record saved
+          res.status(200).send({
+            status: 'Pending',
+            message: 'Verification email sent',
+          });
+        })
+        .catch((error) => {
+          console.log(`error: ${error}`);
+          res.status(404).json({
+            status: 'Failed',
+            message: 'verification email failed!',
+          });
+        });
     }
+
+    // console.log(`Token: ${result}`);
+    // // message consist of name and the link to be sent via an email
+    // msg = {
+    //   link,
+    //   firstName: result.FirstName,
+    // };
+    // res.status(200).send(msg);
   });
 });
 
@@ -3535,7 +3567,7 @@ app.get('/inactiveCustomers/:pageNumber', printDebugInfo, verifyToken, async (re
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };
