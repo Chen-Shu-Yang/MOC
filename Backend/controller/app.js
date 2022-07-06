@@ -2278,8 +2278,9 @@ app.get('/abnormality/contracts/checks', printDebugInfo, verifyToken, async (req
                     let initialContractNo = 0;
                     for (let x = 0; x < result2.length; x++) {
                       if (status === 'Resolved') {
+                        console.log(`result2.TotalAbnContracts: ${result2[x].TotalAbnContracts}`);
                         // If abnormal contract status add the total abnormal contract
-                        initialContractNo += result2[i].TotalAbnContracts;
+                        initialContractNo += result2[x].TotalAbnContracts;
                       }
                     }
                     console.log(`initialContractNo: ${initialContractNo}`);
