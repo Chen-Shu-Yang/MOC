@@ -349,6 +349,9 @@ function updateEmployee() {
   const employeeDes = $('#editEmployeeDes').val();
   // get value from skill set field
   const skillSet = $('#editEmployeeSkills').val();
+  // Get the initial image url
+  const initialImg = $('#NewProfilePreview').css('background-image').replace(/^url\(['"]?/,'').replace(/['"]?\)$/,'');
+  console.log(initialImg);
   // create a variable called webFormData and call the FormData
   // instance all field value to be added will be appended to webFormData
   const webFormData = new FormData();
@@ -358,6 +361,8 @@ function updateEmployee() {
   webFormData.append('employeeDes', employeeDes);
   // webFormData.append method to append skillSet to the key of skillSet
   webFormData.append('skillSet', skillSet);
+  // webFormData.append method to append initialImg to the key of initialImg
+  webFormData.append('initialImg', initialImg);
   // webFormData.append method to append image.files[0] to the key of image
   // eslint-disable-next-line camelcase
   webFormData.append('image_edit', image_edit.files[0]);

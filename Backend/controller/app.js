@@ -112,7 +112,7 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
         };
         res.status(404).send(msg);
       } else {
-      // eslint-disable-next-line no-use-before-define
+        // eslint-disable-next-line no-use-before-define
         transporter
           .sendMail(mailOptions)
           .then(() => {
@@ -884,8 +884,13 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
   }
   const { employeeId } = req.params;
   console.log(` app.js employee update method start ${employeeId}`);
+  // retrieve Skillsets from body
+  const InitialImg = req.body.initialImg;
+  let EmployeeImgageCloudinaryFileId;
+  let EmployeeImageUrl;
+  let ImgCheck = false;
 
-  Admin.getEmployee(employeeId, (err, result) => {
+  Admin.getEmployee(employeeId, async (err, result) => {
     if (!err) {
       // if id not found detect and return error message
       if (result.length === 0) {
@@ -898,9 +903,89 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
         const output1 = {
           EmployeeId: result[0].EmployeeID,
           EmployeeImageCloudinaryFileId: result[0].EmployeeImageCloudinaryFileId,
+          EmployeeImgUrl: result[0].EmployeeImgUrl,
         };
-        cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
-        console.log('previous pic deleted');
+
+        if (output1.EmployeeImgUrl !== InitialImg) {
+          cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
+          console.log('previous pic deleted');
+          try {
+            console.log(`When image changes: ${ImgCheck}`);
+            // cloudinary image upload method to the folder employee
+            if (ImgCheck === false) {
+              const result = await cloudinary.uploader.upload(req.file.path, { folder: 'employee' });
+              // retrieve EmployeeImgageCloudinaryFileId from
+              // result.public_id from uploading cloudinary
+              EmployeeImgageCloudinaryFileId = result.public_id;
+              // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
+              EmployeeImageUrl = result.secure_url;
+              console.log(result);
+              console.log(`EmployeeImgageCloudinaryFileId: ${EmployeeImgageCloudinaryFileId}`);
+              console.log(`EmployeeImageUrl: ${EmployeeImageUrl}`);
+              // retrieve EmployeeName from body
+              const EmployeeName = req.body.employeeName;
+              // retrieve EmployeeDes from body
+              const EmployeeDes = req.body.employeeDes;
+              // retrieve Skillsets from body
+              const Skillsets = req.body.skillSet;
+              // invoking Admin.addEmployee
+              Admin.updateEmployee(
+                EmployeeName,
+                EmployeeDes,
+                EmployeeImgageCloudinaryFileId,
+                EmployeeImageUrl,
+                Skillsets,
+                employeeId,
+                (err) => {
+                  // if there is no error
+                  if (!err) {
+                    const output = 'done';
+                    return res.status(201).send(output);
+                  }
+                },
+              );
+            }
+          } catch (error) {
+            const output = {
+              Error: 'Internal sever issues',
+            };
+            console.log(error);
+            return res.status(500).send(output);
+          }
+        } else {
+          ImgCheck = true;
+          // ImgCheck = true;
+          console.log(ImgCheck);
+          // retrieve EmployeeImgageCloudinaryFileId from
+          // result.public_id from uploading cloudinary
+          EmployeeImgageCloudinaryFileId = output1.EmployeeImageCloudinaryFileId;
+          // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
+          EmployeeImageUrl = output1.EmployeeImgUrl;
+          // retrieve EmployeeName from body
+          const EmployeeName = req.body.employeeName;
+          // retrieve EmployeeDes from body
+          const EmployeeDes = req.body.employeeDes;
+          // retrieve Skillsets from body
+          const Skillsets = req.body.skillSet;
+          console.log(`EmployeeImgageCloudinaryFileId: ${EmployeeImgageCloudinaryFileId}`);
+          console.log(`EmployeeImageUrl: ${EmployeeImageUrl}`);
+          // invoking Admin.addEmployee
+          Admin.updateEmployee(
+            EmployeeName,
+            EmployeeDes,
+            EmployeeImgageCloudinaryFileId,
+            EmployeeImageUrl,
+            Skillsets,
+            employeeId,
+            (err) => {
+              // if there is no error
+              if (!err) {
+                const output = 'done';
+                return res.status(201).send(output);
+              }
+            },
+          );
+        }
       }
     } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
@@ -914,42 +999,6 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
       res.status(500).send('Internal Server Error');
     }
   });
-
-  try {
-    // cloudinary image upload method to the folder employee
-    const result = await cloudinary.uploader.upload(req.file.path, { folder: 'employee' });
-    // retrieve EmployeeName from body
-    const EmployeeName = req.body.employeeName;
-    // retrieve EmployeeDes from body
-    const EmployeeDes = req.body.employeeDes;
-    // retrieve Skillsets from body
-    const Skillsets = req.body.skillSet;
-    // retrieve EmployeeImgageCloudinaryFileId from result.public_id from uploading cloudinary
-    const EmployeeImgageCloudinaryFileId = result.public_id;
-    // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
-    const EmployeeImageUrl = result.secure_url;
-    // invoking Admin.addEmployee
-    Admin.updateEmployee(
-      EmployeeName,
-      EmployeeDes,
-      EmployeeImgageCloudinaryFileId,
-      EmployeeImageUrl,
-      Skillsets,
-      employeeId,
-      (err) => {
-        // if there is no error
-        if (!err) {
-          const output = 'done';
-          return res.status(201).send(output);
-        }
-      },
-    );
-  } catch (error) {
-    const output = {
-      Error: 'Internal sever issues',
-    };
-    return res.status(500).send(output);
-  }
 });
 
 // upload.single method to upload an image with the key of image
