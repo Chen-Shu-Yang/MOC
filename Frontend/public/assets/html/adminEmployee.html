@@ -37,39 +37,6 @@
 </head>
 
 <body>
-
-    <script>
-        //errorToast method display the error
-        function errorToast(msg) {
-            // error alert div
-            diverror = `
-<div class="alert alert-danger alert-dismissible fade show">
-            <strong>Error!</strong>${msg}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    
-`
-            //return error alert div
-            return diverror;
-
-        }
-
-        //confirmToast method display confiramtion
-        function confirmToast(msg) {
-            //confiramtion alert div
-            divConfirmation = `
-<div class="alert alert-success alert-dismissible fade show">
-            <strong>${msg}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    
-`
-            //return confirmation alert div
-            return divConfirmation;
-
-        }
-    </script>
-
     <!-- Admin Side bar -->
     <div class="sidebar">
         <div class="logo-details">
@@ -371,12 +338,6 @@
         <!-- Delete Employee Modal End -->
 
     </section>
-    <!-- Error Message Notification  -->
-    <div id="errMsgNotificaton">
-    </div>
-    <!-- Confiramation Message Notification  -->
-    <div id="confirmationMsg">
-    </div>
 
     <script>
         $('#editModal').on('shown.bs.modal', function () {

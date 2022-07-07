@@ -333,7 +333,6 @@ function loadAnEmployee(id) {
       // if (xhr.status == 201) {
       //     errMsg = "The id doesn't exist "
       // }
-      // $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
 }
@@ -398,7 +397,7 @@ function updateEmployee() {
       if (xhr.status === 201) {
         msg = 'Successfully added!';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
@@ -406,7 +405,6 @@ function updateEmployee() {
         }).show();
         $('#employeeListing').html('');
         loadEmployeeByLimit(1);
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
     // error method
@@ -422,13 +420,12 @@ function updateEmployee() {
         let errMsg = '';
         errMsg = 'Server Error';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
       }
     },
   });
@@ -470,7 +467,7 @@ function updateSkills(skills) {
     error(xhr, textStatus, errorThrown) {
       const msg = 'Skills list not Updated';
       new Noty({
-        timeout: '5000',
+        timeout: '3000',
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
@@ -517,13 +514,12 @@ function deleteEmployee(id) {
         // eslint-disable-next-line vars-on-top
         let errMsg = '';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
         $('#employeeListing').html('');
         loadEmployeeByLimit(1);
       } else if (xhr.status === 200) {
@@ -531,13 +527,12 @@ function deleteEmployee(id) {
         // set and call confirmation message
         msg = 'Successfully deleted!';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
           text: msg,
         }).show();
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
     error(xhr, textStatus, errorThrown) {
@@ -553,13 +548,12 @@ function deleteEmployee(id) {
         errMsg = 'There is some other issues here';
       }
       new Noty({
-        timeout: '5000',
+        timeout: '3000',
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
 
   });
@@ -761,13 +755,12 @@ function addEmployee() {
         loadEmployeeByLimit(1);
         msg = 'Successfully added!';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
           text: msg,
         }).show();
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
     // error method
@@ -783,13 +776,12 @@ function addEmployee() {
         let errMsg = '';
         errMsg = 'Server Error';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
       }
     },
   });
