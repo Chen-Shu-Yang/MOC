@@ -343,6 +343,7 @@ function updateEmployee() {
   // get value of the image uploaded from input file
   // eslint-disable-next-line camelcase
   const image_edit = document.getElementById('image_edit');
+
   // get value of the employee name from employee name field
   const employeeName = $('#editEmployeeName').val();
   // get value from employee description field
@@ -362,6 +363,7 @@ function updateEmployee() {
   // eslint-disable-next-line camelcase
   webFormData.append('image_edit', image_edit.files[0]);
   // ajax fuction to connect to the backend
+
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     // url to connect to backend api
