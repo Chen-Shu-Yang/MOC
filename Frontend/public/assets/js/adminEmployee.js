@@ -333,7 +333,6 @@ function loadAnEmployee(id) {
       // if (xhr.status == 201) {
       //     errMsg = "The id doesn't exist "
       // }
-      // $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
 }
@@ -350,6 +349,9 @@ function updateEmployee() {
   const employeeDes = $('#editEmployeeDes').val();
   // get value from skill set field
   const skillSet = $('#editEmployeeSkills').val();
+  // Get the initial image url
+  const initialImg = $('#NewProfilePreview').css('background-image').replace(/^url\(['"]?/,'').replace(/['"]?\)$/,'');
+  console.log(initialImg);
   // create a variable called webFormData and call the FormData
   // instance all field value to be added will be appended to webFormData
   const webFormData = new FormData();
@@ -359,6 +361,8 @@ function updateEmployee() {
   webFormData.append('employeeDes', employeeDes);
   // webFormData.append method to append skillSet to the key of skillSet
   webFormData.append('skillSet', skillSet);
+  // webFormData.append method to append initialImg to the key of initialImg
+  webFormData.append('initialImg', initialImg);
   // webFormData.append method to append image.files[0] to the key of image
   // eslint-disable-next-line camelcase
   webFormData.append('image_edit', image_edit.files[0]);
@@ -395,7 +399,7 @@ function updateEmployee() {
       if (xhr.status === 201) {
         msg = 'Successfully added!';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
@@ -403,7 +407,6 @@ function updateEmployee() {
         }).show();
         $('#employeeListing').html('');
         loadEmployeeByLimit(1);
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
     // error method
@@ -419,13 +422,12 @@ function updateEmployee() {
         let errMsg = '';
         errMsg = 'Server Error';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
       }
     },
   });
@@ -467,7 +469,7 @@ function updateSkills(skills) {
     error(xhr, textStatus, errorThrown) {
       const msg = 'Skills list not Updated';
       new Noty({
-        timeout: '5000',
+        timeout: '3000',
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
@@ -514,13 +516,12 @@ function deleteEmployee(id) {
         // eslint-disable-next-line vars-on-top
         let errMsg = '';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
         $('#employeeListing').html('');
         loadEmployeeByLimit(1);
       } else if (xhr.status === 200) {
@@ -528,13 +529,12 @@ function deleteEmployee(id) {
         // set and call confirmation message
         msg = 'Successfully deleted!';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
           text: msg,
         }).show();
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
     error(xhr, textStatus, errorThrown) {
@@ -550,13 +550,12 @@ function deleteEmployee(id) {
         errMsg = 'There is some other issues here';
       }
       new Noty({
-        timeout: '5000',
+        timeout: '3000',
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
 
   });
@@ -758,13 +757,12 @@ function addEmployee() {
         loadEmployeeByLimit(1);
         msg = 'Successfully added!';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
           text: msg,
         }).show();
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
     // error method
@@ -780,13 +778,12 @@ function addEmployee() {
         let errMsg = '';
         errMsg = 'Server Error';
         new Noty({
-          timeout: '5000',
+          timeout: '3000',
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
       }
     },
   });
