@@ -3575,5 +3575,83 @@ app.delete('/inActiveCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
   });
 });
 
+app.put('/updateBooking/:bookingIDs', printDebugInfo, verifyToken, (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+  // extract id from params
+  const BookingID = req.params.bookingIDs;
+  // extract all details needed
+  const { ScheduleDate } = req.body;
+  console.log('Im HERE');
+  // check if class pricing is float value and execute code
+
+  // calling updateClass method from admin model
+  Admin.updateBooking(ScheduleDate, BookingID, (err, result) => {
+    // if there is no errorsend the following as result
+    if (!err) {
+      res.status(201).send(result);
+    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+      // send Inappropriate value as return message
+      res.status(406).send('Inappropriate value');
+    } else if (err.code === 'ER_BAD_NULL_ERROR') {
+      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+      res.status(400).send('Null value not allowed');
+    } else {
+      // else if there is a server error return message
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.get('/oneContract/:contractId', printDebugInfo, verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+  // extract contractId from parameter
+  const { contractId } = req.params;
+
+  // calling getAContractByID method from admin model line 1349
+  Admin.getAContractByID(contractId, (err, result) => {
+    // if no error send result
+    if (!err) {
+      res.status(200).send(result);
+    } else {
+    // if error send error message
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+app.put('/updateContract/:contractId', printDebugInfo, verifyToken, (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+  // extract contractid from params
+  const { contractId } = req.params;
+  // extract all details needed
+  const { dayOfService1 } = req.body;
+  const { dayOfService2 } = req.body;
+  const { estimatedPricing } = req.body;
+
+  // calling editContractInfo method from admin model
+  // eslint-disable-next-line max-len
+  Admin.editContractInfo(dayOfService1, dayOfService2, estimatedPricing, contractId, (err, result) => {
+    // Send affected rows if no error
+    if (!err) {
+      console.log(`result ${result.affectedRows}`);
+      res.status(202).send(result);
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
 // ====================== Module Exports ======================
 module.exports = app;
