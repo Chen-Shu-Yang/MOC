@@ -614,16 +614,19 @@ $(document).ready(() => {
     const postalCode = $('#cPostalCode').val();
     const excludedAddServices = excludedServiceArr;
 
+    // get current date
     // eslint-disable-next-line prefer-const
     let currentDate = new Date();
     currentDate.setDate(currentDate.getDate());
     const currentDates = currentDate.toISOString().split('T')[0];
 
+    // get 1 day after current date
     // eslint-disable-next-line prefer-const
     let currentDate2 = new Date();
     currentDate2.setDate(currentDate2.getDate() + 1);
     const currentDates2 = currentDate2.toISOString().split('T')[0];
 
+    // get 2 day after current date
     // eslint-disable-next-line prefer-const
     let currentDate3 = new Date();
     currentDate3.setDate(currentDate3.getDate() + 2);
