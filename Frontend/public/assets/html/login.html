@@ -2,6 +2,7 @@
 <html lang="en-US">
 
 <head>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,11 +12,13 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 
-
+ <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -166,6 +169,7 @@
     <meta name="google-site-verification" content="rOYrumZ4XeN2dk8rS4Rk1HdB-_ChK7nqxxrCvFyQpQc" />
 
     <script>
+
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
                 (i[r].q = i[r].q || []).push(arguments)
@@ -192,6 +196,7 @@
             }
         </style>
     </noscript>
+    <script src="https://kit.fontawesome.com/ca9c4d369b.js" crossorigin="anonymous"></script>
 
     <title></title>
 </head>
@@ -443,18 +448,23 @@
                         <h2>Login</h2>
                         <div class="form-group">
                             <input type="email" class="form-control" id="emailInput" placeholder="Email"
-                                required="required">
+                                required="required" >
+
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control" id="pwdInput" placeholder="Password"
                                 required="required">
+                                <i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+                             
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn" style="background-color:#2E6869 ; color:white;"
-                                id="Login">Log in</button>
+                                id="Login">Log in </button>
                             <p style="float:right">Forgot Password? <a href="/forgetPassword" id="signupBtn">Reset Password</a></p>
                         </div>
                     </form>
+
+                  
 
                 </div>
             </div>
@@ -464,14 +474,16 @@
         <img src="../../assets/img/loginScreen.jpeg" alt="">
         <div class="login-form" id="form">
             <form action="" id="loginFormPhone">
-                <h2>Login</h2>
+                <h2>Login < <i class="fa-solid fa-user"></i></h2>
                 <div class="form-group">
                     <input type="email" class="form-control" id="emailInput" placeholder="Email" required="required">
                 </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" id="pwdInput" placeholder="Password"
-                        required="required">
-                </div>
+                <div class="input-group" id="show_hide_password">
+                    <input class="form-control" type="password">
+                    <div class="input-group-addon">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                    </div>
+                  </div>
                 <div class="form-group">
                     <button type="submit" class="btn" style="background-color:#2E6869 ; color:white;" id="Login">Log
                         in</button>
