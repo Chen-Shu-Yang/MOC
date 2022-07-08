@@ -350,7 +350,7 @@ function updateEmployee() {
   // get value from skill set field
   const skillSet = $('#editEmployeeSkills').val();
   // Get the initial image url
-  const initialImg = $('#NewProfilePreview').css('background-image').replace(/^url\(['"]?/,'').replace(/['"]?\)$/, '');
+  const initialImg = $('#NewProfilePreview').css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
   console.log(initialImg);
   // create a variable called webFormData and call the FormData
   // instance all field value to be added will be appended to webFormData
