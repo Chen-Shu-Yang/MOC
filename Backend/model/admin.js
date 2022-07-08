@@ -167,6 +167,20 @@ const Admin = {
       return callback(null, result); // if
     });
   },
+  getAdminEmail(callback) {
+    // sql query statement
+    const sql = 'SELECT Email FROM heroku_6b49aedb7855c0b.admin;';
+    // pool query
+    pool.query(sql, (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result); // if
+    });
+  },
 
   // get employee by id
   getEmployee(id, callback) {

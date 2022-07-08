@@ -3046,27 +3046,36 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
   });
 });
 // cancel booking for customer
-app.put('/update/customerBooking/:id', printDebugInfo, verifyTokenCustomer, (req, res) => {
-  if (req.id == null) {
-    res.status(403).send();
-    return;
-  }
+app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
+  // if (req.id == null) {
+  //   res.status(403).send();
+  //   return;
+  // }
   // extract id from params
   const bookingId = req.params.id;
 
-  // cancel booking function that update the status of booking
+  // cancel booking function that update the status of booking ======================================================================
   // eslint-disable-next-line no-shadow
   function cancelBooking(bookingId) {
+    function adminEmail() {
+      Admin.getAdminEmail((err, result) => {
+        // if there is no errorsend the following as result
+        if (!err) {
+          res.status(202).send(result);
+        } else {
+          res.status(500).send('Internal Server Error');
+        }
+      });
+    }
     Customer.updateBookingStatus(bookingId, (err, result) => {
       // if there is no errorsend the following as result
       if (!err) {
-        res.status(202).send(result);
+        adminEmail();
       } else {
         res.status(500).send('Internal Server Error');
       }
     });
   }
-
   // get currentDate
   const currentDate = new Date();
   // ger currentTime
