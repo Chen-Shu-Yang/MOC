@@ -296,6 +296,54 @@ const Customer = {
     });
   },
 
+  checkCustomerPassword(cID, currentPassword, callback) {
+    // sql query statement
+    const sql = 'SELECT CustomerID FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID = ? AND Password = ?;';
+
+    // pool query
+    pool.query(sql, [cID, currentPassword], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      // If resulted ID not same as input ID
+      if (JSON.stringify(result.CustomerID) !== cID) {
+        console.log('this is null');
+        const error = {
+          message: 'No result',
+        };
+        console.log(error);
+        return callback(error, null);
+      }
+      // one result - returns result
+      console.log(result);
+      return callback(null, result);
+    });
+  },
+
+  updateCustomerPassword(password, id, callback) {
+    // sql query statement
+    const sql = `
+            UPDATE 
+            heroku_6b49aedb7855c0b.customer
+         SET
+            Password = ?
+        where
+            CustomerID = ?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [password, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
 };
 
 //= ======================================================

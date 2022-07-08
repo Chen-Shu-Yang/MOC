@@ -189,6 +189,10 @@ app.get('/customer/confirm', (req, res) => {
 app.get('/unAuthorize', (req, res) => {
   res.sendFile('/public/assets/html/unauthorized.html', { root: __dirname });
 });
+// Customer Change Password
+app.get('/customer/change', (req, res) => {
+  res.sendFile('/public/assets/html/customerPassword.html', { root: __dirname });
+});
 //= ======================================================
 //                   Super Admin
 //= ======================================================
