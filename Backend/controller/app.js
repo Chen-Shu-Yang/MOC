@@ -3158,12 +3158,25 @@ app.get('/contracts', printDebugInfo, verifyToken, async (req, res) => {
 });
 
 app.get('/cancelledBookingAbnormality', printDebugInfo, verifyToken, async (req, res) => {
-  const customerIds = [];
-  let customerIdsU;
   if (req.role == null) {
     res.status(403).send();
     return;
   }
+  // array to push customerIds that are allready abnormal
+  const customerIds = [];
+  let customerIdsU;
+  // final output
+  function finalOp() {
+    // call getCancellationAbnormailtyDisplay mthod
+    Admin.getCancellationAbnormailtyDisplay((err, result) => {
+      if (!err) {
+        res.status(200).send(result);
+      } else {
+        res.status(500).send('Some error');
+      }
+    });
+  }
+  // insert abnormaly to insert abnormal ids and data
   function insertCancelAbnormaly(customerID) {
     Admin.insertCancelAbnormality(customerID, (err, result) => {
       // if no error send results as positive
@@ -3182,44 +3195,46 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, verifyToken, async (req,
       }
     });
   }
-  function finalOp() {
-    Admin.getCancellationAbnormailtyDisplay((err, result) => {
-      if (!err) {
-        res.status(200).send(result);
-      } else {
-        res.status(500).send('Some error');
-      }
-    });
-  }
+  // get all the abnormalities to be cancelled
   function getCancellationAbnormalyDetails() {
+    // call getCancellationAbnormailtyDetails method
     Admin.getCancellationAbnormailtyDetails((err, result) => {
       let customerID;
+      // push cutomer id
       const c = [];
+      // unique customer id
       let uc;
       if (!err) {
         for (i = 0; i < result.length; i++) {
+          // retrieve customer id
           customerID = result[i].Customer;
+          // push the customer id into the array
           c.push(customerID);
+          // getting unique customer id
           customerIdsU = [...new Set(customerIds)];
-
+          // check if customer ids to be inserted is in the array
           if ((customerIds.includes(customerID))) {
             console.log(`${customerID}is already inserted cutomerID`);
           } else {
+            // insert the customer id as abnormally
             insertCancelAbnormaly(customerID);
           }
         }
+        // call finalop method
         finalOp();
       } else {
         res.status(500).send('Some error');
       }
     });
   }
-
+  // get all the cancel abnormaly in the database
   function getAllCancelAbnormaly() {
+    // call the getAllCancelAbnormalities method
     Admin.getAllCancelAbnormalities((err, result) => {
       let customerID;
       if (!err) {
         for (i = 0; i < result.length; i++) {
+          // push customerIds into array
           customerIds.push(result[i].CustomerID);
         }
       } else {
@@ -3227,10 +3242,10 @@ app.get('/cancelledBookingAbnormality', printDebugInfo, verifyToken, async (req,
       }
     });
   }
-
-  // alreadyInDb
+  // get all the cancel abnormaly in the database
   getAllCancelAbnormaly();
 
+  // get cancel abooking details
   getCancellationAbnormalyDetails();
 });
 

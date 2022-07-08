@@ -50,11 +50,8 @@ function createTable(cardInfo) {
   <td>${cardInfo.Customer}</td>
   <td>${cardInfo.FirstName}</td>
   <td>${cardInfo.LastName}</td>
-  <td>
-  <button type="button" class="btn btn-warning"  onClick="loadAClassOfService(${cardInfo.classId})" >View</button>
-  </td>
-  <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="suspendUser(${cardInfo.Customer})">Suspend</button></td>
-  <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="resolveIssue(${cardInfo.Customer})">Resolve</button></td>
+  <td> <button type="button" id="suspendBtn" class="btn btn-info"  onClick="suspendUser(${cardInfo.Customer})">Suspend</button></td>
+  <td> <button type="button" id="resolveBtn" class="btn btn-info"  onClick="resolveIssue(${cardInfo.Customer})">Resolve</button></td>
   </tr>
   `;
 
