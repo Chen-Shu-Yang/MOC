@@ -3843,5 +3843,66 @@ app.put('/updateContract/:contractId', printDebugInfo, verifyToken, (req, res) =
     }
   });
 });
+
+app.put('/customer/password/:id', printDebugInfo, verifyTokenCustomer, async (req, res) => {
+  if (req.id == null) {
+    res.status(403).send();
+    return;
+  }
+  // extract id from params
+  const customerId = req.params.id;
+  const { currentPassword } = req.body;
+  // calling checkCustomerPassword method from Customer model
+  Customer.checkCustomerPassword(customerId, currentPassword, (err, result) => {
+    if (!err) {
+      // output
+      res.status(200).send(result);
+    } else if (err.message === 'No result') {
+      // if customer id is not found detect and return error message
+      const output = {
+        Error: 'Wrong password',
+      };
+      res.status(404).send(output);
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+app.put('/customer/editPassword/:id', printDebugInfo, verifyTokenCustomer, async (req, res) => {
+  console.log(req.id);
+  if (req.id == null) {
+    res.status(403).send();
+    return;
+  }
+  // extract id from params
+  const customerId = req.params.id;
+  const { confirmPassword } = req.body;
+  // calling updateCustomerPassword method from Customer model
+  Customer.updateCustomerPassword(confirmPassword, customerId, (err, result) => {
+    if (!err) {
+      // if Customer id is not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
 // ====================== Module Exports ======================
 module.exports = app;

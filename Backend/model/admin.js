@@ -1103,7 +1103,7 @@ const Admin = {
         return callback(err, null);
       }
       // any results?
-      if (JSON.stringify(result[0].AdminID) !== cID) {
+      if (JSON.stringify(result.AdminID) !== cID) {
         // no results - callback with no err & results
         // console.log(typeof result[0].AdminID);
         // console.log(typeof cID);
