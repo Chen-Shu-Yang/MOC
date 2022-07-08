@@ -190,6 +190,43 @@ $('#changePassword').click(() => {
   // call web service endpoint
 });
 
+
+
+const togglePasswordCurrent = document.querySelector('#togglePasswordCurrentPass');
+  const currentPassword = document.querySelector('#currentPassword');
+
+  togglePasswordCurrent.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = currentPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    currentPassword.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
+
+const togglePasswordNew = document.querySelector('#togglePasswordNewPass');
+  const newPassword = document.querySelector('#newPassword');
+
+  togglePasswordNew.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = newPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    newPassword.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
+
+const togglePasswordConfirm = document.querySelector('#togglePasswordConfirmPass');
+  const confirmPassword = document.querySelector('#confirmPassword');
+
+  togglePasswordConfirm.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    confirmPassword.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
+
+
+
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   console.log('--------Query Params----------');

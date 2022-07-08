@@ -1218,13 +1218,15 @@ const Admin = {
 
     // sql statement to limit and skip
     const sql = `
-    select c.ContractId,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,r.RateName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    select c.ContractId,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,cu.FirstName,c.DayOfService,c.DayOfService2,cu.LastName,p.PackageName,cl.ClassName,r.RateName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.contract c
     join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
     join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
     join heroku_6b49aedb7855c0b.rates r on c.Rate = r.RatesID
-    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID LIMIT ? OFFSET ?;
+    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID 
+    ORDER BY c.StartDate desc
+    LIMIT ? OFFSET ? ;
 
   `;
     // values to pass for the query number of contract per page and number of contract to skip
@@ -1381,7 +1383,7 @@ where month(created_at)=month(curdate());
   },
   getAContractByID(id, callback) {
     // sql query statement
-    const sql = 'SELECT Customer FROM heroku_6b49aedb7855c0b.contract where ContractID=?;';
+    const sql = 'SELECT Customer,DayOfService, DayOfService2, EstimatedPricing, ContractID FROM heroku_6b49aedb7855c0b.contract where ContractID=?;';
 
     // pool query
     pool.query(sql, [id], (err, result) => {
@@ -1786,6 +1788,31 @@ where
       // result accurate
 
       return callback(null, result); // if
+    });
+  },
+
+  editContractInfo(dayOfService1, dayOfService2, estimatedPricing, contractId, callback) {
+    // sql query statement
+    const sql = `
+            UPDATE 
+            heroku_6b49aedb7855c0b.contract
+         SET
+            DayofService=?,
+            DayofService2=?,
+            EstimatedPricing=?
+        where
+            ContractID=?
+             ;
+            `;
+    // pool query
+    pool.query(sql, [dayOfService1, dayOfService2, estimatedPricing, contractId], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
     });
   },
 };
