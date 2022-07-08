@@ -1986,14 +1986,46 @@ app.put('/assignBooking/:bookingIDs', printDebugInfo, verifyToken, async (req, r
   // extract all details needed
   const { EmployeeID } = req.body;
   const { AdminID } = req.body;
-  console.log('Im HERE');
+  const { CustomerID } = req.body;
+
   // check if class pricing is float value and execute code
 
   // calling updateClass method from admin model
   Admin.assignBooking(EmployeeID, AdminID, BookingID, (err, result) => {
     // if there is no errorsend the following as result
     if (!err) {
-      res.status(200).send(result);
+      Admin.getEmployee(EmployeeID, (err1, result1) => {
+        console.log('getEmployee');
+        if (!err1) {
+          Admin.getCustomer(CustomerID, (err2, result2) => {
+            console.log('getCustomer');
+            console.log(result1);
+            console.log(result2);
+            if (!err2) {
+              const output = {
+                EmployeeName: result1[0].EmployeeName,
+                EmployeeMobile: result1[0].MobileNo,
+                CustomerName: `${result2[0].FirstName} ${result2[0].LastName}`,
+                CustomerMobile: result2[0].PhoneNumber,
+              };
+              console.log(output);
+              res.status(200).send(output);
+            } else {
+              // sending output as error message if there is any server issues
+              const output = {
+                Error: 'Internal sever issues',
+              };
+              res.status(500).send(output);
+            }
+          });
+        } else {
+          // sending output as error message if there is any server issues
+          const output = {
+            Error: 'Internal sever issues',
+          };
+          res.status(500).send(output);
+        }
+      });
     } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
       // send Inappropriate value as return message

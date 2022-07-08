@@ -16,12 +16,15 @@ if (tmpToken === null || tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 
+let employeeCount = 0;
+let customerCount = 0;
+
 // eslint-disable-next-line no-unused-vars
 function selectEmployee(employee) {
   document.getElementById('assign').value = employee;
 }
 function createRow(cardInfo) {
-//   console.log(cardInfo);
+  //   console.log(cardInfo);
   if (cardInfo.EmployeeStatus === 'Assigned') {
     const card = `
     <div class="card mb-3" style="max-width: 93%;">
@@ -116,6 +119,7 @@ function loadAvailableEmployee(bookingDate) {
     },
   });
 }
+
 function loadBookingDetails(bookingid) {
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
@@ -131,6 +135,7 @@ function loadBookingDetails(bookingid) {
       const bookingDetails = data[0];
 
       const RowInfo = {
+        customerId: bookingDetails.CustomerID,
         customerFirstName: bookingDetails.FirstName,
         customerLastName: bookingDetails.LastName,
         contractAddress: bookingDetails.Address,
@@ -146,6 +151,7 @@ function loadBookingDetails(bookingid) {
       console.log('---------Card INfo data pack------------');
       console.log(RowInfo);
 
+      $('#customerIdAssignBooking').val(RowInfo.customerId);
       $('#firstName').val(RowInfo.customerFirstName);
       $('#lastName').val(RowInfo.customerLastName);
       $('#address').val(RowInfo.contractAddress);
@@ -170,6 +176,7 @@ function loadBookingDetails(bookingid) {
     },
   });
 }
+
 // eslint-disable-next-line no-unused-vars
 function assignBookingSchedule() {
   // data extraction
@@ -177,7 +184,10 @@ function assignBookingSchedule() {
   const bookingid = queryParams.get('bookingid');
   const adminID = localStorage.getItem('AdminID');
   const employeeID = $('#assign').val();
+  const customerID = $('#customerIdAssignBooking').val();
+
   const data = {
+    CustomerID: customerID,
     EmployeeID: employeeID,
     AdminID: adminID,
   };
@@ -199,6 +209,14 @@ function assignBookingSchedule() {
           theme: 'sunset',
           text: 'Assigned successfully',
         }).show();
+
+        $('#sendWhatsappModal').modal('show');
+        $('#employeeName').html('');
+        $('#customerName').html('');
+        $('#employeeName').html(`${data.EmployeeName}:`);
+        $('#customerName').html(`${data.CustomerName}:`);
+        $('#employeeWhatsapp').val(data.EmployeeMobile);
+        $('#customerWhatsapp').val(data.CustomerMobile);
       } else {
         console.log('Error');
       }
@@ -217,6 +235,130 @@ function assignBookingSchedule() {
     },
   });
 }
+
+// eslint-disable-next-line no-unused-vars
+function whatsappEmployee() {
+  const queryParams = new URLSearchParams(window.location.search);
+  const bookingId = queryParams.get('bookingid');
+  const employeeWhatsapp = $('#employeeWhatsapp').val();
+
+  if (employeeCount > 0 && customerCount > 0) {
+    console.log('message sent');
+    window.location.replace(`${frontEndUrl}/admin/booking`);
+  }
+
+  if (employeeCount > 0) {
+    new Noty({
+      timeout: '3000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Message has been sent!',
+    }).show();
+    return;
+  }
+
+  $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
+    url: `${backEndUrl}/contract/${bookingId}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+
+    success(data) {
+      if (data != null) {
+        console.log('-------response data------');
+
+        const bookingDetails = data[0];
+        let extraNotes;
+
+        if (bookingDetails.ExtraNotes === null) {
+          extraNotes = '';
+        } else {
+          extraNotes = `Here is an extra note from the customer: ${bookingDetails.ExtraNotes}.`;
+        }
+
+        const WhatsappMsg = `Hi ${bookingDetails.EmployeeName}, you have been assigned to a booking on ${bookingDetails.ScheduleDate} from ${bookingDetails.FirstName} ${bookingDetails.LastName}. The address is ${bookingDetails.Address}. There will be ${bookingDetails.NoOfRooms} rooms and ${bookingDetails.NoOfBathrooms} bathrooms with an estimated sizing of ${bookingDetails.RateName} sqft. ${extraNotes}`;
+
+        const whatsappLink = `https://api.whatsapp.com/send?phone=65${employeeWhatsapp}&text=${WhatsappMsg}`;
+        window.open(whatsappLink, '_blank').focus();
+      }
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
+      console.log('Error in Operation');
+
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+    },
+  });
+  employeeCount++;
+}
+
+// eslint-disable-next-line no-unused-vars
+function whatsappCustomer() {
+  const queryParams = new URLSearchParams(window.location.search);
+  const bookingId = queryParams.get('bookingid');
+  const customerWhatsapp = $('#customerWhatsapp').val();
+
+  if (employeeCount > 0 && customerCount > 0) {
+    console.log('message sent');
+    window.location.replace(`${frontEndUrl}/admin/booking`);
+  }
+
+  if (customerCount > 0) {
+    new Noty({
+      timeout: '3000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Message has been sent!',
+    }).show();
+    return;
+  }
+
+  $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
+    url: `${backEndUrl}/contract/${bookingId}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+
+    success(data) {
+      if (data != null) {
+        console.log('-------response data------');
+
+        const bookingDetails = data[0];
+
+        const WhatsappMsg = `Hi ${bookingDetails.FirstName} ${bookingDetails.LastName}. ${bookingDetails.EmployeeName} has been assigned to your booking on ${bookingDetails.ScheduleDate}. Enjoy your service!`;
+
+        const whatsappLink = `https://api.whatsapp.com/send?phone=65${customerWhatsapp}&text=${WhatsappMsg}`;
+        window.open(whatsappLink, '_blank').focus();
+      }
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
+      console.log('Error in Operation');
+
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+    },
+  });
+  customerCount++;
+}
+
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
   console.log('--------Query Params----------');
