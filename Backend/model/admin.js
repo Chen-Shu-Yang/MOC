@@ -385,15 +385,17 @@ const Admin = {
   getAllBooking(callback) {
     // sql query statement
     const sql = `
-    SELECT
-    b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') As ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
-    FROM
-    heroku_6b49aedb7855c0b.booking b
-    join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractId
-    join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
-    join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
-    left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
-    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID
+  SELECT
+  b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') As ScheduleDate,b.ContractID,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+  FROM
+  heroku_6b49aedb7855c0b.booking b
+  join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractId
+  join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
+  join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+  left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
+  join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID
+  order by
+month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     `;
     // pool query
     pool.query(sql, (err, result) => {
@@ -447,7 +449,10 @@ const Admin = {
     join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
     left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
     left join heroku_6b49aedb7855c0b.admin a on b.Admin = a.AdminID
-    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID LIMIT ? OFFSET ?;
+    join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID
+    order by
+month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
+    LIMIT ? OFFSET ?;
   
     `;
     // values to pass for the query number of employee per page and number of employee to skip
@@ -522,7 +527,8 @@ const Admin = {
         join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
         join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
         left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
-        join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID where b.Status='Assigned' or b.Status='Pending'
+        join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID where b.Status='Assigned' or b.Status='Pending'  order by
+        month(b.ScheduleDate) desc,day(b.ScheduleDate) asc;
         `;
     // pool query
     pool.query(sql, (err, result) => {
@@ -555,7 +561,8 @@ const Admin = {
       join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
       join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
       left join heroku_6b49aedb7855c0b.employee e on b.Employee = e.EmployeeID
-      join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID where b.Status='Assigned' or b.Status='Pending'  LIMIT ? OFFSET ?;
+      join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID where b.Status='Assigned' or b.Status='Pending'  order by
+      month(b.ScheduleDate) desc,day(b.ScheduleDate) asc  LIMIT ? OFFSET ?;
     
       `;
     // values to pass for the query number of employee per page and number of employee to skip
