@@ -673,7 +673,7 @@ const Admin = {
   // get one Customer by id
   getCustomer(id, callback) {
     // sql query statement
-    const sql = 'SELECT CustomerID, FirstName, LastName, Password, Status FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID=?;';
+    const sql = 'SELECT CustomerID, FirstName, LastName, Password, Status, PhoneNumber FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID=?;';
 
     const values = [id];
     // pool query
@@ -975,7 +975,7 @@ const Admin = {
   //= ======================================================
   getBookingDetails(id, callback) {
     // sql query statement
-    const sql = `SELECT b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,cu.FirstName,cu.LastName,r.RateName,e.EmployeeName
+    const sql = `SELECT cu.CustomerID, b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,cu.FirstName,cu.LastName,r.RateName,e.EmployeeName
     FROM heroku_6b49aedb7855c0b.booking as b
     join heroku_6b49aedb7855c0b.contract as c on b.ContractId = c.ContractID
     join heroku_6b49aedb7855c0b.customer as cu on c.Customer = cu.CustomerID

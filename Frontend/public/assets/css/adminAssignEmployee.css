@@ -22,3 +22,26 @@
 .list-section .btn {
     text-align: left;
 }
+.modal-footer .btn {
+    color: #fff;
+}
+
+.modal-footer .btn.employee {
+    background: #2E6869;
+    border: 2px solid #2E6869;
+}
+
+.modal-footer .btn.employee:hover {
+    background: none;
+    color: #000;
+}
+
+.modal-footer .btn.customer {
+    background: #84BC9E;
+    border: 2px solid #84BC9E;
+}
+
+.modal-footer .btn.customer:hover {
+    background: none;
+    color: #000;
+}
