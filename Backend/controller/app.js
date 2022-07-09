@@ -38,7 +38,7 @@ const Customer = require('../model/customer');
 const Register = require('../model/register');
 const SuperAdmin = require('../model/superAdmin');
 const forgetPassword = require('../model/forgetPassword');
-const { json } = require('body-parser');
+// const { json } = require('body-parser');
 
 const currentUrl = 'http://localhost:5000';
 // const currentUrl = 'https://moc-ba.herokuapp.com;
@@ -3502,7 +3502,7 @@ app.post('/addAdmin', printDebugInfo, verifyToken, (req, res) => {
   });
 });
 
-app.post('/autoBooking', printDebugInfo, verifyToken,async (req, res) => {
+app.post('/autoBooking', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
     res.status(403).send();
     return;
@@ -3697,7 +3697,7 @@ app.post('/autoBooking', printDebugInfo, verifyToken,async (req, res) => {
   });
 });
 
-app.post('/autoBookingNextMonth', printDebugInfo,verifyToken, async (req, res) => {
+app.post('/autoBookingNextMonth', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
     res.status(403).send();
     return;
