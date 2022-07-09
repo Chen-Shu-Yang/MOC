@@ -13,14 +13,14 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
 const togglePassword = document.querySelector('#togglePassword');
-  const password = document.querySelector('#customerPasswordInput');
+const password = document.querySelector('#customerPasswordInput');
 
-  togglePassword.addEventListener('click', function (e) {
-    // toggle the type attribute
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-    // toggle the eye slash icon
-    this.classList.toggle('fa-eye-slash');
+togglePassword.addEventListener('click', function () {
+  // toggle the type attribute
+  const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+  password.setAttribute('type', type);
+  // toggle the eye slash icon
+  this.classList.toggle('fa-eye-slash');
 });
 $(document).ready(() => {
   // When sign up button is clicked
