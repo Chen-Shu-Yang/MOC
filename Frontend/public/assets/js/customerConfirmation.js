@@ -33,19 +33,7 @@ function loadUserDetails(id) {
           userNameInfo: user.FirstName,
         };
       }
-
       $('#cUserNameInfo').text(userInfo.userNameInfo);
-    },
-    // errorhandling
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
     },
   });
 }
@@ -172,7 +160,7 @@ function customerAutobooking() {
     data: reqBody,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data) {
+    success() {
       // If successful remove localstorage items
       localStorage.removeItem('servicePref');
       localStorage.removeItem('address');
@@ -202,6 +190,13 @@ function customerAutobooking() {
       } else {
         errMsg = 'There is some other issues here';
       }
+      new Noty({
+        timeout: '3000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
     },
   });
 }
