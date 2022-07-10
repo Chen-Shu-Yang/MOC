@@ -167,7 +167,7 @@ function loadAContract(contractId) {
       if (RowInfo.DayOfService2 === null || RowInfo.DayOfService2 === '-') {
         day2.style.visibility = 'hidden';
       } else {
-        day2.removeAttribute('hidden');
+        day2.style.visibility = 'visible';
       }
     },
     error(xhr) {

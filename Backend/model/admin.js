@@ -1123,8 +1123,17 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
         console.log(err);
         return callback(err, null);
       }
+      // If no data in result
+      if (result.length === 0) {
+        console.log('this is null');
+        const error = {
+          message: 'No result',
+        };
+        console.log(error);
+        return callback(error, null);
+      }
       // any results?
-      if (JSON.stringify(result.AdminID) !== cID) {
+      if (JSON.stringify(result[0].AdminID) !== cID) {
         // no results - callback with no err & results
         // console.log(typeof result[0].AdminID);
         // console.log(typeof cID);
