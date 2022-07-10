@@ -11,6 +11,7 @@ const backEndUrl = 'http://localhost:5000';
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 const tempCustomerID = JSON.parse(localStorage.getItem('customerID'));
 if (tmpToken === null || tempCustomerID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 

@@ -13,6 +13,7 @@ const tempType = JSON.parse(localStorage.getItem('adminType'));
 console.log(tempType);
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null || tempAdminID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 if (tempType === 'Admin') {

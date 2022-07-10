@@ -15,6 +15,7 @@ if (tmpToken === null) {
 }
 const tempCustomerID = JSON.parse(localStorage.getItem('customerID'));
 if (tempCustomerID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 let estService = 0;

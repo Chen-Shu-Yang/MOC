@@ -13,6 +13,7 @@ if (tmpToken === null) {
 }
 const tempCustomerID = JSON.parse(localStorage.getItem('customerID'));
 if (tempCustomerID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 // Display the helper card

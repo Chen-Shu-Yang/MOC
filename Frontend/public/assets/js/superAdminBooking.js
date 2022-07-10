@@ -14,6 +14,7 @@ const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 const tempType = JSON.parse(localStorage.getItem('adminType'));
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null || tempAdminID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 if (tempType === 'Admin') {
@@ -295,6 +296,7 @@ function addMonthlyBooking() {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function addMonthlyBookingNext() {
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },

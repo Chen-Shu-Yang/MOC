@@ -14,6 +14,7 @@ let abnormalcontract = '';
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null || tempAdminID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 function createRow(cardInfo) {
