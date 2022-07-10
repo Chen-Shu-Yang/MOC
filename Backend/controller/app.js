@@ -123,14 +123,14 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
             // email sent and verification record saved
             res.status(200).send({
               status: 'Pending',
-              message: 'Verification email sent',
+              message: 'Reset Password email sent',
             });
           })
           .catch((error) => {
             console.log(`error: ${error}`);
             res.status(404).json({
               status: 'Failed',
-              message: 'verification email failed!',
+              message: 'Reset Password email failed!',
             });
           });
       }
@@ -3048,24 +3048,50 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
   });
 });
 // cancel booking for customer
-app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
-  // if (req.id == null) {
-  //   res.status(403).send();
-  //   return;
-  // }
+app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) => {
+  if (req.id == null) {
+    res.status(403).send();
+    return;
+  }
   // extract id from params
   const bookingId = req.params.id;
 
-  // cancel booking function that update the status of booking ======================================================================
   // eslint-disable-next-line no-shadow
   function cancelBooking(bookingId) {
     function adminEmail() {
       Admin.getAdminEmail((err, result) => {
         // if there is no errorsend the following as result
         if (!err) {
-          const myJSON = JSON.stringify(result);
-          console.log(myJSON);
-          res.status(202).send(result);
+          let AdminEtwo;
+          for (x = 0; x < result.length; x++) {
+            AdminEtwo += `${result[x].Email},`;
+          }
+          const mailOptions = {
+            from: process.env.AUTH_EMAIL,
+            to: AdminEtwo,
+            subject: 'MOC - Booking Cancel',
+            html: `
+          <p>Booking ID ${`${bookingId}`} have been cancelled</p>
+         `,
+          };
+          transporter
+            .sendMail(mailOptions)
+            .then(() => {
+              msg = 'sent';
+              console.log('email sent');
+              // email sent and verification record saved
+              res.status(200).send({
+                status: 'Pending',
+                message: 'Reset Password email sent',
+              });
+            })
+            .catch((error) => {
+              console.log(`error: ${error}`);
+              res.status(404).json({
+                status: 'Failed',
+                message: 'Reset Password email failed!',
+              });
+            });
         } else {
           res.status(500).send('Internal Server Error');
         }
