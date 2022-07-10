@@ -64,13 +64,17 @@ function updatedTime() {
   document.getElementById('listTime').innerHTML = time;
 }
 function updatedDate() {
+  const date = document.getElementById('startDate').value;
+  document.getElementById('listDate').innerHTML = date;
+}
+function setCurrentDate() {
+  // cannot select past dates from calendar
   const todayDate = new Date();
   todayDate.setDate(todayDate.getDate() + 3);
   const today = todayDate.toISOString().split('T')[0];
-  // const today = new Date().toISOString().split('T')[0];
   document.getElementsByName('startDate')[0].setAttribute('min', today);
-  const date = document.getElementById('startDate').value;
-  document.getElementById('listDate').innerHTML = date;
+  $('#startDate').val(today);
+  updatedDate();
 }
 
 function loadUserDetails() {
@@ -78,9 +82,7 @@ function loadUserDetails() {
   const CustomerIDs = localStorage.getItem('customerID');
   console.log(CustomerIDs);
   let userInfo;
-  // cannot select past dates from calendar
-
-  updatedDate();
+  setCurrentDate();
   updatedDay1();
   updatedTime();
   populateBathroomsRooms();
@@ -322,7 +324,6 @@ function updatedService(i) {
   const ratePattern = new RegExp('^\d{1,6}');
   const final = servicePrice.substring(ratePattern, 3);
   estService = parseInt(final, 10) * 4;
-  console.log(`hjdfssss${estService}`);
 
   estTotal += estService;
   // get amoutnt
