@@ -3061,8 +3061,8 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
     function adminEmail() {
       Admin.getAdminEmail((err, result) => {
         // if there is no errorsend the following as result
+        let AdminEtwo = '';
         if (!err) {
-          let AdminEtwo;
           for (x = 0; x < result.length; x++) {
             AdminEtwo += `${result[x].Email},`;
           }
@@ -3071,7 +3071,7 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
             to: AdminEtwo,
             subject: 'MOC - Booking Cancel',
             html: `
-          <p>Booking ID ${`${bookingId}`} have been cancelled</p>
+          <p>Booking ID ${bookingId} have been cancelled</p>
          `,
           };
           transporter
