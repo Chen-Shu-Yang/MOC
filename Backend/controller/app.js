@@ -26,6 +26,7 @@ require('dotenv').config();
 
 // bcrypt
 const bcrypt = require('bcrypt');
+const helmet = require('helmet');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 const verifyToken = require('../auth/isLoggedInMiddleWare');
@@ -80,7 +81,7 @@ const jsonParser = bodyParser.json();
 // MF Configurations
 app.use(urlEncodedParser);
 app.use(jsonParser);
-
+app.use(helmet());
 app.options('*', cors());
 app.use(cors());
 
