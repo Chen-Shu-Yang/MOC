@@ -3048,15 +3048,13 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
   });
 });
 // cancel booking for customer
-app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
-  // if (req.id == null) {
-  //   res.status(403).send();
-  //   return;
-  // }
+app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) => {
+  if (req.id == null) {
+    res.status(403).send();
+    return;
+  }
   // extract id from params
   const bookingId = req.params.id;
-
-  // cancel booking function that update the status of booking ======================================================================
 
   // eslint-disable-next-line no-shadow
   function cancelBooking(bookingId) {
