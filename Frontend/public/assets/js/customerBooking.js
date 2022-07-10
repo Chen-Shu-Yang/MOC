@@ -63,12 +63,24 @@ function updatedTime() {
   const time = document.getElementById('timeOfService').value;
   document.getElementById('listTime').innerHTML = time;
 }
+function updatedDate() {
+  const todayDate = new Date();
+  todayDate.setDate(todayDate.getDate() + 3);
+  const today = todayDate.toISOString().split('T')[0];
+  // const today = new Date().toISOString().split('T')[0];
+  document.getElementsByName('startDate')[0].setAttribute('min', today);
+  const date = document.getElementById('startDate').value;
+  document.getElementById('listDate').innerHTML = date;
+}
 
 function loadUserDetails() {
   // extract user details from local storage
   const CustomerIDs = localStorage.getItem('customerID');
   console.log(CustomerIDs);
   let userInfo;
+  // cannot select past dates from calendar
+
+  updatedDate();
   updatedDay1();
   updatedTime();
   populateBathroomsRooms();
@@ -228,7 +240,6 @@ function populateRates() {
         if (i === 0) {
           $('#listRates').html(`${rates.RateName}sqft (From S$${rates.RatePrice})`);
           estRate = rates.RatePrice;
-          console.log(`HIIIII${typeof (estRate)}`);
           estTotal += estRate;
 
           console.log(estTotal);
@@ -422,11 +433,6 @@ function incrementBR() {
 function decrementBR() {
   document.getElementById('bathRooms').stepDown();
   updatedBathrooms();
-}
-
-function updatedDate() {
-  const date = document.getElementById('startDate').value;
-  document.getElementById('listDate').innerHTML = date;
 }
 
 function updatedDay2() {
@@ -845,7 +851,3 @@ second.onchange = () => {
     updatedDay2();
   }
 };
-
-// cannot select past dates from calendar
-const today = new Date().toISOString().split('T')[0];
-document.getElementsByName('startDate')[0].setAttribute('min', today);
