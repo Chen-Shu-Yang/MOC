@@ -14,7 +14,7 @@ const backEndUrl = 'http://localhost:5000';
 
 $(document).ready(() => {
   const togglePassword = document.querySelector('#togglePassword');
-  const password = document.querySelector('#customerPasswordInput');
+  const password = document.querySelector('#pwdInput');
 
   togglePassword.addEventListener('click', function () {
     // toggle the type attribute
