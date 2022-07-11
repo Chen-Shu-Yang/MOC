@@ -79,6 +79,18 @@ app.get('/story', (req, res) => {
 app.get('/contact', (req, res) => {
   res.sendFile('/public/assets/html/contact.html', { root: __dirname });
 });
+
+// Go to contact
+app.get('/oneTimeCleaning', (req, res) => {
+  res.sendFile('/public/assets/html/oneTimeCleaning.html', { root: __dirname });
+});
+// Go to office
+app.get('/officeCleaning', (req, res) => {
+  res.sendFile('/public/assets/html/officeCleaning.html', { root: __dirname });
+});
+app.get('/showRoomCleaning', (req, res) => {
+  res.sendFile('/public/assets/html/showRoomCleaning.html', { root: __dirname });
+});
 //= ======================================================
 //                   Admin
 //= ======================================================
