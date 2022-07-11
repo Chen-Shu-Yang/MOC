@@ -310,8 +310,17 @@ const Customer = {
         console.log(err);
         return callback(err, null);
       }
+      // If no data in result
+      if (result.length === 0) {
+        console.log('this is null');
+        const error = {
+          message: 'No result',
+        };
+        console.log(error);
+        return callback(error, null);
+      }
       // If resulted ID not same as input ID
-      if (JSON.stringify(result.CustomerID) !== cID) {
+      if (JSON.stringify(result[0].CustomerID) !== cID) {
         console.log('this is null');
         const error = {
           message: 'No result',
