@@ -7,7 +7,7 @@ require('dotenv').config();
 // Object/ Fcuntions
 //-------------------------
 // your own secret key
-const secret = process.env.SECRET;
+const secret = 's12xyz00';
 
 //-------------------------
 // Exports

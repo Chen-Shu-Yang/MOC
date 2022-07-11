@@ -18,7 +18,7 @@ function verifyToken(req, res, next) {
   // process the token
   if (!token || !token.includes('Bearer')) {
     return res.status(403).send({
-      auth: false,
+      auth: 'false',
       message: 'Not authorized!',
     });
   }
@@ -31,7 +31,7 @@ function verifyToken(req, res, next) {
   jwt.verify(token, config.key, (err, decoded) => {
     if (err) {
       return res.status(403).send({
-        auth: false,
+        auth: 'false',
         message: 'Not authorized!!!!!!!!!!!',
       });
     }

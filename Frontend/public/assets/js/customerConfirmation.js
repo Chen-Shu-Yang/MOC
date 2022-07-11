@@ -105,7 +105,7 @@ function fillUpConfirmationCard() {
   }
 
   if (excludedAdditionalService !== '') {
-    additionalInfo += `<br> Exclude Additional Services: ${excludedAdditionalService}`;
+    additionalInfo += `Exclude Additional Services: ${excludedAdditionalService}`;
     $('#additionalInfo').text(additionalInfo);
   }
 
