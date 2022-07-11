@@ -59,7 +59,7 @@ app.get('/resetPassword', (req, res) => {
   res.sendFile('/public/assets/html/resetPassword.html', { root: __dirname });
 });
 // go to Register
-app.get('/service', (req, res) => {
+app.get('/services', (req, res) => {
   res.sendFile('/public/assets/html/vSerivce.html', { root: __dirname });
 });
 
