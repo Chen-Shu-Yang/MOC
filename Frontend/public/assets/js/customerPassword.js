@@ -96,9 +96,11 @@ $('#changePassword').click(() => {
   }
   // call web service endpoint
 });
+// select the eye icon related to the current password field
 const togglePasswordCurrent = document.querySelector('#togglePasswordCurrentPass');
+// select the current password field
 const currentPassword = document.querySelector('#currentPassword');
-
+// function to change type of the text filed
 togglePasswordCurrent.addEventListener('click', function (e) {
   // toggle the type attribute
   const type = currentPassword.getAttribute('type') === 'password' ? 'text' : 'password';

@@ -3702,7 +3702,6 @@ app.post('/autoBookingNextMonth', printDebugInfo, verifyToken, async (req, res) 
     res.status(403).send();
     return;
   }
-
   if (req.role !== 'Super Admin') {
     res.status(403).send();
     return;
@@ -3715,7 +3714,6 @@ app.post('/autoBookingNextMonth', printDebugInfo, verifyToken, async (req, res) 
   const allValidContracts = [];
   // array that will store contracts already booked with duplicates
   const contractsYetToBeBooked = [];
-
   // // add new booking function that takes two parameters ContractID and ScheduleDate
   function AddBooking(ContractID, ScheduleDate) {
     // invokes addBooking method created at superAdmin file in app.js
@@ -3730,8 +3728,6 @@ app.post('/autoBookingNextMonth', printDebugInfo, verifyToken, async (req, res) 
     if (DayOfService.includes('Mon')) {
       // find all dates of monday in the month using moment
       const MondaysInMonth = moment().add(1, 'months').weekdaysInMonth('Monday');
-      console.log('Ypppppppppppppppppppppppppppppppp');
-      console.log(MondaysInMonth);
       // loop through the mondays and extract the date
       for (x = 0; x < MondaysInMonth.length; x++) {
         // format date in YYYY-MM-DD format
