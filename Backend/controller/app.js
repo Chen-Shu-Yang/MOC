@@ -25,7 +25,7 @@ const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 // bcrypt
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const helmet = require('helmet');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
