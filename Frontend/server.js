@@ -64,7 +64,7 @@ app.get('/service', (req, res) => {
 });
 
 // go to Register
-app.get('/contractService', (req, res) => {
+app.get('/contractCleaning', (req, res) => {
   res.sendFile('/public/assets/html/viewContractRates.html', { root: __dirname });
 });
 // Go to Gallery
