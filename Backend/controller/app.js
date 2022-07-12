@@ -412,7 +412,6 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
         };
         res.status(404).send(msg);
       } else {
-        console.log(`Token: ${result}`);
         msg = {
           AdminID: result.AdminID,
           token,
@@ -428,9 +427,11 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     } else if (err.code === 'ER_BAD_NULL_ERROR') {
       // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    } else {
+    } else if (err === 'UNVERIFIED_EMAIL') {
       // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
+      res.status(401).send('Your email is not verified. Please Verify your email');
+    } else if (err === 'NO_ACCOUNTS_FOUND') {
+      res.status(401).send('Wrong Username or Password!');
     }
   });
 });
