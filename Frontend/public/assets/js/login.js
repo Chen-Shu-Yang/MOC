@@ -14,7 +14,7 @@ const backEndUrl = 'http://localhost:5000';
 
 $(document).ready(() => {
   const togglePassword = document.querySelector('#togglePassword');
-  const password = document.querySelector('#customerPasswordInput');
+  const password = document.querySelector('#pwdInput');
 
   togglePassword.addEventListener('click', function () {
     // toggle the type attribute
@@ -45,7 +45,6 @@ $(document).ready(() => {
 
       success(data) {
         if (data != null) {
-          console.log('Data');
           if (data.CustomerID != null) {
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('customerID', JSON.stringify(data.CustomerID));
@@ -61,22 +60,15 @@ $(document).ready(() => {
             localStorage.setItem('token', JSON.stringify(data.token));
             window.location.replace(`${frontEndUrl}/admin/dashboard`);
           }
-        } else {
-          console.log('Error');
         }
       },
-      error(xhr, textStatus, errorThrown) {
-        console.log('Frontend error');
-        console.log('Error in Operation');
-        console.log(`XHR: ${JSON.stringify(xhr)}`);
-        console.log(`Textstatus: ${textStatus}`);
-        console.log(`Errorthorwn${errorThrown}`);
+      error(xhr) {
         new Noty({
           timeout: '5000',
           type: 'error',
           layout: 'topCenter',
           theme: 'sunset',
-          text: 'Please check your Username and Password',
+          text: xhr.responseText,
         }).show();
       },
     });

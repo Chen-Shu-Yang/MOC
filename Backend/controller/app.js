@@ -25,7 +25,8 @@ const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 // bcrypt
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
+const helmet = require('helmet');
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
 const verifyToken = require('../auth/isLoggedInMiddleWare');
@@ -80,7 +81,7 @@ const jsonParser = bodyParser.json();
 // MF Configurations
 app.use(urlEncodedParser);
 app.use(jsonParser);
-
+app.use(helmet());
 app.options('*', cors());
 app.use(cors());
 
@@ -122,14 +123,14 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
             // email sent and verification record saved
             res.status(200).send({
               status: 'Pending',
-              message: 'Verification email sent',
+              message: 'Reset Password email sent',
             });
           })
           .catch((error) => {
             console.log(`error: ${error}`);
             res.status(404).json({
               status: 'Failed',
-              message: 'verification email failed!',
+              message: 'Reset Password email failed!',
             });
           });
       }
@@ -222,7 +223,7 @@ const sendVerificationEmail = ({ _id, email }, res) => {
   };
 
   // hash the uniqueString
-  const saltRounds = 10;
+  const saltRounds = process.env.SALT_ROUNDS;
   bcrypt
     .hash(UniqueString, saltRounds)
     .then((hashedUniqueString) => {
@@ -411,7 +412,6 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
         };
         res.status(404).send(msg);
       } else {
-        console.log(`Token: ${result}`);
         msg = {
           AdminID: result.AdminID,
           token,
@@ -427,9 +427,11 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     } else if (err.code === 'ER_BAD_NULL_ERROR') {
       // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
       res.status(400).send('Null value not allowed');
-    } else {
+    } else if (err === 'UNVERIFIED_EMAIL') {
       // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
+      res.status(401).send('Your email is not verified. Please Verify your email');
+    } else if (err === 'NO_ACCOUNTS_FOUND') {
+      res.status(401).send('Wrong Username or Password!');
     }
   });
 });
@@ -3047,24 +3049,50 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
   });
 });
 // cancel booking for customer
-app.put('/update/customerBooking/:id', printDebugInfo, (req, res) => {
-  // if (req.id == null) {
-  //   res.status(403).send();
-  //   return;
-  // }
+app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) => {
+  if (req.id == null) {
+    res.status(403).send();
+    return;
+  }
   // extract id from params
   const bookingId = req.params.id;
 
-  // cancel booking function that update the status of booking ======================================================================
   // eslint-disable-next-line no-shadow
   function cancelBooking(bookingId) {
     function adminEmail() {
       Admin.getAdminEmail((err, result) => {
         // if there is no errorsend the following as result
+        let AdminEtwo = '';
         if (!err) {
-          const myJSON = JSON.stringify(result);
-          console.log(myJSON);
-          res.status(202).send(result);
+          for (x = 0; x < result.length; x++) {
+            AdminEtwo += `${result[x].Email},`;
+          }
+          const mailOptions = {
+            from: process.env.AUTH_EMAIL,
+            to: AdminEtwo,
+            subject: 'MOC - Booking Cancel',
+            html: `
+          <p>Booking ID ${bookingId} have been cancelled</p>
+         `,
+          };
+          transporter
+            .sendMail(mailOptions)
+            .then(() => {
+              msg = 'sent';
+              console.log('email sent');
+              // email sent and verification record saved
+              res.status(200).send({
+                status: 'Pending',
+                message: 'Reset Password email sent',
+              });
+            })
+            .catch((error) => {
+              console.log(`error: ${error}`);
+              res.status(404).json({
+                status: 'Failed',
+                message: 'Reset Password email failed!',
+              });
+            });
         } else {
           res.status(500).send('Internal Server Error');
         }

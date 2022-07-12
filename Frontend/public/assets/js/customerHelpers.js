@@ -13,6 +13,7 @@ if (tmpToken === null) {
 }
 const tempCustomerID = JSON.parse(localStorage.getItem('customerID'));
 if (tempCustomerID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 // Display the helper card
@@ -59,17 +60,6 @@ function loadUserDetails(id) {
 
       $('#cUserNameInfo').html(userInfo.userNameInfo);
     },
-    // errorhandling
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
-    },
   });
 }
 
@@ -108,12 +98,23 @@ function loadPossibleHelpers(date) {
       }
     },
 
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+    error(xhr) {
+      if (xhr.status === 404) {
+        new Noty({
+          timeout: '3000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: `There are no helpers available on ${date}`,
+        }).show();
+        new Noty({
+          timeout: '6000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'A helper will still be schedule to your booking',
+        }).show();
+      }
     },
   });
 }

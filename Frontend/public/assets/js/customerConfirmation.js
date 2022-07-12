@@ -13,6 +13,7 @@ if (tmpToken === null) {
 }
 const tempCustomerID = JSON.parse(localStorage.getItem('customerID'));
 if (tempCustomerID === null) {
+  window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 function loadUserDetails(id) {
@@ -33,19 +34,7 @@ function loadUserDetails(id) {
           userNameInfo: user.FirstName,
         };
       }
-
-      $('#cUserNameInfo').html(userInfo.userNameInfo);
-    },
-    // errorhandling
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
+      $('#cUserNameInfo').text(userInfo.userNameInfo);
     },
   });
 }
@@ -85,42 +74,42 @@ function fillUpConfirmationCard() {
   $('#servicePackageId').val(servicePackagesId);
   $('#sizeRatingsId').val(ratesId);
 
-  $('#serviceClass').html(servicePrefString);
-  $('#address').html(customerAddress);
-  $('#postalCode').html(custPostalCode);
-  $('#servicePackage').html(servicePackagesString);
-  $('#noOfRooms').html(roomNo);
-  $('#noOfBath').html(bathRoomNo);
-  $('#sizeRatings').html(ratesString);
+  $('#serviceClass').text(servicePrefString);
+  $('#address').text(customerAddress);
+  $('#postalCode').text(custPostalCode);
+  $('#servicePackage').text(servicePackagesString);
+  $('#noOfRooms').text(roomNo);
+  $('#noOfBath').text(bathRoomNo);
+  $('#sizeRatings').text(ratesString);
 
   if (additionalService === '') {
-    $('#extraServices').html('No');
+    $('#extraServices').text('No');
   } else {
-    $('#extraServices').html(additionalService);
+    $('#extraServices').text(additionalService);
   }
-  $('#startDate').html(contractStartDate);
-  $('#serviceDay').html(day1);
+  $('#startDate').text(contractStartDate);
+  $('#serviceDay').text(day1);
 
   // Check package to display second service date
   if (servicePackagesId === '2') {
-    $('#serviceDay2').html(day2);
+    $('#serviceDay2').text(day2);
   } else {
-    $('#serviceDay2').html('-');
+    $('#serviceDay2').text('-');
   }
-  $('#serviceTiming').html(time);
+  $('#serviceTiming').text(time);
 
   if (additionalInfo === '') {
-    $('#additionalInfo').html('-');
+    $('#additionalInfo').text('-');
   } else {
-    $('#additionalInfo').html(additionalInfo);
+    $('#additionalInfo').text(additionalInfo);
   }
 
   if (excludedAdditionalService !== '') {
-    additionalInfo += `<br> Exclude Additional Services: ${excludedAdditionalService}`;
-    $('#additionalInfo').html(additionalInfo);
+    additionalInfo += `Exclude Additional Services: ${excludedAdditionalService}`;
+    $('#additionalInfo').text(additionalInfo);
   }
 
-  $('#estimatedTotalCost').html(`$ ${totalEstCost}`);
+  $('#estimatedTotalCost').text(`$ ${totalEstCost}`);
   $('#estimatedTotal').val(totalEstCost);
 }
 
@@ -129,17 +118,17 @@ function customerAutobooking() {
   // Extracts the value from the inputs and values
   const ServiceClass = $('#serviceClassId').val();
   const ServicePackage = $('#servicePackageId').val();
-  const NoOfRooms = $('#noOfRooms').html();
-  const NoOfBathrooms = $('#noOfBath').html();
-  const Address = $('#address').html();
-  const PostalCode = $('#postalCode').html();
-  const StartDate = $('#startDate').html();
-  const ServiceDay = $('#serviceDay').html();
-  const ServiceDay2 = $('#serviceDay2').html();
-  const ServiceTiming = $('#serviceTiming').html();
+  const NoOfRooms = $('#noOfRooms').text();
+  const NoOfBathrooms = $('#noOfBath').text();
+  const Address = $('#address').text();
+  const PostalCode = $('#postalCode').text();
+  const StartDate = $('#startDate').text();
+  const ServiceDay = $('#serviceDay').text();
+  const ServiceDay2 = $('#serviceDay2').text();
+  const ServiceTiming = $('#serviceTiming').text();
   const SizeRating = $('#sizeRatingsId').val();
-  const ExtraServices = $('#extraServices').html();
-  const AdditionalInfo = $('#additionalInfo').html();
+  const ExtraServices = $('#extraServices').text();
+  const AdditionalInfo = $('#additionalInfo').text();
   const EstimatedTotal = $('#estimatedTotal').val();
 
   // Compiles the extracted values into an object
@@ -172,7 +161,7 @@ function customerAutobooking() {
     data: reqBody,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data) {
+    success() {
       // If successful remove localstorage items
       localStorage.removeItem('servicePref');
       localStorage.removeItem('address');
@@ -187,7 +176,6 @@ function customerAutobooking() {
       localStorage.removeItem('addInfo');
       localStorage.removeItem('totalCost');
       localStorage.removeItem('postalCode');
-      console.log(data);
       // Brings customer to the possible list of helpers
       window.location.replace(`${frontEndUrl}/customer/helpers`);
     },
@@ -203,8 +191,13 @@ function customerAutobooking() {
       } else {
         errMsg = 'There is some other issues here';
       }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
-      $('#classServiceTableBody').html('');
+      new Noty({
+        timeout: '3000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
     },
   });
 }

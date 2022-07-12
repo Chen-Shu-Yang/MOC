@@ -56,6 +56,9 @@
 			padding: 0 !important;
 		}
 	</style>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
 	<link rel='stylesheet' id='layerslider-css'
 		href='/assets/MOC/moc.sg/wp-content/plugins/LayerSlider/static/css/layerslider9dff.css?ver=5.3.2'
 		type='text/css' media='all' />
@@ -108,10 +111,6 @@
 		href="/assets/MOC/moc.sg/wp-json/oembed/1.0/embed159a.json?url=http%3A%2F%2Fmoc.sg%2Fservices%2F" />
 	<link rel="alternate" type="text/xml+oembed"
 		href="/assets/MOC/moc.sg/wp-json/oembed/1.0/embed2b1b?url=http%3A%2F%2Fmoc.sg%2Fservices%2F&amp;format=xml" />
-	<!-- JavaScript Bundle with Popper -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
 	<style type="text/css">
 		.recentcomments a {
 			display: inline !important;
@@ -130,7 +129,7 @@
 				(i[r].q = i[r].q || []).push(arguments)
 			}, i[r].l = 1 * new Date(); a = s.createElement(o),
 				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-		})(window, document, 'script', '../../www.google-analytics.com/analytics.js', 'ga');
+		})(window, document, 'script', '/assets/MOC/www.google-analytics.com/analytics.js', 'ga');
 
 		ga('create', 'UA-62255803-1', 'auto');
 		ga('send', 'pageview');
@@ -141,7 +140,7 @@
 			var s = document.getElementsByTagName('script')[0]
 				, p = document.createElement('script');
 			p.async = 'async';
-			p.src = '../../rum-static.pingdom.net/prum.min.js';
+			p.src = '/assets/MOC/rum-static.pingdom.net/prum.min.js';
 			s.parentNode.insertBefore(p, s);
 		})();
 	</script><noscript>
@@ -169,7 +168,7 @@
 				<div class="header_inner clearfix">
 
 					<div class="header_top_bottom_holder">
-						<div class="header_bottom clearfix" style=' background-color:rgba(255, 255, 255, 1);'>
+						<div class="header_bottom clearfix" style=''>
 							<div class="container">
 								<div class="container_inner clearfix">
 									<div class="header_inner_left">
@@ -179,7 +178,7 @@
 										</div>
 										<div class="logo_wrapper">
 											<div class="q_logo">
-												<a href="/homepage">
+												<a href="../index.html">
 													<img class="normal"
 														src="/assets/MOC/moc.sg/wp-content/uploads/2015/08/MOC-LOGO.png"
 														alt="Logo" />
@@ -211,20 +210,18 @@
 									<nav class="main_menu drop_down right">
 										<ul id="menu-top-header-menu" class="">
 											<li id="nav-menu-item-16423"
-												class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-15694 current_page_item active narrow">
-												<a href="/homepage" class=" current "><i
+												class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home  narrow">
+												<a href="/homepage" class=""><i
 														class="menu_icon blank fa"></i><span>Home</span><span
-														class="plus"></span></a>
-											</li>
+														class="plus"></span></a></li>
 											<li id="nav-menu-item-16433"
 												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
 												<a href="/story" class=""><i
 														class="menu_icon blank fa"></i><span>Story</span><span
-														class="plus"></span></a>
-											</li>
+														class="plus"></span></a></li>
 											<li id="nav-menu-item-16431"
-												class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children  has_sub narrow">
-												<a href="/service" class=""><i
+												class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-14093 current_page_item menu-item-has-children active has_sub narrow">
+												<a href="/services" class=" current "><i
 														class="menu_icon blank fa"></i><span>Services</span><span
 														class="plus"></span></a>
 												<div class="second">
@@ -232,7 +229,7 @@
 														<ul>
 															<li id="nav-menu-item-16425"
 																class="menu-item menu-item-type-post_type menu-item-object-page ">
-																<a href="/contractService" class=""><i
+																<a href="/contractCleaning" class=""><i
 																		class="menu_icon blank fa"></i><span>Contract
 																		Cleaning</span><span class="plus"></span></a>
 															</li>
@@ -262,100 +259,97 @@
 												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
 												<a href="/gallery" class=""><i
 														class="menu_icon blank fa"></i><span>Gallery</span><span
-														class="plus"></span></a>
-											</li>
+														class="plus"></span></a></li>
 											<li id="nav-menu-item-16427"
 												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
 												<a href="/academy" class=""><i
 														class="menu_icon blank fa"></i><span>Academy</span><span
-														class="plus"></span></a>
-											</li>
+														class="plus"></span></a></li>
 											<li id="nav-menu-item-16424"
 												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
 												<a href="/contact" class=""><i
 														class="menu_icon blank fa"></i><span>Contact Us</span><span
-														class="plus"></span></a>
-											</li>
-											<li id="nav-menu-item-1642909"
-												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-												<a href="/login" class=""><i
-														class="menu_icon blank fa"></i><span>Login</span><span
-														class="plus"></span></a>
-											</li>
-											<li id="nav-menu-item-1642908"
-												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-												<a href="/register" class=""><i
-														class="menu_icon blank fa"></i><span>Register</span><span
-														class="plus"></span></a>
-											</li>
-											<li id="nav-menu-item-164907"
-												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-												<a href="/customer/Profile" class=""><i
-														class="menu_icon blank fa"></i><span>Profile </span><span
-														class="plus"></span></a>
-											</li>
-											<li id="nav-menu-item-164906"
-												class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
-												<a href="#" class=""><i
-														class="menu_icon blank fa"></i><span>Logout</span><span
-														class="plus"></span></a>
-											</li>
-
+														class="plus"></span></a></li>
+														<li id="nav-menu-item-1642909"
+														class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+														<a href="/login" class=""><i
+																class="menu_icon blank fa"></i><span>Login</span><span
+																class="plus"></span></a>
+													</li>
+													<li id="nav-menu-item-1642908"
+														class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+														<a href="/register" class=""><i
+																class="menu_icon blank fa"></i><span>Register</span><span
+																class="plus"></span></a>
+													</li>
+													<li id="nav-menu-item-164907"
+														class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+														<a href="/customer/Profile" class=""><i
+																class="menu_icon blank fa"></i><span>Profile </span><span
+																class="plus"></span></a>
+													</li>
+													<li id="nav-menu-item-164910"
+														class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+														<a href="/admin/dashboard" class=""><i
+														class=" menu_icon blank fa"></i><span>Admin </span><span class="plus"></span></a>
+													</li>
+													<li id="nav-menu-item-164906"
+														class="menu-item menu-item-type-post_type menu-item-object-page  narrow">
+														<a href="#" class=""><i
+																class="menu_icon blank fa"></i><span>Logout</span><span
+																class="plus"></span></a>
+													</li>
 										</ul>
 									</nav>
 									<nav class="mobile_menu">
 										<ul id="menu-top-header-menu-1" class="">
 											<li id="mobile-menu-item-16423"
-												class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-15694 current_page_item active">
-												<a href="/homepage" class=" current "><span>Home</span></a><span
+												class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home ">
+												<a href="/homepage" class=""><span>Home</span></a><span
 													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
-														class="fa fa-angle-down"></i></span>
-											</li>
+														class="fa fa-angle-down"></i></span></li>
 											<li id="mobile-menu-item-16433"
 												class="menu-item menu-item-type-post_type menu-item-object-page "><a
 													href="/story" class=""><span>Story</span></a><span
 													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
 														class="fa fa-angle-down"></i></span></li>
 											<li id="mobile-menu-item-16431"
-												class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children  has_sub">
-												<a href="/service" class=""><span>Services</span></a><span
+												class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-14093 current_page_item menu-item-has-children active has_sub">
+												<a href="/services" class=" current "><span>Services</span></a><span
 													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
 														class="fa fa-angle-down"></i></span>
 												<ul class="sub_menu">
 													<li id="mobile-menu-item-16425"
 														class="menu-item menu-item-type-post_type menu-item-object-page ">
-														<a href="/contractService" class=""><span>Contract
-																Cleaning</span></a><span class="mobile_arrow"><i
-																class="fa fa-angle-right"></i><i
-																class="fa fa-angle-down"></i></span>
-													</li>
+														<a href="/contractCleaning"
+															class=""><span>Contract Cleaning</span></a><span
+															class="mobile_arrow"><i class="fa fa-angle-right"></i><i
+																class="fa fa-angle-down"></i></span></li>
 													<li id="mobile-menu-item-16430"
 														class="menu-item menu-item-type-post_type menu-item-object-page ">
-														<a href="/oneTimeCleaning" class=""><span>One Time
-																Cleaning</span></a><span class="mobile_arrow"><i
+														<a href="/oneTimeCleaning" class=""><span>One
+																Time Cleaning</span></a><span class="mobile_arrow"><i
 																class="fa fa-angle-right"></i><i
-																class="fa fa-angle-down"></i></span>
-													</li>
+																class="fa fa-angle-down"></i></span></li>
 													<li id="mobile-menu-item-16429"
 														class="menu-item menu-item-type-post_type menu-item-object-page ">
 														<a href="/officeCleaning" class=""><span>Office
 																Cleaning</span></a><span class="mobile_arrow"><i
 																class="fa fa-angle-right"></i><i
-																class="fa fa-angle-down"></i></span>
-													</li>
+																class="fa fa-angle-down"></i></span></li>
 													<li id="mobile-menu-item-16568"
 														class="menu-item menu-item-type-post_type menu-item-object-page ">
-														<a href="/showRoomCleaning" class=""><span>Showroom
-																Cleaning</span></a><span class="mobile_arrow"><i
-																class="fa fa-angle-right"></i><i
-																class="fa fa-angle-down"></i></span>
-													</li>
+														<a href="/showRoomCleaning"
+															class=""><span>Showroom Cleaning</span></a><span
+															class="mobile_arrow"><i class="fa fa-angle-right"></i><i
+																class="fa fa-angle-down"></i></span></li>
 												</ul>
 											</li>
 											<li id="mobile-menu-item-16426"
 												class="menu-item menu-item-type-post_type menu-item-object-page "><a
-													href="/gallery" class=""><span>Gallery</span></a><span
-													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
+													href="/gallery"
+													class=""><span>Gallery</span></a><span class="mobile_arrow"><i
+														class="fa fa-angle-right"></i><i
 														class="fa fa-angle-down"></i></span></li>
 											<li id="mobile-menu-item-16427"
 												class="menu-item menu-item-type-post_type menu-item-object-page "><a
@@ -364,32 +358,40 @@
 														class="fa fa-angle-down"></i></span></li>
 											<li id="mobile-menu-item-16424"
 												class="menu-item menu-item-type-post_type menu-item-object-page "><a
-													href="/contact" class=""><span>Contact Us</span></a><span
-													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
-														class="fa fa-angle-down"></i></span></li>
-											<li id="mobile-menu-item-164249"
-												class="menu-item menu-item-type-post_type menu-item-object-page "><a
-													href="/login" class=""><span>Login</span></a><span
-													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
-														class="fa fa-angle-down"></i></span>
-											</li>
-											<li id="mobile-menu-item-164248"
-												class="menu-item menu-item-type-post_type menu-item-object-page "><a
-													href="/register" class=""><span>Register</span></a><span
-													class="mobile_arrow"><i class="fa fa-angle-right"></i><i
-														class="fa fa-angle-down"></i></span></li>
-											<li id="mobile-menu-item-164247"
-												class="menu-item menu-item-type-post_type menu-item-object-page "><a
-													href="/customer/profile" class=""><span>Profile
-														History</span></a><span class="mobile_arrow"><i
+													href="/contact" class=""><span>Contact
+														Us</span></a><span class="mobile_arrow"><i
 														class="fa fa-angle-right"></i><i
 														class="fa fa-angle-down"></i></span></li>
-											<li id="mobile-menu-item-164246"
-												class="menu-item menu-item-type-post_type menu-item-object-page "><a
-													href="" class=""><span>Logout
-													</span></a><span class="mobile_arrow"><i
-														class="fa fa-angle-right"></i><i
-														class="fa fa-angle-down"></i></span></li>
+														<li id="mobile-menu-item-164249"
+														class="menu-item menu-item-type-post_type menu-item-object-page "><a
+															href="/login" class=""><span>Login</span></a><span
+															class="mobile_arrow"><i class="fa fa-angle-right"></i><i
+																class="fa fa-angle-down"></i></span>
+													</li>
+													<li id="mobile-menu-item-164248"
+														class="menu-item menu-item-type-post_type menu-item-object-page "><a
+															href="/register" class=""><span>Register</span></a><span
+															class="mobile_arrow"><i class="fa fa-angle-right"></i><i
+																class="fa fa-angle-down"></i></span></li>
+													<li id="mobile-menu-item-164247"
+														class="menu-item menu-item-type-post_type menu-item-object-page "><a
+															href="/customer/profile" class=""><span>Profile
+																History</span></a><span class="mobile_arrow"><i
+																class="fa fa-angle-right"></i><i
+																class="fa fa-angle-down"></i></span></li>
+													<li id="mobile-menu-item-164245"
+																class="menu-item menu-item-type-post_type menu-item-object-page "><a
+																	href="/admin/dashboard" class=""><span>Admin
+																	</span></a><span class="mobile_arrow"><i
+																		class="fa fa-angle-right"></i><i
+																		class="fa fa-angle-down"></i></span></li>			
+													<li id="mobile-menu-item-164246"
+														class="menu-item menu-item-type-post_type menu-item-object-page "><a
+															href="" class=""><span>Logout
+																</span></a><span class="mobile_arrow"><i
+																class="fa fa-angle-right"></i><i
+																class="fa fa-angle-down"></i></span></li>
+												
 										</ul>
 									</nav>
 								</div>
@@ -495,8 +497,8 @@
 																		<div class="separator  transparent center  "
 																			style="margin-top: 26px;margin-bottom: 0px;">
 																		</div>
-																		<a href="/contractService" target="_self"
-																			class="qbutton  center"
+																		<a href="/contractCleaning"
+																			target="_self" class="qbutton  center"
 																			style="margin: 70px 0px 0px 65px; ">See
 																			More</a>
 																	</div>
@@ -554,8 +556,8 @@
 																		<div class="separator  transparent center  "
 																			style="margin-top: 26px;margin-bottom: 0px;">
 																		</div>
-																		<a href="/oneTimeCleaning" target="_self"
-																			class="qbutton  center"
+																		<a href="/oneTimeCleaning"
+																			target="_self" class="qbutton  center"
 																			style="margin: 0px 0px 0px 65px; ">See
 																			More</a>
 																	</div>
@@ -614,8 +616,8 @@
 																		<div class="separator  transparent center  "
 																			style="margin-top: 26px;margin-bottom: 0px;">
 																		</div>
-																		<a href="/officeCleaning" target="_self"
-																			class="qbutton  center"
+																		<a href="/officeCleaning"
+																			target="_self" class="qbutton  center"
 																			style="margin: 0px 0px 0px 65px; ">See
 																			More</a>
 																	</div>
@@ -674,8 +676,8 @@
 																		<div class="separator  transparent center  "
 																			style="margin-top: 26px;margin-bottom: 0px;">
 																		</div>
-																		<a href="/showRoomCleaning" target="_self"
-																			class="qbutton  center"
+																		<a href="/showRoomCleaning"
+																			target="_self" class="qbutton  center"
 																			style="margin: 0px 0px 0px 65px; ">See
 																			More</a>
 																	</div>
@@ -780,9 +782,9 @@
 																	<p>
 																</div>
 															</div>
-															<div class="button_wrapper column2"><a href="/contact"
-																	class="qbutton white " target="" style="">CONTACT
-																	US</a></div>
+															<div class="button_wrapper column2"><a
+																	href="/contact" class="qbutton white "
+																	target="" style="">CONTACT US</a></div>
 														</div>
 													</div>
 												</div>
@@ -800,7 +802,6 @@
 
 
 
-		
 			<footer>
 				<div class="footer_inner clearfix">
 					<div class="footer_top_holder">
@@ -836,11 +837,11 @@
 														<ul id="menu-bottom-menu-2" class="menu">
 															<li id="menu-item-16613"
 																class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16613">
-																<a href="/service">Services</a>
+																<a href="/services">Services</a>
 															</li>
 															<li id="menu-item-16612"
 																class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16612">
-																<a href="/contractService">Contract
+																<a href="/contractCleaning">Contract
 																	Cleaning</a>
 															</li>
 															<li id="menu-item-16611"
@@ -914,6 +915,7 @@
 					</div>
 				</div>
 			</footer>
+
 
 		</div>
 	</div>

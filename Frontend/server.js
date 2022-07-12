@@ -59,12 +59,12 @@ app.get('/resetPassword', (req, res) => {
   res.sendFile('/public/assets/html/resetPassword.html', { root: __dirname });
 });
 // go to Register
-app.get('/service', (req, res) => {
+app.get('/services', (req, res) => {
   res.sendFile('/public/assets/html/vSerivce.html', { root: __dirname });
 });
 
 // go to Register
-app.get('/contractService', (req, res) => {
+app.get('/contractCleaning', (req, res) => {
   res.sendFile('/public/assets/html/viewContractRates.html', { root: __dirname });
 });
 // Go to Gallery
@@ -78,6 +78,18 @@ app.get('/story', (req, res) => {
 // Go to contact
 app.get('/contact', (req, res) => {
   res.sendFile('/public/assets/html/contact.html', { root: __dirname });
+});
+
+// Go to contact
+app.get('/oneTimeCleaning', (req, res) => {
+  res.sendFile('/public/assets/html/oneTimeCleaning.html', { root: __dirname });
+});
+// Go to office
+app.get('/officeCleaning', (req, res) => {
+  res.sendFile('/public/assets/html/officeCleaning.html', { root: __dirname });
+});
+app.get('/showRoomCleaning', (req, res) => {
+  res.sendFile('/public/assets/html/showRoomCleaning.html', { root: __dirname });
 });
 //= ======================================================
 //                   Admin
