@@ -223,7 +223,7 @@ const sendVerificationEmail = ({ _id, email }, res) => {
   };
 
   // hash the uniqueString
-  const saltRounds = process.env.SALT_ROUNDS;
+  const saltRounds = 10;
   bcrypt
     .hash(UniqueString, saltRounds)
     .then((hashedUniqueString) => {
