@@ -36,6 +36,8 @@
         margin-left: 120px;
     }
 }
+a { color: inherit; } 
+a:hover { color: inherit; } 
 
 
 @media (max-width: 580px) {
@@ -46,7 +48,8 @@
 #graphContain{
     margin-top: 150px !important;
      background-color: #fff;
-     margin: 40px auto;
+    margin-left:-110px;
+   
      width: 70%;
  }
  
