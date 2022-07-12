@@ -152,31 +152,44 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
   // extract id from params
   const { id, token } = req.params;
   const { password } = req.body;
-  // calling getAdminById method from Admin model
-  forgetPassword.updateUserPassword(password, id, (err, result) => {
-    if (!err) {
-      // if admin id is not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
+
+  const saltRounds = 10;
+  bcrypt
+    .hash(password, saltRounds)
+    .then((hashedPassword) => {
+      // calling getAdminById method from Admin model
+      forgetPassword.updateUserPassword(hashedPassword, id, (err, result) => {
+        if (!err) {
+          // if admin id is not found detect and return error message
+          if (result.length === 0) {
+            const output = {
+              Error: 'Id not found',
+            };
+            res.status(404).send(output);
+          } else {
+            // output
+            res.status(200).send(result);
+          }
+        } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+          // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+          // send Inappropriate value as return message
+          res.status(406).send('Inappropriate value');
+        } else if (err.code === 'ER_BAD_NULL_ERROR') {
+          // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+          res.status(400).send('Null value not allowed');
+        } else {
+          // else if there is a server error return message
+          res.status(500).send('Internal Server Error');
+        }
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.json({
+        status: 'Failed',
+        message: 'An error occurred while hashing email data!',
+      });
+    });
 });
 
 // get all Login
@@ -223,7 +236,7 @@ const sendVerificationEmail = ({ _id, email }, res) => {
   };
 
   // hash the uniqueString
-  const saltRounds = process.env.SALT_ROUNDS;
+  const saltRounds = 10;
   bcrypt
     .hash(UniqueString, saltRounds)
     .then((hashedUniqueString) => {
@@ -261,7 +274,8 @@ const sendVerificationEmail = ({ _id, email }, res) => {
         }
       });
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.json({
         status: 'Failed',
         message: 'An error occurred while hashing email data!',
@@ -374,28 +388,69 @@ app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
   const { PhoneNumber } = req.body;
   const { PostalCode } = req.body;
 
-  // eslint-disable-next-line max-len
-  Register.registerCustomer(FirstName, LastName, Password, Email, Address, PhoneNumber, PostalCode, (err, result) => {
-    if (!err) {
-      const returnResult = {
-        _id: result.insertId,
-        email: Email,
-      };
+  const saltRounds = 10;
+  bcrypt
+    .hash(Password, saltRounds)
+    .then((hashedPassword) => {
+      Register.registerCustomer(
+        FirstName,
+        LastName,
+        hashedPassword,
+        Email,
+        Address,
+        PhoneNumber,
+        PostalCode,
+        (err, result) => {
+          if (!err) {
+            const returnResult = {
+              _id: result.insertId,
+              email: Email,
+            };
 
-      // Handle account verification
-      sendVerificationEmail(returnResult, res);
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
+            // Handle account verification
+            sendVerificationEmail(returnResult, res);
+          } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+            // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+            // send Inappropriate value as return message
+            res.status(406).send('Inappropriate value');
+          } else if (err.code === 'ER_BAD_NULL_ERROR') {
+            // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+            res.status(400).send('Null value not allowed');
+          } else {
+            // else if there is a server error return message
+            res.status(500).send('Internal Server Error');
+          }
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.json({
+        status: 'Failed',
+        message: 'An error occurred while hashing email data!',
+      });
+    });
+  // eslint-disable-next-line max-len
+  // Register.registerCustomer(FirstName, LastName, Password, Email, Address, PhoneNumber, PostalCode, (err, result) => {
+  //   if (!err) {
+  //     const returnResult = {
+  //       _id: result.insertId,
+  //       email: Email,
+  //     };
+
+  //     // Handle account verification
+  //     sendVerificationEmail(returnResult, res);
+  //   } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+  //     // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+  //     // send Inappropriate value as return message
+  //     res.status(406).send('Inappropriate value');
+  //   } else if (err.code === 'ER_BAD_NULL_ERROR') {
+  //     // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+  //     res.status(400).send('Null value not allowed');
+  //   } else {
+  //     // else if there is a server error return message
+  //     res.status(500).send('Internal Server Error');
+  //   }
+  // });
 });
 
 // get all Login
@@ -407,18 +462,35 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     if (!err) {
       let msg;
       if (!result) {
+        console.log('error');
         msg = {
           Error: 'Invalid login',
         };
         res.status(404).send(msg);
       } else {
-        msg = {
-          AdminID: result.AdminID,
-          token,
-          CustomerID: result.CustomerID,
-          AdminType: result.AdminType,
-        };
-        res.status(200).send(msg);
+        const hashedPwd = result.Password;
+        bcrypt
+          .compare(password, hashedPwd)
+          .then((result1) => {
+            if (result1) {
+              console.log('result2');
+              msg = {
+                AdminID: result.AdminID,
+                token,
+                CustomerID: result.CustomerID,
+                AdminType: result.AdminType,
+              };
+              res.status(200).send(msg);
+            } else {
+              const message = 'Wrong Password!';
+              res.status(401).send(message);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            const message = 'An error occured while comparing Password';
+            res.status(500).send(message);
+          });
       }
     } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
@@ -1558,23 +1630,35 @@ app.put('/customer/:id', printDebugInfo, verifyToken, (req, res) => {
   const { CustomerPassword } = req.body;
   const { CustomerStatus } = req.body;
 
-  // calling updateCustomer method from admin model
-  Admin.updateCustomer(CustomerPassword, CustomerStatus, CustomerID, (err, result) => {
-    // if there is no errorsend the following as result
-    if (!err) {
-      res.status(201).send(result);
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
+  const saltRounds = 10;
+  bcrypt
+    .hash(CustomerPassword, saltRounds)
+    .then((hashedPassword) => {
+      // calling updateCustomer method from admin model
+      Admin.updateCustomer(hashedPassword, CustomerStatus, CustomerID, (err, result) => {
+        // if there is no errorsend the following as result
+        if (!err) {
+          res.status(201).send(result);
+        } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+          // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+          // send Inappropriate value as return message
+          res.status(406).send('Inappropriate value');
+        } else if (err.code === 'ER_BAD_NULL_ERROR') {
+          // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+          res.status(400).send('Null value not allowed');
+        } else {
+          // else if there is a server error return message
+          res.status(500).send('Internal Server Error');
+        }
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.json({
+        status: 'Failed',
+        message: 'An error occurred while hashing email data!',
+      });
+    });
 });
 
 // delete customer
@@ -3508,26 +3592,45 @@ app.post('/addAdmin', printDebugInfo, verifyToken, (req, res) => {
   const { AdminEmail } = req.body;
   const { AdminType } = req.body;
 
-  // calling addAdmin method from SuperAdmin model
-  SuperAdmin.addAdmin(LastName, FirstName, AdminPwd, AdminEmail, AdminType, (err, result) => {
-    if (!err) {
-      const output = {
-        AdminId: result.insertId,
-      };
-      console.log(`result ${output.AdminId}`);
-      res.status(201).send(result);
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
-      // Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
+  const saltRounds = 10;
+  bcrypt
+    .hash(AdminPwd, saltRounds)
+    .then((hashedPassword) => {
+      // calling addAdmin method from SuperAdmin model
+      SuperAdmin.addAdmin(
+        LastName,
+        FirstName,
+        hashedPassword,
+        AdminEmail,
+        AdminType,
+        (err, result) => {
+          if (!err) {
+            const output = {
+              AdminId: result.insertId,
+            };
+            console.log(`result ${output.AdminId}`);
+            res.status(201).send(result);
+          } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+            // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+            // Inappropriate value as return message
+            res.status(406).send('Inappropriate value');
+          } else if (err.code === 'ER_BAD_NULL_ERROR') {
+            // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+            res.status(400).send('Null value not allowed');
+          } else {
+            // else if there is a server error return message
+            res.status(500).send('Internal Server Error');
+          }
+        },
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+      res.json({
+        status: 'Failed',
+        message: 'An error occurred while hashing email data!',
+      });
+    });
 });
 
 app.post('/autoBooking', printDebugInfo, verifyToken, async (req, res) => {
@@ -4094,7 +4197,7 @@ app.get('/oneContract/:contractId', printDebugInfo, verifyToken, async (req, res
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };

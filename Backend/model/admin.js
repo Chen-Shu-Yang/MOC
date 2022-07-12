@@ -678,7 +678,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
   // get all Customer
   getAllCustomer(callback) {
     // sql query statement
-    const sql = 'SELECT CustomerID, FirstName, LastName, Email, Password, Status FROM heroku_6b49aedb7855c0b.customer;';
+    const sql = 'SELECT CustomerID, FirstName, LastName, Email, Status FROM heroku_6b49aedb7855c0b.customer;';
     // pool query
     pool.query(sql, (err, result) => {
       // error
@@ -694,7 +694,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
   // get one Customer by id
   getCustomer(id, callback) {
     // sql query statement
-    const sql = 'SELECT CustomerID, FirstName, LastName, Password, Status, PhoneNumber FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID=?;';
+    const sql = 'SELECT CustomerID, FirstName, LastName, Status, PhoneNumber FROM heroku_6b49aedb7855c0b.customer WHERE CustomerID=?;';
 
     const values = [id];
     // pool query
