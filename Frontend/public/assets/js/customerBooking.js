@@ -71,7 +71,7 @@ function updatedDate() {
 function setCurrentDate() {
   // cannot select past dates from calendar
   const todayDate = new Date();
-  todayDate.setDate(todayDate.getDate() + 3);
+  todayDate.setDate(todayDate.getDate() + 4);
   const today = todayDate.toISOString().split('T')[0];
   document.getElementsByName('startDate')[0].setAttribute('min', today);
   $('#startDate').val(today);
