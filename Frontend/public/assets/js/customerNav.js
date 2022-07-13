@@ -3,6 +3,19 @@
 // eslint-disable-next-line prefer-const
 let userType = localStorage.getItem('customerID');
 let admin = localStorage.getItem('AdminID');
+$(document).ready(() => {
+  $('#nav-menu-item-164906').click(() => {
+    window.location.assign('/login');
+    window.localStorage.clear();
+    
+  });
+
+  $('#mobile-menu-item-164246').click(() => {
+    window.location.assign('/login');
+    window.localStorage.clear();
+  
+  });
+});
 if (userType != null) {
   document.getElementById('nav-menu-item-1642909').style.display = 'none';
   document.getElementById('mobile-menu-item-164249').style.display = 'none';
@@ -28,14 +41,4 @@ if (userType != null) {
 }
 
 
-$(document).ready(() => {
-  $('#nav-menu-item-164906').click(() => {
-    window.localStorage.clear();
-    window.location.assign('/login');
-  });
 
-  $('#mobile-menu-item-164246').click(() => {
-    window.localStorage.clear();
-    window.location.assign('/login');
-  });
-});
