@@ -468,9 +468,6 @@ app.get('/classes', printDebugInfo, async (req, res) => {
   // calling getAllClassOfService method from admin model
   Admin.getAllClassOfService((err, result) => {
     if (!err) {
-      console.log('==================================');
-      console.log('get class work');
-      console.log('==================================');
       res.status(200).send(result);
     } else {
       res.status(500).send('Some error');
@@ -540,7 +537,7 @@ app.post('/class', printDebugInfo, verifyToken, (req, res) => {
   }
   // if class pricing is not float
   else {
-    res.status(400).send('Null value not allowed');
+    res.status(406).send('Bad request');
   }
 });
 
@@ -824,7 +821,6 @@ app.delete('/employee/:employeeId', printDebugInfo, verifyToken, (req, res) => {
     return;
   }
   const { employeeId } = req.params;
-  console.log(` app.js employee delete method start ${employeeId}`);
   let output1;
 
   Admin.getEmployee(employeeId, (err, result) => {
@@ -842,8 +838,6 @@ app.delete('/employee/:employeeId', printDebugInfo, verifyToken, (req, res) => {
           EmployeeImageCloudinaryFileId: result[0].EmployeeImageCloudinaryFileId,
 
         };
-
-        res.status(200).send(output1);
       }
     } else {
       // sending output as error message if there is any server issues
@@ -857,16 +851,14 @@ app.delete('/employee/:employeeId', printDebugInfo, verifyToken, (req, res) => {
   // calling deleteEmployee method from admin model
   Admin.deleteEmployee(employeeId, (err, result1) => {
     if (!err) {
-      console.log('DELETE EMPLOYEE STATEMENT');
       // result.affectedRows indicates that id to be deleted
       // cannot be found hence send as error message
       if (result1.affectedRows === 0) {
         res.status(404).send('Item cannot be deleted');
       } else {
         // else a postitve result
-        console.log(output1.EmployeeImageCloudinaryFileId);
         cloudinary.uploader.destroy(output1.EmployeeImageCloudinaryFileId);
-        // res.send(result1);
+        res.status(200).send('Employee Deleted');
       }
     } else {
       // sever error
@@ -931,7 +923,7 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
               const EmployeeDes = req.body.employeeDes;
               // retrieve Skillsets from body
               const Skillsets = req.body.skillSet;
-              // invoking Admin.addEmployee
+              // invoking Admin.updateEmployee
               Admin.updateEmployee(
                 EmployeeName,
                 EmployeeDes,
@@ -972,7 +964,7 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
           const Skillsets = req.body.skillSet;
           console.log(`EmployeeImgageCloudinaryFileId: ${EmployeeImgageCloudinaryFileId}`);
           console.log(`EmployeeImageUrl: ${EmployeeImageUrl}`);
-          // invoking Admin.addEmployee
+          // invoking Admin.updateEmployee
           Admin.updateEmployee(
             EmployeeName,
             EmployeeDes,
@@ -1005,7 +997,7 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
 });
 
 // upload.single method to upload an image with the key of image
-app.post('/adddEmployee', upload.single('image'), verifyToken, async (req, res) => {
+app.post('/addEmployee', upload.single('image'), verifyToken, async (req, res) => {
   if (req.role == null) {
     res.status(403).send();
     return;
@@ -1033,8 +1025,8 @@ app.post('/adddEmployee', upload.single('image'), verifyToken, async (req, res) 
       // eslint-disable-next-line no-shadow
       (err, result) => {
         if (!err) {
-          const output = 'done';
-          res.status(201).send(output + result);
+          const output = 'Image Uploaded';
+          res.status(201).send(output);
         } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
           // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
           // send Inappropriate value as return message
@@ -1226,45 +1218,6 @@ app.get('/classes/:id', printDebugInfo, async (req, res) => {
       res.status(500).send(output);
     }
   });
-});
-
-// add a class
-app.post('/class', printDebugInfo, verifyToken, (req, res) => {
-  if (req.role == null) {
-    res.status(403).send();
-    return;
-  }
-
-  // extract all details needed
-  const { ClassName } = req.body;
-  const { ClassPricing } = req.body;
-  const { ClassDes } = req.body;
-
-  // check if class pricing is float value and execute code
-  if (Number.parseFloat(ClassPricing)) {
-    // calling addClass method from admin model
-    Admin.addClass(ClassName, ClassPricing, ClassDes, (err, result) => {
-      // if no error send results as positive
-      if (!err) {
-        res.status(201).send(result);
-      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-        // send Inappropriate value as return message
-        res.status(406).send('Inappropriate value');
-      } else if (err.code === 'ER_BAD_NULL_ERROR') {
-        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-        res.status(400).send('Null value not allowed');
-      } else {
-        // else if there is a server error return message
-        res.status(500).send('Internal Server Error');
-      }
-    });
-    // eslint-disable-next-line brace-style
-  }
-  // if class pricing is not float
-  else {
-    res.status(400).send('Null value not allowed');
-  }
 });
 
 // update class of service
@@ -2687,9 +2640,6 @@ app.get('/classOfService', printDebugInfo, verifyTokenCustomer, async (req, res)
   // calling getAllClassOfService method from customer model
   Customer.getAllClassOfService((err, result) => {
     if (!err) {
-      console.log('==================================');
-      console.log('get class of service');
-      console.log('==================================');
       res.status(200).send(result);
     } else {
       res.status(500).send('Some error');
@@ -4090,7 +4040,7 @@ app.get('/oneContract/:contractId', printDebugInfo, verifyToken, async (req, res
     if (!err) {
       res.status(200).send(result);
     } else {
-    // if error send error message
+      // if error send error message
       const output = {
         Error: 'Internal sever issues',
       };
