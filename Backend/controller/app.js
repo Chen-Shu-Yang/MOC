@@ -153,9 +153,12 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
   const { id, token } = req.params;
   const { password } = req.body;
 
+  // Declares salt rounds
   const saltRounds = 10;
+  // Hash new password
   bcrypt
     .hash(password, saltRounds)
+    // If successful, reset customer password
     .then((hashedPassword) => {
       // calling getAdminById method from Admin model
       forgetPassword.updateUserPassword(hashedPassword, id, (err, result) => {
@@ -183,6 +186,7 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
         }
       });
     })
+    // Catch any errors while hashing
     .catch((error) => {
       console.log(error);
       res.json({
@@ -191,8 +195,6 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
       });
     });
 });
-
-// get all Login
 
 // nodemailer stuff
 const transporter = nodemailer.createTransport({
@@ -289,7 +291,6 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
   // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 
   const { userId, uniqueString } = req.params;
-  console.log(uniqueString);
 
   // Check if verification record actually exist
   Register.verifyCustomer(userId, uniqueString, (err, result) => {
@@ -379,7 +380,8 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
 });
 
 // register
-app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
+app.post('/registerCustomer', printDebugInfo, async (req, res) => {
+  // Extract details from the request body
   const { FirstName } = req.body;
   const { LastName } = req.body;
   const { Password } = req.body;
@@ -388,9 +390,12 @@ app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
   const { PhoneNumber } = req.body;
   const { PostalCode } = req.body;
 
+  // Declare salt rounds
   const saltRounds = 10;
+  // hash customer password
   bcrypt
     .hash(Password, saltRounds)
+    // If successful, register customer into database
     .then((hashedPassword) => {
       Register.registerCustomer(
         FirstName,
@@ -423,6 +428,7 @@ app.post('/registerCustomer', printDebugInfo, async (req, res, next) => {
         },
       );
     })
+    // Catch any error while hashing
     .catch((error) => {
       console.log(error);
       res.json({
@@ -447,10 +453,13 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
         };
         res.status(404).send(msg);
       } else {
+        // Extract hashed password from database
         const hashedPwd = result.Password;
         bcrypt
+        // bcrypt compare the password to the hashed password
           .compare(password, hashedPwd)
           .then((result1) => {
+            // If the same log user in
             if (result1) {
               console.log('result2');
               msg = {
@@ -461,12 +470,13 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
               };
               res.status(200).send(msg);
             } else {
+              // If not, prompt wrong password
               const message = 'Wrong Password!';
               res.status(401).send(message);
             }
           })
+          // Catch any other error
           .catch((error) => {
-            console.log(error);
             const message = 'An error occured while comparing Password';
             res.status(500).send(message);
           });
@@ -1139,6 +1149,7 @@ app.get('/booking', verifyToken, printDebugInfo, async (req, res) => {
     }
   });
 });
+
 // get a class of sevice
 app.get('/oneBooking/:id', verifyToken, printDebugInfo, async (req, res) => {
   // extract id from params
@@ -1814,6 +1825,7 @@ app.get('/rates/:id', printDebugInfo, async (req, res) => {
     }
   });
 });
+
 // get a rate
 app.get('/ratesByPackage/:id', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
@@ -1845,6 +1857,7 @@ app.get('/ratesByPackage/:id', printDebugInfo, verifyToken, async (req, res) => 
     }
   });
 });
+
 // add new rate
 app.post('/rate', printDebugInfo, verifyToken, (req, res) => {
   if (req.role == null) {
@@ -3061,6 +3074,7 @@ app.get('/additionalService', printDebugInfo, async (req, res) => {
     }
   });
 });
+
 // cancel booking for customer
 app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) => {
   if (req.id == null) {
@@ -3192,6 +3206,7 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
     }
   });
 });
+
 // Get all contracts
 app.get('/contracts', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
