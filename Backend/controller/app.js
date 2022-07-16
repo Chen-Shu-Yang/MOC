@@ -1573,35 +1573,55 @@ app.put('/customer/:id', printDebugInfo, verifyToken, (req, res) => {
   const { CustomerPassword } = req.body;
   const { CustomerStatus } = req.body;
 
-  const saltRounds = 10;
-  bcrypt
-    .hash(CustomerPassword, saltRounds)
-    .then((hashedPassword) => {
-      // calling updateCustomer method from admin model
-      Admin.updateCustomer(hashedPassword, CustomerStatus, CustomerID, (err, result) => {
-        // if there is no errorsend the following as result
-        if (!err) {
-          res.status(201).send(result);
-        } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-          // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-          // send Inappropriate value as return message
-          res.status(406).send('Inappropriate value');
-        } else if (err.code === 'ER_BAD_NULL_ERROR') {
-          // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-          res.status(400).send('Null value not allowed');
-        } else {
-          // else if there is a server error return message
-          res.status(500).send('Internal Server Error');
-        }
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.json({
-        status: 'Failed',
-        message: 'An error occurred while hashing email data!',
-      });
+  if (CustomerPassword === '') {
+    // calling updateCustomerDetails method from admin model
+    Admin.updateCustomerDetails(CustomerStatus, CustomerID, (err, result) => {
+      // if there is no errorsend the following as result
+      if (!err) {
+        res.status(201).send(result);
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
+        res.status(406).send('Inappropriate value');
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+        res.status(400).send('Null value not allowed');
+      } else {
+        // else if there is a server error return message
+        res.status(500).send('Internal Server Error');
+      }
     });
+  } else {
+    const saltRounds = 10;
+    bcrypt
+      .hash(CustomerPassword, saltRounds)
+      .then((hashedPassword) => {
+        // calling updateCustomer method from admin model
+        Admin.updateCustomer(hashedPassword, CustomerStatus, CustomerID, (err, result) => {
+          // if there is no errorsend the following as result
+          if (!err) {
+            res.status(201).send(result);
+          } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+            // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+            // send Inappropriate value as return message
+            res.status(406).send('Inappropriate value');
+          } else if (err.code === 'ER_BAD_NULL_ERROR') {
+            // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+            res.status(400).send('Null value not allowed');
+          } else {
+            // else if there is a server error return message
+            res.status(500).send('Internal Server Error');
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.json({
+          status: 'Failed',
+          message: 'An error occurred while hashing email data!',
+        });
+      });
+  }
 });
 
 // delete customer
@@ -3586,28 +3606,63 @@ app.put('/admin/:id', printDebugInfo, verifyToken, (req, res) => {
   // extract all details needed
   const { AdminPwd } = req.body;
   const { AdminType } = req.body;
-
-  // calling updateSuperAdmin method from SuperAdmin model
-  SuperAdmin.updateAdmin(AdminPwd, AdminType, AdminID, (err, result) => {
-    // if there is no errorsend the following as result
-    if (!err) {
-      const output = {
-        AdminId: result.insertId,
-      };
-      console.log(`result ${output.AdminId}`);
-      res.status(201).send(result);
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
-      // Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
+  if (AdminPwd === '') {
+    // calling updateAdminType method from SuperAdmin model
+    SuperAdmin.updateAdminType(AdminType, AdminID, (err, result) => {
+      // if there is no errorsend the following as result
+      if (!err) {
+        const output = {
+          AdminId: result.insertId,
+        };
+        console.log(`result ${output.AdminId}`);
+        res.status(201).send(result);
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+        // Inappropriate value as return message
+        res.status(406).send('Inappropriate value');
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+        res.status(400).send('Null value not allowed');
+      } else {
+        // else if there is a server error return message
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  } else {
+    const saltRounds = 10;
+    bcrypt
+      .hash(AdminPwd, saltRounds)
+      .then((hashedPassword) => {
+        // calling updateSuperAdmin method from SuperAdmin model
+        SuperAdmin.updateAdmin(hashedPassword, AdminType, AdminID, (err, result) => {
+          // if there is no errorsend the following as result
+          if (!err) {
+            const output = {
+              AdminId: result.insertId,
+            };
+            console.log(`result ${output.AdminId}`);
+            res.status(201).send(result);
+          } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+            // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
+            // Inappropriate value as return message
+            res.status(406).send('Inappropriate value');
+          } else if (err.code === 'ER_BAD_NULL_ERROR') {
+            // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+            res.status(400).send('Null value not allowed');
+          } else {
+            // else if there is a server error return message
+            res.status(500).send('Internal Server Error');
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.json({
+          status: 'Failed',
+          message: 'An error occurred while hashing email data!',
+        });
+      });
+  }
 });
 
 // delete admin

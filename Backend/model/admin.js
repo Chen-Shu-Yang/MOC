@@ -751,6 +751,29 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     });
   },
 
+  // update customer status
+  updateCustomerDetails(CustomerStatus, id, callback) {
+    // sql query statement
+    const sql = `
+    UPDATE 
+      heroku_6b49aedb7855c0b.customer
+    SET
+      Status=?
+    WHERE
+      CustomerID=?;
+  `;
+    // pool query
+    pool.query(sql, [CustomerStatus, id], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
   // ---------------------------------------------------
   //                 Feature/rates
   // ---------------------------------------------------

@@ -119,7 +119,6 @@ function loadAnAdmin(id) {
         FirstName: Admin.FirstName,
         LastName: Admin.LastName,
         Email: Admin.Email,
-        Pwd: Admin.Password,
         AdminType: Admin.AdminType,
       };
       // Pre-select dropdown option for admin type
@@ -129,7 +128,6 @@ function loadAnAdmin(id) {
       $('#firstName').append(RowInfo.FirstName);
       $('#lastName').append(RowInfo.LastName);
       $('#adminEmail').append(RowInfo.Email);
-      $('#AdminPwdInput').val(RowInfo.Pwd);
       $('#deleteAdminType').val(RowInfo.AdminType);
     },
 
