@@ -54,31 +54,45 @@ function createSkillRow(cardInfo) {
   return card;
 }
 
+// Create page tabs
 function pageBtnCreate(totalNumberOfPages, activePage) {
+  // Clears pagination section
   $('#pagination').html('');
+  // Get page number of max-left and max-right page
   let maxLeft = (activePage - Math.floor(5 / 2));
   let maxRight = (activePage + Math.floor(5 / 2));
 
+  // Checks if the max-left page is less than 1
+  // Which is the first page
   if (maxLeft < 1) {
     maxLeft = 1;
     maxRight = 5;
   }
 
+  // Checks if max-right page is more than the total number of pages
+  // Which is the last page
   if (maxRight > totalNumberOfPages) {
     maxLeft = totalNumberOfPages - (5 - 1);
     maxRight = totalNumberOfPages;
 
+    // Checks if max-left is less than 1
+    // Which is total number of pages within 1 and 5
     if (maxLeft < 1) {
       maxLeft = 1;
     }
   }
 
+  // Checks if activepage is less than 1
+  // Shows the '<<' icon to bring user to the first page
   if (activePage !== 1) {
     divPaginBtn = `<button type="button" onClick="loadEmployeeByLimit(${1})"><<</button>`;
     $('#pagination').append(divPaginBtn);
   }
 
+  // Check if the active page is within max-left or max-right
+  // Displays all page tabs within max-left and max-right
   for (i = maxLeft; i <= maxRight; i++) {
+    // Check if page is active
     if (i === activePage) {
       divPaginBtn = `<button type="button" class="active" onClick="loadEmployeeByLimit(${i})">${i}</button>`;
       $('#pagination').append(divPaginBtn);
@@ -88,6 +102,8 @@ function pageBtnCreate(totalNumberOfPages, activePage) {
     }
   }
 
+  // Checkd if active page is not equals to the total number of pages
+  // Displays the '>>' tab to bring users to the last page
   if (activePage !== totalNumberOfPages) {
     divPaginBtn = `<button type="button" onClick="loadEmployeeByLimit(${totalNumberOfPages})">>></button>`;
     $('#pagination').append(divPaginBtn);
