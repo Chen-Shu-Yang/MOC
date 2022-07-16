@@ -53,10 +53,14 @@ const Login = {
             return callback(err, null);
           }
           if (result[0] !== undefined) {
+            // Checks if the account is verified
+            // If not verified, retuen unverified error
             if (result[0].Verified !== 1) {
               const error = 'UNVERIFIED_EMAIL';
               return callback(error, null);
             }
+            // Checks if the account is suspended
+            // If suspended, retuen suspended account error
             if (result[0].Status === 'suspend') {
               const error = 'CUSTOMER_SUSPENDED';
               return callback(error, null);
