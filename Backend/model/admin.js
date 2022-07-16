@@ -1112,12 +1112,12 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     });
   },
 
-  checkAdminPassword(cID, currentPassword, callback) {
+  checkAdminPassword(cID, callback) {
     // sql query statement
-    const sql = 'SELECT AdminID FROM heroku_6b49aedb7855c0b.admin WHERE AdminID = ? AND Password = ?;';
+    const sql = 'SELECT AdminID, Password FROM heroku_6b49aedb7855c0b.admin WHERE AdminID = ?;';
 
     // pool query
-    pool.query(sql, [cID, currentPassword], (err, result) => {
+    pool.query(sql, [cID], (err, result) => {
       // error
       if (err) {
         console.log(err);

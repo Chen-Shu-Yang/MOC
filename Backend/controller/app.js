@@ -456,7 +456,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
         // Extract hashed password from database
         const hashedPwd = result.Password;
         bcrypt
-        // bcrypt compare the password to the hashed password
+          // bcrypt compare the password to the hashed password
           .compare(password, hashedPwd)
           .then((result1) => {
             // If the same log user in
@@ -2177,10 +2177,32 @@ app.put('/admin/password/:id', printDebugInfo, verifyToken, async (req, res) => 
   const adminID = req.params.id;
   const { currentPassword } = req.body;
   // calling checkAdminPassword method from Admin model
-  Admin.checkAdminPassword(adminID, currentPassword, (err, result) => {
+  Admin.checkAdminPassword(adminID, (err, result) => {
     if (!err) {
-      // output
-      res.status(200).send(result);
+      // Extract hashed password from database
+      const hashedPwd = result[0].Password;
+      bcrypt
+        // bcrypt compare the password to the hashed password
+        .compare(currentPassword, hashedPwd)
+        .then((result1) => {
+          // If the same log user in
+          if (result1) {
+            const msg = {
+              success: true,
+            };
+            // output
+            res.status(200).send(msg);
+          } else {
+            // If not, prompt wrong password
+            const message = 'Current Password is wrong!';
+            res.status(401).send(message);
+          }
+        })
+        // Catch any other error
+        .catch((error) => {
+          const message = 'An error occured while comparing Password';
+          res.status(500).send(message);
+        });
     } else if (err.message === 'No result') {
       // if admin id is not found detect and return error message
       const output = {
@@ -2210,31 +2232,39 @@ app.put('/admin/editPassword/:id', printDebugInfo, verifyToken, async (req, res)
   // extract id from params
   const adminID = req.params.id;
   const { confirmPassword } = req.body;
-  // calling getAdminById method from Admin model
-  Admin.updateAdminPassword(confirmPassword, adminID, (err, result) => {
-    if (!err) {
-      // if admin id is not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
+
+  // Declare salt rounds
+  const saltRounds = 10;
+  // hash admin password
+  bcrypt
+    .hash(confirmPassword, saltRounds)
+    // If successful, update admin password in database
+    .then((hashedPassword) => {
+      // calling getAdminById method from Admin model
+      Admin.updateAdminPassword(hashedPassword, adminID, (err, result) => {
+        if (!err) {
+          // output
+          res.status(200).send(result);
+        } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+          // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+          // send Inappropriate value as return message
+          res.status(406).send('Inappropriate value');
+        } else if (err.code === 'ER_BAD_NULL_ERROR') {
+          // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+          res.status(400).send('Null value not allowed');
+        } else {
+          // else if there is a server error return message
+          res.status(500).send('Internal Server Error');
+        }
+      });
+    })
+    // Catch any error while hashing
+    .catch((error) => {
+      res.json({
+        status: 'Failed',
+        message: 'An error occurred while hashing password!',
+      });
+    });
 });
 
 app.get('/bookingsByMonth', printDebugInfo, verifyToken, async (req, res) => {
@@ -2709,6 +2739,103 @@ app.get('/user/customer/:id', printDebugInfo, verifyTokenCustomer, async (req, r
       res.status(500).send(output);
     }
   });
+});
+
+app.put('/customer/password/:id', printDebugInfo, verifyTokenCustomer, async (req, res) => {
+  if (req.id == null) {
+    res.status(403).send();
+    return;
+  }
+  // extract id from params
+  const customerId = req.params.id;
+  const { currentPassword } = req.body;
+  // calling checkCustomerPassword method from Customer model
+  Customer.checkCustomerPassword(customerId, (err, result) => {
+    if (!err) {
+      const hashedPwd = result[0].Password;
+      bcrypt
+        // bcrypt compare the password to the hashed password
+        .compare(currentPassword, hashedPwd)
+        .then((result1) => {
+          // If the same log user in
+          if (result1) {
+            const msg = {
+              success: true,
+            };
+            // output
+            res.status(200).send(msg);
+          } else {
+            // If not, prompt wrong password
+            const message = 'Current Password is wrong!';
+            res.status(401).send(message);
+          }
+        })
+        // Catch any other error
+        .catch((error) => {
+          const message = 'An error occured while comparing Password';
+          res.status(500).send(message);
+        });
+    } else if (err.message === 'No result') {
+      // if customer id is not found detect and return error message
+      const output = {
+        Error: 'Wrong password',
+      };
+      res.status(404).send(output);
+    } else {
+      // sending output as error message if there is any server issues
+      const output = {
+        Error: 'Internal sever issues',
+      };
+      res.status(500).send(output);
+    }
+  });
+});
+
+app.put('/customer/editPassword/:id', printDebugInfo, verifyTokenCustomer, async (req, res) => {
+  console.log(req.id);
+  if (req.id == null) {
+    res.status(403).send();
+    return;
+  }
+  // extract id from params
+  const customerId = req.params.id;
+  const { confirmPassword } = req.body;
+  // Declare salt rounds
+  const saltRounds = 10;
+  // hash admin password
+  bcrypt
+    .hash(confirmPassword, saltRounds)
+    // If successful, update admin password in database
+    .then((hashedPassword) => {
+      // calling updateCustomerPassword method from Customer model
+      Customer.updateCustomerPassword(hashedPassword, customerId, (err, result) => {
+        if (!err) {
+          // if Customer id is not found detect and return error message
+          if (result.length === 0) {
+            const output = {
+              Error: 'Id not found',
+            };
+            res.status(404).send(output);
+          } else {
+            // output
+            res.status(200).send(result);
+          }
+        } else {
+          // sending output as error message if there is any server issues
+          const output = {
+            Error: 'Internal sever issues',
+          };
+          res.status(500).send(output);
+        }
+      });
+    })
+    // Catch any error while hashing
+    .catch((error) => {
+      res.json({
+        status: 'Failed',
+        message: 'An error occurred while hashing password!',
+      });
+    });
 });
 
 // get all class of services
@@ -4167,67 +4294,6 @@ app.put('/updateContract/:contractId', printDebugInfo, verifyToken, (req, res) =
       res.status(202).send(result);
     } else {
       res.status(500).send('Internal Server Error');
-    }
-  });
-});
-
-app.put('/customer/password/:id', printDebugInfo, verifyTokenCustomer, async (req, res) => {
-  if (req.id == null) {
-    res.status(403).send();
-    return;
-  }
-  // extract id from params
-  const customerId = req.params.id;
-  const { currentPassword } = req.body;
-  // calling checkCustomerPassword method from Customer model
-  Customer.checkCustomerPassword(customerId, currentPassword, (err, result) => {
-    if (!err) {
-      // output
-      res.status(200).send(result);
-    } else if (err.message === 'No result') {
-      // if customer id is not found detect and return error message
-      const output = {
-        Error: 'Wrong password',
-      };
-      res.status(404).send(output);
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-
-app.put('/customer/editPassword/:id', printDebugInfo, verifyTokenCustomer, async (req, res) => {
-  console.log(req.id);
-  if (req.id == null) {
-    res.status(403).send();
-    return;
-  }
-  // extract id from params
-  const customerId = req.params.id;
-  const { confirmPassword } = req.body;
-  // calling updateCustomerPassword method from Customer model
-  Customer.updateCustomerPassword(confirmPassword, customerId, (err, result) => {
-    if (!err) {
-      // if Customer id is not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
     }
   });
 });
