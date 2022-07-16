@@ -223,9 +223,8 @@ const sendVerificationEmail = ({ _id, email }, res) => {
   };
 
   // hash the uniqueString
-  const saltRounds = 10;
   bcrypt
-    .hash(UniqueString, saltRounds)
+    .hash(UniqueString, 10)
     .then((hashedUniqueString) => {
       const createdAt = Date.now();
       const expiresAt = Date.now() + 21600000;
