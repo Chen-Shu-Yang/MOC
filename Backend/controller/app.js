@@ -3032,14 +3032,14 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
               // email sent and verification record saved
               res.status(200).send({
                 status: 'Pending',
-                message: 'Reset Password email sent',
+                message: 'Booking Id cancel email sent',
               });
             })
             .catch((error) => {
               console.log(`error: ${error}`);
               res.status(404).json({
                 status: 'Failed',
-                message: 'Reset Password email failed!',
+                message: 'Booking Id cancel email failed!',
               });
             });
         } else {
