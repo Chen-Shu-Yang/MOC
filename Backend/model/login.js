@@ -57,6 +57,10 @@ const Login = {
               const error = 'UNVERIFIED_EMAIL';
               return callback(error, null);
             }
+            if (result[0].Status === 'suspend') {
+              const error = 'CUSTOMER_SUSPENDED';
+              return callback(error, null);
+            }
             // generate the token
             const token = jwt.sign(
               {
