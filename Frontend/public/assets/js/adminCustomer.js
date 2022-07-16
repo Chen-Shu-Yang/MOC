@@ -19,7 +19,6 @@ function createRow(cardInfo) {
         <tr>
             <th scope="row">${cardInfo.FirstName} ${cardInfo.LastName}</th>
             <td>${cardInfo.Email}</td>
-            <td>${cardInfo.Password}</td>
             <td class="status"><div class="status-color ${cardInfo.Status}"></div>${cardInfo.Status}</td>
             <td>
                 <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadACustomer(${cardInfo.CustomerID})">
@@ -50,7 +49,6 @@ function loadAllCustomers() {
           FirstName: customer.FirstName,
           LastName: customer.LastName,
           Email: customer.Email,
-          Password: customer.Password,
           Status: customer.Status,
         };
 
@@ -84,20 +82,20 @@ function loadACustomer(id) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
+      $('#firstName').html('');
+      $('#lastName').html('');
       const customer = data[0];
 
       const RowInfo = {
         CustomerID: customer.CustomerID,
         FirstName: customer.FirstName,
         LastName: customer.LastName,
-        Password: customer.Password,
         Status: customer.Status,
       };
 
       $('#editCustomerID').val(RowInfo.CustomerID);
       $('#firstName').append(RowInfo.FirstName);
       $('#lastName').append(RowInfo.LastName);
-      $('#customerPwdInput').val(RowInfo.Password);
       $('#customerStatusInput').val(RowInfo.Status);
     },
 

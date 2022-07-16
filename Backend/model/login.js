@@ -19,9 +19,14 @@ const Login = {
   // get all class of services
   Verify(email, password, callback) {
     // sql query statement
-    const sql = `SELECT *
-    FROM heroku_6b49aedb7855c0b.admin 
-    Where Email = ? and Password = ?`;
+    const sql = `
+      SELECT
+        *
+      FROM
+        heroku_6b49aedb7855c0b.admin 
+      Where
+        Email = ?
+    `;
     // pool query
     pool.query(sql, [email, password], (err, result) => {
       // error
@@ -31,9 +36,14 @@ const Login = {
         return callback(err, null);
       } if (result.length === 0) {
         // sql query statement
-        const sql = `SELECT *
-    FROM heroku_6b49aedb7855c0b.customer 
-    Where Email = ? and Password = ?`;
+        const sql = `
+          SELECT
+            *
+          FROM 
+            heroku_6b49aedb7855c0b.customer 
+          WHERE 
+            Email = ?
+        `;
         // pool query
         pool.query(sql, [email, password], (err, result) => {
           // error
@@ -42,7 +52,6 @@ const Login = {
             console.log(err);
             return callback(err, null);
           }
-
           if (result[0] !== undefined) {
             if (result[0].Verified !== 1) {
               const error = 'UNVERIFIED_EMAIL';
