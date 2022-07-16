@@ -447,12 +447,12 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
         };
         res.status(404).send(msg);
       } else {
-        // const hashedPwd = result.Password;
-        // bcrypt
-        //   .compare(password, hashedPwd)
-        //   .then((result1) => {
-        //     if (result1) {
-        //       console.log('result2');
+        const hashedPwd = result.Password;
+        bcrypt
+          .compare(password, hashedPwd)
+          .then((result1) => {
+            if (result1) {
+              console.log('result2');
               msg = {
                 AdminID: result.AdminID,
                 token,
@@ -460,16 +460,16 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
                 AdminType: result.AdminType,
               };
               res.status(200).send(msg);
-            // } else {
-            //   const message = 'Wrong Password!';
-            //   res.status(401).send(message);
-            // }
-          // })
-          // .catch((error) => {
-          //   console.log(error);
-          //   const message = 'An error occured while comparing Password';
-          //   res.status(500).send(message);
-          // });
+            } else {
+              const message = 'Wrong Password!';
+              res.status(401).send(message);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            const message = 'An error occured while comparing Password';
+            res.status(500).send(message);
+          });
       }
     } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
