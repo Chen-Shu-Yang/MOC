@@ -3032,8 +3032,7 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
               console.log('email sent');
               // email sent and verification record saved
               res.status(200).send({
-                status: 'Pending',
-                message: 'Reset Password email sent',
+                status: 'done',
               });
             })
             .catch((error) => {
@@ -3869,7 +3868,7 @@ app.post('/autoBookingNextMonth', printDebugInfo, verifyToken, async (req, res) 
 });
 
 // ====================== InActive Customer ======================
-// Get admin profile by AdminID
+
 app.get('/inactiveCustomers', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
     res.status(403).send();
@@ -3888,17 +3887,8 @@ app.get('/inactiveCustomers', printDebugInfo, verifyToken, async (req, res) => {
           // if there is no errorsend the following as result
 
           if (err) {
-            if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-              // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD send
-              // Inappropriate value as return message
-              res.status(406).send('Inappropriate value');
-            } else if (err.code === 'ER_BAD_NULL_ERROR') {
-              // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-              res.status(400).send('Null value not allowed');
-            } else {
-              // else if there is a server error return message
-              res.status(500).send('Internal Server Error');
-            }
+            // else if there is a server error return message
+            res.status(500).send('Internal Server Error');
           }
         });
       }
@@ -3914,7 +3904,6 @@ app.get('/inactiveCustomers', printDebugInfo, verifyToken, async (req, res) => {
   });
 });
 
-// get Contracts per page
 app.get('/inactiveCustomers/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
     res.status(403).send();
@@ -3965,7 +3954,7 @@ app.put('/activateCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
   });
 });
 
-// delete admin
+
 app.delete('/inActiveCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
   if (req.role == null) {
     res.status(403).send();
