@@ -232,9 +232,26 @@ const sendVerificationEmail = ({ _id, email }, res) => {
     to: email,
     subject: 'Verify Your Email',
     html: `
-    <p>Verify your email address to complete this signup and login to your account.</p>
-    <p>This <b>links expires in 6 hours</b>.</p>
-    <p>Press <a href='${`${currentUrl}/verify/${_id}/${UniqueString}`}'>here</a></p>`,
+    <div style="background: #F0F2F2;padding: 50px;">
+        <div style="background: #fff;padding: 50px;max-width: 500px;margin: auto;text-align: center;">
+            <img src="http://moc.sg/wp-content/uploads/2015/08/MOC-LOGO.png" alt="MOC_Logo" style="margin: auto;"/><br>
+            <div style="text-align: left;">
+              <h1>Verify This Email Address</h1>
+              <p>Hi,<p>
+              <p>Welcome to Ministry of Clean</p>
+              <p>Please click the button below to verify your email address to complete this signup and login to your account.</p>
+              <p>This <b>link expires in 6 hours</b>.</p><br>
+              <p>
+                <span>Yours Sincerely,</span><br>
+                <span>MOC Support Team</span>
+              </p><br>
+            </div>
+            <a style="margin-top: 10px;padding: 8px 20px;background: #2E6869;color: #fff !important;text-decoration: none;border: 2px #2E6869 solid;"
+              href='${`${currentUrl}/verify/${_id}/${UniqueString}`}'>
+                Verify Email
+            </a>
+        </div>
+    </div>`,
   };
 
   // hash the uniqueString
