@@ -60,15 +60,63 @@ function createRow(cardInfo) {
   return card;
 }
 
-function pageBtnCreate(totalNumberOfPages) {
+// Create page tabs
+function pageBtnCreate(totalNumberOfPages, activePage) {
+  // Clears pagination section
   $('#pagination').html('');
-  for (i = 1; i <= totalNumberOfPages; i++) {
-    divPaginBtn = `<button type="button" onClick="loadAllBookingByLimit(${i})">${i}</button>`;
+  // Get page number of max-left and max-right page
+  let maxLeft = (activePage - Math.floor(5 / 2));
+  let maxRight = (activePage + Math.floor(5 / 2));
+
+  // Checks if the max-left page is less than 1
+  // Which is the first page
+  if (maxLeft < 1) {
+    maxLeft = 1;
+    maxRight = 5;
+  }
+
+  // Checks if max-right page is more than the total number of pages
+  // Which is the last page
+  if (maxRight > totalNumberOfPages) {
+    maxLeft = totalNumberOfPages - (5 - 1);
+    maxRight = totalNumberOfPages;
+
+    // Checks if max-left is less than 1
+    // Which is total number of pages within 1 and 5
+    if (maxLeft < 1) {
+      maxLeft = 1;
+    }
+  }
+
+  // Checks if activepage is less than 1
+  // Shows the '<<' icon to bring user to the first page
+  if (activePage !== 1) {
+    divPaginBtn = `<button type="button" onClick="loadAllBookingByLimit(${1})"><<</button>`;
+    $('#pagination').append(divPaginBtn);
+  }
+
+  // Check if the active page is within max-left or max-right
+  // Displays all page tabs within max-left and max-right
+  for (i = maxLeft; i <= maxRight; i++) {
+    // Check if page is active
+    if (i === activePage) {
+      divPaginBtn = `<button type="button" class="active" onClick="loadAllBookingByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    } else {
+      divPaginBtn = `<button type="button" onClick="loadAllBookingByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    }
+  }
+
+  // Checkd if active page is not equals to the total number of pages
+  // Displays the '>>' tab to bring users to the last page
+  if (activePage !== totalNumberOfPages) {
+    divPaginBtn = `<button type="button" onClick="loadAllBookingByLimit(${totalNumberOfPages})">>></button>`;
     $('#pagination').append(divPaginBtn);
   }
 }
 
-function loadAllBooking() {
+function loadAllBooking(activePage) {
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/booking`,
@@ -82,7 +130,7 @@ function loadAllBooking() {
 
       const totalNumberOfPages = Math.ceil(data.length / 6);
 
-      pageBtnCreate(totalNumberOfPages);
+      pageBtnCreate(totalNumberOfPages, activePage);
     },
 
     error(xhr, textStatus, errorThrown) {
@@ -146,10 +194,13 @@ function loadAllBookingByLimit(pageNumber) {
           $('#bookingTableBody').append(newRow);
         }
       }
-      loadAllBooking();
+      loadAllBooking(pageNumber);
     },
 
     error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
       console.log('Error in Operation');
       console.log('-----------------------');
       console.log(xhr);
