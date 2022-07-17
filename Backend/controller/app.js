@@ -234,7 +234,7 @@ const sendVerificationEmail = ({ _id, email }, res) => {
     html: `
     <div style="background: #F0F2F2;padding: 50px;">
         <div style="background: #fff;padding: 50px;max-width: 500px;margin: auto;text-align: center;">
-            <img src="http://moc.sg/wp-content/uploads/2015/08/MOC-LOGO.png" alt="MOC_Logo" style="margin: auto;"/><br>
+            <img src="https://res.cloudinary.com/dxwbzmypx/image/upload/v1658044367/employee/MOC-LOGO_cpbtwv.png" alt="MOC_Logo" style="margin: auto;"/><br>
             <div style="text-align: left;">
               <h1>Verify This Email Address</h1>
               <p>Hi,<p>
