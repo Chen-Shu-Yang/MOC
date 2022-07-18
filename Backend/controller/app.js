@@ -154,7 +154,7 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
   const { password } = req.body;
 
   // Declares salt rounds
-  const saltRounds = 10;
+  const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
   // Hash new password
   bcrypt
     .hash(password, saltRounds)
@@ -255,7 +255,7 @@ const sendVerificationEmail = ({ _id, email }, res) => {
   };
 
   // hash the uniqueString
-  const saltRounds = 10;
+  const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
   bcrypt
     .hash(UniqueString, saltRounds)
     .then((hashedUniqueString) => {
@@ -408,7 +408,7 @@ app.post('/registerCustomer', printDebugInfo, async (req, res) => {
   const { PostalCode } = req.body;
 
   // Declare salt rounds
-  const saltRounds = 10;
+  const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
   // hash customer password
   bcrypt
     .hash(Password, saltRounds)
@@ -1611,7 +1611,7 @@ app.put('/customer/:id', printDebugInfo, verifyToken, (req, res) => {
       }
     });
   } else {
-    const saltRounds = 10;
+    const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
     bcrypt
       .hash(CustomerPassword, saltRounds)
       .then((hashedPassword) => {
@@ -2273,7 +2273,7 @@ app.put('/admin/editPassword/:id', printDebugInfo, verifyToken, async (req, res)
   const { confirmPassword } = req.body;
 
   // Declare salt rounds
-  const saltRounds = 10;
+  const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
   // hash admin password
   bcrypt
     .hash(confirmPassword, saltRounds)
@@ -2840,7 +2840,7 @@ app.put('/customer/editPassword/:id', printDebugInfo, verifyTokenCustomer, async
   const customerId = req.params.id;
   const { confirmPassword } = req.body;
   // Declare salt rounds
-  const saltRounds = 10;
+  const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
   // hash admin password
   bcrypt
     .hash(confirmPassword, saltRounds)
@@ -3648,7 +3648,7 @@ app.put('/admin/:id', printDebugInfo, verifyToken, (req, res) => {
       }
     });
   } else {
-    const saltRounds = 10;
+    const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
     bcrypt
       .hash(AdminPwd, saltRounds)
       .then((hashedPassword) => {
@@ -3737,7 +3737,7 @@ app.post('/addAdmin', printDebugInfo, verifyToken, (req, res) => {
   const { AdminEmail } = req.body;
   const { AdminType } = req.body;
 
-  const saltRounds = 10;
+  const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
   bcrypt
     .hash(AdminPwd, saltRounds)
     .then((hashedPassword) => {
@@ -4252,7 +4252,6 @@ app.put('/activateCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
     }
   });
 });
-
 
 app.delete('/inActiveCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
   if (req.role == null) {
