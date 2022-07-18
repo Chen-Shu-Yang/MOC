@@ -3037,7 +3037,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
       if (!err) {
         // stores the contract Id returned into the newContractId variable
         newContractId = result.insertId;
-        if (DayOfService.includes('Mon')) {
+        if (DayOfService === 'Mon') {
           // check if DayOfService includes 'Mon' which represents monday
           getDateRange(1);
           // loop through the mondays and extract the date
@@ -3047,7 +3047,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        } else if (DayOfService.includes('Tue')) {
+        } else if (DayOfService === 'Tue') {
           // check if DayOfService includes 'Tue' which represents tuesday
           getDateRange(2);
           // loop through the tuesday and extract the date
@@ -3057,7 +3057,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        } else if (DayOfService.includes('Wed')) {
+        } else if (DayOfService === 'Wed') {
           // check if DayOfService includes 'Wed' which represents tuesday
           getDateRange(3);
           // loop through the wednesday and extract the date
@@ -3067,7 +3067,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        } else if (DayOfService.includes('Thu')) {
+        } else if (DayOfService === 'Thu') {
           // check if DayOfService includes 'Thu' which represents tuesday
           getDateRange(4);
           // loop through the thursday and extract the date
@@ -3077,7 +3077,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        } else if (DayOfService.includes('Fri')) {
+        } else if (DayOfService === 'Fri') {
           // check if DayOfService includes 'Fri' which represents tuesday
           getDateRange(5);
           // loop through the friday and extract the date
@@ -3087,7 +3087,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        } else if (DayOfService.includes('Sat')) {
+        } else if (DayOfService === 'Sat') {
           // check if DayOfService includes 'Sat' which represents tuesday
           getDateRange(6);
           // loop through the saturday and extract the date
@@ -3097,7 +3097,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        } else if (DayOfService.includes('Sun')) {
+        } else if (DayOfService === 'Sun') {
           // check if DayOfService includes 'Sun' which represents tuesday
           getDateRange(0);
           // loop through the sunday and extract the date
@@ -3112,7 +3112,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
         // check if Pakage equals to 2
         if (Package === '2') {
           // check if DayOfService2 includes 'Mon' which represents monday
-          if (DayOfService2.includes('Mon')) {
+          if (DayOfService2 === 'Mon') {
             getDateRange2(1);
             // loop through the mondays and extract the date
             for (let x = 0; x < dateArray.length - 1; x++) {
@@ -3121,7 +3121,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          } else if (DayOfService2.includes('Tue')) {
+          } else if (DayOfService2 === 'Tue') {
             // check if DayOfService2 includes 'Tue' which represents tuesday
             getDateRange2(2);
             // loop through the tuesday and extract the date
@@ -3131,7 +3131,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          } else if (DayOfService2.includes('Wed')) {
+          } else if (DayOfService2 === 'Wed') {
             // check if DayOfService2 includes 'Wed' which represents tuesday
             getDateRange2(3);
             // loop through the wednesday and extract the date
@@ -3141,7 +3141,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          } else if (DayOfService2.includes('Thu')) {
+          } else if (DayOfService2 === 'Thu') {
             // check if DayOfService2 includes 'Thu' which represents tuesday
             getDateRange2(4);
             // loop through the thursday and extract the date
@@ -3151,7 +3151,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          } else if (DayOfService2.includes('Fri')) {
+          } else if (DayOfService2 === 'Fri') {
             // check if DayOfService2 includes 'Fri' which represents tuesday
             getDateRange2(5);
             // loop through the friday and extract the date
@@ -3161,7 +3161,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          } else if (DayOfService2.includes('Sat')) {
+          } else if (DayOfService2 === 'Sat') {
             // check if DayOfService2 includes 'Sat' which represents tuesday
             getDateRange2(6);
             // loop through the saturday and extract the date
@@ -3171,7 +3171,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
               // call addbooking function
               AddBooking(newContractId, ScheduleDate);
             }
-          } else if (DayOfService2.includes('Sun')) {
+          } else if (DayOfService2 === 'Sun') {
             // check if DayOfService2 includes 'Sun' which represents tuesday
             getDateRange2(0);
             // loop through the sunday and extract the date
