@@ -646,7 +646,7 @@ userSearch.addEventListener('keyup', (e) => {
         EmployeeID: employee.EmployeeID,
         EmployeeName: employee.EmployeeName,
         EmployeeDes: employee.EmployeeDes,
-        EmployeeImg: employee.EmployeeImgUrl,
+        EmployeeImgUrl: employee.EmployeeImgUrl,
         Skillsets: employee.Skillsets,
       };
 
