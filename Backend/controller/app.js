@@ -3097,7 +3097,7 @@ app.post('/customer/autobooking', printDebugInfo, verifyTokenCustomer, (req, res
             // call addbooking function
             AddBooking(newContractId, ScheduleDate);
           }
-        } else if (DayOfService === 'Sun') {
+        } else if (DayOfService.includes('Sun')) {
           // check if DayOfService includes 'Sun' which represents tuesday
           getDateRange(0);
           // loop through the sunday and extract the date
