@@ -42,7 +42,6 @@ const forgetPassword = require('../model/forgetPassword');
 // const { json } = require('body-parser');
 
 const currentUrl = 'http://localhost:5000';
-// const currentUrl = 'https://moc-ba.herokuapp.com;
 
 // MF function
 /**
