@@ -1120,7 +1120,6 @@ app.post('/addEmployee', upload.single('image'), verifyToken, async (req, res) =
       },
     );
   } catch (error) {
-    console.log(error);
     const output = {
       Error: 'Internal sever issues',
     };
