@@ -414,7 +414,7 @@ function updateEmployee() {
 
       // succcess message return
       if (xhr.status === 201) {
-        msg = 'Successfully added!';
+        msg = 'Successfully Updated!';
         new Noty({
           timeout: '3000',
           type: 'success',

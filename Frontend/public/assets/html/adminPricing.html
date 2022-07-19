@@ -160,14 +160,6 @@
         </div>
         <!-- Tables -->
         <div class="col-9">
-
-            <!-- Error Message Notification  -->
-            <div id="errMsgNotificaton">
-            </div>
-            <!-- Confiramation Message Notification  -->
-            <div id="confirmationMsg">
-            </div>
-
             <!-- Card for class of service table  -->
 
             <section class="customer-section">
@@ -485,8 +477,10 @@
                                     </div>
                                     <div class="form-group">
                                         <h6>Package:</h6>
-                                        <input type="text" class="form-control" value="" id="package_add">
-                                        1 = Mulberry | 2 = Sassafras
+                                        <select class="form-control" value="" id="package_add">
+                                            <option value="1">Mulberry</option>
+                                            <option value="2">Sassafras</option>
+                                        </select>
                                     </div>
                                 </form>
                             </div>
@@ -526,8 +520,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="package-update" class="col-form-label">Package:</label>
-                                        <input type="text" class="form-control" id="package-update">
-                                        1 = Mulberry | 2 = Sassafras
+                                        <select class="form-control" value="" id="package-update">
+                                            <option value="1">Mulberry</option>
+                                            <option value="2">Sassafras</option>
+                                        </select>
                                     </div>
                                 </form>
                             </div>
