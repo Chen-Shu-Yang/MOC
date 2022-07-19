@@ -4,10 +4,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 
-const frontEndUrl = 'http://13.213.62.233:3001';
-const backEndUrl = 'http://13.213.62.233:5000';
-// const frontEndUrl = 'http://localhost:3001';
-// const backEndUrl = 'http://localhost:5000';
+// const frontEndUrl = 'http://13.213.62.233:3001';
+// const backEndUrl = 'http://13.213.62.233:5000';
+const frontEndUrl = 'http://localhost:3001';
+const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
@@ -254,6 +254,7 @@ function updateAdmin() {
         theme: 'sunset',
         text: msg,
       }).show();
+      $('#AdminPwdInput').val('');
       // Refresh admin table
       loadAllAdmins();
     },
@@ -384,34 +385,23 @@ function addAdmin() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+      $('#addAdminFirstNameInput').val('');
+      $('#addAdminLastNameInput').val('');
+      $('#addAdminEmailInput').val('');
+      $('#addAdminPasswordInput').val('');
+      $('#addAdminTypeInput').val('Admin');
       // Refresh the admin table
       loadAllAdmins();
     },
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+    error(xhr) {
       // set and call error message
-      let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status === 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status === 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
-      }
       new Noty({
         timeout: '5000',
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: errMsg,
+        text: xhr.responseText,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
     },
   });
 }

@@ -143,7 +143,7 @@ function updateCustomer() {
         theme: 'sunset',
         text: msg,
       }).show();
-      console.log('Update Successful');
+      $('#customerPwdInput').val('');
       $('#customer-list').html('');
       loadAllCustomers();
     },

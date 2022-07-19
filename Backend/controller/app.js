@@ -3761,6 +3761,9 @@ app.post('/addAdmin', printDebugInfo, verifyToken, (req, res) => {
           } else if (err.code === 'ER_BAD_NULL_ERROR') {
             // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
             res.status(400).send('Null value not allowed');
+          } else if (err.code === 'ER_DUP_ENTRY') {
+            // if err.code === ER_DUP_ENTRY send Null value not allowed as return message
+            res.status(422).send('This email already has an account');
           } else {
             // else if there is a server error return message
             res.status(500).send('Internal Server Error');
