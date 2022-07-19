@@ -9,6 +9,8 @@ const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+// const frontEndUrl = 'http://18.142.170.203:3001';
+// const backEndUrl = 'http://18.142.170.203:5000';
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
@@ -24,6 +26,10 @@ let estAdd = 0;
 let estTotal = 0;
 const extraServiceArr = [];
 const excludedServiceArr = [];
+
+console.log("======= At the start ===================")
+console.log(typeof(estService));
+console.log("==============================================")
 
 function createCard(cardInfo) {
   const card = `
@@ -168,11 +174,15 @@ function populateClass() {
 
           $('#listServiceInput').val(services);
           document.getElementById('listService').innerHTML = serviceValue;
-
-          estService = cardInfo.ClassPricing * 4;
-
-          // console.log(typeof(estService));
+          const estServicePricing = parseFloat(cardInfo.ClassPricing);
+           
+          estService = estServicePricing * 4;
+          console.log("===========At service ============")
+           console.log(typeof(estService));
+console.log("===================================")
           estTotal += estService;
+
+
         }
       }
     },
@@ -242,7 +252,12 @@ function populateRates() {
 
         if (i === 0) {
           $('#listRates').html(`${rates.RateName}sqft (From S$${rates.RatePrice})`);
-          estRate = rates.RatePrice;
+          estRate = parseFloat(rates.RatePrice);
+           
+          console.log("===========At rate ============")
+           console.log(typeof(estRate));
+console.log("===================================")
+
           estTotal += estRate;
 
           console.log(estTotal);
@@ -288,7 +303,14 @@ function populateAdditonalService() {
           ServicePrice: extraservice.ExtraServicePrice,
         };
         extraServiceArr.push(extraService);
-        estAdd += extraservice.ExtraServicePrice;
+        estAdd += parseFloat(extraservice.ExtraServicePrice);
+           
+          console.log("===========At add service ============")
+           console.log(typeof(estAdd));
+console.log("===================================")
+
+console.log(estAdd);
+console.log(typeof(estAdd));
       }
     },
     error(xhr, textStatus, errorThrown) {
@@ -660,7 +682,16 @@ $(document).ready(() => {
         theme: 'sunset',
         text: 'Please ensure the date is 3 days after today date',
       }).show();
-    } else {
+    } else if( $('#dayOfService2').is(':visible') &&  serviceDay2 === serviceDay1 ){
+      new Noty({
+        timeout: '10000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Please ensure the date is different',
+      }).show();
+
+    }else {
       // Stores the constants into localstorage
       localStorage.setItem('servicePref', servicePref);
       localStorage.setItem('address', address);
