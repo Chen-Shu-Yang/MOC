@@ -99,9 +99,27 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
       to: email,
       subject: 'MOC - Forget Password Link',
       html: `
-    <p>Hi ${result.FirstName}</p>
-    <p>This <b>links expires in 15 Min</b>.</p>
-    <p>Press <a href='${`${link}`}'>here</a> to reset your password</p>
+
+      <div style="background: #F0F2F2;padding: 50px;">
+      <div style="background: #fff;padding: 50px;max-width: 500px;margin: auto;text-align: center;">
+          <img src="https://res.cloudinary.com/dxwbzmypx/image/upload/v1658044367/employee/MOC-LOGO_cpbtwv.png" alt="MOC_Logo" style="margin: auto;"/><br>
+          <div style="text-align: left;">
+            <h1>Reset Password</h1>
+            <p>Hi ${result.FirstName},<p>
+            <p>Welcome to Ministry of Clean</p>
+            <p>Please click the button below to Reset your password.</p>
+            <p>This <b>link expires in 15 Min</b>.</p><br>
+            <p>
+              <span>Yours Sincerely,</span><br>
+              <span>MOC Support Team</span>
+            </p><br>
+          </div>
+          <a style="margin-top: 10px;padding: 8px 20px;background: #2E6869;color: #fff !important;text-decoration: none;border: 2px #2E6869 solid;"
+            href='${`${link}`}'>
+             Reset Password
+          </a>
+      </div>
+  </div>
    `,
     };
 
@@ -164,9 +182,6 @@ app.put('/resetUserPassword/:id/:token', printDebugInfo, verifyTokenCustomer, as
         if (!err) {
           // if admin id is not found detect and return error message
           if (result.length === 0) {
-            const output = {
-              Error: 'Id not found',
-            };
             res.status(404).send(output);
           } else {
             // output
