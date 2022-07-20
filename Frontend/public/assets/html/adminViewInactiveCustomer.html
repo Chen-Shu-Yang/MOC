@@ -40,7 +40,6 @@
 
 <body>
 
-    <!-- Admin Side bar -->
     <div class="sidebar">
         <div class="logo-details">
             <a href="/homepage">
@@ -98,7 +97,7 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/contract" >
+                <a href="/admin/contract">
                     <i class="fa-solid fa-file-signature"></i>
                     <span class="link_name">Contract</span>
                 </a>
@@ -129,6 +128,7 @@
             </li>
         </div>
     </div>
+
 
     <!-- Home Content -->
     <section class="home-section">
@@ -180,13 +180,14 @@
     <script src="../../assets/js/adminNavbar.js"></script>
     <script src="../../assets/js/adminInactiveCustomer.js"></script>
     <script>
-        var userType = localStorage.getItem('adminType');
-         if (userType === 'Admin') {
+           const userType = localStorage.getItem('adminType');
+        if (userType === '"Admin"') {
             document.getElementById('adminNav').style.display = 'none';
             document.getElementById('superAdminBooking').style.display = 'none';
-         }else{
-             document.getElementById('adminBooking').style.display = 'none';
-         }
+        } else {
+            document.getElementById('adminBooking').style.display = 'none';
+
+        }
      </script>
 
 </body>

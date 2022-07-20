@@ -1211,10 +1211,10 @@ app.post('/booking', printDebugInfo, verifyToken, (req, res) => {
   const { bookingID } = req.body;
   const { bookingDate } = req.body;
   const { AdminId } = req.body;
-  console.log(AdminId);
   Admin.addOneBooking(bookingID, bookingDate, AdminId, (err, result) => {
     if (!err) {
       res.status(201).send(result);
+      console.log(result);
     } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
       res.status(406).send('Inappropriate value');
     } else if (err.code === 'ER_BAD_NULL_ERROR') {
