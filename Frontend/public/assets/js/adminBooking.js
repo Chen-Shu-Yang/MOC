@@ -33,9 +33,6 @@ function createRow(cardInfo) {
     <td>${cardInfo.ClassName}</td>
     <td>${cardInfo.ScheduleDate}</td>
     <td>${cardInfo.TimeOfService}</td>
-    <td>${cardInfo.NoOfRooms}</td>
-    <td>${cardInfo.NoOfBathrooms}</td>
-    <td>${cardInfo.RateName}</td>
     <td>${cardInfo.EstimatePricing}</td>
     <td>${cardInfo.Address}</td>
     <td>
@@ -47,7 +44,7 @@ function createRow(cardInfo) {
     <td>
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editBookingModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>
-    <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa-regular fa-trash-can"></i></button></td>
+    <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa-regular fa-check"></i></button></td>
     <script>   $("button").removeAttr("disabled");</script>
     </tr>
 
