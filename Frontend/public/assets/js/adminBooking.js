@@ -456,20 +456,18 @@ function loadABooking(bookingID) {
 $('#addNewBooking').click(() => {
   // data extraction
 
-  const Employeeid = localStorage.getItem('EmployeeID');
-  if (Employeeid != null) {
+  const tempAdminID = localStorage.getItem('AdminID');
+  if (tempAdminID != null) {
     const id = $('#addContractID').val();
-    const ScheduleDate = $('#datepicker').val();
-    const AdminID = localStorage.getItem('AdminID');
+    const date = $('#datepicker').val();
+    const tempAdminID = localStorage.getItem('AdminID');
 
     // data compilation
     const info = {
       bookingID: id,
-      ScheduleDate: ScheduleDate,
-      AdminId: AdminID,
+      bookingDate: date,
+      AdminId: tempAdminID,
     };
-   console.log(info); 
-
     $.ajax({
       headers: { authorization: `Bearer ${tmpToken}` },
       url: `${backEndUrl}/booking`,
@@ -478,8 +476,8 @@ $('#addNewBooking').click(() => {
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success(data) {
+        console.log(data);
         if (data != null) {
-          loadAllBookingByLimit(1);
           new Noty({
             timeout: '5000',
             type: 'Success',
@@ -487,7 +485,9 @@ $('#addNewBooking').click(() => {
             theme: 'sunset',
             text: `Booking ${id} added`,
           }).show();
-          console.log("hi");
+
+          loadAllBookingByLimit(1);
+          console.log(id+'Hiiiiiiiiiiiiiiiiiiiiiiiiiii');
         } else {
           new Noty({
             timeout: '5000',
@@ -513,7 +513,7 @@ $('#addNewBooking').click(() => {
         }).show();
       },
     });
-  }else{
+  } else{
     window.localStorage.clear();
     window.location.replace(`${frontEndUrl}/unAuthorize`);
   }
