@@ -1519,6 +1519,41 @@ app.get('/customer', printDebugInfo, verifyToken, async (req, res) => {
   });
 });
 
+// get customer per page
+app.get('/customer/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+
+  // extract pageNumber from params to determine the page we are at
+  const { pageNumber } = req.params;
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+
+  // calling pageCustomer method from admin model
+  Admin.pageCustomer(pageNumber, (err, result) => {
+    // if no error send result
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // if error send error message
+      res.status(500).send('Some error');
+    }
+  });
+});
+
 // get an customer
 app.get('/onecustomer/:id', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {

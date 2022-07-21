@@ -33,7 +33,63 @@ function createRow(cardInfo) {
   return card;
 }
 
-function loadAllCustomers() {
+// Create page tabs
+function pageBtnCreate(totalNumberOfPages, activePage) {
+  // Clears pagination section
+  $('#pagination').html('');
+  // Get page number of max-left and max-right page
+  let maxLeft = (activePage - Math.floor(5 / 2));
+  let maxRight = (activePage + Math.floor(5 / 2));
+
+  // Checks if the max-left page is less than 1
+  // Which is the first page
+  if (maxLeft < 1) {
+    maxLeft = 1;
+    maxRight = 5;
+  }
+
+  // Checks if max-right page is more than the total number of pages
+  // Which is the last page
+  if (maxRight > totalNumberOfPages) {
+    maxLeft = totalNumberOfPages - (5 - 1);
+    maxRight = totalNumberOfPages;
+
+    // Checks if max-left is less than 1
+    // Which is total number of pages within 1 and 5
+    if (maxLeft < 1) {
+      maxLeft = 1;
+    }
+  }
+
+  // Checks if activepage is less than 1
+  // Shows the '<<' icon to bring user to the first page
+  if (activePage !== 1) {
+    divPaginBtn = `<button type="button" onClick="loadCustomersByLimit(${1})"><<</button>`;
+    $('#pagination').append(divPaginBtn);
+  }
+
+  // Check if the active page is within max-left or max-right
+  // Displays all page tabs within max-left and max-right
+  for (i = maxLeft; i <= maxRight; i++) {
+    // Check if page is active
+    if (i === activePage) {
+      divPaginBtn = `<button type="button" class="active" onClick="loadCustomersByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    } else {
+      divPaginBtn = `<button type="button" onClick="loadCustomersByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    }
+  }
+
+  // Checkd if active page is not equals to the total number of pages
+  // Displays the '>>' tab to bring users to the last page
+  if (activePage !== totalNumberOfPages) {
+    divPaginBtn = `<button type="button" onClick="loadCustomersByLimit(${totalNumberOfPages})">>></button>`;
+    $('#pagination').append(divPaginBtn);
+  }
+}
+
+function loadAllCustomers(activePage) {
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customer`,
@@ -41,6 +97,39 @@ function loadAllCustomers() {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
+      for (let i = 0; i < data.length; i++) {
+
+        const totalNumberOfPages = Math.ceil(data.length / 6);
+
+        pageBtnCreate(totalNumberOfPages, activePage);
+      }
+    },
+
+    error(xhr, textStatus, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
+      console.log('Error in Operation');
+
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+
+      console.log(xhr.responseText);
+      console.log(xhr.status);
+    },
+  });
+}
+
+function loadCustomersByLimit(pageNumber) {
+  $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
+    url: `${backEndUrl}/customer/${pageNumber}`,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+
+    success(data) {
+      $('#customer-list').html('');
       for (let i = 0; i < data.length; i++) {
         const customer = data[i];
 
@@ -55,6 +144,7 @@ function loadAllCustomers() {
         const newCard = createRow(RowInfo);
         $('#customer-list').append(newCard);
       }
+      loadAllCustomers(pageNumber);
     },
 
     error(xhr, textStatus, errorThrown) {
@@ -225,7 +315,7 @@ function deleteCustomer(id) {
 }
 
 $(document).ready(() => {
-  loadAllCustomers();
+  loadCustomersByLimit(1);
 
   // update button
   $('#editCustomerBtn').click(() => {

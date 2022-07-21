@@ -9,7 +9,6 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 const tempType = JSON.parse(localStorage.getItem('adminType'));
-console.log(tempType);
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null || tempAdminID === null) {
   window.localStorage.clear();
@@ -113,18 +112,10 @@ function loadAllAdmins(activePage) {
     },
 
     // Error if otherwise
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -138,9 +129,6 @@ function loadAdminByLimit(pageNumber) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       $('#admin-list').html('');
 
       for (let i = 0; i < data.length; i++) {
@@ -155,9 +143,6 @@ function loadAdminByLimit(pageNumber) {
           AdminType: Admin.AdminType,
         };
 
-        console.log('---------Card INfo data pack------------');
-        console.log(RowInfo);
-
         const newRow = createRow(RowInfo);
         $('#admin-list').append(newRow);
       }
@@ -168,14 +153,6 @@ function loadAdminByLimit(pageNumber) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -220,15 +197,10 @@ function loadAnAdmin(id) {
     },
 
     // Error if otherwise
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      // if (xhr.status == 201) {
-      //     errMsg = "The id doesn't exist "
-      // }
-      // $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    error(errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
     },
   });
 }
@@ -255,9 +227,7 @@ function updateAdmin() {
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data) {
-      console.log(data);
-      console.log('Update Successful');
+    success() {
       const msg = 'Update Successfull';
       new Noty({
         timeout: '5000',
@@ -270,8 +240,8 @@ function updateAdmin() {
       // Refresh admin table
       loadAllAdmins();
     },
-    error(xhr, textStatus, errorThrown) {
-      const msg = 'Update UnSuccessfull';
+    error() {
+      const msg = 'Update UnSuccessful!';
       new Noty({
         timeout: '5000',
         type: 'error',
@@ -279,14 +249,6 @@ function updateAdmin() {
         theme: 'sunset',
         text: msg,
       }).show();
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
     },
   });
 }
@@ -333,7 +295,6 @@ function deleteAdmin(id) {
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';

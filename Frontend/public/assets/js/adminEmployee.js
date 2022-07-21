@@ -100,27 +100,16 @@ function loadAllEmployees(activePage) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       userSearchChar = data;
       const totalNumberOfPages = Math.ceil(data.length / 6);
 
       pageBtnCreate(totalNumberOfPages, activePage);
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -134,9 +123,6 @@ function loadEmployeeByLimit(pageNumber) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       $('#employeeListing').html('');
 
       for (let i = 0; i < data.length; i++) {
@@ -150,27 +136,16 @@ function loadEmployeeByLimit(pageNumber) {
           Skillsets: employee.Skillsets,
         };
 
-        console.log('---------Card INfo data pack------------');
-        console.log(RowInfo);
-
         const newRow = createRow(RowInfo);
         $('#employeeListing').append(newRow);
       }
       loadAllEmployees(pageNumber);
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -289,9 +264,6 @@ function loadAnEmployee(id) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
 
       const employee = data[0];
 
@@ -313,15 +285,10 @@ function loadAnEmployee(id) {
       $('#editProfilePicLink').val(RowInfo.EmployeeImg);
     },
 
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
-
-      // if (xhr.status == 201) {
-      //     errMsg = "The id doesn't exist "
-      // }
+    error(errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
     },
   });
 }
@@ -340,7 +307,6 @@ function updateEmployee() {
   const skillSet = $('#editEmployeeSkills').val();
   // Get the initial image url
   const initialImg = $('#NewProfilePreview').css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
-  console.log(initialImg);
   // create a variable called webFormData and call the FormData
   // instance all field value to be added will be appended to webFormData
   const webFormData = new FormData();
@@ -374,10 +340,7 @@ function updateEmployee() {
     // pass enctype as multipart/formdata
     enctype: 'multipart/form-data',
     // success method
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+    success(xhr) {
       // set value to empty after getting value
       $('#editEmployeeName').val('');
       $('#editEmployeeDes').val('');
@@ -399,13 +362,7 @@ function updateEmployee() {
       }
     },
     // error method
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+    error(xhr) {
       // error message return
       if (xhr.status === 500) {
         let errMsg = '';
@@ -462,14 +419,10 @@ function deleteEmployee(id) {
         }).show();
       }
     },
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+    error(xhr) {
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';
@@ -527,11 +480,9 @@ userSearch.addEventListener('keyup', (e) => {
   let RowInfo = {};
   const similarResults = [];
   const searchString = e.target.value.toLowerCase();
-  console.log(searchString);
   $('#pagination').html('');
 
   if (searchString === '') {
-    console.log('if');
     $('#employeeListing').html('');
     loadEmployeeByLimit(1);
   }
@@ -591,9 +542,6 @@ userSearch.addEventListener('keyup', (e) => {
 
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
 
   loadEmployeeByLimit(1);
 
@@ -654,10 +602,7 @@ function addEmployee() {
     // pass enctype as multipart/formdata
     enctype: 'multipart/form-data',
     // success method
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+    success(xhr) {
       // set value to empty after getting value
       $('#addEmployeeName').val('');
       $('#addEmployeeDes').val('');
@@ -679,13 +624,7 @@ function addEmployee() {
       }
     },
     // error method
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+    error(xhr) {
       // error message return
       if (xhr.status === 500) {
         let errMsg = '';
