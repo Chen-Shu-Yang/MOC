@@ -16,28 +16,28 @@ const backEndUrl = 'http://localhost:5000';
 
 $(document).ready(() => {
 
-  // const togglePasswordForgot = document.querySelector('#togglePasswordForget');
-  // const passwordForgot = document.querySelector('#passwordInput');
+  const togglePasswordForgot = document.querySelector('#togglePasswordForget');
+  const passwordForgot = document.querySelector('#passwordInput');
 
-  // togglePasswordForgot.addEventListener('click', function () {
-  //   // toggle the type attribute
-  //   const type = passwordForgot.getAttribute('type') === 'password' ? 'text' : 'password';
-  //   passwordForgot.setAttribute('type', type);
-  //   // toggle the eye slash icon
-  //   this.classList.toggle('fa-eye-slash');
-  // });
+  togglePasswordForgot.addEventListener('click', function () {
+    // toggle the type attribute
+    const type = passwordForgot.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordForgot.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+  });
 
 
-  // const togglePasswordForgotConfirm = document.querySelector('#togglePasswordForgetConfirm');
-  // const passwordForgotConfirm = document.querySelector('#passwordInput2');
+  const togglePasswordForgotConfirm = document.querySelector('#togglePasswordForgetConfirm');
+  const passwordForgotConfirm = document.querySelector('#passwordInput2');
 
-  // togglePasswordForgotConfirm.addEventListener('click', function () {
-  //   // toggle the type attribute
-  //   const type = passwordForgotConfirm.getAttribute('type') === 'password' ? 'text' : 'password';
-  //   passwordForgotConfirm.setAttribute('type', type);
-  //   // toggle the eye slash icon
-  //   this.classList.toggle('fa-eye-slash');
-  // });
+  togglePasswordForgotConfirm.addEventListener('click', function () {
+    // toggle the type attribute
+    const type = passwordForgotConfirm.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordForgotConfirm.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+  });
 
 
   // Login
