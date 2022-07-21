@@ -10,6 +10,8 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 
+const userSearchChar = [];
+const userSearch = document.getElementById('searchBookingByCustomer');
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 const tempType = JSON.parse(localStorage.getItem('adminType'));
 const tmpToken = JSON.parse(localStorage.getItem('token'));
@@ -124,9 +126,28 @@ function loadAllBooking(activePage) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data.ScheduleDate);
-      console.log(`LENGTH OF DATA:${data.length}`);
+      for (let i = 0; i < data.length; i++) {
+        const booking = data[i];
+
+        const Customer = {
+          CustomerName: `${booking.FirstName} ${booking.LastName}`,
+          Address: booking.Address,
+          ClassName: booking.ClassName,
+          EmployeeName: booking.EmployeeName,
+          EstimatedPricing: booking.EstimatedPricing,
+          FirstName: booking.FirstName,
+          LastName: booking.LastName,
+          NoOfBathrooms: booking.NoOfBathrooms,
+          NoOfRooms: booking.NoOfRooms,
+          PackageName: booking.PackageName,
+          Rate: booking.Rate,
+          ScheduleDate: booking.ScheduleDate,
+          Status: booking.Status,
+          TimeOfService: booking.TimeOfService,
+          BookingID: booking.BookingID,
+        };
+        userSearchChar.push(Customer);
+      }
 
       const totalNumberOfPages = Math.ceil(data.length / 6);
 
@@ -269,6 +290,143 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
     },
   });
 }
+
+function levenshtein(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+
+  // increment along the first column of each row
+  let i;
+  for (i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  // increment each column in the first row
+  let j;
+  for (j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for (i = 1; i <= b.length; i++) {
+    for (j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          Math.min(
+            matrix[i][j - 1] + 1, // insertion
+            matrix[i - 1][j] + 1, // deletion
+          ),
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+// Search for booking with event listener
+userSearch.addEventListener('keyup', (e) => {
+  // Declare RowInfo Object
+  let RowInfo = {};
+  // Declare similarResults array
+  const similarResults = [];
+  // Declare constant variable to store the user input
+  // Input is converted to lowercases
+  const searchString = e.target.value.toLowerCase();
+  // Clear the pagination buttons
+  $('#pagination').html('');
+
+  // If statement to run the loadAllBookingBtLimit function
+  // if there are no inputs
+  if (searchString === '') {
+    console.log('if');
+    $('#bookingTableBody').html('');
+    loadAllBookingByLimit(1);
+  }
+
+  // eslint-disable-next-line arrow-body-style
+  // Filter in the wanted ones and push in to filterBookings array
+  const filterBookings = userSearchChar.filter((customer) => (
+    customer.CustomerName.toLowerCase().includes(searchString)
+  ));
+
+  // Clear the previous returned results in the containers
+  $('#similarSearch').html('');
+  $('#bookingTableBody').html('');
+
+  // Check if filterBookings is not empty
+  if (filterBookings.length !== 0) {
+    console.log(filterBookings);
+    for (let i = 0; i < filterBookings.length; i++) {
+      const booking = filterBookings[i];
+
+      // compile the data that the card needs for its creation
+      RowInfo = {
+        bookingID: booking.BookingID,
+        FirstName: booking.FirstName,
+        LastName: booking.LastName,
+        Package: booking.PackageName,
+        ClassName: booking.ClassName,
+        ScheduleDate: booking.ScheduleDate,
+        TimeOfService: booking.TimeOfService,
+        NoOfRooms: booking.NoOfRooms,
+        NoOfBathrooms: booking.NoOfBathrooms,
+        RateName: booking.Rate,
+        EstimatePricing: booking.EstimatedPricing,
+        Address: booking.Address,
+        Employee: booking.EmployeeName,
+        Status: booking.Status,
+      };
+      const newCard = createRow(RowInfo);
+      $('#bookingTableBody').append(newCard);
+    }
+  } else {
+    // If filterBookings is empty
+    for (let i = 0; i < userSearchChar.length; i++) {
+      // Store the value been compared to, in compared constant
+      const compared = userSearchChar[i].CustomerName;
+      // Find the levenshtein distance between the compared word and input word
+      const distance = levenshtein(searchString, compared.toLowerCase()); // Levenshtein Distance
+      const booking = userSearchChar[i];
+
+      // compile the data that the card needs for its creation
+      RowInfo = {
+        bookingID: booking.BookingID,
+        FirstName: booking.FirstName,
+        LastName: booking.LastName,
+        Package: booking.PackageName,
+        ClassName: booking.ClassName,
+        ScheduleDate: booking.ScheduleDate,
+        TimeOfService: booking.TimeOfService,
+        NoOfRooms: booking.NoOfRooms,
+        NoOfBathrooms: booking.NoOfBathrooms,
+        RateName: booking.Rate,
+        EstimatePricing: booking.EstimatedPricing,
+        Address: booking.Address,
+        Employee: booking.EmployeeName,
+        Status: booking.Status,
+      };
+
+      // If levenshtein distance is smalle or equals to 4
+      // push result into similarResults array
+      if (distance <= 4) {
+        similarResults.push(RowInfo);
+      }
+    }
+
+    // For loop to display the result rows
+    for (let j = 0; j < similarResults.length; j++) {
+      const newCard = createRow(similarResults[j]);
+      $('#bookingTableBody').append(newCard);
+    }
+    // Display when no results found
+    $('#similarSearch').html(`<p><b>${searchString}</b> not found, do you mean...</p><br>`);
+  }
+});
 
 // load gets a booking
 // eslint-disable-next-line no-unused-vars

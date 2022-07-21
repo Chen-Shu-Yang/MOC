@@ -63,6 +63,48 @@
     color: #fff;
 }
 
+.home-section nav .search-box,
+.booking-header.moved .search-box {
+    height: 40px;
+    width: 300px;
+    margin: 0 20px;
+    position: relative;
+}
+
+nav .search-box input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    padding: 0 15px;
+    font-size: 15px;
+    color: #000;
+    background: #F5F6FA;
+    border: 2px solid #EFEEF1;
+    outline: none;
+}
+
+nav .search-box .fa-magnifying-glass {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px;
+    width: 40px;
+    border-radius: 6px;
+    color: #000;
+    font-size: 18px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+nav .right-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Pagination Styling */
 .page-btn {
     width: 100%;
