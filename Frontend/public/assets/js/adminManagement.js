@@ -2,10 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
-/* eslint-disable no-console */
 
-// const frontEndUrl = 'http://13.213.62.233:3001';
-// const backEndUrl = 'http://13.213.62.233:5000';
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -236,80 +233,6 @@ function loadAnAdmin(id) {
   });
 }
 
-// Add the admin
-function addUpdateAdmin() {
-  // extract values for add pop-up
-  const FirstName = $('#firstName').html();
-  const LastName = $('#lastName').html();
-  const email = $('#adminEmail').html();
-  const password = $('#AdminPwdInput').val();
-  const adminType = $('#changeAdminType').val();
-
-  // store all extracted info into requestBody
-  const requestBody = {
-    LastName,
-    FirstName,
-    AdminPwd: password,
-    AdminEmail: email,
-    AdminType: adminType,
-  };
-
-  // Converts requestBody into a String
-  const reqBody = JSON.stringify(requestBody);
-
-  // call the method to post data
-  $.ajax({
-    headers: { authorization: `Bearer ${tmpToken}` },
-    url: `${backEndUrl}/admin`,
-    type: 'POST',
-    data: reqBody,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
-      // set and call confirmation message
-      const msg = 'Successfully added!';
-      new Noty({
-        timeout: '5000',
-        type: 'success',
-        layout: 'topCenter',
-        theme: 'sunset',
-        text: msg,
-      }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      // Refresh the admin table
-      loadAllAdmins();
-    },
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      // set and call error message
-      let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status === 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status === 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
-      }
-      new Noty({
-        timeout: '5000',
-        type: 'error',
-        layout: 'topCenter',
-        theme: 'sunset',
-        text: errMsg,
-      }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
-    },
-  });
-}
-
 // updateAdmin to update admin password
 function updateAdmin() {
   // data extraction
@@ -377,10 +300,9 @@ function deleteAdmin(id) {
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
     // if data inserted
-    success(data, textStatus, xhr) {
-      console.log('Delete Successful');
+    success(xhr) {
       // Refresh admin table
-      loadAllAdmins();
+      loadAdminByLimit(1);
 
       if (xhr.status === 404) {
         // set and call error message
@@ -404,16 +326,11 @@ function deleteAdmin(id) {
           theme: 'sunset',
           text: msg,
         }).show();
-
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(xhr) {
       // set and call error message
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
         console.log('error');
@@ -461,10 +378,7 @@ function addAdmin() {
     data: reqtsBody,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+    success() {
       // set and call confirmation message
       const msg = 'Successfully added!';
       new Noty({
@@ -480,7 +394,7 @@ function addAdmin() {
       $('#addAdminPasswordInput').val('');
       $('#addAdminTypeInput').val('Admin');
       // Refresh the admin table
-      loadAllAdmins();
+      loadAdminByLimit(1);
     },
     error(xhr) {
       // set and call error message
@@ -504,18 +418,6 @@ $(document).ready(() => {
   $('#addAdminBtn').click(() => {
     // addAdmin()function called upon click event
     addAdmin();
-  });
-
-  // Update Admin Type button
-  $('#editAdminTypeBtn').click(() => {
-    // Admin Id extracted to be passed into deleteAdmin() function
-    const id = $('#editAdminID').val();
-
-    // Process of updating admin type
-    addUpdateAdmin();
-    deleteAdmin(id);
-    // Refresh the admin table
-    loadAllAdmins();
   });
 
   // Update Admin Password button
