@@ -866,32 +866,6 @@ app.get('/employee/skills/:id', printDebugInfo, async (req, res) => {
   });
 });
 
-// update employee skills (shuyang)
-app.put('/employees/skills/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const EmployeeID = req.params.id;
-  // extract all details needed
-  const { EmployeeSkills } = req.body;
-
-  // calling deleteEmployeeSkills method from admin model
-  Admin.updateEmployeeSkills(EmployeeSkills, EmployeeID, (err, result) => {
-    // if there is no errorsend the following as result
-    if (!err) {
-      res.status(201).send(result);
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
-});
-
 // delete employee
 app.delete('/employee/:employeeId', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
