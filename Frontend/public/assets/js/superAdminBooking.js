@@ -318,31 +318,58 @@ function addMonthlyBooking() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+      const msg = 'Successfully Added!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
+
 
       $(bookingTableBody).html('');
       loadAllBookingByLimit(1);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(textStatus);
-      console.log(errorThrown);
-      // set and call error message
+     
       let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status === 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status === 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
+
+      if(xhr.status ===200){
+        const msg = 'Successfully Added!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
+
       }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+      else{
+        if (xhr.status === 500) {
+          console.log('error');
+          errMsg = 'Server Issues';
+        } else if (xhr.status === 400) {
+          errMsg = ' Input not accepted';
+        } else if (xhr.status === 406) {
+          errMsg = ' Input not accepted';
+        } 
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+
+      }
+   
+    
+    
+   
       $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
+      loadAllBookingByLimit(1);
     },
   });
 }
@@ -356,31 +383,55 @@ function addMonthlyBookingNext() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+      const msg = 'Success!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
 
       $(bookingTableBody).html('');
       loadAllBookingByLimit(1);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(textStatus);
-      console.log(errorThrown);
-      // set and call error message
+    
       let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status === 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status === 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
+
+      if(xhr.status ===200){
+        const msg = 'Successfully Added!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
+
       }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+      else{
+        if (xhr.status === 500) {
+          console.log('error');
+          errMsg = 'Server Issues';
+        } else if (xhr.status === 400) {
+          errMsg = ' Input not accepted';
+        } else if (xhr.status === 406) {
+          errMsg = ' Input not accepted';
+        } 
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+
+      }
+   
+    
       $('#classServiceTableBody').html('');
-      loadAllClassOfServices();
+      loadAllBookingByLimit(1);
     },
   });
 }
