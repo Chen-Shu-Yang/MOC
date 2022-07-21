@@ -106,7 +106,6 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
           <div style="text-align: left;">
             <h1>Reset Password</h1>
             <p>Hi ${result.FirstName},<p>
-            <p>Welcome to Ministry of Clean</p>
             <p>Please click the button below to Reset your password.</p>
             <p>This <b>link expires in 15 Min</b>.</p><br>
             <p>
