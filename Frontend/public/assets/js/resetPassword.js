@@ -73,7 +73,7 @@ $(document).ready(() => {
               type: 'error',
               layout: 'topCenter',
               theme: 'sunset',
-              text: 'Invalid Account',
+              text: 'Invalid link',
             }).show();
           },
         });
