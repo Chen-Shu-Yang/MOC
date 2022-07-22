@@ -31,9 +31,6 @@ function createRow(cardInfo) {
     <td>${cardInfo.ClassName}</td>
     <td>${cardInfo.StartDate}</td>
     <td>${cardInfo.TimeOfService}</td>
-    <td>${cardInfo.NoOfRooms}</td>
-    <td>${cardInfo.NoOfBathrooms}</td>
-    <td>${cardInfo.RateName}</td>
     <td>${cardInfo.EstimatePricing}</td>
     <td>${cardInfo.Address}</td>
     <td>
