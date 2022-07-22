@@ -73,6 +73,32 @@ nav .right-header {
     color: #fff;
 }
 
+/* Pagination Styling */
+.page-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.page-btn button {
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-btn button:hover,
+.page-btn button.active {
+    background: #000;
+    color: #fff;
+}
+
 @media (max-width: 1200px) {
     .addemployee-btn {    
         font-size: 12px;

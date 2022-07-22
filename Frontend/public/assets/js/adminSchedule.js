@@ -98,18 +98,26 @@ function ScheduleAvailability(employeeId, date, time) {
         $('.morningSlot').removeClass('active');
         $('.afternoonSlot').removeClass('active');
       }
+      new Noty({
+        timeout: '3000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Scheduled Successfully',
+      }).show();
     },
-    error(xhr, textStatus, errorThrown) {
+    error(xhr, errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
 
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      new Noty({
+        timeout: '3000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: xhr.responseText,
+      }).show();
     },
   });
 }

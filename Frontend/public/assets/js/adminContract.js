@@ -43,17 +43,62 @@ function createRow(cardInfo) {
   return card;
 }
 // Create pagination numbering
-function pageBtnCreate(totalNumberOfPages) {
-  // Remove any pagination
+function pageBtnCreate(totalNumberOfPages, activePage) {
+  // Clears pagination section
   $('#pagination').html('');
-  // for loop to the button based on totalNumberOfPages
-  for (i = 1; i <= totalNumberOfPages; i++) {
-    divPaginBtn = `<button type="button" onClick="loadAllContractByLimit(${i})">${i}</button>`;
+  // Get page number of max-left and max-right page
+  let maxLeft = (activePage - Math.floor(5 / 2));
+  let maxRight = (activePage + Math.floor(5 / 2));
+
+  // Checks if the max-left page is less than 1
+  // Which is the first page
+  if (maxLeft < 1) {
+    maxLeft = 1;
+    maxRight = 5;
+  }
+
+  // Checks if max-right page is more than the total number of pages
+  // Which is the last page
+  if (maxRight > totalNumberOfPages) {
+    maxLeft = totalNumberOfPages - (5 - 1);
+    maxRight = totalNumberOfPages;
+
+    // Checks if max-left is less than 1
+    // Which is total number of pages within 1 and 5
+    if (maxLeft < 1) {
+      maxLeft = 1;
+    }
+  }
+
+  // Checks if activepage is less than 1
+  // Shows the '<<' icon to bring user to the first page
+  if (activePage !== 1) {
+    divPaginBtn = `<button type="button" onClick="loadAllContractByLimit(${1})"><<</button>`;
+    $('#pagination').append(divPaginBtn);
+  }
+
+  // Check if the active page is within max-left or max-right
+  // Displays all page tabs within max-left and max-right
+  for (i = maxLeft; i <= maxRight; i++) {
+    // Check if page is active
+    if (i === activePage) {
+      divPaginBtn = `<button type="button" class="active" onClick="loadAllContractByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    } else {
+      divPaginBtn = `<button type="button" onClick="loadAllContractByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    }
+  }
+
+  // Checkd if active page is not equals to the total number of pages
+  // Displays the '>>' tab to bring users to the last page
+  if (activePage !== totalNumberOfPages) {
+    divPaginBtn = `<button type="button" onClick="loadAllContractByLimit(${totalNumberOfPages})">>></button>`;
     $('#pagination').append(divPaginBtn);
   }
 }
 // Load all contracts to allow for pagination numbering
-function loadAllContracts() {
+function loadAllContracts(activePage) {
   // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
@@ -64,7 +109,7 @@ function loadAllContracts() {
     // number of pages needed
     success(data) {
       const totalNumberOfPages = Math.ceil(data.length / 6);
-      pageBtnCreate(totalNumberOfPages);
+      pageBtnCreate(totalNumberOfPages, activePage);
     },
 
     error(xhr, textStatus, errorThrown) {
@@ -117,6 +162,7 @@ function loadAllContractByLimit(pageNumber) {
           $('#contractTableBody').append(newRow);
         }
       }
+      loadAllContracts(pageNumber);
     },
     error(xhr, textStatus, errorThrown) {
       if (errorThrown === 'Forbidden') {
@@ -257,6 +303,5 @@ $(document).ready(() => {
   console.log(`Query Param (source): ${window.location.search}`);
   console.log(`Query Param (extraction): ${queryParams}`);
 
-  loadAllContractByLimit('1');
-  loadAllContracts();
+  loadAllContractByLimit(1);
 });

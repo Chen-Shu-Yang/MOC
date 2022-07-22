@@ -244,29 +244,6 @@ const Admin = {
     });
   },
 
-  // update employee skills (shuyang)
-  updateEmployeeSkills(EmployeeSkills, id, callback) {
-    // sql query statement
-    const sql = `
-      UPDATE 
-        heroku_6b49aedb7855c0b.employee
-      SET
-        Skillsets=?
-      WHERE
-        EmployeeID=?;
-    `;
-    // pool query
-    pool.query(sql, [EmployeeSkills, id], (err, result) => {
-      // error
-      if (err) {
-        console.log(err);
-        return callback(err);
-      }
-      // result accurate
-      return callback(null, result);
-    });
-  },
-
   // update employee
   updateEmployee(
     EmployeeName,
@@ -675,6 +652,32 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
       // pool.end()
     });
   },
+
+  pageCustomer(pageNumber, callback) {
+    // the page number clicked
+    // eslint-disable-next-line radix
+    pageNumber = parseInt(pageNumber);
+    // Number of customer showed per page
+    const limitPerPage = 6;
+    // Number of customer to skip based on the page number so that
+    // previously shown data will not be displayed
+    const numberOfValueToSkip = (pageNumber - 1) * 6;
+    // sql statement to limit and skip
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.customer LIMIT ? OFFSET ?;';
+    // values to pass for the query number of customer per page and number of customer to skip
+    const values = [limitPerPage, numberOfValueToSkip];
+    // query
+    pool.query(sql, values, (err, result) => {
+      // if error send error message
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // else send result
+      return callback(null, result);
+    });
+  },
+
   // get all Customer
   getAllCustomer(callback) {
     // sql query statement

@@ -2,7 +2,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
-/* eslint-disable no-console */
 
 // const frontEndUrl = 'http://13.213.62.233:3001';
 // const backEndUrl = 'http://13.213.62.233:5000';
@@ -12,7 +11,6 @@ const backEndUrl = 'http://localhost:5000';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 const tempType = JSON.parse(localStorage.getItem('adminType'));
-console.log(tempType);
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 if (tmpToken === null || tempAdminID === null) {
   window.localStorage.clear();
@@ -43,8 +41,64 @@ function createRow(cardInfo) {
   return card;
 }
 
+// Create page tabs
+function pageBtnCreate(totalNumberOfPages, activePage) {
+  // Clears pagination section
+  $('#pagination').html('');
+  // Get page number of max-left and max-right page
+  let maxLeft = (activePage - Math.floor(5 / 2));
+  let maxRight = (activePage + Math.floor(5 / 2));
+
+  // Checks if the max-left page is less than 1
+  // Which is the first page
+  if (maxLeft < 1) {
+    maxLeft = 1;
+    maxRight = 5;
+  }
+
+  // Checks if max-right page is more than the total number of pages
+  // Which is the last page
+  if (maxRight > totalNumberOfPages) {
+    maxLeft = totalNumberOfPages - (5 - 1);
+    maxRight = totalNumberOfPages;
+
+    // Checks if max-left is less than 1
+    // Which is total number of pages within 1 and 5
+    if (maxLeft < 1) {
+      maxLeft = 1;
+    }
+  }
+
+  // Checks if activepage is less than 1
+  // Shows the '<<' icon to bring user to the first page
+  if (activePage !== 1) {
+    divPaginBtn = `<button type="button" onClick="loadAdminByLimit(${1})"><<</button>`;
+    $('#pagination').append(divPaginBtn);
+  }
+
+  // Check if the active page is within max-left or max-right
+  // Displays all page tabs within max-left and max-right
+  for (i = maxLeft; i <= maxRight; i++) {
+    // Check if page is active
+    if (i === activePage) {
+      divPaginBtn = `<button type="button" class="active" onClick="loadAdminByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    } else {
+      divPaginBtn = `<button type="button" onClick="loadAdminByLimit(${i})">${i}</button>`;
+      $('#pagination').append(divPaginBtn);
+    }
+  }
+
+  // Checkd if active page is not equals to the total number of pages
+  // Displays the '>>' tab to bring users to the last page
+  if (activePage !== totalNumberOfPages) {
+    divPaginBtn = `<button type="button" onClick="loadAdminByLimit(${totalNumberOfPages})">>></button>`;
+    $('#pagination').append(divPaginBtn);
+  }
+}
+
 // loadAllAdmins method to load all the admins in the company
-function loadAllAdmins() {
+function loadAllAdmins(activePage) {
   // call the web service endpoint for retrieving all admins
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
@@ -54,10 +108,31 @@ function loadAllAdmins() {
 
     // If data retrival is successful
     success(data) {
-      // To refresh the content within admin-list
+      const totalNumberOfPages = Math.ceil(data.length / 6);
+
+      pageBtnCreate(totalNumberOfPages, activePage);
+    },
+
+    // Error if otherwise
+    error(errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
+    },
+  });
+}
+
+function loadAdminByLimit(pageNumber) {
+  $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
+    url: `${backEndUrl}/admin/${pageNumber}`,
+    type: 'GET',
+
+    contentType: 'application/json; charset=utf-8',
+
+    success(data) {
       $('#admin-list').html('');
 
-      // for loop to display each object
       for (let i = 0; i < data.length; i++) {
         const Admin = data[i];
 
@@ -70,26 +145,16 @@ function loadAllAdmins() {
           AdminType: Admin.AdminType,
         };
 
-        // calling createRow to display values row by row
-        const newCard = createRow(RowInfo);
-        // appeding row to classTable
-        $('#admin-list').append(newCard);
+        const newRow = createRow(RowInfo);
+        $('#admin-list').append(newRow);
       }
+      loadAllAdmins(pageNumber);
     },
 
-    // Error if otherwise
     error(xhr, textStatus, errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -134,89 +199,10 @@ function loadAnAdmin(id) {
     },
 
     // Error if otherwise
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      // if (xhr.status == 201) {
-      //     errMsg = "The id doesn't exist "
-      // }
-      // $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-    },
-  });
-}
-
-// Add the admin
-function addUpdateAdmin() {
-  // extract values for add pop-up
-  const FirstName = $('#firstName').html();
-  const LastName = $('#lastName').html();
-  const email = $('#adminEmail').html();
-  const password = $('#AdminPwdInput').val();
-  const adminType = $('#changeAdminType').val();
-
-  // store all extracted info into requestBody
-  const requestBody = {
-    LastName,
-    FirstName,
-    AdminPwd: password,
-    AdminEmail: email,
-    AdminType: adminType,
-  };
-
-  // Converts requestBody into a String
-  const reqBody = JSON.stringify(requestBody);
-
-  // call the method to post data
-  $.ajax({
-    headers: { authorization: `Bearer ${tmpToken}` },
-    url: `${backEndUrl}/admin`,
-    type: 'POST',
-    data: reqBody,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
-      // set and call confirmation message
-      const msg = 'Successfully added!';
-      new Noty({
-        timeout: '5000',
-        type: 'success',
-        layout: 'topCenter',
-        theme: 'sunset',
-        text: msg,
-      }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      // Refresh the admin table
-      loadAllAdmins();
-    },
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      // set and call error message
-      let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status === 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status === 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
+    error(errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      new Noty({
-        timeout: '5000',
-        type: 'error',
-        layout: 'topCenter',
-        theme: 'sunset',
-        text: errMsg,
-      }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
     },
   });
 }
@@ -243,9 +229,7 @@ function updateAdmin() {
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data) {
-      console.log(data);
-      console.log('Update Successful');
+    success() {
       const msg = 'Update Successfull';
       new Noty({
         timeout: '5000',
@@ -254,11 +238,12 @@ function updateAdmin() {
         theme: 'sunset',
         text: msg,
       }).show();
+      $('#AdminPwdInput').val('');
       // Refresh admin table
       loadAllAdmins();
     },
-    error(xhr, textStatus, errorThrown) {
-      const msg = 'Update UnSuccessfull';
+    error() {
+      const msg = 'Update UnSuccessful!';
       new Noty({
         timeout: '5000',
         type: 'error',
@@ -266,14 +251,6 @@ function updateAdmin() {
         theme: 'sunset',
         text: msg,
       }).show();
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
     },
   });
 }
@@ -287,10 +264,9 @@ function deleteAdmin(id) {
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
     // if data inserted
-    success(data, textStatus, xhr) {
-      console.log('Delete Successful');
+    success(xhr) {
       // Refresh admin table
-      loadAllAdmins();
+      loadAdminByLimit(1);
 
       if (xhr.status === 404) {
         // set and call error message
@@ -314,19 +290,13 @@ function deleteAdmin(id) {
           theme: 'sunset',
           text: msg,
         }).show();
-
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(xhr) {
       // set and call error message
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';
@@ -371,10 +341,7 @@ function addAdmin() {
     data: reqtsBody,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+    success() {
       // set and call confirmation message
       const msg = 'Successfully added!';
       new Noty({
@@ -384,34 +351,23 @@ function addAdmin() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+      $('#addAdminFirstNameInput').val('');
+      $('#addAdminLastNameInput').val('');
+      $('#addAdminEmailInput').val('');
+      $('#addAdminPasswordInput').val('');
+      $('#addAdminTypeInput').val('Admin');
       // Refresh the admin table
-      loadAllAdmins();
+      loadAdminByLimit(1);
     },
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+    error(xhr) {
       // set and call error message
-      let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else if (xhr.status === 400) {
-        errMsg = ' Input not accepted';
-      } else if (xhr.status === 406) {
-        errMsg = ' Input not accepted';
-      } else {
-        errMsg = 'There is some other issues here';
-      }
       new Noty({
         timeout: '5000',
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: errMsg,
+        text: xhr.responseText,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
     },
   });
 }
@@ -419,24 +375,12 @@ function addAdmin() {
 // Load datas when page refresh or loads for the first time
 $(document).ready(() => {
   // LoadAllAdmins() called when page is loaded or refreshed
-  loadAllAdmins();
+  loadAdminByLimit(1);
 
   // Add Admin button
   $('#addAdminBtn').click(() => {
     // addAdmin()function called upon click event
     addAdmin();
-  });
-
-  // Update Admin Type button
-  $('#editAdminTypeBtn').click(() => {
-    // Admin Id extracted to be passed into deleteAdmin() function
-    const id = $('#editAdminID').val();
-
-    // Process of updating admin type
-    addUpdateAdmin();
-    deleteAdmin(id);
-    // Refresh the admin table
-    loadAllAdmins();
   });
 
   // Update Admin Password button

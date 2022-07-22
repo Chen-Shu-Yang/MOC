@@ -30,6 +30,32 @@ const superAdmin = {
     });
   },
 
+  // Get Admin per page
+  pageAdmin(pageNumber, callback) {
+    // the page number clicked
+    // eslint-disable-next-line radix
+    const pageNumberInt = parseInt(pageNumber);
+    // Number of Admin showed per page
+    const limitPerPage = 6;
+    // Number of Admin to skip based on the page number so that
+    // previously shown data will not be displayed
+    const numberOfValueToSkip = (pageNumberInt - 1) * 6;
+    // sql statement to limit and skip
+    const sql = 'SELECT * FROM heroku_6b49aedb7855c0b.admin LIMIT ? OFFSET ?;';
+    // values to pass for the query number of Admin per page and number of employee to skip
+    const values = [limitPerPage, numberOfValueToSkip];
+    // query
+    pool.query(sql, values, (err, result) => {
+      // if error send error message
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // else send result
+      return callback(null, result);
+    });
+  },
+
   // get all Admins and Super admins
   getAllAdmins(callback) {
     // sql query statement

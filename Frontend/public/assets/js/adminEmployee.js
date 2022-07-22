@@ -2,7 +2,6 @@
 /* eslint-disable func-names */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
-/* eslint-disable no-console */
 
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
@@ -18,37 +17,20 @@ if (tmpToken === null || tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 function createRow(cardInfo) {
-  console.log(cardInfo);
-
   const card = `
-      <div class="employee-card">
-          <div class="employee-id">
-              <img src="${cardInfo.EmployeeImgUrl}" alt="">
-              <span>${cardInfo.EmployeeName}</span>
-          </div>
-          <p class="employee-des">${cardInfo.EmployeeDes}</p>
-          <div class="employee-links">
-              <a href="" data-toggle="modal" data-target="#skillsetsModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">View Skillsets</a>
-              <a href="" data-toggle="modal" data-target="#viewEmpAvailabilityModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">View Availability</a>
-          </div>
-          <div class="employee-btn">
-              <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Edit</button>
-              <button type="button" class="delete-btn" data-toggle="modal" data-target="#deleteModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Delete</button>
-          
-          </div>
-      </div>
-`;
-  return card;
-}
-
-function createSkillRow(cardInfo) {
-  const card = `
-    <div class="skillsets">
-      <div class="skillset-name">
-        <i class="fa-solid fa-check"></i>
-          <span>${cardInfo}</span>
-      </div>
-      <i class="fa-solid fa-trash-can" onclick="deleteSkills('${cardInfo}')"></i>
+    <div class="employee-card">
+        <div class="employee-id">
+          <img src="${cardInfo.EmployeeImgUrl}" alt="">
+          <span>${cardInfo.EmployeeName}</span>
+        </div>
+        <p class="employee-des">${cardInfo.EmployeeDes}</p>
+        <div class="employee-links">
+          <a href="" data-toggle="modal" data-target="#viewEmpAvailabilityModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">View Availability</a>
+        </div>
+        <div class="employee-btn">
+          <button type="button" class="edit-btn" data-toggle="modal" data-target="#editModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Edit</button>
+          <button type="button" class="delete-btn" data-toggle="modal" data-target="#deleteModal" onClick="loadAnEmployee(${cardInfo.EmployeeID})">Delete</button>
+        </div>
     </div>
   `;
   return card;
@@ -118,27 +100,16 @@ function loadAllEmployees(activePage) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       userSearchChar = data;
       const totalNumberOfPages = Math.ceil(data.length / 6);
 
       pageBtnCreate(totalNumberOfPages, activePage);
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -152,9 +123,6 @@ function loadEmployeeByLimit(pageNumber) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       $('#employeeListing').html('');
 
       for (let i = 0; i < data.length; i++) {
@@ -168,27 +136,16 @@ function loadEmployeeByLimit(pageNumber) {
           Skillsets: employee.Skillsets,
         };
 
-        console.log('---------Card INfo data pack------------');
-        console.log(RowInfo);
-
         const newRow = createRow(RowInfo);
         $('#employeeListing').append(newRow);
       }
       loadAllEmployees(pageNumber);
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -299,7 +256,7 @@ function loadEmployeeAvailability() {
 
 // eslint-disable-next-line no-unused-vars
 function loadAnEmployee(id) {
-  console.log(id);
+
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/oneemployee/${id}`,
@@ -307,9 +264,6 @@ function loadAnEmployee(id) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
 
       const employee = data[0];
 
@@ -321,18 +275,8 @@ function loadAnEmployee(id) {
         Skillsets: employee.Skillsets,
       };
 
-      const skillsString = RowInfo.Skillsets;
-      skillsArray = skillsString.split(',');
-      $('#skillsModalContent').html('');
-
-      for (let i = 0; i < skillsArray.length; i++) {
-        const newRow = createSkillRow(skillsArray[i]);
-        $('#skillsModalContent').append(newRow);
-      }
-
       document.getElementById('NewProfilePreview').style.backgroundImage = `url(${RowInfo.EmployeeImg})`;
       $('#editEmployeeID').val(RowInfo.EmployeeID);
-      $('#employeeSkillsID').val(RowInfo.EmployeeID);
       $('#availEmployeeID').val(RowInfo.EmployeeID);
       $('#deleteEmployeeID').val(RowInfo.EmployeeID);
       $('#editEmployeeName').val(RowInfo.Name);
@@ -341,15 +285,10 @@ function loadAnEmployee(id) {
       $('#editProfilePicLink').val(RowInfo.EmployeeImg);
     },
 
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
-
-      // if (xhr.status == 201) {
-      //     errMsg = "The id doesn't exist "
-      // }
+    error(errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
     },
   });
 }
@@ -368,7 +307,6 @@ function updateEmployee() {
   const skillSet = $('#editEmployeeSkills').val();
   // Get the initial image url
   const initialImg = $('#NewProfilePreview').css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
-  console.log(initialImg);
   // create a variable called webFormData and call the FormData
   // instance all field value to be added will be appended to webFormData
   const webFormData = new FormData();
@@ -402,10 +340,7 @@ function updateEmployee() {
     // pass enctype as multipart/formdata
     enctype: 'multipart/form-data',
     // success method
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+    success(xhr) {
       // set value to empty after getting value
       $('#editEmployeeName').val('');
       $('#editEmployeeDes').val('');
@@ -414,7 +349,7 @@ function updateEmployee() {
 
       // succcess message return
       if (xhr.status === 201) {
-        msg = 'Successfully added!';
+        msg = 'Successfully Updated!';
         new Noty({
           timeout: '3000',
           type: 'success',
@@ -427,13 +362,7 @@ function updateEmployee() {
       }
     },
     // error method
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+    error(xhr) {
       // error message return
       if (xhr.status === 500) {
         let errMsg = '';
@@ -448,70 +377,6 @@ function updateEmployee() {
       }
     },
   });
-}
-
-function updateSkills(skills) {
-  const id = $('#employeeSkillsID').val();
-  const EmployeeSkills = skills.toString();
-
-  const extractedData = {
-    EmployeeSkills,
-  };
-
-  // ajax fuction to connect to the backend
-  $.ajax({
-    url: `${backEndUrl}/employees/skills/${id}`,
-    type: 'PUT',
-    contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify(extractedData),
-
-    // success method
-    success() {
-      $('#skillsModalContent').html('');
-      $('#newSkillsInput').val('');
-      for (let x = 0; x < skillsArray.length; x++) {
-        const newRow = createSkillRow(skillsArray[x]);
-        $('#skillsModalContent').append(newRow);
-      }
-
-      new Noty({
-        timeout: '3000',
-        type: 'success',
-        layout: 'topCenter',
-        theme: 'sunset',
-        text: 'Skills list is updated!',
-      }).show();
-    },
-    // error method
-    error(xhr, textStatus, errorThrown) {
-      const msg = 'Skills list not Updated';
-      new Noty({
-        timeout: '3000',
-        type: 'error',
-        layout: 'topCenter',
-        theme: 'sunset',
-        text: msg,
-      }).show();
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
-    },
-  });
-}
-
-// eslint-disable-next-line no-unused-vars
-function deleteSkills(skill) {
-  for (let i = 0; i < skillsArray.length; i++) {
-    if (skillsArray[i] === skill) {
-      skillsArray.splice(i, 1);
-      i--;
-    }
-  }
-
-  updateSkills(skillsArray);
 }
 
 function deleteEmployee(id) {
@@ -554,14 +419,10 @@ function deleteEmployee(id) {
         }).show();
       }
     },
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+    error(xhr) {
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';
@@ -619,11 +480,9 @@ userSearch.addEventListener('keyup', (e) => {
   let RowInfo = {};
   const similarResults = [];
   const searchString = e.target.value.toLowerCase();
-  console.log(searchString);
   $('#pagination').html('');
 
   if (searchString === '') {
-    console.log('if');
     $('#employeeListing').html('');
     loadEmployeeByLimit(1);
   }
@@ -683,9 +542,6 @@ userSearch.addEventListener('keyup', (e) => {
 
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
 
   loadEmployeeByLimit(1);
 
@@ -697,19 +553,6 @@ $(document).ready(() => {
   // Get employee Availability date button
   $('#employeAvailBtn').click(() => {
     loadEmployeeAvailability();
-  });
-
-  // Open add skillsets input
-  $('#addSkillsInputBtn').click(() => {
-    $('.addEmployeeSkills').toggleClass('active');
-  });
-
-  // add skillsets button
-  $('#addSkillsBtn').click(() => {
-    const newSkill = $('#newSkillsInput').val();
-    skillsArray.push(newSkill);
-
-    updateSkills(skillsArray);
   });
 
   // delete button
@@ -759,15 +602,13 @@ function addEmployee() {
     // pass enctype as multipart/formdata
     enctype: 'multipart/form-data',
     // success method
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+    success(xhr) {
       // set value to empty after getting value
       $('#addEmployeeName').val('');
       $('#addEmployeeDes').val('');
       $('#addEmployeeSkills').val('');
       document.getElementById('image').value = '';
+      document.getElementById('ppPreview').style.backgroundImage = `url(../../assets/img/camera-icon.png)`;
       // succcess message return
       if (xhr.status === 201) {
         $('#employeeListing').html('');
@@ -783,13 +624,7 @@ function addEmployee() {
       }
     },
     // error method
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+    error(xhr) {
       // error message return
       if (xhr.status === 500) {
         let errMsg = '';

@@ -866,32 +866,6 @@ app.get('/employee/skills/:id', printDebugInfo, async (req, res) => {
   });
 });
 
-// update employee skills (shuyang)
-app.put('/employees/skills/:id', printDebugInfo, (req, res) => {
-  // extract id from params
-  const EmployeeID = req.params.id;
-  // extract all details needed
-  const { EmployeeSkills } = req.body;
-
-  // calling deleteEmployeeSkills method from admin model
-  Admin.updateEmployeeSkills(EmployeeSkills, EmployeeID, (err, result) => {
-    // if there is no errorsend the following as result
-    if (!err) {
-      res.status(201).send(result);
-    } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-      // send Inappropriate value as return message
-      res.status(406).send('Inappropriate value');
-    } else if (err.code === 'ER_BAD_NULL_ERROR') {
-      // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-      res.status(400).send('Null value not allowed');
-    } else {
-      // else if there is a server error return message
-      res.status(500).send('Internal Server Error');
-    }
-  });
-});
-
 // delete employee
 app.delete('/employee/:employeeId', printDebugInfo, verifyToken, (req, res) => {
   // extract id from params
@@ -1526,6 +1500,41 @@ app.get('/customer', printDebugInfo, verifyToken, async (req, res) => {
 
   // calling getAllCustomer method from admin model
   Admin.getAllCustomer((err, result) => {
+    // if no error send result
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // if error send error message
+      res.status(500).send('Some error');
+    }
+  });
+});
+
+// get customer per page
+app.get('/customer/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+
+  // extract pageNumber from params to determine the page we are at
+  const { pageNumber } = req.params;
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+
+  // calling pageCustomer method from admin model
+  Admin.pageCustomer(pageNumber, (err, result) => {
     // if no error send result
     if (!err) {
       // if id not found detect and return error message
@@ -3571,6 +3580,41 @@ app.get('/admin', printDebugInfo, verifyToken, async (req, res) => {
   });
 });
 
+// get admin per page
+app.get('/admin/:pageNumber', printDebugInfo, verifyToken, async (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+
+  // extract pageNumber from params to determine the page we are at
+  const { pageNumber } = req.params;
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+
+  // calling pageAdmin method from admin model
+  SuperAdmin.pageAdmin(pageNumber, (err, result) => {
+    // if no error send result
+    if (!err) {
+      // if id not found detect and return error message
+      if (result.length === 0) {
+        const output = {
+          Error: 'Id not found',
+        };
+        res.status(404).send(output);
+      } else {
+        // output
+        res.status(200).send(result);
+      }
+    } else {
+      // if error send error message
+      res.status(500).send('Some error');
+    }
+  });
+});
+
 // get an admin
 app.get('/oneadmin/:id', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
@@ -3761,6 +3805,9 @@ app.post('/addAdmin', printDebugInfo, verifyToken, (req, res) => {
           } else if (err.code === 'ER_BAD_NULL_ERROR') {
             // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
             res.status(400).send('Null value not allowed');
+          } else if (err.code === 'ER_DUP_ENTRY') {
+            // if err.code === ER_DUP_ENTRY send Null value not allowed as return message
+            res.status(422).send('This email already has an account');
           } else {
             // else if there is a server error return message
             res.status(500).send('Internal Server Error');
