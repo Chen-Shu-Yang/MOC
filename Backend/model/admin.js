@@ -467,7 +467,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     const sql = `
     INSERT INTO
     heroku_6b49aedb7855c0b.booking (
-    Contract,
+    ContractId,
     ScheduleDate, 
     Status,
     Admin)
