@@ -15,33 +15,8 @@ if (tmpToken === null || tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 
-// errorToast method display the error
-function errorToast(msg) {
-  // error alert div
-  diverror = `
-<div class="alert alert-danger alert-dismissible fade show">
-<strong>Error!</strong>${msg}
-<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
 
-`;
-  // return error alert div
-  return diverror;
-}
 
-// confirmToast method display confiramtion
-function confirmToast(msg) {
-  // confiramtion alert div
-  divConfirmation = `
-<div class="alert alert-success alert-dismissible fade show">
-<strong>${msg}</strong>
-<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-
-`;
-  // return confirmation alert div
-  return divConfirmation;
-}
 // createTable method is to create the table rows
 function createTable(cardInfo) {
   console.log(cardInfo);
@@ -167,7 +142,7 @@ function deleteClassOfService(id) {
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+      
         // to refresh
         $('#classServiceTableBody').html('');
         loadAllClassOfServices();
@@ -183,7 +158,7 @@ function deleteClassOfService(id) {
           text: msg,
         }).show();
 
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
+      
         // to refresh
         $('#classServiceTableBody').html('');
         loadAllClassOfServices();
@@ -209,7 +184,7 @@ function deleteClassOfService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+   
     },
 
   });
@@ -254,7 +229,7 @@ function updateClassOfService() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+ 
       // refresh
       $('#classServiceTableBody').html('');
       loadAllClassOfServices();
@@ -284,7 +259,7 @@ function updateClassOfService() {
       }).show();
       $('#classServiceTableBody').html('');
       loadAllClassOfServices();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+   
     },
   });
 }
@@ -335,7 +310,7 @@ function loadAClassOfService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+  
     },
   });
 }
@@ -383,7 +358,7 @@ function addClassOfService() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+  
     },
     error(xhr, textStatus, errorThrown) {
       console.log(xhr);
@@ -408,7 +383,7 @@ function addClassOfService() {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+   
       $('#classServiceTableBody').html('');
       loadAllClassOfServices();
     },
@@ -498,7 +473,7 @@ function loadAnExtraService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+  
     },
   });
 }
@@ -542,7 +517,7 @@ function addExtraService() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+  
       const post = data;
       console.log(post);
       $('#extraServiceTableBody').html('');
@@ -571,7 +546,7 @@ function addExtraService() {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+   
       $('#extraServiceTableBody').html('');
     },
   });
@@ -616,7 +591,7 @@ function updateExtraService() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+
       // refresh
       $('#extraServiceTableBody').html('');
       loadAllExtraServices();
@@ -645,9 +620,7 @@ function updateExtraService() {
         text: errMsg,
       }).show();
       $('#extraServiceTableBody').html('');
-      // loadAllClassOfServices()
-      // loadAllExtraServices()
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+   
     },
   });
 }
@@ -675,7 +648,7 @@ function deleteExtraService(id) {
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+       
         // to refresh
         $('#extraServiceTableBody').html('');
       } else if (xhr.status === 200) {
@@ -690,8 +663,6 @@ function deleteExtraService(id) {
           text: msg,
         }).show();
 
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
-        // to refresh
         $('#extraServiceTableBody').html('');
         loadAllExtraServices();
       }
@@ -715,7 +686,7 @@ function deleteExtraService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+  
     },
   });
 }
@@ -810,7 +781,7 @@ function loadARate(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+   
     },
   });
 }
@@ -859,8 +830,7 @@ function addRate() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      console.log(data);
+  
     },
     error(xhr, textStatus, errorThrown) {
       console.log(xhr);
@@ -885,7 +855,7 @@ function addRate() {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(10000);
+    
       $('#rateTableBody').html('');
     },
   });
@@ -932,8 +902,8 @@ function updateRate() {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
-      // refresh
+ 
+  
       $('#rateTableBody').html('');
       loadAllRates();
       // loadAllClassOfServices()
@@ -963,9 +933,7 @@ function updateRate() {
         text: errMsg,
       }).show();
       $('#rateTableBody').html('');
-      // loadAllClassOfServices()
-      // loadAllExtraServices()
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+
     },
   });
 }
@@ -993,7 +961,7 @@ function deleteRate(id) {
           theme: 'sunset',
           text: errMsg,
         }).show();
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+     
         // to refresh
         $('#rateTableBody').html('');
       } else if (xhr.status === 200) {
@@ -1008,7 +976,7 @@ function deleteRate(id) {
           text: msg,
         }).show();
 
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
+      
         // to refresh
         // to refresh
         $('#rateTableBody').html('');
@@ -1034,7 +1002,7 @@ function deleteRate(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+
     },
   });
 }
