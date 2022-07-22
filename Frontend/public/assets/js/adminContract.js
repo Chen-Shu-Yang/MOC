@@ -271,10 +271,10 @@ $('#updateContract').click(() => {
       if (data != null) {
         new Noty({
           timeout: '5000',
-          type: 'sucess',
+          type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
-          text: 'added successfully',
+          text: 'Updated',
         }).show();
         // loadAllBookingByLimit(1);
       } else {
