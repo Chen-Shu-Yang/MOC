@@ -254,7 +254,7 @@ function updateCustomer() {
       }).show();
       $('#customerPwdInput').val('');
       $('#customer-list').html('');
-      loadAllCustomers();
+      loadCustomersByLimit(1);
     },
     error(xhr, textStatus, errorThrown) {
       msg = 'Update Unsuccessful';
