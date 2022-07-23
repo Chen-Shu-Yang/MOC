@@ -118,7 +118,7 @@ function loadAllBooking(activePage) {
 
     success(data) {
       console.log('-------response data------');
-
+      userSearchChar = [];
       for (let i = 0; i < data.length; i++) {
         const booking = data[i];
 

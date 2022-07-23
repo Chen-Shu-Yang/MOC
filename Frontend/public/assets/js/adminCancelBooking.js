@@ -109,7 +109,7 @@ function loadAllBookingToBeCancelled(activePage) {
       console.log('-------response data------');
       console.log(data);
       console.log(`LENGTH OF DATA:${data.length}`);
-
+      userSearchChar = [];
       for (let i = 0; i < data.length; i++) {
         const cancelledBooking = data[i];
 

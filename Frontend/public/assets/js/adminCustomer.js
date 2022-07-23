@@ -100,6 +100,7 @@ function loadAllCustomers(activePage) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
+      userSearchChar = [];
       for (let i = 0; i < data.length; i++) {
         const customer = data[i];
 
