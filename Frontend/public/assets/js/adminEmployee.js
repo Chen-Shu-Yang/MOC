@@ -482,17 +482,22 @@ userSearch.addEventListener('keyup', (e) => {
   const searchString = e.target.value.toLowerCase();
   $('#pagination').html('');
 
-  if (searchString === '') {
-    $('#employeeListing').html('');
-    loadEmployeeByLimit(1);
-  }
-
   // eslint-disable-next-line arrow-body-style
-  const filterUsers = userSearchChar.filter((user) => {
+  let filterUsers = userSearchChar.filter((user) => {
     return (
       user.EmployeeName.toLowerCase().includes(searchString)
     );
   });
+
+  // If statement to run the loadCustomersByLimit function
+  // if there are no inputs
+  if (searchString === '') {
+    filterUsers = [];
+    $('#similarSearch').html('');
+    $('#employeeListing').html('');
+    loadEmployeeByLimit(1);
+    return;
+  }
 
   $('#similarSearch').html('');
   $('#employeeListing').html('');
@@ -523,7 +528,7 @@ userSearch.addEventListener('keyup', (e) => {
         EmployeeID: employee.EmployeeID,
         EmployeeName: employee.EmployeeName,
         EmployeeDes: employee.EmployeeDes,
-        EmployeeImg: employee.EmployeeImgUrl,
+        EmployeeImgUrl: employee.EmployeeImgUrl,
         Skillsets: employee.Skillsets,
       };
 
