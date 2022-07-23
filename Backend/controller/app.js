@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 /* eslint-disable linebreak-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
@@ -329,7 +330,6 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
       const message = 'An error occured while checking for existing user verification record';
       res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
     } else {
-      console.log(`Verify Record: ${result}`);
       // Show success
       if (result.length > 0) {
         // user verification record exists so we proceed
@@ -339,7 +339,6 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
 
         if (expiresAt < Date.now()) {
           // record has expired so we delete it
-          console.log('delete record');
           Register.deleteVerificationRecord(userId, (err1, result1) => {
             if (!err1) {
               // calling deleteClass method from admin model
@@ -359,15 +358,10 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
           });
         } else {
           // If success, delete record
-          console.log(`
-          uniqueString: ${uniqueString}
-          hashedUniqueString: ${hashedUniqueString}`);
           // Fist compare the hashed unique string
-
           bcrypt
             .compare(uniqueString, hashedUniqueString)
             .then((result3) => {
-              console.log(result3);
               if (result3) {
                 // Strings match
                 // calling updateSuperAdmin method from SuperAdmin model
@@ -384,7 +378,6 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
                       }
                     });
                   } else {
-                    console.log(err4);
                     const message = 'An error occrured while updating user record to show verified.';
                     res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
                   }
