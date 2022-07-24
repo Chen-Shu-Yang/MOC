@@ -688,7 +688,7 @@ $(document).ready(() => {
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: 'Please ensure the date is different',
+        text: 'Please ensure the Day is different',
       }).show();
 
     }else {

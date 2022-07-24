@@ -46,8 +46,9 @@ $(document).ready(() => {
     const pwdPattern = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
     // pattern for postal code
     const postalCodePattern = new RegExp('[0-9]{6}');
-
+    const phoneNumberPattern = new RegExp('^(6|8|9)\\d{7}$');
     // check if the value is empty
+
     if (customerFirstName === '' && customerAddress === '' && customerEmail === '' && customerPassword === '' && customerNumber === '' && customerPostalCode === '') {
       // show error
       new Noty({
@@ -61,59 +62,71 @@ $(document).ready(() => {
       // check if email and password match with the pattern
       if (emailPattern.test(customerEmail) && pwdPattern.test(customerPassword)) {
         // check if postal code match with the pattern
-        if (postalCodePattern.test(customerPostalCode)) {
-          // compile all the infomation together
-          const info = {
-            FirstName: customerFirstName,
-            LastName: customerLastName,
-            Password: customerPassword,
-            Email: customerEmail,
-            Address: customerAddress,
-            PhoneNumber: customerNumber,
-            PostalCode: customerPostalCode,
+        if (phoneNumberPattern.test(customerNumber)) {
 
-          };
-          // call web service endpoint
-          $.ajax({
-            url: `${backEndUrl}/registerCustomer`,
-            type: 'POST',
-            data: JSON.stringify(info),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success(data) {
-              if (data != null) {
-                // no error move the user to login page
-                window.location.replace(`${frontEndUrl}/login`);
-              } else {
-                // error
-                console.log('Error');
-              }
-            },
-            error(xhr, textStatus, errorThrown) {
-              console.log('Frontend error');
-              console.log('Error in Operation');
-              console.log(`XHR: ${JSON.stringify(xhr)}`);
-              console.log(`Textstatus: ${textStatus}`);
-              console.log(`Errorthorwn${errorThrown}`);
-              new Noty({
-                timeout: '5000',
-                type: 'error',
-                layout: 'topCenter',
-                theme: 'sunset',
-                text: 'Invalid Input',
-              }).show();
-            },
-          });
+          if (postalCodePattern.test(customerPostalCode)) {
+            // compile all the infomation together
+            const info = {
+              FirstName: customerFirstName,
+              LastName: customerLastName,
+              Password: customerPassword,
+              Email: customerEmail,
+              Address: customerAddress,
+              PhoneNumber: customerNumber,
+              PostalCode: customerPostalCode,
+
+            };
+            // call web service endpoint
+            $.ajax({
+              url: `${backEndUrl}/registerCustomer`,
+              type: 'POST',
+              data: JSON.stringify(info),
+              contentType: 'application/json; charset=utf-8',
+              dataType: 'json',
+              success(data) {
+                if (data != null) {
+                  // no error move the user to login page
+                  window.location.replace(`${frontEndUrl}/login`);
+                } else {
+                  // error
+                  console.log('Error');
+                }
+              },
+              error(xhr, textStatus, errorThrown) {
+                console.log('Frontend error');
+                console.log('Error in Operation');
+                console.log(`XHR: ${JSON.stringify(xhr)}`);
+                console.log(`Textstatus: ${textStatus}`);
+                console.log(`Errorthorwn${errorThrown}`);
+                new Noty({
+                  timeout: '5000',
+                  type: 'error',
+                  layout: 'topCenter',
+                  theme: 'sunset',
+                  text: 'Invalid Input',
+                }).show();
+              },
+            });
+          } else {
+            // error if postal code doesn't match with pattern
+            new Noty({
+              timeout: '5000',
+              type: 'error',
+              layout: 'topCenter',
+              theme: 'sunset',
+              text: 'Please use valid Postal code ',
+            }).show();
+          }
         } else {
-          // error if postal code doesn't match with pattern
           new Noty({
             timeout: '5000',
             type: 'error',
             layout: 'topCenter',
             theme: 'sunset',
-            text: 'Please use valid Postal code ',
+            text: 'Please use valid Phone Number',
           }).show();
         }
+
       } else {
         // error if password doesn't match with pattern
         new Noty({

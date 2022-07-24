@@ -18,6 +18,7 @@ if (tmpToken === null || tempAdminID === null) {
   window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
+
 function createRow(cardInfo) {
   console.log(cardInfo);
   console.log('********');
@@ -110,6 +111,12 @@ function pageBtnCreate(totalNumberOfPages, activePage) {
 }
 
 function loadAllBooking(activePage) {
+  const todayDate = new Date();
+  todayDate.setDate(todayDate.getDate());
+  const today = todayDate.toISOString().split('T')[0];
+  document.getElementsByName('datepicker')[0].setAttribute('min', today);
+  $('#datepicker').val(today);
+  
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/booking`,
