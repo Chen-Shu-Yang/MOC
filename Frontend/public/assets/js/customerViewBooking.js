@@ -172,7 +172,7 @@ function cancelBooking(bookingId) {
         type: 'success',
         layout: 'topCenter',
         theme: 'sunset',
-        text: `Booking ID: ${bookingId} have succeccefully deleted`,
+        text: `Booking ID: ${bookingId} has been succeccefully cancelled`,
       }).show();
       
       console.log('updated');
