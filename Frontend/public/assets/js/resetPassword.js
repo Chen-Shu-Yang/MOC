@@ -19,7 +19,6 @@ $(document).ready(() => {
   
   const togglePasswordForgot = document.querySelector('#togglePasswordForget');
   const passwordForgot = document.querySelector('#passwordInput');
-
   togglePasswordForgot.addEventListener('click', function () {
     // toggle the type attribute
     const type = passwordForgot.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -27,7 +26,6 @@ $(document).ready(() => {
     // toggle the eye slash icon
     this.classList.toggle('fa-eye-slash');
   });
-
 
   const togglePasswordForgotConfirm = document.querySelector('#togglePasswordForgetConfirm');
   const passwordForgotConfirm = document.querySelector('#passwordInput2');
@@ -41,6 +39,8 @@ $(document).ready(() => {
   });
 
 
+
+  
   // Login
   $('#confirmPassword').click(() => {
     // data extraction
