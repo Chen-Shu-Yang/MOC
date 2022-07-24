@@ -600,7 +600,7 @@ app.post('/class', printDebugInfo, verifyToken, (req, res) => {
   const { ClassDes } = req.body;
 
   // check if class pricing is float value and execute code
-  if (Number.parseFloat(ClassPricing)) {
+  if (Number.parseFloat(ClassPricing) && ClassPricing > 0) {
     // calling addClass method from admin model
     Admin.addClass(ClassName, ClassPricing, ClassDes, (err, result) => {
       // if no error send results as positive
@@ -640,7 +640,7 @@ app.put('/class/:id', printDebugInfo, verifyToken, (req, res) => {
   const { ClassDes } = req.body;
 
   // check if class pricing is float value and execute code
-  if (Number.parseFloat(ClassPricing)) {
+  if (Number.parseFloat(ClassPricing) && ClassPricing > 0) {
     // calling updateClass method from admin model
     Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, (err, result) => {
       // if there is no errorsend the following as result
@@ -1215,7 +1215,7 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, verifyToken, (req, res) =>
   const BookingID = req.params.bookingIDs;
   // extract all details needed
   const { ScheduleDate } = req.body;
-  console.log('Im HERE');
+
   // check if class pricing is float value and execute code
 
   // calling updateClass method from admin model
@@ -1233,118 +1233,6 @@ app.put('/updateBooking/:bookingIDs', printDebugInfo, verifyToken, (req, res) =>
     } else {
       // else if there is a server error return message
       res.status(500).send('Internal Server Error');
-    }
-  });
-});
-
-// get all class of service
-app.get('/classes', printDebugInfo, async (req, res) => {
-  // calling getAllClassOfService method from admin model
-  Admin.getAllClassOfService((err, result) => {
-    if (!err) {
-      console.log('==================================');
-      console.log('get class work');
-      console.log('==================================');
-      res.status(200).send(result);
-    } else {
-      res.status(500).send('Some error');
-    }
-  });
-});
-
-// get a class of sevice
-app.get('/classes/:id', printDebugInfo, async (req, res) => {
-  // extract id from params
-  const classid = req.params.id;
-
-  // calling getClass method from admin model
-  Admin.getClass(classid, (err, result) => {
-    if (!err) {
-      // if id not found detect and return error message
-      if (result.length === 0) {
-        const output = {
-          Error: 'Id not found',
-        };
-        res.status(404).send(output);
-      } else {
-        // output
-        res.status(200).send(result);
-      }
-    } else {
-      // sending output as error message if there is any server issues
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
-    }
-  });
-});
-
-// update class of service
-app.put('/class/:id', printDebugInfo, verifyToken, (req, res) => {
-  if (req.role == null) {
-    res.status(403).send();
-    return;
-  }
-
-  // extract id from params
-  const classID = req.params.id;
-  // extract all details needed
-  const { ClassName } = req.body;
-  const { ClassPricing } = req.body;
-  const { ClassDes } = req.body;
-
-  // check if class pricing is float value and execute code
-  if (Number.parseFloat(ClassPricing)) {
-    // calling updateClass method from admin model
-    Admin.updateClass(ClassName, ClassPricing, ClassDes, classID, (err, result) => {
-      // if there is no errorsend the following as result
-      if (!err) {
-        res.status(201).send(result);
-      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
-        // send Inappropriate value as return message
-        res.status(406).send('Inappropriate value');
-      } else if (err.code === 'ER_BAD_NULL_ERROR') {
-        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
-        res.status(400).send('Null value not allowed');
-      } else {
-        // else if there is a server error return message
-        res.status(500).send('Internal Server Error');
-      }
-    });
-  } else {
-    // if class pricing is not float
-    res.status(406).send('Inappropriate value');
-  }
-});
-
-// delete class of service
-app.delete('/class/:id', printDebugInfo, verifyToken, (req, res) => {
-  if (req.role == null) {
-    res.status(403).send();
-    return;
-  }
-
-  // extract id from params
-  const { id } = req.params;
-  // calling deleteClass method from admin model
-  Admin.deleteClass(id, (err, result) => {
-    if (!err) {
-      // result.affectedRows indicates that id to be deleted
-      // cannot be found hence send as error message
-      if (result.affectedRows === 0) {
-        res.status(404).send('Item cannot be deleted');
-      } else {
-        // else a postitve result
-        res.status(200).send(result);
-      }
-    } else {
-      // sever error
-      const output = {
-        Error: 'Internal sever issues',
-      };
-      res.status(500).send(output);
     }
   });
 });
@@ -1385,9 +1273,7 @@ app.get('/bookingCancel', printDebugInfo, verifyToken, async (req, res) => {
   Admin.getAllBookingCancel((err, result) => {
     // if no error send result
     if (!err) {
-      console.log('==================================');
-      console.log('Bihh');
-      console.log('==================================');
+   
       res.status(200).send(result);
     } else {
       // if error send error message
@@ -1742,7 +1628,7 @@ app.post('/extraService', printDebugInfo, verifyToken, (req, res) => {
   const { ExtraServicePrice } = req.body;
 
   // check if extra service pricing is float value and execute code
-  if (Number.parseFloat(ExtraServicePrice)) {
+  if (Number.parseFloat(ExtraServicePrice) && ExtraServicePrice > 0) {
     // calling addExtraService method from admin model
     Admin.addExtraService(ExtraServiceName, ExtraServicePrice, (err, result) => {
       // if no error send results as positive
@@ -1782,7 +1668,7 @@ app.put('/extraService/:id', printDebugInfo, verifyToken, (req, res) => {
   const { ExtraServicePrice } = req.body;
 
   // check if extra service pricing is float value and execute code
-  if (Number.parseFloat(ExtraServicePrice)) {
+  if (Number.parseFloat(ExtraServicePrice) && ExtraServicePrice > 0) {
     // calling updateExtraService method from admin model
     Admin.updateExtraService(ExtraServiceName, ExtraServicePrice, ExtraServiceID, (err, result) => {
       // if there is no errorsend the following as result
@@ -1924,7 +1810,7 @@ app.post('/rate', printDebugInfo, verifyToken, (req, res) => {
   const { Package } = req.body;
 
   // check if rate pricing is float value and execute code
-  if (Number.parseFloat(RatePrice)) {
+  if (Number.parseFloat(RatePrice) && RatePrice > 0) {
     // calling addClass method from admin model
     Admin.addRate(RateName, RatePrice, Package, (err, result) => {
       // if no error send results as positive
@@ -1965,7 +1851,7 @@ app.put('/rate/:id', printDebugInfo, verifyToken, (req, res) => {
   const { Package } = req.body;
 
   // check if rate pricing is float value and execute code
-  if (Number.parseFloat(RatePrice)) {
+  if (Number.parseFloat(RatePrice) && RatePrice > 0) {
     // calling updateRate method from admin model
     Admin.updateRate(RateName, RatePrice, Package, RatesID, (err, result) => {
       // if there is no errorsend the following as result
