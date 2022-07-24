@@ -1,9 +1,8 @@
-/* eslint-disable no-lonely-if */
 /* eslint-disable linebreak-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
 /* eslint-disable no-plusplus */
-
+/* eslint-disable no-lonely-if */
 // code
 /* eslint-disable no-shadow */
 /* eslint-disable no-undef */
@@ -93,13 +92,22 @@ app.get('/', (req, res) => {
 // forgetPassword
 app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
   const { email } = req.body;
+
   forgetPassword.Verify(email, (err, link, result) => {
-    // mail options
-    const mailOptions = {
-      from: process.env.AUTH_EMAIL,
-      to: email,
-      subject: 'MOC - Forget Password Link',
-      html: `
+    let msg;
+    if (!err) {
+      if (!result) {
+        msg = {
+          Error: 'Invalid login',
+        };
+        res.status(404).send(msg);
+      } else {
+        // mail options
+        const mailOptions = {
+          from: process.env.AUTH_EMAIL,
+          to: email,
+          subject: 'MOC - Forget Password Link',
+          html: `
 
       <div style="background: #F0F2F2;padding: 50px;">
       <div style="background: #fff;padding: 50px;max-width: 500px;margin: auto;text-align: center;">
@@ -121,16 +129,7 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
       </div>
   </div>
    `,
-    };
-
-    let msg;
-    if (!err) {
-      if (!result) {
-        msg = {
-          Error: 'Invalid login',
         };
-        res.status(404).send(msg);
-      } else {
         // eslint-disable-next-line no-use-before-define
         transporter
           .sendMail(mailOptions)

@@ -35,6 +35,10 @@ const forgetPassword = {
         console.log(err);
         return callback(err, null);
       }
+      if (result[0] === undefined) {
+        const error = ' no account';
+        return callback(error, null);
+      }
       const token = jwt.sign(
         {
           // (1)Payload
@@ -51,7 +55,6 @@ const forgetPassword = {
       );
       const link = `${frontEndUrl}/resetPassword/?id=${result[0].CustomerID}&token=${token}`;
       console.log(link);
-
       return callback(null, link, result[0]);
     });
   },
