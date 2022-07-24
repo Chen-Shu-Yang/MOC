@@ -50,7 +50,7 @@ function createRow(cardInfo) {
     <td>
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editBookingModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>
-    <td> <button type="button" id="deleteClassServiceBtn" class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa fa-check"></i></button></td>
+    <td> <button type="button"  onClick="cancelBooking(${cardInfo.bookingID})"  class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa fa-check"></i></button></td>
     <script>   $("button").removeAttr("disabled");</script>
     </tr>
 
@@ -59,6 +59,63 @@ function createRow(cardInfo) {
   return card;
 }
 
+function cancelBooking(id) {
+  console.log(`Booking id to cancel ${id}`);
+  // ajax method to call the method
+  $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
+    url: `${backEndUrl}/cancelBooking/${id}`,
+    type: 'PUT',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success(data, textStatus, xhr) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(data);
+      // set and call confirmation message
+      $('#bookingTableBody').html('');
+      loadAllBooking(1);
+      msg = 'Successfully updated!';
+      new Noty({
+        timeout: '5000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
+      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
+
+      // refresh
+      // $('#classServiceTableBody').html('')
+      // loadAllClassOfServices()
+    },
+    error(xhr, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+      // set and call error message
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Please ensure that your values are accurate';
+      } else if (xhr.status === 400) {
+        errMsg = ' Invalid input ';
+      } else if (xhr.status === 406) {
+        errMsg = ' Invalid input';
+      } else {
+        errMsg = 'There is some other issues here ';
+      }
+      $('#classServiceTableBody').html('');
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    },
+  });
+}
 // Create page tabs
 function pageBtnCreate(totalNumberOfPages, activePage) {
   // Clears pagination section
