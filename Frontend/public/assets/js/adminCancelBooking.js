@@ -109,7 +109,7 @@ function loadAllBookingToBeCancelled(activePage) {
       console.log('-------response data------');
       console.log(data);
       console.log(`LENGTH OF DATA:${data.length}`);
-
+      userSearchChar = [];
       for (let i = 0; i < data.length; i++) {
         const cancelledBooking = data[i];
 
@@ -314,19 +314,21 @@ userSearch.addEventListener('keyup', (e) => {
   // Clear the pagination buttons
   $('#paginationCancel').html('');
 
+  // eslint-disable-next-line arrow-body-style
+  // Filter in the wanted ones and push in to filterBookings array
+  let filterBookings = userSearchChar.filter((customer) => (
+    customer.CustomerName.toLowerCase().includes(searchString)
+  ));
+
   // If statement to run the loadAllBookingBtLimit function
   // if there are no inputs
   if (searchString === '') {
-    console.log('if');
+    filterBookings = [];
+    $('#similarSearch').html('');
     $('#bookingCancelTableBody').html('');
-    loadAllBookingByLimit(1);
+    loadAllBookingToBeCancelledByLimit(1);
+    return;
   }
-
-  // eslint-disable-next-line arrow-body-style
-  // Filter in the wanted ones and push in to filterBookings array
-  const filterBookings = userSearchChar.filter((customer) => (
-    customer.CustomerName.toLowerCase().includes(searchString)
-  ));
 
   // Clear the previous returned results in the containers
   $('#similarSearch').html('');

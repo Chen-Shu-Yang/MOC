@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
 /* eslint-disable no-plusplus */
-
+/* eslint-disable no-lonely-if */
 // code
 /* eslint-disable no-shadow */
 /* eslint-disable no-undef */
@@ -92,13 +92,22 @@ app.get('/', (req, res) => {
 // forgetPassword
 app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
   const { email } = req.body;
+
   forgetPassword.Verify(email, (err, link, result) => {
-    // mail options
-    const mailOptions = {
-      from: process.env.AUTH_EMAIL,
-      to: email,
-      subject: 'MOC - Forget Password Link',
-      html: `
+    let msg;
+    if (!err) {
+      if (!result) {
+        msg = {
+          Error: 'Invalid login',
+        };
+        res.status(404).send(msg);
+      } else {
+        // mail options
+        const mailOptions = {
+          from: process.env.AUTH_EMAIL,
+          to: email,
+          subject: 'MOC - Forget Password Link',
+          html: `
 
       <div style="background: #F0F2F2;padding: 50px;">
       <div style="background: #fff;padding: 50px;max-width: 500px;margin: auto;text-align: center;">
@@ -120,16 +129,7 @@ app.post('/forgetPassword', printDebugInfo, async (req, res, next) => {
       </div>
   </div>
    `,
-    };
-
-    let msg;
-    if (!err) {
-      if (!result) {
-        msg = {
-          Error: 'Invalid login',
         };
-        res.status(404).send(msg);
-      } else {
         // eslint-disable-next-line no-use-before-define
         transporter
           .sendMail(mailOptions)
@@ -329,7 +329,6 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
       const message = 'An error occured while checking for existing user verification record';
       res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
     } else {
-      console.log(`Verify Record: ${result}`);
       // Show success
       if (result.length > 0) {
         // user verification record exists so we proceed
@@ -339,7 +338,6 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
 
         if (expiresAt < Date.now()) {
           // record has expired so we delete it
-          console.log('delete record');
           Register.deleteVerificationRecord(userId, (err1, result1) => {
             if (!err1) {
               // calling deleteClass method from admin model
@@ -359,15 +357,10 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
           });
         } else {
           // If success, delete record
-          console.log(`
-          uniqueString: ${uniqueString}
-          hashedUniqueString: ${hashedUniqueString}`);
           // Fist compare the hashed unique string
-
           bcrypt
             .compare(uniqueString, hashedUniqueString)
             .then((result3) => {
-              console.log(result3);
               if (result3) {
                 // Strings match
                 // calling updateSuperAdmin method from SuperAdmin model
@@ -384,7 +377,6 @@ app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
                       }
                     });
                   } else {
-                    console.log(err4);
                     const message = 'An error occrured while updating user record to show verified.';
                     res.redirect(`${frontEndUrl}/user/verified?error=true&message=${message}`);
                   }
@@ -524,7 +516,7 @@ app.post('/login', printDebugInfo, async (req, res, next) => {
     } else if (err === 'NO_ACCOUNTS_FOUND') {
       res.status(401).send('Wrong Username or Password!');
     } else if (err === 'CUSTOMER_SUSPENDED') {
-      res.status(400).send('Your account has been suspended! Please contact us!');
+      res.status(401).send('Your account has been suspended! Please contact us!');
     }
   });
 });

@@ -18,9 +18,6 @@ if (tmpToken === null || tempAdminID === null) {
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
 function createRow(cardInfo) {
-  console.log(cardInfo);
-  console.log(cardInfo.FirstName);
-  console.log(cardInfo.LastName);
   const card = `
         <tr>
             <th scope="row">${cardInfo.FirstName} ${cardInfo.LastName}</th>
@@ -36,8 +33,6 @@ function createRow(cardInfo) {
             </td>
         </tr>
     `;
-    console.log(cardInfo.FirstName);
-    console.log(cardInfo.LastName);
   return card;
 }
 
@@ -105,6 +100,7 @@ function loadAllCustomers(activePage) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
+      userSearchChar = [];
       for (let i = 0; i < data.length; i++) {
         const customer = data[i];
 
@@ -254,7 +250,7 @@ function updateCustomer() {
       }).show();
       $('#customerPwdInput').val('');
       $('#customer-list').html('');
-      loadAllCustomers();
+      loadCustomersByLimit(1);
     },
     error(xhr, textStatus, errorThrown) {
       msg = 'Update Unsuccessful';
@@ -382,19 +378,21 @@ userSearch.addEventListener('keyup', (e) => {
   // Clear the pagination buttons
   $('#pagination').html('');
 
+  // eslint-disable-next-line arrow-body-style
+  // Filter in the wanted ones and push in to filterCustomers array
+  let filterCustomers = userSearchChar.filter((customer) => (
+    customer.CustomerName.toLowerCase().includes(searchString)
+  ));
+
   // If statement to run the loadCustomersByLimit function
   // if there are no inputs
   if (searchString === '') {
-    console.log('if');
+    filterCustomers = [];
+    $('#similarSearch').html('');
     $('#customer-list').html('');
     loadCustomersByLimit(1);
+    return;
   }
-
-  // eslint-disable-next-line arrow-body-style
-  // Filter in the wanted ones and push in to filterCustomers array
-  const filterCustomers = userSearchChar.filter((customer) => (
-    customer.CustomerName.toLowerCase().includes(searchString)
-  ));
 
   // Clear the previous returned results in the containers
   $('#similarSearch').html('');
@@ -402,7 +400,6 @@ userSearch.addEventListener('keyup', (e) => {
 
   // Check if filterCustomers is not empty
   if (filterCustomers.length !== 0) {
-    console.log(filterCustomers);
     for (let i = 0; i < filterCustomers.length; i++) {
       const customer = filterCustomers[i];
 
@@ -416,7 +413,6 @@ userSearch.addEventListener('keyup', (e) => {
       };
 
       const newCard = createRow(RowInfo);
-      console.log(newCard);
       $('#customer-list').append(newCard);
     }
   } else {
