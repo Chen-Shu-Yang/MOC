@@ -167,6 +167,9 @@ function cancelBooking(bookingId) {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
+      $('#bookingSection').html('');
+      loadAllBooking();
+      
       new Noty({
         timeout: '5000',
         type: 'success',
@@ -174,8 +177,9 @@ function cancelBooking(bookingId) {
         theme: 'sunset',
         text: `Booking ID: ${bookingId} has been succeccefully cancelled`,
       }).show();
-      
-      console.log('updated');
+
+    
+     
     },
     error(xhr, textStatus, errorThrown) {
       // set and call error message
