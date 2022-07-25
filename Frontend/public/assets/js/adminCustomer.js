@@ -24,7 +24,7 @@ function createRow(cardInfo) {
             <td>${cardInfo.Email}</td>
             <td class="status"><div class="status-color ${cardInfo.Status}"></div>${cardInfo.Status}</td>
             <td>
-                <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadACustomer(${cardInfo.CustomerID})">
+                <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadACustomer(${cardInfo.CustomerID}, '${cardInfo.Status}')">
                 <i class="fa-solid fa-pen"></i>
                 </button>
             </td>
@@ -179,7 +179,18 @@ function loadCustomersByLimit(pageNumber) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function loadACustomer(id) {
+function loadACustomer(id, status) {
+  if (status === 'unverified') {
+    new Noty({
+      timeout: '5000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Editing of this customer is not allowed as account is unverified.',
+    }).show();
+    return;
+  }
+
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/onecustomer/${id}`,
