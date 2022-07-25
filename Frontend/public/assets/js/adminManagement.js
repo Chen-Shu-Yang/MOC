@@ -322,6 +322,21 @@ function addAdmin() {
   const addPassword = $('#addAdminPasswordInput').val();
   const addAdminType = $('#addAdminTypeInput').val();
 
+  //  pattern for email
+  const emailPattern = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
+  
+  // check if email and password match with the pattern
+  if (emailPattern.test(addEmail)) {
+    new Noty({
+      timeout: '5000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Please enter a valid email.',
+    }).show();
+    return;
+  }
+
   // store all extracted info into requestBody
   const requestBody = {
     LastName: addLastName,
