@@ -595,6 +595,31 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     });
   },
 
+  // cancel admin booking
+  completeBookingAdmin(bookingId, callback) {
+    // sql query statement
+
+    const sql = `
+        UPDATE 
+          heroku_6b49aedb7855c0b.booking
+        SET
+          Status = "Completed",
+          cancelled_at = CURDATE()
+        WHERE
+          BookingID = ?;
+      `;
+      // pool query
+    pool.query(sql, [bookingId], (err, result) => {
+      // error
+      if (err) {
+        console.log(err);
+        return callback(err);
+      }
+      // result accurate
+      return callback(null, result);
+    });
+  },
+
   // ---------------------------------------------------
   //                 Feature/adminCustomer
   // ---------------------------------------------------

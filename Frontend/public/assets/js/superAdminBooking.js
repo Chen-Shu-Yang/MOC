@@ -50,7 +50,7 @@ function createRow(cardInfo) {
     <td>
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editBookingModal" onClick="loadABooking(${cardInfo.bookingID})" data-whatever="@mdo"><i class="fa fa-pencil" aria-hidden="true"  disabled></i></button>
     </td>
-    <td> <button type="button"  onClick="cancelBooking(${cardInfo.bookingID})"  class="btn btn-info"  onClick="deleteBooking(${cardInfo.bookingID})"><i class="fa fa-check"></i></button></td>
+    <td> <button type="button"  onClick="completeBooking(${cardInfo.bookingID})"  class="${(cardInfo.Status).includes('Completed') ? 'btn disabled' : (cardInfo.Status).includes('Cancelled') ? 'btn disabled' : 'btn btn-success'} btn btn-info" ><i class="fa fa-check"></i></button></td>
     <script>   $("button").removeAttr("disabled");</script>
     </tr>
 
@@ -59,12 +59,12 @@ function createRow(cardInfo) {
   return card;
 }
 
-function cancelBooking(id) {
-  console.log(`Booking id to cancel ${id}`);
+function completeBooking(id) {
+  console.log(`Booking id to Complete ${id}`);
   // ajax method to call the method
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
-    url: `${backEndUrl}/cancelBooking/${id}`,
+    url: `${backEndUrl}/completeBooking/${id}`,
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
@@ -73,8 +73,8 @@ function cancelBooking(id) {
       console.log(textStatus);
       console.log(data);
       // set and call confirmation message
-      $('#bookingTableBody').html('');
-      loadAllBooking(1);
+      $(bookingTableBody).html('');
+      loadAllBookingByLimit(1);
       msg = 'Successfully updated!';
       new Noty({
         timeout: '5000',

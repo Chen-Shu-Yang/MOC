@@ -1427,6 +1427,37 @@ app.put('/cancelBooking/:id', printDebugInfo, verifyToken, (req, res) => {
     },
   );
 });
+// update cancel booking
+app.put('/completeBooking/:id', printDebugInfo, verifyToken, (req, res) => {
+  if (req.role == null) {
+    res.status(403).send();
+    return;
+  }
+
+  // extract id from params
+  const bookingId = req.params.id;
+  // calling cancelBookingAdmin method from admin model
+  Admin.completeBookingAdmin(
+
+    bookingId,
+    (err, result) => {
+      // if there is no errorsend the following as result
+      if (!err) {
+        res.status(201).send(result);
+      } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
+        // send Inappropriate value as return message
+        res.status(406).send('Inappropriate value');
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // if err.code === ER_BAD_NULL_ERROR send Null value not allowed as return message
+        res.status(400).send('Null value not allowed');
+      } else {
+        // else if there is a server error return message
+        res.status(500).send('Internal Server Error');
+      }
+    },
+  );
+});
 
 // get unassigned available employee
 app.get('/availemployee/:date', printDebugInfo, verifyToken, async (req, res) => {
