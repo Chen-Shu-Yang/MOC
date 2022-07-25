@@ -100,20 +100,9 @@ function loadPossibleHelpers(date) {
 
     error(xhr) {
       if (xhr.status === 404) {
-        new Noty({
-          timeout: '3000',
-          type: 'error',
-          layout: 'topCenter',
-          theme: 'sunset',
-          text: `There are no helpers available on ${date}`,
-        }).show();
-        new Noty({
-          timeout: '6000',
-          type: 'error',
-          layout: 'topCenter',
-          theme: 'sunset',
-          text: 'A helper will still be schedule to your booking',
-        }).show();
+        $('#errorMsg').text(
+          `There are no helpers available on ${date}. A helper will still be schedule to your booking`
+          );
       }
     },
   });
