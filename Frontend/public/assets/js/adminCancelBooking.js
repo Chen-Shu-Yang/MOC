@@ -16,7 +16,7 @@ if (tmpToken === null || tempAdminID === null) {
   window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
-const userSearchChar = [];
+let userSearchChar = [];
 const userSearch = document.getElementById('searchCancelledBookingByCustomer');
 
 function createRow(cardInfo) {
