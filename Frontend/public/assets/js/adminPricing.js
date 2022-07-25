@@ -486,9 +486,10 @@ function addExtraService() {
   const extraServicePrice = $('#extra_service_pricing_add').val();
 
   // setting empty string to the fields after adding
-  $('#class_name_add').val('');
-  $('#class_pricing_add').val('');
-  $('#class_description__add').val('');
+  $('#extra_service_add').val('');
+  $('#extra_service_pricing_add').val('');
+
+
 
   // store all extracted info into requestBody
   const requestBody = {
@@ -548,6 +549,7 @@ function addExtraService() {
       }).show();
    
       $('#extraServiceTableBody').html('');
+      loadAllExtraServices();
     },
   });
 }
@@ -561,8 +563,8 @@ function updateExtraService() {
   const extraServicePrice = $('#extra-service-pricing-update').val();
 
   // set value to empty after getting value
-  $('#class_name_add').val('');
-  $('#class_pricing_add').val('');
+  $('#extra_service_add').val('');
+  $('#extra_service_pricing_add').val('');
 
   // put all data inserted into data2 so that it can be used to parse as json data in the api
   const data2 = {
@@ -620,6 +622,7 @@ function updateExtraService() {
         text: errMsg,
       }).show();
       $('#extraServiceTableBody').html('');
+      loadAllExtraServices();
    
     },
   });
@@ -795,9 +798,9 @@ function addRate() {
   const packages = $('#package_add').val();
 
   // setting empty string to the fields after adding
-  $('#class_name_add').val('');
-  $('#class_pricing_add').val('');
-  $('#class_description__add').val('');
+  $('#rate_add').val('');
+  $('#rate_pricing_add').val('');
+
 
   // store all extracted info into requestBody
   const requestBody = {
@@ -857,6 +860,7 @@ function addRate() {
       }).show();
     
       $('#rateTableBody').html('');
+      loadAllRates();
     },
   });
 }
@@ -933,6 +937,7 @@ function updateRate() {
         text: errMsg,
       }).show();
       $('#rateTableBody').html('');
+      loadAllRates();
 
     },
   });
