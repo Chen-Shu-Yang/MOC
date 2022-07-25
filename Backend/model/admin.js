@@ -739,7 +739,6 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
 
   // delete customer
   deleteCustomer(id, callback) {
-    console.log(` admin.js customer delete method start ${id}`);
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
 
