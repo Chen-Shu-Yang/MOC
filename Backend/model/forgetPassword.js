@@ -5,10 +5,9 @@
 const jwt = require('jsonwebtoken');
 
 const frontEndUrl = 'http://localhost:3001';
-// const backEndUrl = 'http://localhost:5000';
-
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
-// const backEndUrl = 'https://moc-ba.herokuapp.com';
+// const frontEndUrl = 'http://18.142.170.203:3001/';
+
 //= ======================================================
 //              Imports
 //= ======================================================

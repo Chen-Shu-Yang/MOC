@@ -42,6 +42,8 @@ const forgetPassword = require('../model/forgetPassword');
 // const { json } = require('body-parser');
 
 const currentUrl = 'http://localhost:5000';
+// const currentUrl = 'http://18.142.170.203:5000/';
+// const currentUrl = 'https://moc-ba.herokuapp.com/';
 
 // MF function
 /**
@@ -319,6 +321,7 @@ const sendVerificationEmail = ({ _id, email }, res) => {
 app.get('/verify/:userId/:uniqueString', printDebugInfo, async (req, res) => {
   const frontEndUrl = 'http://localhost:3001';
   // const frontEndUrl = 'https://moc-fa.herokuapp.com';
+  // const frontEndUrl = 'http://18.142.170.203:3001/';
 
   const { userId, uniqueString } = req.params;
 
@@ -1277,7 +1280,6 @@ app.get('/bookingCancel', printDebugInfo, verifyToken, async (req, res) => {
   Admin.getAllBookingCancel((err, result) => {
     // if no error send result
     if (!err) {
-   
       res.status(200).send(result);
     } else {
       // if error send error message
