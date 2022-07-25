@@ -38,7 +38,7 @@ function createRow(cardInfo) {
     <td>${cardInfo.ClassName}</td>
     <td>${cardInfo.ScheduleDate}</td>
     <td>${cardInfo.TimeOfService}</td>
-    <td>${cardInfo.EstimatePricing}</td>
+    <td>$${cardInfo.EstimatePricing}</td>
     <td>${cardInfo.Address}</td>
     <td>
     ${(cardInfo.Employee === null) ? '-' : cardInfo.Employee}
@@ -131,7 +131,7 @@ function loadAllBooking(activePage) {
           Address: booking.Address,
           ClassName: booking.ClassName,
           EmployeeName: booking.EmployeeName,
-          EstimatedPricing: booking.EstimatedPricing,
+          EstimatedPricing: (booking.EstimatedPricing).toFixed(2),
           FirstName: booking.FirstName,
           LastName: booking.LastName,
           NoOfBathrooms: booking.NoOfBathrooms,
@@ -200,7 +200,7 @@ function loadAllBookingByLimit(pageNumber) {
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,
             RateName: booking.Rate,
-            EstimatePricing: booking.EstimatedPricing,
+            EstimatePricing: (booking.EstimatedPricing).toFixed(2),
             Address: booking.Address,
             Employee: booking.EmployeeName,
             Status: booking.Status,
@@ -377,7 +377,7 @@ userSearch.addEventListener('keyup', (e) => {
         NoOfRooms: booking.NoOfRooms,
         NoOfBathrooms: booking.NoOfBathrooms,
         RateName: booking.Rate,
-        EstimatePricing: booking.EstimatedPricing,
+        EstimatePricing: parseFloat(booking.EstimatedPricing).toFixed(2),
         Address: booking.Address,
         Employee: booking.EmployeeName,
         Status: booking.Status,

@@ -95,7 +95,7 @@ function loadAllClassOfServices() {
         const RowInfo = {
           classId: classOfService.ClassID,
           className: classOfService.ClassName,
-          classPricing: classOfService.ClassPricing,
+          classPricing: (classOfService.ClassPricing).toFixed(2),
           classDes: classOfService.ClassDes,
         };
         console.log('---------Card INfo data pack------------');
@@ -409,7 +409,7 @@ function loadAllExtraServices() {
         const RowInfo = {
           extraServiceId: extraServices.ExtraServiceID,
           extraServiceName: extraServices.ExtraServiceName,
-          extraServicePrice: extraServices.ExtraServicePrice,
+          extraServicePrice: (extraServices.ExtraServicePrice).toFixed(2),
         };
         console.log('---------Card INfo data pack------------');
         console.log(RowInfo);
@@ -569,7 +569,7 @@ function updateExtraService() {
   // put all data inserted into data2 so that it can be used to parse as json data in the api
   const data2 = {
     ExtraServiceName: extraServiceName,
-    ExtraServicePrice: extraServicePrice,
+    ExtraServicePrice: (extraServicePrice).toFixed(2),
   };
   // ajax method to call the method
   $.ajax({
@@ -715,7 +715,7 @@ function loadAllRates() {
         const RowInfo = {
           ratesId: rates.RatesID,
           rateName: rates.RateName,
-          ratePrice: rates.RatePrice,
+          ratePrice: (rates.RatePrice).toFixed(2),
           package: rates.PackageName,
         };
         console.log('---------Card INfo data pack------------');

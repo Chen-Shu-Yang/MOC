@@ -31,7 +31,7 @@ function createRow(cardInfo) {
     <td>${cardInfo.ClassName}</td>
     <td>${cardInfo.StartDate}</td>
     <td>${cardInfo.TimeOfService}</td>
-    <td>${cardInfo.EstimatePricing}</td>
+    <td>$${cardInfo.EstimatePricing}</td>
     <td>${cardInfo.Address}</td>
     <td>
     ${(cardInfo.Employee === null) ? '-' : cardInfo.Employee}
@@ -178,7 +178,7 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,
             RateName: booking.Rate,
-            EstimatePricing: booking.EstimatedPricing,
+            EstimatePricing: (booking.EstimatedPricing).toFixed(2),
             Address: booking.Address,
             Employee: booking.EmployeeName,
             Status: booking.Status,
@@ -352,7 +352,7 @@ userSearch.addEventListener('keyup', (e) => {
         NoOfRooms: cancelledBooking.NoOfRooms,
         NoOfBathrooms: cancelledBooking.NoOfBathrooms,
         RateName: cancelledBooking.Rate,
-        EstimatePricing: cancelledBooking.EstimatedPricing,
+        EstimatePricing: parseFloat(booking.EstimatedPricing).toFixed(2),
         Address: cancelledBooking.Address,
         Employee: cancelledBooking.EmployeeName,
         Status: cancelledBooking.Status,
