@@ -50,7 +50,7 @@ $(document).ready(() => {
     //  pattern for pasword
     const pwdPattern = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
     // pattern for postal code
-    const postalCodePattern = new RegExp('[0-9]{6}');
+    const postalCodePattern = new RegExp('^[0-9]{6}$');
     const phoneNumberPattern = new RegExp('^(6|8|9)\\d{7}$');
     // check if the value is empty
 
