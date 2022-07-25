@@ -252,6 +252,7 @@ const Admin = {
     EmployeeImgUrl,
     EmployeeSkills,
     id,
+    MobileNo,
     callback,
   ) {
     // sql query statement
@@ -263,7 +264,8 @@ const Admin = {
         EmployeeDes=?,
         EmployeeImageCloudinaryFileId=?,
         EmployeeImgUrl=?,
-        Skillsets=?
+        Skillsets=?,
+        MobileNo=?
       WHERE
         EmployeeID=?;
     `;
@@ -274,6 +276,7 @@ const Admin = {
       EmployeeImageCloudinaryFileId,
       EmployeeImgUrl,
       EmployeeSkills,
+      MobileNo,
       id,
     ], (err, result) => {
       // error
@@ -329,10 +332,25 @@ const Admin = {
     EmployeeImgageCloudinaryFileId,
     EmployeeImageUrl,
     Skillsets,
+    MobileNo,
     callback,
   ) {
     // sql statement to insert new employee
-    const sql = 'INSERT INTO heroku_6b49aedb7855c0b.employee (EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, Skillsets) VALUES (?,?,?,?,?);';
+    const sql = `
+      INSERT INTO 
+        heroku_6b49aedb7855c0b.employee 
+        (
+          EmployeeName,
+          EmployeeDes,
+          EmployeeImageCloudinaryFileId,
+          EmployeeImgUrl,
+          Skillsets,
+          MobileNo
+        ) 
+      VALUES
+        (?,?,?,?,?,?);
+    `;
+
     // pool query
     pool.query(sql, [
       EmployeeName,
@@ -340,6 +358,7 @@ const Admin = {
       EmployeeImgageCloudinaryFileId,
       EmployeeImageUrl,
       Skillsets,
+      MobileNo,
     ], (err, result) => {
       // error
       if (err) {

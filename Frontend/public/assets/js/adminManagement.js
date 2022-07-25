@@ -325,7 +325,7 @@ function addAdmin() {
   //  pattern for email
   const emailPattern = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
   
-  // check if email and password match with the pattern
+  // check if email match with the pattern
   if (emailPattern.test(addEmail)) {
     new Noty({
       timeout: '5000',

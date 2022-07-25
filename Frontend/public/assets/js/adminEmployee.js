@@ -12,10 +12,12 @@ let userSearchChar = [];
 const userSearch = document.getElementById('searchEmployee');
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
+
 if (tmpToken === null || tempAdminID === null) {
   window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
+
 function createRow(cardInfo) {
   const card = `
     <div class="employee-card">
@@ -273,6 +275,7 @@ function loadAnEmployee(id) {
         Description: employee.EmployeeDes,
         EmployeeImg: employee.EmployeeImgUrl,
         Skillsets: employee.Skillsets,
+        MobileNo: employee.MobileNo,
       };
 
       document.getElementById('NewProfilePreview').style.backgroundImage = `url(${RowInfo.EmployeeImg})`;
@@ -283,6 +286,7 @@ function loadAnEmployee(id) {
       $('#editEmployeeDes').val(RowInfo.Description);
       $('#editEmployeeSkills').val(RowInfo.Skillsets);
       $('#editProfilePicLink').val(RowInfo.EmployeeImg);
+      $('#editEmployeePhone').val(RowInfo.MobileNo);
     },
 
     error(errorThrown) {
@@ -305,6 +309,22 @@ function updateEmployee() {
   const employeeDes = $('#editEmployeeDes').val();
   // get value from skill set field
   const skillSet = $('#editEmployeeSkills').val();
+  // get value from employee phone field
+  const MobileNo = $('#editEmployeePhone').val();
+  //  pattern for Mobile No
+  const phoneNumberPattern = new RegExp('^(6|8|9)\\d{7}$');
+  // check if Mobile match with the pattern
+  if (!phoneNumberPattern.test(MobileNo)) {
+    new Noty({
+      timeout: '5000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Please enter a valid Mobile Number.',
+    }).show();
+    return;
+  }
+
   // Get the initial image url
   const initialImg = $('#NewProfilePreview').css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
   // create a variable called webFormData and call the FormData
@@ -316,6 +336,8 @@ function updateEmployee() {
   webFormData.append('employeeDes', employeeDes);
   // webFormData.append method to append skillSet to the key of skillSet
   webFormData.append('skillSet', skillSet);
+  // webFormData.append method to append MobileNo to the key of MobileNo
+  webFormData.append('MobileNo', MobileNo);
   // webFormData.append method to append initialImg to the key of initialImg
   webFormData.append('initialImg', initialImg);
   // webFormData.append method to append image.files[0] to the key of image
@@ -340,26 +362,25 @@ function updateEmployee() {
     // pass enctype as multipart/formdata
     enctype: 'multipart/form-data',
     // success method
-    success(xhr) {
+    success() {
       // set value to empty after getting value
       $('#editEmployeeName').val('');
       $('#editEmployeeDes').val('');
       $('#editEmployeeSkills').val('');
+      $('#editEmployeePhone').val('');
       document.getElementById('image_edit').value = '';
 
       // succcess message return
-      if (xhr.status === 201) {
-        msg = 'Successfully Updated!';
-        new Noty({
-          timeout: '3000',
-          type: 'success',
-          layout: 'topCenter',
-          theme: 'sunset',
-          text: msg,
-        }).show();
-        $('#employeeListing').html('');
-        loadEmployeeByLimit(1);
-      }
+      msg = 'Successfully Updated!';
+      new Noty({
+        timeout: '3000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: msg,
+      }).show();
+      $('#employeeListing').html('');
+      loadEmployeeByLimit(1);
     },
     // error method
     error(xhr) {
@@ -578,6 +599,22 @@ function addEmployee() {
   const employeeDes = $('#addEmployeeDes').val();
   // get value from skill set field
   const skillSet = $('#addEmployeeSkills').val();
+  // get value from MobileNo set field
+  const MobileNo = $('#addEmployeePhone').val();
+  //  pattern for Mobile No
+  const phoneNumberPattern = new RegExp('^(6|8|9)\\d{7}$');
+  // check if Mobile match with the pattern
+  if (!phoneNumberPattern.test(MobileNo)) {
+    new Noty({
+      timeout: '5000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Please enter a valid Mobile Number.',
+    }).show();
+    return;
+  }
+
   // create a variable called webFormData and call the FormData
   // instance all field value to be added will be appended to webFormData
   const webFormData = new FormData();
@@ -587,6 +624,8 @@ function addEmployee() {
   webFormData.append('employeeDes', employeeDes);
   // webFormData.append method to append skillSet to the key of skillSet
   webFormData.append('skillSet', skillSet);
+  // webFormData.append method to append MobileNo to the key of MobileNo
+  webFormData.append('MobileNo', MobileNo);
   // webFormData.append method to append image.files[0] to the key of image
   webFormData.append('image', image.files[0]);
   // ajax fuction to connect to the backend
@@ -612,21 +651,19 @@ function addEmployee() {
       $('#addEmployeeName').val('');
       $('#addEmployeeDes').val('');
       $('#addEmployeeSkills').val('');
+      $('#addEmployeePhone').val('');
       document.getElementById('image').value = '';
       document.getElementById('ppPreview').style.backgroundImage = `url(../../assets/img/camera-icon.png)`;
       // succcess message return
-      if (xhr.status === 201) {
-        $('#employeeListing').html('');
-        loadEmployeeByLimit(1);
-        msg = 'Successfully added!';
-        new Noty({
-          timeout: '3000',
-          type: 'success',
-          layout: 'topCenter',
-          theme: 'sunset',
-          text: msg,
-        }).show();
-      }
+      $('#employeeListing').html('');
+      loadEmployeeByLimit(1);
+      new Noty({
+        timeout: '3000',
+        type: 'success',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: 'Image Uploaded',
+      }).show();
     },
     // error method
     error(xhr) {
