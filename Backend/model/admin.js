@@ -1340,7 +1340,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
  left join heroku_6b49aedb7855c0b.cancel_booking_abnormality as cab
  on cu.CustomerID=cab.CustomerID
  where( b.Status="Cancelled"
-  and Month(b.ScheduleDate)=Month(curdate())-1) and cab.AbnormalityStatus="Unresolved"
+  and Month(b.ScheduleDate)=Month(curdate())) and cab.AbnormalityStatus="Unresolved"
   group by c.Customer;
     
     `;
@@ -1384,7 +1384,7 @@ VALUES
     // sql query statement
     const sql = `
     SELECT * FROM heroku_6b49aedb7855c0b.cancel_booking_abnormality
-where month(created_at)=month(curdate())-1;
+where month(created_at)=month(curdate());
 
     `;
     // pool query
