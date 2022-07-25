@@ -26,7 +26,7 @@ function createRow(cardInfo) {
     <td>${cardInfo.FirstName} ${cardInfo.LastName}</td>
     <td>${cardInfo.Package}</td>
     <td>${cardInfo.ClassName}</td>
-    <td>${cardInfo.StartDate}</td>
+    <td>${cardInfo.ScheduleDate}</td>
     <td>${cardInfo.TimeOfService}</td>
     <td>${cardInfo.EstimatePricing}</td>
     <td>${cardInfo.Address}</td>
@@ -158,7 +158,7 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
             LastName: booking.LastName,
             Package: booking.PackageName,
             ClassName: booking.ClassName,
-            StartDate: booking.StartDate,
+            ScheduleDate: booking.ScheduleDate,
             TimeOfService: booking.TimeOfService,
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,
@@ -325,7 +325,7 @@ userSearch.addEventListener('keyup', (e) => {
         LastName: cancelledBooking.LastName,
         Package: cancelledBooking.PackageName,
         ClassName: cancelledBooking.ClassName,
-        StartDate: cancelledBooking.ScheduleDate,
+        ScheduleDate: cancelledBooking.ScheduleDate,
         TimeOfService: cancelledBooking.TimeOfService,
         NoOfRooms: cancelledBooking.NoOfRooms,
         NoOfBathrooms: cancelledBooking.NoOfBathrooms,
@@ -355,7 +355,7 @@ userSearch.addEventListener('keyup', (e) => {
         LastName: cancelledBooking.LastName,
         Package: cancelledBooking.PackageName,
         ClassName: cancelledBooking.ClassName,
-        StartDate: cancelledBooking.ScheduleDate,
+        ScheduleDate: cancelledBooking.ScheduleDate,
         TimeOfService: cancelledBooking.TimeOfService,
         NoOfRooms: cancelledBooking.NoOfRooms,
         NoOfBathrooms: cancelledBooking.NoOfBathrooms,

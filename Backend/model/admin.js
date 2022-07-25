@@ -511,7 +511,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     // sql query statement
     const sql = `
         SELECT
-        b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+        b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') AS ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
         FROM
         heroku_6b49aedb7855c0b.booking b
         join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractID
@@ -545,7 +545,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     // sql statement to limit and skip
     const sql = `
       SELECT
-      b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+      b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') AS ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
       FROM
       heroku_6b49aedb7855c0b.booking b
       join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractID
