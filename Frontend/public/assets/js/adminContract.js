@@ -274,7 +274,7 @@ $('#updateContract').click(() => {
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
-          text: 'Updated',
+          text: 'Contract updated!',
         }).show();
         // loadAllBookingByLimit(1);
       } else {

@@ -67,6 +67,7 @@ $('#updateProfile').click(() => {
     firstName,
     lastName,
     email,
+    
   };
 
   // call web service endpoint
@@ -84,7 +85,7 @@ $('#updateProfile').click(() => {
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
-          text: 'Added successfully',
+          text: 'Updated! ',
         }).show();
       } else {
         console.log('Error');
@@ -100,7 +101,7 @@ $('#updateProfile').click(() => {
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: 'Please check your the date and ID',
+        text: 'Please check your ID',
       }).show();
     },
   });
@@ -147,7 +148,7 @@ $('#changePassword').click(() => {
                 type: 'success',
                 layout: 'topCenter',
                 theme: 'sunset',
-                text: 'Changed successfully',
+                text: 'Changed successfully!',
               }).show();
             },
             error(xhr) {
