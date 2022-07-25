@@ -982,6 +982,8 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
               const EmployeeDes = req.body.employeeDes;
               // retrieve Skillsets from body
               const Skillsets = req.body.skillSet;
+              // retrieve MobileNo from body
+              const { MobileNo } = req.body;
               // invoking Admin.updateEmployee
               Admin.updateEmployee(
                 EmployeeName,
@@ -990,11 +992,11 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
                 EmployeeImageUrl,
                 Skillsets,
                 employeeId,
+                MobileNo,
                 (err) => {
                   // if there is no error
                   if (!err) {
-                    const output = 'done';
-                    return res.status(201).send(output);
+                    return res.status(201).send();
                   }
                 },
               );
@@ -1007,9 +1009,8 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
             return res.status(500).send(output);
           }
         } else {
-          ImgCheck = true;
           // ImgCheck = true;
-          console.log(ImgCheck);
+          ImgCheck = true;
           // retrieve EmployeeImgageCloudinaryFileId from
           // result.public_id from uploading cloudinary
           EmployeeImgageCloudinaryFileId = output1.EmployeeImageCloudinaryFileId;
@@ -1021,8 +1022,8 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
           const EmployeeDes = req.body.employeeDes;
           // retrieve Skillsets from body
           const Skillsets = req.body.skillSet;
-          console.log(`EmployeeImgageCloudinaryFileId: ${EmployeeImgageCloudinaryFileId}`);
-          console.log(`EmployeeImageUrl: ${EmployeeImageUrl}`);
+          // retrieve MobileNo from body
+          const { MobileNo } = req.body;
           // invoking Admin.updateEmployee
           Admin.updateEmployee(
             EmployeeName,
@@ -1031,11 +1032,11 @@ app.put('/employee/:employeeId', upload.single('image_edit'), printDebugInfo, ve
             EmployeeImageUrl,
             Skillsets,
             employeeId,
+            MobileNo,
             (err) => {
               // if there is no error
               if (!err) {
-                const output = 'done';
-                return res.status(201).send(output);
+                return res.status(201).send();
               }
             },
           );
@@ -1070,6 +1071,8 @@ app.post('/addEmployee', upload.single('image'), verifyToken, async (req, res) =
     const EmployeeDes = req.body.employeeDes;
     // retrieve Skillsets from body
     const Skillsets = req.body.skillSet;
+    // retrieve MobileNo from body
+    const { MobileNo } = req.body;
     // retrieve EmployeeImgageCloudinaryFileId from result.public_id from uploading cloudinary
     const EmployeeImgageCloudinaryFileId = result.public_id;
     // retrieve EmployeeImageUrl from result.secure_url from uploading cloudinary
@@ -1081,6 +1084,7 @@ app.post('/addEmployee', upload.single('image'), verifyToken, async (req, res) =
       EmployeeImgageCloudinaryFileId,
       EmployeeImageUrl,
       Skillsets,
+      MobileNo,
       // eslint-disable-next-line no-shadow
       (err, result) => {
         if (!err) {

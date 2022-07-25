@@ -44,6 +44,10 @@
     background: #8F7752;
 }
 
+.max-width table .status-color.unverified {
+    background: #4269E2;
+}
+
 .max-width table .status-color.inactive {
     background: #D38984;
 }

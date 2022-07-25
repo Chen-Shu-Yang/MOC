@@ -24,7 +24,7 @@ function createRow(cardInfo) {
             <td>${cardInfo.Email}</td>
             <td class="status"><div class="status-color ${cardInfo.Status}"></div>${cardInfo.Status}</td>
             <td>
-                <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadACustomer(${cardInfo.CustomerID})">
+                <button type="button" data-toggle="modal" data-target="#editModal" onclick="loadACustomer(${cardInfo.CustomerID}, '${cardInfo.Status}')">
                 <i class="fa-solid fa-pen"></i>
                 </button>
             </td>
@@ -120,18 +120,10 @@ function loadAllCustomers(activePage) {
       pageBtnCreate(totalNumberOfPages, activePage);
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -162,24 +154,27 @@ function loadCustomersByLimit(pageNumber) {
       loadAllCustomers(pageNumber);
     },
 
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
 
 // eslint-disable-next-line no-unused-vars
-function loadACustomer(id) {
+function loadACustomer(id, status) {
+  if (status === 'unverified') {
+    new Noty({
+      timeout: '5000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Editing of this customer is not allowed as account is unverified.',
+    }).show();
+    return;
+  }
+
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/onecustomer/${id}`,
@@ -204,16 +199,18 @@ function loadACustomer(id) {
       $('#customerStatusInput').val(RowInfo.Status);
     },
 
-    error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
-
-      // if (xhr.status == 201) {
-      //     errMsg = "The id doesn't exist "
-      // }
-      // $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+    error(xhr, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      } else if (xhr.status === 500) {
+        new Noty({
+          timeout: '5000',
+          type: 'success',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: xhr.responseText,
+        }).show();
+      }
     },
   });
 }
@@ -238,8 +235,7 @@ function updateCustomer() {
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data) {
-      console.log(data);
+    success() {
       const msg = 'Update Successful';
       new Noty({
         timeout: '5000',
@@ -252,23 +248,15 @@ function updateCustomer() {
       $('#customer-list').html('');
       loadCustomersByLimit(1);
     },
-    error(xhr, textStatus, errorThrown) {
+    error(xhr) {
       msg = 'Update Unsuccessful';
       new Noty({
         timeout: '5000',
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: msg,
+        text: xhr.responseText,
       }).show();
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
     },
   });
 }
@@ -283,9 +271,9 @@ function deleteCustomer(id) {
     // if data inserted
     success(data, textStatus, xhr) {
       // if id in the params not valid show error
-      console.log('Delete Successful');
+
       $('#customer-list').html('');
-      loadAllCustomers();
+      loadCustomersByLimit(1);
       if (xhr.status === 404) {
         // set and call error message
         // eslint-disable-next-line no-use-before-define
@@ -301,18 +289,13 @@ function deleteCustomer(id) {
           theme: 'sunset',
           text: msg,
         }).show();
-
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
       }
     },
 
-    error(xhr, textStatus, errorThrown) {
-      console.log(textStatus);
-      console.log(errorThrown);
+    error(xhr) {
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';

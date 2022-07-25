@@ -30,7 +30,7 @@ const Register = {
         Status,
         Verified)
         VALUES
-        (?,?,?,?,?,?,?,'active',0);
+        (?,?,?,?,?,?,?,'unverified',0);
     `;
     // pool query
     // eslint-disable-next-line max-len
@@ -139,6 +139,7 @@ const Register = {
     UPDATE 
       heroku_6b49aedb7855c0b.customer
     SET
+      Status = 'active',
       Verified=?
     WHERE
       CustomerID=?;

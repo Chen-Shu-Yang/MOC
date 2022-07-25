@@ -252,6 +252,7 @@ const Admin = {
     EmployeeImgUrl,
     EmployeeSkills,
     id,
+    MobileNo,
     callback,
   ) {
     // sql query statement
@@ -263,7 +264,8 @@ const Admin = {
         EmployeeDes=?,
         EmployeeImageCloudinaryFileId=?,
         EmployeeImgUrl=?,
-        Skillsets=?
+        Skillsets=?,
+        MobileNo=?
       WHERE
         EmployeeID=?;
     `;
@@ -274,6 +276,7 @@ const Admin = {
       EmployeeImageCloudinaryFileId,
       EmployeeImgUrl,
       EmployeeSkills,
+      MobileNo,
       id,
     ], (err, result) => {
       // error
@@ -329,10 +332,25 @@ const Admin = {
     EmployeeImgageCloudinaryFileId,
     EmployeeImageUrl,
     Skillsets,
+    MobileNo,
     callback,
   ) {
     // sql statement to insert new employee
-    const sql = 'INSERT INTO heroku_6b49aedb7855c0b.employee (EmployeeName, EmployeeDes, EmployeeImageCloudinaryFileId, EmployeeImgUrl, Skillsets) VALUES (?,?,?,?,?);';
+    const sql = `
+      INSERT INTO 
+        heroku_6b49aedb7855c0b.employee 
+        (
+          EmployeeName,
+          EmployeeDes,
+          EmployeeImageCloudinaryFileId,
+          EmployeeImgUrl,
+          Skillsets,
+          MobileNo
+        ) 
+      VALUES
+        (?,?,?,?,?,?);
+    `;
+
     // pool query
     pool.query(sql, [
       EmployeeName,
@@ -340,6 +358,7 @@ const Admin = {
       EmployeeImgageCloudinaryFileId,
       EmployeeImageUrl,
       Skillsets,
+      MobileNo,
     ], (err, result) => {
       // error
       if (err) {
@@ -511,7 +530,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     // sql query statement
     const sql = `
         SELECT
-        b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+        b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') AS ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
         FROM
         heroku_6b49aedb7855c0b.booking b
         join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractID
@@ -545,7 +564,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
     // sql statement to limit and skip
     const sql = `
       SELECT
-      b.BookingID,b.Admin,b.ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+      b.BookingID,b.Admin,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') AS ScheduleDate,b.ContractId,cu.FirstName,cu.LastName,e.EmployeeName,b.Status,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
       FROM
       heroku_6b49aedb7855c0b.booking b
       join heroku_6b49aedb7855c0b.contract c on b.ContractId = c.ContractID
@@ -739,7 +758,6 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
 
   // delete customer
   deleteCustomer(id, callback) {
-    console.log(` admin.js customer delete method start ${id}`);
     // sql query statement
     const sql = 'DELETE FROM heroku_6b49aedb7855c0b.customer where CustomerID =?;';
 

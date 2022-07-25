@@ -2,7 +2,6 @@
 /* eslint-disable func-names */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
-/* eslint-disable no-console */
 /* eslint-disable no-else-return */
 /* eslint-disable no-nested-ternary */
 
