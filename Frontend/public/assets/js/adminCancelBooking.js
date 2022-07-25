@@ -20,9 +20,6 @@ let userSearchChar = [];
 const userSearch = document.getElementById('searchCancelledBookingByCustomer');
 
 function createRow(cardInfo) {
-  console.log(cardInfo);
-  console.log('********');
-  console.log(cardInfo.Status);
   const card = `
     <tr>
     <td>${cardInfo.bookingID}</td>
@@ -106,9 +103,6 @@ function loadAllBookingToBeCancelled(activePage) {
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       userSearchChar = [];
       for (let i = 0; i < data.length; i++) {
         const cancelledBooking = data[i];
@@ -136,16 +130,10 @@ function loadAllBookingToBeCancelled(activePage) {
       const totalNumberOfPages = Math.ceil(data.length / 6);
       pageBtnCreate(totalNumberOfPages, activePage);
     },
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -160,9 +148,6 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
     dataType: 'json',
     success(data) {
       if (data != null) {
-        console.log('-------response data------');
-        console.log(data);
-        console.log(`LENGTH OF DATA:${data.length}`);
         $('#bookingCancelTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
@@ -183,8 +168,6 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
             Employee: booking.EmployeeName,
             Status: booking.Status,
           };
-          console.log('---------Card INfo data pack------------');
-          console.log(bookingstbl);
 
           const newRow = createRow(bookingstbl);
           $('#bookingCancelTableBody').append(newRow);
@@ -193,22 +176,24 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
       }
     },
 
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
+    error(xhr, errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      } else if (xhr.status === 500) {
+        new Noty({
+          timeout: '5000',
+          type: 'success',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: xhr.responseText,
+        }).show();
+      }
     },
   });
 }
 
 // eslint-disable-next-line no-unused-vars
 function cancelBooking(id) {
-  console.log(`Booking id to cancel ${id}`);
   // ajax method to call the method
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
@@ -216,10 +201,7 @@ function cancelBooking(id) {
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+    success() {
       // set and call confirmation message
       $('#bookingCancelTableBody').html('');
       loadAllBookingToBeCancelledByLimit(1);
@@ -231,19 +213,15 @@ function cancelBooking(id) {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
 
       // refresh
       // $('#classServiceTableBody').html('')
       // loadAllClassOfServices()
     },
-    error(xhr, textStatus, errorThrown) {
-      console.log(textStatus);
-      console.log(errorThrown);
+    error(xhr) {
       // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -407,8 +385,5 @@ userSearch.addEventListener('keyup', (e) => {
 
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
   loadAllBookingToBeCancelledByLimit(1);
 });
