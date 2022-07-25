@@ -4,10 +4,15 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 
+
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
 // const backEndUrl = 'https://moc-ba.herokuapp.com';
+// const frontEndUrl = 'http://18.142.170.203:3001/';
+// const backEndUrl = 'http://18.142.170.203:5000/';
+
+
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 if (tmpToken === null || tempAdminID === null) {
