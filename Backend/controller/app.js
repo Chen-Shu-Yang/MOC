@@ -3197,6 +3197,7 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
           for (x = 0; x < result.length; x++) {
             AdminEtwo += `${result[x].Email},`;
           }
+          console.log(AdminEtwo);
           const mailOptions = {
             from: process.env.AUTH_EMAIL,
             to: AdminEtwo,
@@ -3208,7 +3209,8 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
                 <div style="text-align: left;">
                   <h1>Booking cancel</h1>
                   <p>Hi,<p>
-                  <p>Booking ID ${bookingId} have been cancelled </p>
+                  <p>Please Note a customer have made a cancellation</p>
+                  <h2>Booking ID  ${bookingId} have been cancelled</h2>
                     <span>Yours Sincerely,</span><br>
                     <span>MOC BOT</span>
                   </p><br>
