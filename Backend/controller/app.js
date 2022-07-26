@@ -3210,7 +3210,7 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
                   <h1>Booking cancel</h1>
                   <p>Hi,<p>
                   <p>Please Note a customer have made a cancellation</p>
-                  <h2>Booking ID  ${bookingId} have been cancelled</h2>
+                  <p><b>Booking ID  ${bookingId} </b>have been cancelled</p>
                     <span>Yours Sincerely,</span><br>
                     <span>MOC BOT</span>
                   </p><br>
