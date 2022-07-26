@@ -306,6 +306,7 @@ function populateAdditonalService() {
           ServiceId: extraservice.ExtraServiceID,
           ServiceName: extraservice.ExtraServiceName,
           ServicePrice: extraservice.ExtraServicePrice,
+          ServiceDes: extraservice.ExtraServiceDes,
         };
         extraServiceArr.push(extraService);
         estAdd += parseFloat(extraservice.ExtraServicePrice);
@@ -411,7 +412,7 @@ function updatedAddServices(i) {
       $('#extraAdditionalService').append(
         `<input class="col-md-1" id="excludeSer${extraServiceArr[x].ServiceId}" onchange="updatedExcludedAddSer('excludeSer${extraServiceArr[x].ServiceId}')" 
         name="excludeExtraservice" type="checkbox"
-        value="${extraServiceArr[x].ServiceName} (Additonal S$${extraServiceArr[x].ServicePrice})">${extraServiceArr[x].ServiceName} (Additonal S$${extraServiceArr[x].ServicePrice})<br>`,
+        value="${extraServiceArr[x].ServiceName} (Additonal S$${extraServiceArr[x].ServicePrice})">${extraServiceArr[x].ServiceName} ${extraServiceArr[x].ServiceDes} (Additonal S$${extraServiceArr[x].ServicePrice})<br>`,
       );
     }
     estTotal += estAdd;
