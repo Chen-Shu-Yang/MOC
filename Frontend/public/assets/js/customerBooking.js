@@ -32,7 +32,7 @@ const extraServiceArr = [];
 const excludedServiceArr = [];
 
 console.log("======= At the start ===================")
-console.log(typeof(estService));
+console.log(typeof (estService));
 console.log("==============================================")
 
 function createCard(cardInfo) {
@@ -179,11 +179,11 @@ function populateClass() {
           $('#listServiceInput').val(services);
           document.getElementById('listService').innerHTML = serviceValue;
           const estServicePricing = parseFloat(cardInfo.ClassPricing);
-           
+
           estService = estServicePricing * 4;
           console.log("===========At service ============")
-           console.log(typeof(estService));
-console.log("===================================")
+          console.log(typeof (estService));
+          console.log("===================================")
           estTotal += estService;
 
 
@@ -257,15 +257,17 @@ function populateRates() {
         if (i === 0) {
           $('#listRates').html(`${rates.RateName}sqft (From S$${rates.RatePrice})`);
           estRate = parseFloat(rates.RatePrice);
-           
+
           console.log("===========At rate ============")
-           console.log(typeof(estRate));
-console.log("===================================")
+          console.log(typeof (estRate));
+          console.log("===================================")
 
           estTotal += estRate;
 
           console.log(estTotal);
-          document.getElementById('estAmount').innerHTML = estTotal;
+          document.getElementById('estAmount').innerHTML = (estTotal).toFixed(2);
+
+
         }
 
         // for loop to generate every data from the database and append to the drop down list
@@ -308,13 +310,13 @@ function populateAdditonalService() {
         };
         extraServiceArr.push(extraService);
         estAdd += parseFloat(extraservice.ExtraServicePrice);
-           
-          console.log("===========At add service ============")
-           console.log(typeof(estAdd));
-console.log("===================================")
 
-console.log(estAdd);
-console.log(typeof(estAdd));
+        console.log("===========At add service ============")
+        console.log(typeof (estAdd));
+        console.log("===================================")
+
+        console.log(estAdd);
+        console.log(typeof (estAdd));
       }
     },
     error(xhr, textStatus, errorThrown) {
@@ -330,7 +332,7 @@ console.log(typeof(estAdd));
 }
 
 function updatedAmt() {
-  document.getElementById('estAmount').innerHTML = estTotal;
+  document.getElementById('estAmount').innerHTML = (estTotal).toFixed(2);
 }
 
 function updatedService(i) {
@@ -686,7 +688,7 @@ $(document).ready(() => {
         theme: 'sunset',
         text: 'Please ensure the date is 3 days after today date',
       }).show();
-    } else if( $('#dayOfService2').is(':visible') &&  serviceDay2 === serviceDay1 ){
+    } else if ($('#dayOfService2').is(':visible') && serviceDay2 === serviceDay1) {
       new Noty({
         timeout: '10000',
         type: 'error',
@@ -695,7 +697,7 @@ $(document).ready(() => {
         text: 'Please ensure the 2 days of service is different',
       }).show();
 
-    }else {
+    } else {
       // Stores the constants into localstorage
       localStorage.setItem('servicePref', servicePref);
       localStorage.setItem('address', address);
