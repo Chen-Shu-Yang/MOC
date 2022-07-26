@@ -22,9 +22,7 @@ if (tmpToken === null || tempAdminID === null) {
 }
 
 function createRow(cardInfo) {
-  console.log(cardInfo);
-  console.log('********');
-  console.log(cardInfo.Status);
+
 
   const card = `
 
@@ -126,7 +124,7 @@ function loadAllBooking(activePage) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      console.log('-------response data------');
+      
       
       for (let i = 0; i < data.length; i++) {
         const booking = data[i];
@@ -180,9 +178,7 @@ function loadAllBookingByLimit(pageNumber) {
     dataType: 'json',
     success(data) {
       if (data != null) {
-        console.log('-------response data------');
-        console.log(data);
-        console.log(`LENGTH OF DATA:${data.length}`);
+
         $('#bookingTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
@@ -230,7 +226,7 @@ function loadAllBookingByLimit(pageNumber) {
   });
 }
 function completeBooking(id) {
-  console.log(`Booking id to Complete ${id}`);
+
   // ajax method to call the method
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
@@ -239,9 +235,7 @@ function completeBooking(id) {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
+  
       // set and call confirmation message
       $(bookingTableBody).html('');
       loadAllBookingByLimit(1);
@@ -255,9 +249,6 @@ function completeBooking(id) {
       }).show();
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
 
-      // refresh
-      // $('#classServiceTableBody').html('')
-      // loadAllClassOfServices()
     },
     error(xhr, textStatus, errorThrown) {
       console.log(textStatus);
@@ -297,9 +288,7 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
     dataType: 'json',
     success(data) {
       if (data != null) {
-        console.log('-------response data------');
-        console.log(data);
-        console.log(`LENGTH OF DATA:${data.length}`);
+   
         $('#bookingTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
@@ -320,8 +309,7 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
             Employee: booking.EmployeeName,
             Status: booking.Status,
           };
-          console.log('---------Card INfo data pack------------');
-          console.log(bookingstbl);
+    
 
           const newRow = createRow(bookingstbl);
           $('#bookingTableBody').append(newRow);
@@ -491,19 +479,13 @@ function loadABooking(bookingID) {
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
-      // if the code works
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       const booking = data[0];
       // extract data information
       const RowInfo = {
         bookingID: booking.BookingID,
         ScheduleDate: booking.ScheduleDate,
       };
-      console.log('---------Card INfo data pack------------');
-      console.log(RowInfo);
-      console.log('---------------------');
+ 
       // updating extracted values to update pop up
       $('#booking-id-update').val(RowInfo.bookingID);
       $('#datePicker').val(RowInfo.ScheduleDate);
@@ -543,28 +525,13 @@ $('#addNewBooking').click(() => {
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success(data) {
-        console.log(data);
-        if (data != null) {
           new Noty({
             timeout: '5000',
-            type: 'Success',
+            type: 'success',
             layout: 'topCenter',
             theme: 'sunset',
-            text: `Booking ${id} added`,
+            text: 'Profile updated! ',
           }).show();
-
-          loadAllBookingByLimit(1);
-          console.log(id+'Hiiiiiiiiiiiiiiiiiiiiiiiiiii');
-        } else {
-          new Noty({
-            timeout: '5000',
-            type: 'error',
-            layout: 'topCenter',
-            theme: 'sunset',
-            text: `Booking ${id} not added`,
-          }).show();
-          console.log('Bye');
-        }
       },
       error(xhr, textStatus, errorThrown) {
         console.log('Error in Operation');
