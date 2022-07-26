@@ -116,7 +116,7 @@ function loadAllBooking(activePage) {
   const today = todayDate.toISOString().split('T')[0];
   document.getElementsByName('datepicker')[0].setAttribute('min', today);
   $('#datepicker').val(today);
-  
+
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/booking`,
@@ -124,8 +124,8 @@ function loadAllBooking(activePage) {
     contentType: 'application/json; charset=utf-8',
 
     success(data) {
-      
-      
+
+
       for (let i = 0; i < data.length; i++) {
         const booking = data[i];
 
@@ -235,7 +235,7 @@ function completeBooking(id) {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-  
+
       // set and call confirmation message
       $(bookingTableBody).html('');
       loadAllBookingByLimit(1);
@@ -288,7 +288,7 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
     dataType: 'json',
     success(data) {
       if (data != null) {
-   
+
         $('#bookingTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
@@ -309,7 +309,7 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
             Employee: booking.EmployeeName,
             Status: booking.Status,
           };
-    
+
 
           const newRow = createRow(bookingstbl);
           $('#bookingTableBody').append(newRow);
@@ -485,7 +485,7 @@ function loadABooking(bookingID) {
         bookingID: booking.BookingID,
         ScheduleDate: booking.ScheduleDate,
       };
- 
+
       // updating extracted values to update pop up
       $('#booking-id-update').val(RowInfo.bookingID);
       $('#datePicker').val(RowInfo.ScheduleDate);
@@ -501,30 +501,20 @@ function loadABooking(bookingID) {
   });
 }
 
-// add new booking
 
-
-// Login
-
+ 
 
 $(document).ready(() => {
 
-
-  const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
-
-  loadAllBookingByLimit(1);
-  $('#addNewBooking').click(() => {
+ $('#addNewBooking').click(() => {
     // data extraction
-  console.log('Hi');
+    console.log('Hi');
     const tempAdminID = localStorage.getItem('AdminID');
     if (tempAdminID != null) {
       const id = $('#addContractID').val();
       const date = $('#datepicker').val();
       const tempAdminID = localStorage.getItem('AdminID');
-  
+
       // data compilation
       const info = {
         bookingID: id,
@@ -539,13 +529,13 @@ $(document).ready(() => {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success(data) {
-            new Noty({
-              timeout: '5000',
-              type: 'success',
-              layout: 'topCenter',
-              theme: 'sunset',
-              text: 'Profile updated! ',
-            }).show();
+          new Noty({
+            timeout: '5000',
+            type: 'success',
+            layout: 'topCenter',
+            theme: 'sunset',
+            text: 'Booking added Successfully',
+          }).show();
         },
         error(xhr, textStatus, errorThrown) {
           console.log('Error in Operation');
@@ -561,7 +551,7 @@ $(document).ready(() => {
           }).show();
         },
       });
-    } else{
+    } else {
       window.localStorage.clear();
       window.location.replace(`${frontEndUrl}/unAuthorize`);
     }
@@ -576,7 +566,7 @@ $(document).ready(() => {
       bookingID: bookingIDs,
       ScheduleDate: date,
     };
-  
+
     // call web service endpoint
     $.ajax({
       headers: { authorization: `Bearer ${tmpToken}` },
@@ -585,19 +575,15 @@ $(document).ready(() => {
       data: JSON.stringify(info),
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
-      success(data) {
-        if (data != null) {
-          new Noty({
-            timeout: '5000',
-            type: 'sucess',
-            layout: 'topCenter',
-            theme: 'sunset',
-            text: 'added successfully',
-          }).show();
-          loadAllBookingByLimit(1);
-        } else {
-          console.log('Error');
-        }
+      success() {
+        new Noty({
+          timeout: '5000',
+          type: 'success',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Booking Updated Successfully',
+        }).show();
+        loadAllBookingByLimit(1);
       },
       error(xhr, textStatus, errorThrown) {
         console.log('Error in Operation');
@@ -614,4 +600,12 @@ $(document).ready(() => {
       },
     });
   });
+  const queryParams = new URLSearchParams(window.location.search);
+  console.log('--------Query Params----------');
+  console.log(`Query Param (source): ${window.location.search}`);
+  console.log(`Query Param (extraction): ${queryParams}`);
+
+
+
+  loadAllBookingByLimit(1);
 });
