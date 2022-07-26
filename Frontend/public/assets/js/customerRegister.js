@@ -102,14 +102,25 @@ $(document).ready(() => {
                 console.log('Error in Operation');
                 console.log(`XHR: ${JSON.stringify(xhr)}`);
                 console.log(`Textstatus: ${textStatus}`);
-                console.log(`Errorthorwn${errorThrown}`);
-                new Noty({
-                  timeout: '5000',
-                  type: 'error',
-                  layout: 'topCenter',
-                  theme: 'sunset',
-                  text: 'Invalid Input',
-                }).show();
+                console.log(`Errorthorwn ${errorThrown}`);
+                if(errorThrown === 'Unprocessable Entity'){
+                  new Noty({
+                    timeout: '5000',
+                    type: 'error',
+                    layout: 'topCenter',
+                    theme: 'sunset',
+                    text: 'This email already has an account',
+                  }).show();
+                }else{
+                  new Noty({
+                    timeout: '5000',
+                    type: 'error',
+                    layout: 'topCenter',
+                    theme: 'sunset',
+                    text: 'Invalid Input',
+                  }).show();
+                }
+               
               },
             });
           } else {

@@ -439,6 +439,8 @@ app.post('/registerCustomer', printDebugInfo, async (req, res) => {
 
             // Handle account verification
             sendVerificationEmail(returnResult, res);
+          } else if (err.code === 'ER_DUP_ENTRY') {
+            res.status(422).send('This email already has an account');
           } else if (err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
             // if err.code === ER_TRUNCATED_WRONG_VALUE_FOR_FIELD
             // send Inappropriate value as return message
