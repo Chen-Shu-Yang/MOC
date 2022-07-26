@@ -690,7 +690,7 @@ $('#addNewBooking').click(() => {
         if (data != null) {
           new Noty({
             timeout: '5000',
-            type: 'Success',
+            type: 'success',
             layout: 'topCenter',
             theme: 'sunset',
             text: `Booking ${id} added`,
@@ -753,7 +753,7 @@ $('#updateBookingDate').click(() => {
           loadAllBookingByLimit(1);
         new Noty({
           timeout: '5000',
-          type: 'sucess',
+          type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
           text: 'added successfully',
