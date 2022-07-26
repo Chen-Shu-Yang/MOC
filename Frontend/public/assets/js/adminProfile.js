@@ -90,7 +90,7 @@ $('#updateProfile').click(() => {
           type: 'success',
           layout: 'topCenter',
           theme: 'sunset',
-          text: 'Updated! ',
+          text: 'Profile updated! ',
         }).show();
       } else {
         console.log('Error');
