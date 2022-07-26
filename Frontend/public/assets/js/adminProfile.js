@@ -61,6 +61,7 @@ function loadProfileDetails() {
 }
 
 $('#updateProfile').click(() => {
+  const emailPattern = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
   // data extraction
   const firstName = $('#firstName').val();
   const lastName = $('#lastName').val();
@@ -75,7 +76,8 @@ $('#updateProfile').click(() => {
     
   };
 
-  // call web service endpoint
+  if (emailPattern.test(email)) {
+// call web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/update/admin/${adminID}`,
@@ -110,6 +112,18 @@ $('#updateProfile').click(() => {
       }).show();
     },
   });
+  }else {
+    // error if password doesn't match with pattern
+    new Noty({
+      timeout: '5000',
+      type: 'error',
+      layout: 'topCenter',
+      theme: 'sunset',
+      text: 'Please use valid Email',
+    }).show();
+  }
+
+  
 });
 
 // On click of button with id changePassword
