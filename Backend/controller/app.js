@@ -3200,9 +3200,21 @@ app.put('/update/customerBooking/:id', printDebugInfo, verifyToken, (req, res) =
           const mailOptions = {
             from: process.env.AUTH_EMAIL,
             to: AdminEtwo,
-            subject: 'MOC - Booking Cancel',
+            subject: 'MOC - Customer Booking Cancelled',
             html: `
-          <p>Booking ID ${bookingId} have been cancelled</p>
+            <div style="background: #F0F2F2;padding: 50px;">
+            <div style="background: #fff;padding: 50px;max-width: 500px;margin: auto;text-align: center;">
+                <img src="https://res.cloudinary.com/dxwbzmypx/image/upload/v1658044367/employee/MOC-LOGO_cpbtwv.png" alt="MOC_Logo" style="margin: auto;"/><br>
+                <div style="text-align: left;">
+                  <h1>Booking cancel</h1>
+                  <p>Hi,<p>
+                  <p>Booking ID ${bookingId} have been cancelled </p>
+                    <span>Yours Sincerely,</span><br>
+                    <span>MOC BOT</span>
+                  </p><br>
+                </div>
+            </div>
+        </div>
          `,
           };
           transporter
