@@ -44,9 +44,8 @@ function createCard(cardInfo) {
                 <h4 style="text-align:center;"><b>${cardInfo.ClassName}</b></h4> 
                 <p style="text-align:center;"><b>$${cardInfo.ClassPricing} per hour</b></p>
                 <br>
-                <div style="text-align: justify;text-justify: inter-word;
-                ">
-                <p >${cardInfo.ClassDes}</p>   
+                <div>
+                <p style="text-align:center;">${cardInfo.ClassDes}</p>   
                 </div>
 
                 
