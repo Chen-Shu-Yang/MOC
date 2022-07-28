@@ -43,10 +43,13 @@ function createCard(cardInfo) {
             <div id="service${cardInfo.ClassID}" class="container-class"  border-radius: 10px;>
                 <h4 style="text-align:center;"><b>${cardInfo.ClassName}</b></h4> 
                 <p style="text-align:center;"><b>$${cardInfo.ClassPricing} per hour</b></p>
-                <p>${cardInfo.ClassDes}</p>
-             
+                <br>
+                <div>
+                <p style="text-align:center;">${cardInfo.ClassDes}</p>   
+                </div>
+
+                
                 <input type="checkbox" id="classNameButton${cardInfo.ClassID}" value="${cardInfo.ClassName} $${cardInfo.ClassPricing} #${cardInfo.ClassID}" onchange="updatedService" disabled hidden>
-    
                 <button class="confirm-btn" onclick=updatedService(${cardInfo.ClassID})>
                     Select
                 </button>
