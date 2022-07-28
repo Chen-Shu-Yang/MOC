@@ -334,7 +334,7 @@ userSearch.addEventListener('keyup', (e) => {
         NoOfRooms: cancelledBooking.NoOfRooms,
         NoOfBathrooms: cancelledBooking.NoOfBathrooms,
         RateName: cancelledBooking.Rate,
-        EstimatePricing: parseFloat(booking.EstimatedPricing).toFixed(2),
+        EstimatePricing: parseFloat(cancelledBooking.EstimatedPricing).toFixed(2),
         Address: cancelledBooking.Address,
         Employee: cancelledBooking.EmployeeName,
         Status: cancelledBooking.Status,
