@@ -1289,12 +1289,14 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
   getAllContracts(callback) {
     // sql query statement
     const sql = `
-    select c.ContractId,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,cu.FirstName,cu.LastName,p.PackageName,cl.ClassName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    select c.ContractId,cu.FirstName,c.DayOfService,c.DayOfService2,cu.LastName,p.PackageName,cl.ClassName,r.RateName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.contract c
     join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID
     join heroku_6b49aedb7855c0b.package p on c.Package = p.PackageID
+    join heroku_6b49aedb7855c0b.rates r on c.Rate = r.RatesID
     join heroku_6b49aedb7855c0b.class cl on c.Class = cl.ClassID
+    ORDER BY c.StartDate desc
     `;
     // pool query
     pool.query(sql, (err, result) => {
@@ -1317,7 +1319,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
 
     // sql statement to limit and skip
     const sql = `
-    select c.ContractId,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,cu.FirstName,c.DayOfService,c.DayOfService2,cu.LastName,p.PackageName,cl.ClassName,r.RateName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
+    select c.ContractId,cu.FirstName,c.DayOfService,c.DayOfService2,cu.LastName,p.PackageName,cl.ClassName,r.RateName,DATE_FORMAT(c.StartDate,'%Y-%m-%d') AS StartDate,c.TimeOfService,c.NoOfBathrooms,c.NoOfRooms,c.Rate,c.EstimatedPricing,c.Address
     FROM
     heroku_6b49aedb7855c0b.contract c
     join heroku_6b49aedb7855c0b.customer cu on c.Customer = cu.CustomerID

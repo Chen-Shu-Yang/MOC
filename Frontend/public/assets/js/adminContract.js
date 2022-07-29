@@ -14,13 +14,15 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'http://18.142.170.203:3001/';
 // const backEndUrl = 'http://18.142.170.203:5000/';
 
-
+let userSearchChar = [];
+const userSearch = document.getElementById('searchContract');
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 if (tmpToken === null || tempAdminID === null) {
   window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
+
 // Create a new card for Contracts
 function createRow(cardInfo) {
   // cardInfo data is place in each respective place
@@ -47,6 +49,7 @@ function createRow(cardInfo) {
       `;
   return card;
 }
+
 // Create pagination numbering
 function pageBtnCreate(totalNumberOfPages, activePage) {
   // Clears pagination section
@@ -102,6 +105,7 @@ function pageBtnCreate(totalNumberOfPages, activePage) {
     $('#pagination').append(divPaginBtn);
   }
 }
+
 // Load all contracts to allow for pagination numbering
 function loadAllContracts(activePage) {
   // call the web service endpoint
@@ -113,20 +117,41 @@ function loadAllContracts(activePage) {
     // when successful, divide the number of result by 6 to determine
     // number of pages needed
     success(data) {
+      userSearchChar = [];
+      for (let i = 0; i < data.length; i++) {
+        const contract = data[i];
+
+        const Contract = {
+          CustomerName: `${contract.FirstName} ${contract.LastName}`,
+          contractID: contract.ContractId,
+          FirstName: contract.FirstName,
+          LastName: contract.LastName,
+          Package: contract.PackageName,
+          ClassName: contract.ClassName,
+          StartDate: contract.StartDate,
+          TimeOfService: contract.TimeOfService,
+          NoOfRooms: contract.NoOfRooms,
+          NoOfBathrooms: contract.NoOfBathrooms,
+          RateName: contract.RateName,
+          EstimatePricing: contract.EstimatedPricing,
+          Address: contract.Address,
+          DayOfService1: contract.DayOfService,
+          DayOfService2: contract.DayOfService2,
+        };
+        userSearchChar.push(Contract);
+      }
       const totalNumberOfPages = Math.ceil(data.length / 6);
       pageBtnCreate(totalNumberOfPages, activePage);
     },
 
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+    error(errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
     },
   });
 }
+
 // Load contracts restricted to 6 row per page
 function loadAllContractByLimit(pageNumber) {
   // call the web service endpoint
@@ -144,8 +169,6 @@ function loadAllContractByLimit(pageNumber) {
         for (let i = 0; i < data.length; i++) {
           const contract = data[i];
 
-          let date = contract.StartDate;
-          date = date.replace('T16:00:00.000Z', '');
           // compile the data that the card needs for its creation
           const contractstbl = {
             contractID: contract.ContractId,
@@ -153,7 +176,7 @@ function loadAllContractByLimit(pageNumber) {
             LastName: contract.LastName,
             Package: contract.PackageName,
             ClassName: contract.ClassName,
-            StartDate: date,
+            StartDate: contract.StartDate,
             TimeOfService: contract.TimeOfService,
             NoOfRooms: contract.NoOfRooms,
             NoOfBathrooms: contract.NoOfBathrooms,
@@ -169,21 +192,14 @@ function loadAllContractByLimit(pageNumber) {
       }
       loadAllContracts(pageNumber);
     },
-    error(xhr, textStatus, errorThrown) {
+    error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
     },
   });
 }
+
 // Load the contract based on contractId
 function loadAContract(contractId) {
   // gets a class of service based on id
@@ -194,9 +210,6 @@ function loadAContract(contractId) {
     contentType: 'application/json; charset=utf-8',
     success(data) {
       // if the code works
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       const contractZero = data[0];
       // extract data information
       const RowInfo = {
@@ -205,9 +218,6 @@ function loadAContract(contractId) {
         DayOfService2: contractZero.DayOfService2,
         EstimatedPricing: contractZero.EstimatedPricing,
       };
-      console.log('---------Card INfo data pack------------');
-      console.log(RowInfo);
-      console.log('---------------------');
       // updating extracted values to update pop up
       $('#contract-id-update').val(RowInfo.contractId);
       $('#dayOfService1').val(RowInfo.DayOfService);
@@ -232,6 +242,7 @@ function loadAContract(contractId) {
     },
   });
 }
+
 // To check Day 1 is not the same as Day 2
 function CheckDropDowns(thisSelect) {
   const otherSelectId = (thisSelect.id === 'dayOfService1') ? 'dayOfService2' : 'dayOfService1';
@@ -246,6 +257,145 @@ function CheckDropDowns(thisSelect) {
     }
   }
 }
+
+// Levenshtein Distance function
+function levenshtein(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+
+  // increment along the first column of each row
+  let i;
+  for (i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  // increment each column in the first row
+  let j;
+  for (j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for (i = 1; i <= b.length; i++) {
+    for (j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          Math.min(
+            matrix[i][j - 1] + 1, // insertion
+            matrix[i - 1][j] + 1, // deletion
+          ),
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+// Search for contracts with event listener
+userSearch.addEventListener('keyup', (e) => {
+  // Declare RowInfo Object
+  let RowInfo = {};
+  // Declare similarResults array
+  const similarResults = [];
+  // Declare constant variable to store the user input
+  // Input is converted to lowercases
+  const searchString = e.target.value.toLowerCase();
+  // Clear the pagination buttons
+  $('#pagination').html('');
+
+  // eslint-disable-next-line arrow-body-style
+  // Filter in the wanted ones and push in to filterCustomers array
+  let filterCustomers = userSearchChar.filter((customer) => (
+    customer.CustomerName.toLowerCase().includes(searchString)
+  ));
+
+  // If statement to run the loadAllContractByLimit function
+  // if there are no inputs
+  if (searchString === '') {
+    filterCustomers = [];
+    $('#similarSearch').html('');
+    $('#contractTableBody').html('');
+    loadAllContractByLimit(1);
+    return;
+  }
+
+  // Clear the previous returned results in the containers
+  $('#similarSearch').html('');
+  $('#contractTableBody').html('');
+
+  // Check if filterCustomers is not empty
+  if (filterCustomers.length !== 0) {
+    for (let i = 0; i < filterCustomers.length; i++) {
+      const customer = filterCustomers[i];
+      // compile the data that the card needs for its creation
+      RowInfo = {
+        contractID: customer.contractID,
+        FirstName: customer.FirstName,
+        LastName: customer.LastName,
+        Package: customer.Package,
+        ClassName: customer.ClassName,
+        StartDate: customer.StartDate,
+        TimeOfService: customer.TimeOfService,
+        NoOfRooms: customer.NoOfRooms,
+        NoOfBathrooms: customer.NoOfBathrooms,
+        RateName: customer.RateName,
+        EstimatePricing: customer.EstimatePricing,
+        Address: customer.Address,
+        DayOfService1: customer.DayOfService1,
+        DayOfService2: customer.DayOfService2,
+      };
+
+      const newCard = createRow(RowInfo);
+      $('#contractTableBody').append(newCard);
+    }
+  } else {
+    // If filterCustomers is empty
+    for (let i = 0; i < userSearchChar.length; i++) {
+      // Store the value been compared to, in compared constant
+      const compared = userSearchChar[i].CustomerName;
+      // Find the levenshtein distance between the compared word and input word
+      const distance = levenshtein(searchString, compared.toLowerCase()); // Levenshtein Distance
+      const customer = userSearchChar[i];
+
+      // compile the data that the card needs for its creation
+      RowInfo = {
+        contractID: customer.contractID,
+        FirstName: customer.FirstName,
+        LastName: customer.LastName,
+        Package: customer.Package,
+        ClassName: customer.ClassName,
+        StartDate: customer.StartDate,
+        TimeOfService: customer.TimeOfService,
+        NoOfRooms: customer.NoOfRooms,
+        NoOfBathrooms: customer.NoOfBathrooms,
+        RateName: customer.RateName,
+        EstimatePricing: customer.EstimatePricing,
+        Address: customer.Address,
+        DayOfService1: customer.DayOfService1,
+        DayOfService2: customer.DayOfService2,
+      };
+
+      // If levenshtein distance is smalle or equals to 4
+      // push result into similarResults array
+      if (distance <= 4) {
+        similarResults.push(RowInfo);
+      }
+    }
+
+    // For loop to display the result rows
+    for (let j = 0; j < similarResults.length; j++) {
+      const newCard = createRow(similarResults[j]);
+      $('#contractTableBody').append(newCard);
+    }
+    // Display when no results found
+    $('#similarSearch').html(`<p><b>${searchString}</b> not found, do you mean...</p><br>`);
+  }
+});
 
 $('#updateContract').click(() => {
   // data extraction
@@ -281,16 +431,21 @@ $('#updateContract').click(() => {
           theme: 'sunset',
           text: 'Contract updated!',
         }).show();
-        // loadAllBookingByLimit(1);
       } else {
-        console.log('Error');
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: 'Unsuccessful Update!',
+        }).show();
       }
     },
-    error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(`XHR: ${JSON.stringify(xhr)}`);
-      console.log(`Textstatus: ${textStatus}`);
-      console.log(`Errorthorwn${errorThrown}`);
+    error(errorThrown) {
+      if (errorThrown === 'Forbidden') {
+        window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }
+
       new Noty({
         timeout: '5000',
         type: 'error',
@@ -304,9 +459,6 @@ $('#updateContract').click(() => {
 
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
 
   loadAllContractByLimit(1);
 });
