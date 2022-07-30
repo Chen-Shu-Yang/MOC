@@ -4253,7 +4253,7 @@ app.delete('/inActiveCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
   const customerId = req.params.id;
 
   // calling deleteAdmin method from SuperAdmin model
-  Admin.deleteInactiveCustomer(customerId, (req, result) => {
+  Admin.deleteInactiveCustomer(customerId, (err, result) => {
     if (!err) {
       // result.affectedRows indicates that id to be deleted
       // cannot be found hence send as error message
@@ -4270,6 +4270,8 @@ app.delete('/inActiveCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
       };
       res.status(500).send(output);
     }
+
+
   });
 });
 
