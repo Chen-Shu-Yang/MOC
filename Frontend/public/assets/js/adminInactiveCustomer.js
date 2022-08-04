@@ -30,8 +30,8 @@ function createRow(cardInfo) {
         <td>${cardInfo.FirstName}</td>
         <td> ${cardInfo.LastName}</td>
         <td>${cardInfo.PhoneNumber}</td>
-        <td><button onClick="deleteCustomer(${cardInfo.CustomerID})" class="btn btn-danger">Delete</button></td>
-        <td><button onClick="activateUser(${cardInfo.CustomerID})" class="btn btn-success">Activate</button></td>
+        <td><button onClick="deleteCustomer(${cardInfo.CustomerID})" id="deleteCustomerBtn" class="btn btn-danger">Delete</button></td>
+        <td><button onClick="activateUser(${cardInfo.CustomerID})" id="activateCustomerBtn" class="btn btn-success">Activate</button></td>
        
       </tr>
       `;

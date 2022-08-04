@@ -431,6 +431,7 @@ $('#updateContract').click(() => {
           theme: 'sunset',
           text: 'Contract updated!',
         }).show();
+        window.location.reload();
       } else {
         new Noty({
           timeout: '5000',

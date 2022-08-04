@@ -75,10 +75,11 @@ function createRow(cardInfo) {
   }
 }
 
-function loadAvailableEmployee(bookingDate) {
+function loadAvailableEmployee(bookingDate,timeOfService) {
   // console.log("DATESSSSSSSSSSSSSSS  "+ bookingDate)
   const details = {
     bookingDates: bookingDate,
+    timeOfService: timeOfService,
   };
 
   $.ajax({
@@ -151,6 +152,7 @@ function loadBookingDetails(bookingid) {
         contractEmployee: bookingDetails.EmployeeName,
         contractExtraNotes: bookingDetails.ExtraNotes,
         bookingDate: bookingDetails.ScheduleDate,
+        timeOfService: bookingDetails.TimeOfService
       };
 
       console.log('---------Card INfo data pack------------');
@@ -166,7 +168,7 @@ function loadBookingDetails(bookingid) {
       $('#pricing').val(RowInfo.contractPricing);
       $('#assign').val(RowInfo.contractEmployee);
       $('#extraNotes').val(RowInfo.ExtraNotes);
-      loadAvailableEmployee(RowInfo.bookingDate);
+      loadAvailableEmployee(RowInfo.bookingDate, RowInfo.timeOfService);
     },
 
     error(xhr, textStatus, errorThrown) {

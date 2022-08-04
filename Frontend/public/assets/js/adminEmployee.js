@@ -667,7 +667,7 @@ function addEmployee() {
         type: 'success',
         layout: 'topCenter',
         theme: 'sunset',
-        text: 'Image Uploaded',
+        text: 'Employee added successfully',
       }).show();
     },
     // error method

@@ -643,7 +643,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
   //                 Feature/adminCustomer
   // ---------------------------------------------------
   // get available employee for scheduling
-  getAvailableEmployee(date, callback) {
+  getAvailableEmployee(date, time, callback) {
     // sql query statement
     const sql = `
       SELECT DISTINCT
@@ -655,12 +655,14 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
       ON 
         s.Employee = e.EmployeeID 
       WHERE
-        ScheduleDate IS NULL OR ScheduleDate != ? 
-      AND 
-        Employee NOT IN (SELECT s.Employee FROM heroku_6b49aedb7855c0b.schedule s WHERE ScheduleDate = ?);
+        ScheduleDate IS NULL OR ScheduleDate != ?
+      AND
+        TimeSlot IS NULL OR TimeSlot != ?
+      AND
+        Employee NOT IN (SELECT s.Employee FROM heroku_6b49aedb7855c0b.schedule s WHERE ScheduleDate = ? AND TimeSlot = ?);
       `;
 
-    const values = [date, date];
+    const values = [date, time, date, time];
     // pool query
     pool.query(sql, values, (err, result) => {
       // error
@@ -1065,7 +1067,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
   //= ======================================================
   getBookingDetails(id, callback) {
     // sql query statement
-    const sql = `SELECT cu.CustomerID, b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,cu.FirstName,cu.LastName,r.RateName,e.EmployeeName
+    const sql = `SELECT cu.CustomerID, b.BookingID,DATE_FORMAT(b.ScheduleDate,'%Y-%m-%d') as ScheduleDate,c.Address,c.NoOfRooms,c.NoOfBathrooms,c.EstimatedPricing,c.ExtraNotes,cu.FirstName,cu.LastName,r.RateName,e.EmployeeName,c.TimeOfService
     FROM heroku_6b49aedb7855c0b.booking as b
     join heroku_6b49aedb7855c0b.contract as c on b.ContractId = c.ContractID
     join heroku_6b49aedb7855c0b.customer as cu on c.Customer = cu.CustomerID
@@ -1086,16 +1088,17 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
       return callback(null, result);
     });
   },
-  getEmployeeAvailabilty(bookingDate, callback) {
+  getEmployeeAvailabilty(bookingDate, timeOfService, callback) {
     // sql query statement
-    const sql = `SELECT e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,e.EmployeeID,b.*
+    const sql = `SELECT distinct e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,e.EmployeeID
     FROM heroku_6b49aedb7855c0b.employee as e
     left join heroku_6b49aedb7855c0b.schedule as s on e.EmployeeID = s.Employee
     left join heroku_6b49aedb7855c0b.booking as b on e.EmployeeID = b.Employee
-    
+    join heroku_6b49aedb7855c0b.contract as c on b.ContractId = c.ContractID
+    where c.TimeOfService = ?
     Having FormatScheduleDate= ?;`;
 
-    const values = [bookingDate];
+    const values = [timeOfService, bookingDate];
     // pool query
     pool.query(sql, values, (err, result) => {
       // error

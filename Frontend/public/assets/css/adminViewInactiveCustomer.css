@@ -10,6 +10,19 @@
 
 }
 
+#deleteCustomerBtn{
+    background-color: #D38984;
+    color: white;
+    margin-top: 10px;
+}
+
+#activateCustomerBtn{
+    background-color: #74A2A3;
+    color: white;
+    margin-top: 10px;
+}
+
+
 .cardClassService {
     margin-top: 90px;
     margin-left: -40px;
@@ -68,19 +81,6 @@ nav .right-header {
 .contract-section {
     padding-top: 100px;
     padding-bottom: 20px;
-}
-#suspendBtn{
-    background-color: #D38984;
-    color: white;
-    margin-top: 10px;
-    border: 0.1px solid  #D38984 ;
-}
-
-#resolveBtn{
-    background-color: #74A2A3;
-    color: white;
-    margin-top: 10px;
-    border: 0.1px solid  #74A2A3 ;
 }
 
 .contract-section .max-width {
