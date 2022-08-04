@@ -643,7 +643,7 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
   //                 Feature/adminCustomer
   // ---------------------------------------------------
   // get available employee for scheduling
-  getAvailableEmployee(date, callback) {
+  getAvailableEmployee(date, time, callback) {
     // sql query statement
     const sql = `
       SELECT DISTINCT
@@ -655,12 +655,14 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
       ON 
         s.Employee = e.EmployeeID 
       WHERE
-        ScheduleDate IS NULL OR ScheduleDate != ? 
-      AND 
-        Employee NOT IN (SELECT s.Employee FROM heroku_6b49aedb7855c0b.schedule s WHERE ScheduleDate = ?);
+        ScheduleDate IS NULL OR ScheduleDate != ?
+      AND
+        TimeSlot IS NULL OR TimeSlot != ?
+      AND
+        Employee NOT IN (SELECT s.Employee FROM heroku_6b49aedb7855c0b.schedule s WHERE ScheduleDate = ? AND TimeSlot = ?);
       `;
 
-    const values = [date, date];
+    const values = [date, time, date, time];
     // pool query
     pool.query(sql, values, (err, result) => {
       // error

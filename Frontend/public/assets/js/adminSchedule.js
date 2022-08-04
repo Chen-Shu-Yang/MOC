@@ -34,10 +34,10 @@ function createRow(cardInfo) {
   return card;
 }
 
-function loadAllAvailEmployees(date) {
+function loadAllAvailEmployees(date, time) {
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
-    url: `${backEndUrl}/availemployee/${date}`,
+    url: `${backEndUrl}/availemployee/${date}/${time}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
 
@@ -167,7 +167,7 @@ $(document).ready(() => {
     time = $('.morningSlot').val();
     $('#timing').html('');
     $('#timing').append(`${date}, ${time}`);
-    loadAllAvailEmployees(date);
+    loadAllAvailEmployees(date, time);
   };
 
   afternoonSlot.onclick = function () {
@@ -178,7 +178,7 @@ $(document).ready(() => {
     time = $('.afternoonSlot').val();
     $('#timing').html('');
     $('#timing').append(`${date}, ${time}`);
-    loadAllAvailEmployees(date);
+    loadAllAvailEmployees(date, time);
   };
 
   $('#confirmBtn').click(() => {

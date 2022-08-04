@@ -1354,7 +1354,7 @@ app.put('/completeBooking/:id', printDebugInfo, verifyToken, (req, res) => {
 });
 
 // get unassigned available employee
-app.get('/availemployee/:date', printDebugInfo, verifyToken, async (req, res) => {
+app.get('/availemployee/:date/:time', printDebugInfo, verifyToken, async (req, res) => {
   if (req.role == null) {
     res.status(403).send();
     return;
@@ -1362,9 +1362,10 @@ app.get('/availemployee/:date', printDebugInfo, verifyToken, async (req, res) =>
 
   // extract id from params
   const { date } = req.params;
+  const { time } = req.params;
 
   // calling getAvailableEmployee method from admin model
-  Admin.getAvailableEmployee(date, (err, result) => {
+  Admin.getAvailableEmployee(date, time, (err, result) => {
     if (!err) {
       // if id not found detect and return error message
       if (result.length === 0) {
