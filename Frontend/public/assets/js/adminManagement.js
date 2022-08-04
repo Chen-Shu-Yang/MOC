@@ -243,7 +243,7 @@ function updateAdmin() {
       }).show();
       $('#AdminPwdInput').val('');
       // Refresh admin table
-      loadAllAdmins();
+      loadAdminByLimit(1);
     },
     error() {
       const msg = 'Update UnSuccessful!';
