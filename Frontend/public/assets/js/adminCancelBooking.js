@@ -1,11 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-shadow */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-undef */
-/* eslint-disable no-console */
-/* eslint-disable no-nested-ternary */
-
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -22,7 +14,6 @@ if (tmpToken === null || tempAdminID === null) {
 }
 let userSearchChar = [];
 const userSearch = document.getElementById('searchCancelledBookingByCustomer');
-
 function createRow(cardInfo) {
   const card = `
     <tr>
@@ -43,46 +34,26 @@ function createRow(cardInfo) {
     `;
   return card;
 }
-
-// Create page tabs
 function pageBtnCreate(totalNumberOfPages, activePage) {
-  // Clears pagination section
   $('#paginationCancel').html('');
-  // Get page number of max-left and max-right page
   let maxLeft = (activePage - Math.floor(5 / 2));
   let maxRight = (activePage + Math.floor(5 / 2));
-
-  // Checks if the max-left page is less than 1
-  // Which is the first page
   if (maxLeft < 1) {
     maxLeft = 1;
     maxRight = 5;
   }
-
-  // Checks if max-right page is more than the total number of pages
-  // Which is the last page
   if (maxRight > totalNumberOfPages) {
     maxLeft = totalNumberOfPages - (5 - 1);
     maxRight = totalNumberOfPages;
-
-    // Checks if max-left is less than 1
-    // Which is total number of pages within 1 and 5
     if (maxLeft < 1) {
       maxLeft = 1;
     }
   }
-
-  // Checks if activepage is less than 1
-  // Shows the '<<' icon to bring user to the first page
   if (activePage !== 1) {
     divPaginBtn = `<button type="button" onClick="loadAllBookingToBeCancelledByLimit(${1})"><<</button>`;
     $('#paginationCancel').append(divPaginBtn);
   }
-
-  // Check if the active page is within max-left or max-right
-  // Displays all page tabs within max-left and max-right
   for (i = maxLeft; i <= maxRight; i++) {
-    // Check if page is active
     if (i === activePage) {
       divPaginBtn = `<button type="button" class="active" onClick="loadAllBookingToBeCancelledByLimit(${i})">${i}</button>`;
       $('#paginationCancel').append(divPaginBtn);
@@ -91,9 +62,6 @@ function pageBtnCreate(totalNumberOfPages, activePage) {
       $('#paginationCancel').append(divPaginBtn);
     }
   }
-
-  // Checkd if active page is not equals to the total number of pages
-  // Displays the '>>' tab to bring users to the last page
   if (activePage !== totalNumberOfPages) {
     divPaginBtn = `<button type="button" onClick="loadAllBookingToBeCancelledByLimit(${totalNumberOfPages})">>></button>`;
     $('#paginationCancel').append(divPaginBtn);
@@ -110,7 +78,6 @@ function loadAllBookingToBeCancelled(activePage) {
       userSearchChar = [];
       for (let i = 0; i < data.length; i++) {
         const cancelledBooking = data[i];
-
         const Customer = {
           CustomerName: `${cancelledBooking.FirstName} ${cancelledBooking.LastName}`,
           Address: cancelledBooking.Address,
@@ -130,7 +97,6 @@ function loadAllBookingToBeCancelled(activePage) {
         };
         userSearchChar.push(Customer);
       }
-
       const totalNumberOfPages = Math.ceil(data.length / 6);
       pageBtnCreate(totalNumberOfPages, activePage);
     },
@@ -143,7 +109,6 @@ function loadAllBookingToBeCancelled(activePage) {
 }
 
 function loadAllBookingToBeCancelledByLimit(pageNumber) {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingCancel/${pageNumber}`,
@@ -155,7 +120,6 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
         $('#bookingCancelTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
-          // compile the data that the card needs for its creation
           const bookingstbl = {
             bookingID: booking.BookingID,
             FirstName: booking.FirstName,
@@ -172,14 +136,12 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
             Employee: booking.EmployeeName,
             Status: booking.Status,
           };
-
           const newRow = createRow(bookingstbl);
           $('#bookingCancelTableBody').append(newRow);
         }
         loadAllBookingToBeCancelled(pageNumber);
       }
     },
-
     error(xhr, errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
@@ -195,10 +157,7 @@ function loadAllBookingToBeCancelledByLimit(pageNumber) {
     },
   });
 }
-
-// eslint-disable-next-line no-unused-vars
 function cancelBooking(id) {
-  // ajax method to call the method
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/cancelBooking/${id}`,
@@ -206,7 +165,6 @@ function cancelBooking(id) {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success() {
-      // set and call confirmation message
       $('#bookingCancelTableBody').html('');
       loadAllBookingToBeCancelledByLimit(1);
       msg = 'Successfully updated!';
@@ -217,13 +175,8 @@ function cancelBooking(id) {
         theme: 'sunset',
         text: msg,
       }).show();
-
-      // refresh
-      // $('#classServiceTableBody').html('')
-      // loadAllClassOfServices()
     },
     error(xhr) {
-      // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
         errMsg = 'Please ensure that your values are accurate';
@@ -242,7 +195,6 @@ function cancelBooking(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
 }
@@ -251,59 +203,40 @@ function levenshtein(a, b) {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
   const matrix = [];
-
-  // increment along the first column of each row
   let i;
   for (i = 0; i <= b.length; i++) {
     matrix[i] = [i];
   }
-
-  // increment each column in the first row
   let j;
   for (j = 0; j <= a.length; j++) {
     matrix[0][j] = j;
   }
-
-  // Fill in the rest of the matrix
   for (i = 1; i <= b.length; i++) {
     for (j = 1; j <= a.length; j++) {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
         matrix[i][j] = matrix[i - 1][j - 1];
       } else {
         matrix[i][j] = Math.min(
-          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i - 1][j - 1] + 1, 
           Math.min(
-            matrix[i][j - 1] + 1, // insertion
-            matrix[i - 1][j] + 1, // deletion
+            matrix[i][j - 1] + 1, 
+            matrix[i - 1][j] + 1,
           ),
         );
       }
     }
   }
-
   return matrix[b.length][a.length];
 }
 
-// Search for cancelled booking with event listener
 userSearch.addEventListener('keyup', (e) => {
-  // Declare RowInfo Object
   let RowInfo = {};
-  // Declare similarResults array
   const similarResults = [];
-  // Declare constant variable to store the user input
-  // Input is converted to lowercases
   const searchString = e.target.value.toLowerCase();
-  // Clear the pagination buttons
   $('#paginationCancel').html('');
-
-  // eslint-disable-next-line arrow-body-style
-  // Filter in the wanted ones and push in to filterBookings array
   let filterBookings = userSearchChar.filter((customer) => (
     customer.CustomerName.toLowerCase().includes(searchString)
   ));
-
-  // If statement to run the loadAllBookingBtLimit function
-  // if there are no inputs
   if (searchString === '') {
     filterBookings = [];
     $('#similarSearch').html('');
@@ -311,18 +244,11 @@ userSearch.addEventListener('keyup', (e) => {
     loadAllBookingToBeCancelledByLimit(1);
     return;
   }
-
-  // Clear the previous returned results in the containers
   $('#similarSearch').html('');
   $('#bookingCancelTableBody').html('');
-
-  // Check if filterBookings is not empty
   if (filterBookings.length !== 0) {
-    // For loop to display the table rows
     for (let i = 0; i < filterBookings.length; i++) {
       const cancelledBooking = filterBookings[i];
-
-      // compile the data that the card needs for its creation
       RowInfo = {
         bookingID: cancelledBooking.BookingID,
         FirstName: cancelledBooking.FirstName,
@@ -339,20 +265,14 @@ userSearch.addEventListener('keyup', (e) => {
         Employee: cancelledBooking.EmployeeName,
         Status: cancelledBooking.Status,
       };
-
       const newCard = createRow(RowInfo);
       $('#bookingCancelTableBody').append(newCard);
     }
   } else {
-    // If filterBookings is empty
     for (let i = 0; i < userSearchChar.length; i++) {
-      // Store the value been compared to, in compared constant
       const compared = userSearchChar[i].CustomerName;
-      // Find the levenshtein distance between the compared word and input word
-      const distance = levenshtein(searchString, compared.toLowerCase()); // Levenshtein Distance
+      const distance = levenshtein(searchString, compared.toLowerCase()); 
       const cancelledBooking = userSearchChar[i];
-
-      // compile the data that the card needs for its creation
       RowInfo = {
         bookingID: cancelledBooking.BookingID,
         FirstName: cancelledBooking.FirstName,
@@ -369,20 +289,15 @@ userSearch.addEventListener('keyup', (e) => {
         Employee: cancelledBooking.EmployeeName,
         Status: cancelledBooking.Status,
       };
-
-      // If levenshtein distance is smalle or equals to 4
-      // push result into similarResults array
       if (distance <= 4) {
         similarResults.push(RowInfo);
       }
     }
 
-    // For loop to display the result rows
     for (let j = 0; j < similarResults.length; j++) {
       const newCard = createRow(similarResults[j]);
       $('#bookingCancelTableBody').append(newCard);
     }
-    // Display when no results found
     $('#similarSearch').html(`<p><b>${searchString}</b> not found, do you mean...</p><br>`);
   }
 });
