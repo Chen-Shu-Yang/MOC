@@ -1,10 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -21,19 +14,12 @@ if (tmpToken === null || tempCustomerID === null) {
 }
 
 function createRow(cardInfo) {
-  console.log('*********inside card*********');
   const { bookingID } = cardInfo;
   const scheduleDate = new Date(cardInfo.scheduleDate);
   let showBtn = 1;
   const statusOfAppointment = cardInfo.status;
   const dateToBeChecked = new Date();
-
-  console.log(`Booking id: ${bookingID}`);
-  console.log(`Booking status: ${statusOfAppointment}`);
-
-  // add a day
   dateToBeChecked.setDate(dateToBeChecked.getDate() + 1);
-
   if (scheduleDate < dateToBeChecked) {
     showBtn = 0;
   } else if (statusOfAppointment === 'Cancelled') {
@@ -41,7 +27,6 @@ function createRow(cardInfo) {
   } else {
     showBtn = 1;
   }
-  console.log('*************************');
 
   let card;
   if (showBtn) {
@@ -161,20 +146,16 @@ function createRow(cardInfo) {
   return card;
 }
 
-// updateExtraService to update existing extra service
 function cancelBooking(bookingId) {
-  // ajax method to call the method
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/update/customerBooking/${bookingId}`,
     type: 'PUT',
-
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
       $('#bookingSection').html('');
       loadAllBooking();
-      
       new Noty({
         timeout: '5000',
         type: 'success',
@@ -182,12 +163,8 @@ function cancelBooking(bookingId) {
         theme: 'sunset',
         text: `Booking ID: ${bookingId} has been succeccefully cancelled`,
       }).show();
-
-    
-     
     },
     error(xhr, textStatus, errorThrown) {
-      // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
         console.log('error');
@@ -210,12 +187,7 @@ function loadAllBooking() {
     url: `${backEndUrl}/show/bookings/${customerId}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
-
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
-
       for (let i = 0; i < data.length; i++) {
         const booking = data[i];
         const bookingDetails = {
@@ -242,11 +214,9 @@ function loadAllBooking() {
 
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
-
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
@@ -255,9 +225,5 @@ function loadAllBooking() {
 
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
-
   loadAllBooking();
 });

@@ -1,10 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -25,12 +18,7 @@ function loadProfileDetails() {
     url: `${backEndUrl}/user/customer/${customerId}`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
-
     success(data) {
-      console.log('-------response data------');
-      console.log(data.Email);
-      console.log(`LENGTH OF DATA:${data.length}`);
-
       const custDetail = data[0];
       $('#firstName').val(custDetail.FirstName);
       $('#lastName').val(custDetail.LastName);
@@ -39,14 +27,11 @@ function loadProfileDetails() {
       $('#phone').val(custDetail.PhoneNumber);
       $('#email').val(custDetail.Email);
     },
-
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-
+      console.log('Error n Operation');
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
@@ -54,7 +39,6 @@ function loadProfileDetails() {
 }
 
 $('#updateProfile').click(() => {
-  // data extraction
   const firstName = $('#firstName').val();
   const lastName = $('#lastName').val();
   const address = $('#address').val();
@@ -62,7 +46,6 @@ $('#updateProfile').click(() => {
   const phoneNumber = $('#phone').val();
   const email = $('#email').val();
   const customerId = localStorage.getItem('customerID');
-  // data compilation
   const info = {
     firstName,
     lastName,
@@ -71,8 +54,6 @@ $('#updateProfile').click(() => {
     phoneNumber,
     email,
   };
-
-  // call web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/update/customer/${customerId}`,
@@ -110,9 +91,5 @@ $('#updateProfile').click(() => {
 });
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
-
   loadProfileDetails();
 });

@@ -1,11 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-console */
-/* eslint-disable no-shadow */
-/* eslint-disable no-undef */
-
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -16,16 +8,11 @@ const backEndUrl = 'http://localhost:5000';
 
 
 $(document).ready(() => {
-  // Login
   $('#confirmEmail').click(() => {
-    // data extraction
     const emails = $('#emailInput').val();
-
-    // data compilation
     const info = {
       email: emails,
     };
-    // call web service endpoint
     $.ajax({
       url: `${backEndUrl}/forgetPassword`,
       type: 'POST',

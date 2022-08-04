@@ -81,7 +81,6 @@ function updatedDate() {
   document.getElementById('listDate').innerHTML = date;
 }
 function setCurrentDate() {
-  // cannot select past dates from calendar
   const todayDate = new Date();
   todayDate.setDate(todayDate.getDate() + 4);
   const today = todayDate.toISOString().split('T')[0];
@@ -91,7 +90,6 @@ function setCurrentDate() {
 }
 
 function loadUserDetails() {
-  // extract user details from local storage
   const CustomerIDs = localStorage.getItem('customerID');
   console.log(CustomerIDs);
   let userInfo;
@@ -99,7 +97,6 @@ function loadUserDetails() {
   updatedDay1();
   updatedTime();
   populateBathroomsRooms();
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customerAddBooking/${CustomerIDs}`,
@@ -107,13 +104,8 @@ function loadUserDetails() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
-      console.log('back to frontend back with data');
-      console.log('---------Response Data ------------');
-      console.log(data);
       for (let i = 0; i < data.length; i++) {
         const user = data[i];
-
-        // compile the data that the card needs for its creation
         userInfo = {
           userAddress: user.Address,
           userPostalCode: user.PostalCode,
@@ -125,23 +117,19 @@ function loadUserDetails() {
       $('#cAddress').val(userInfo.userAddress);
       $('#cPostalCode').val(userInfo.userPostalCode);
     },
-    // errorhandling
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
       console.log('-----------------------');
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.status);
       console.log(xhr.responseText);
     },
   });
 }
 
-// function to display all class of services by card
 function populateClass() {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/classOfService/`,
@@ -149,46 +137,27 @@ function populateClass() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
-      console.log('-------- response data --------');
-      console.log(data);
-
       for (let i = 0; i < data.length; i++) {
         const classOfService = data[i];
-
-        // compile the data that the card needs for its creation
         const cardInfo = {
           ClassID: classOfService.ClassID,
           ClassName: classOfService.ClassName,
           ClassPricing: classOfService.ClassPricing,
           ClassDes: classOfService.ClassDes,
         };
-
-        console.log('-------- Card Info data pack --------');
-        console.log(cardInfo);
-
         const newCard = createCard(cardInfo);
-
         $('#class-container').append(newCard);
-
         if (i === 0) {
           const serviceID = `#service${cardInfo.ClassID}`;
           $(serviceID).addClass('active');
-
           const serviceNameID = `classNameButton${cardInfo.ClassID}`;
           const services = document.getElementById(serviceNameID).value;
           const serviceValue = services.substring(0, services.indexOf('#'));
-
           $('#listServiceInput').val(services);
           document.getElementById('listService').innerHTML = serviceValue;
           const estServicePricing = parseFloat(cardInfo.ClassPricing);
-
           estService = estServicePricing * 4;
-          console.log("===========At service ============")
-          console.log(typeof (estService));
-          console.log("===================================")
           estTotal += estService;
-
-
         }
       }
     },
@@ -197,16 +166,13 @@ function populateClass() {
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
   });
 }
 
-// function to display all packages in a drop down list
 function populatePackage() {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/package/`,
@@ -214,17 +180,11 @@ function populatePackage() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
-      console.log('-------- response data --------');
-      console.log(data);
-
       for (let i = 0; i < data.length; i++) {
         const packages = data[i];
-
         if (i === 0) {
           $('#listPackage').html(`${packages.PackageName} (${packages.PackageDes})`);
         }
-
-        // for loop to generate every data from the database and append to the drop down list
         $('#package').append(`<option value="${packages.PackageName} (${packages.PackageDes}) #${packages.PackageID}">${packages.PackageName} (${packages.PackageDes})</option>`);
       }
     },
@@ -233,16 +193,13 @@ function populatePackage() {
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
   });
 }
 
-// function to display all rates in a drop down list
 function populateRates() {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/rates/`,
@@ -250,29 +207,14 @@ function populateRates() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
-      console.log('-------- response data --------');
-      console.log(data);
-
       for (let i = 0; i < data.length; i++) {
         const rates = data[i];
-
         if (i === 0) {
           $('#listRates').html(`${rates.RateName}sqft (From S$${rates.RatePrice})`);
           estRate = parseFloat(rates.RatePrice);
-
-          console.log("===========At rate ============")
-          console.log(typeof (estRate));
-          console.log("===================================")
-
           estTotal += estRate;
-
-          console.log(estTotal);
           document.getElementById('estAmount').innerHTML = (estTotal).toFixed(2);
-
-
         }
-
-        // for loop to generate every data from the database and append to the drop down list
         $('#rates').append(`<option value="${rates.RateName}sqft (From S$${rates.RatePrice}) #${rates.RatesID}">${rates.RateName}sqft (From S$${rates.RatePrice})</option>`);
       }
     },
@@ -281,16 +223,13 @@ function populateRates() {
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
   });
 }
 
-// function to display all extra services in a drop down list
 function populateAdditonalService() {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/additionalService/`,
@@ -298,13 +237,8 @@ function populateAdditonalService() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
-      console.log('-------- response data --------');
-      console.log(data);
-
-      // for loop to generate every data from the database and append to the drop down list
       for (let i = 0; i < data.length; i++) {
         const extraservice = data[i];
-
         const extraService = {
           ServiceId: extraservice.ExtraServiceID,
           ServiceName: extraservice.ExtraServiceName,
@@ -313,13 +247,6 @@ function populateAdditonalService() {
         };
         extraServiceArr.push(extraService);
         estAdd += parseFloat(extraservice.ExtraServicePrice);
-
-        console.log("===========At add service ============")
-        console.log(typeof (estAdd));
-        console.log("===================================")
-
-        console.log(estAdd);
-        console.log(typeof (estAdd));
       }
     },
     error(xhr, textStatus, errorThrown) {
@@ -327,7 +254,6 @@ function populateAdditonalService() {
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.responseText);
       console.log(xhr.status);
     },
@@ -340,25 +266,19 @@ function updatedAmt() {
 
 function updatedService(i) {
   estTotal -= estService;
-
   $('.container-class').removeClass('active');
   const serviceID = `#service${i}`;
   $(serviceID).addClass('active');
-
   const serviceNameID = `classNameButton${i}`;
   const services = document.getElementById(serviceNameID).value;
   const servicesValue = services.substring(0, services.indexOf('#'));
   document.getElementById('listService').innerHTML = servicesValue;
   $('#listServiceInput').val(services);
-  // get name
   const servicePrice = services.substring((services.indexOf('$') + 1));
-  // regex to get amount
   const ratePattern = new RegExp('^\d{1,6}');
   const final = servicePrice.substring(ratePattern, 3);
   estService = parseInt(final, 10) * 4;
-
   estTotal += estService;
-  // get amoutnt
   updatedAmt();
 }
 
@@ -383,34 +303,27 @@ function updatedRates() {
   const ratess = document.getElementById('rates').value;
   const ratessValue = ratess.substring(0, ratess.indexOf('#'));
   document.getElementById('listRates').innerHTML = ratessValue;
-  // substring to get name
   const ratesPrice = ratess.substring((ratess.indexOf('$') + 1));
-  // regex to get amount
   const ratePattern = new RegExp('^\d{1,6}');
   const final = ratesPrice.substring(ratePattern, 3);
   estRate = parseInt(final, 10);
   estTotal += estRate;
-  // update amunt in receipt
   updatedAmt();
 }
 
 function updatedAddServices(i) {
   const additionalServices = document.getElementById(i).value;
   const currentServices = document.getElementById('listAddService');
-
-  // if service found, take the current innerHTML, replace it with blank, then set it back
   if (currentServices.innerHTML.indexOf(additionalServices) !== -1) {
     $('#extraAdditionalService').html('');
     let currentServicesList = currentServices.innerHTML;
     currentServicesList = currentServicesList.replace(additionalServices, '');
     currentServices.innerHTML = currentServicesList;
-
     estTotal -= estAdd;
     updatedAmt();
   } else {
     currentServices.innerHTML += ` ${additionalServices}`;
     $('#extraAdditionalService').append('<br><h5>Please indicate any Unwanted Services:</h5>');
-
     for (let x = 0; x < extraServiceArr.length; x++) {
       $('#extraAdditionalService').append(
         `<input class="col-md-1" id="excludeSer${extraServiceArr[x].ServiceId}" onchange="updatedExcludedAddSer('excludeSer${extraServiceArr[x].ServiceId}')" 
@@ -423,14 +336,12 @@ function updatedAddServices(i) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 function updatedExcludedAddSer(x) {
   const excludeServices = document.getElementById(x).value;
   const id = `#${x}`;
   const extraserviceCheck = $(id).is(':checked');
   console.log(extraserviceCheck);
   const excludeServicesValue = excludeServices.substring((excludeServices.indexOf('$') + 1));
-
   if (extraserviceCheck) {
     excludedServiceArr.push(excludeServices);
     console.log(excludedServiceArr);
@@ -474,15 +385,12 @@ function updatedDay2() {
 }
 
 $(document).ready(() => {
-  // code added start---------------------------------------------
   $('.btn-numberRR').click(function (e) {
     e.preventDefault();
-
     fieldName = $(this).attr('data-field');
     type = $(this).attr('data-type');
     const input = $(`input[name='${fieldName}']`);
     const currentVal = parseInt(input.val(), 10);
-    // eslint-disable-next-line no-restricted-globals
     if (!isNaN(currentVal)) {
       if (type === 'minus') {
         if (currentVal > input.attr('min')) {
@@ -510,9 +418,6 @@ $(document).ready(() => {
     minValue = parseInt($(this).attr('min'), 10);
     maxValue = parseInt($(this).attr('max'), 10);
     valueCurrent = parseInt($(this).val(), 10);
-
-    // eslint-disable-next-line no-restricted-globals
-    // eslint-disable-next-line no-global-assign
     names = $(this).attr('name');
     if (valueCurrent >= minValue) {
       $(`.btn-number[data-type='minus'][data-field='${names}']`).removeAttr('disabled');
@@ -526,28 +431,21 @@ $(document).ready(() => {
     }
   });
   $('.input-numberBR').keydown((e) => {
-    // Allow: backspace, delete, tab, escape, enter and .
     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1
-      // Allow: Ctrl+A
       || (e.keyCode === 65 && e.ctrlKey === true)
-      // Allow: home, end, left, right
       || (e.keyCode >= 35 && e.keyCode <= 39)) {
-      // let it happen, don't do anything
       return;
     }
-    // Ensure that it is a number and stop the keypress
     if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
       e.preventDefault();
     }
   });
   $('.btn-numberBR').click(function (e) {
     e.preventDefault();
-
     fieldName = $(this).attr('data-field');
     type = $(this).attr('data-type');
     const input = $(`input[name='${fieldName}']`);
     const currentVal = parseInt(input.val(), 10);
-    // eslint-disable-next-line no-restricted-globals
     if (!isNaN(currentVal)) {
       if (type === 'minus') {
         if (currentVal > input.attr('min')) {
@@ -575,9 +473,6 @@ $(document).ready(() => {
     minValue = parseInt($(this).attr('min'), 10);
     maxValue = parseInt($(this).attr('max'), 10);
     valueCurrent = parseInt($(this).val(), 10);
-
-    // eslint-disable-next-line no-restricted-globals
-    // eslint-disable-next-line no-global-assign
     names = $(this).attr('name');
     if (valueCurrent >= minValue) {
       $(`.btn-number[data-type='minus'][data-field='${names}']`).removeAttr('disabled');
@@ -591,21 +486,15 @@ $(document).ready(() => {
     }
   });
   $('.input-numberBR').keydown((e) => {
-    // Allow: backspace, delete, tab, escape, enter and .
     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1
-      // Allow: Ctrl+A
       || (e.keyCode === 65 && e.ctrlKey === true)
-      // Allow: home, end, left, right
       || (e.keyCode >= 35 && e.keyCode <= 39)) {
-      // let it happen, don't do anything
       return;
     }
-    // Ensure that it is a number and stop the keypress
     if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
       e.preventDefault();
     }
   });
-  // code added end ---------------------------------------------
   loadUserDetails();
   populateClass();
   populatePackage();
@@ -631,12 +520,7 @@ $(document).ready(() => {
 $(document).ready(() => {
   $('#day2').hide();
   $('#day22').hide();
-
-  // confirma contract button
-  // Brings contract details to confirmation page
   $('#confirmContract').click(() => {
-    // Extracts the respective values and inputs
-    // Stores them into their respective constants
     const servicePref = $('#listServiceInput').val();
     const address = $('#cAddress').val();
     const servicePackage = $('#package').val();
@@ -652,25 +536,15 @@ $(document).ready(() => {
     const totalCost = $('#estAmount').html();
     const postalCode = $('#cPostalCode').val();
     const excludedAddServices = excludedServiceArr;
-
-    // get current date
-    // eslint-disable-next-line prefer-const
     let currentDate = new Date();
     currentDate.setDate(currentDate.getDate());
     const currentDates = currentDate.toISOString().split('T')[0];
-
-    // get 1 day after current date
-    // eslint-disable-next-line prefer-const
     let currentDate2 = new Date();
     currentDate2.setDate(currentDate2.getDate() + 1);
     const currentDates2 = currentDate2.toISOString().split('T')[0];
-
-    // get 2 day after current date
-    // eslint-disable-next-line prefer-const
     let currentDate3 = new Date();
     currentDate3.setDate(currentDate3.getDate() + 2);
     const currentDates3 = currentDate3.toISOString().split('T')[0];
-
     if (address === '' || contractStart === '') {
       new Noty({
         timeout: '10000',
@@ -699,9 +573,7 @@ $(document).ready(() => {
         theme: 'sunset',
         text: 'Please ensure the 2 days of service is different',
       }).show();
-
     } else {
-      // Stores the constants into localstorage
       localStorage.setItem('servicePref', servicePref);
       localStorage.setItem('address', address);
       localStorage.setItem('servicePackage', servicePackage);
@@ -717,8 +589,6 @@ $(document).ready(() => {
       localStorage.setItem('addInfo', addInfo);
       localStorage.setItem('totalCost', totalCost);
       localStorage.setItem('postalCode', postalCode);
-
-      // Brings users to the confirmation page
       window.location.replace(`${frontEndUrl}/customer/confirm`);
     }
   });
@@ -734,12 +604,9 @@ $(document).on('change', '#package', function () {
   }
 });
 
-// Day drop down function to prevent both having the same day
-// Select Elements
 const first = document.getElementById('dayOfService1');
 const second = document.getElementById('dayOfService2');
 
-// Option Elements
 const one = document.getElementById('monday');
 const two = document.getElementById('tuesday');
 const three = document.getElementById('wednesday');
@@ -756,9 +623,7 @@ const five2 = document.getElementById('friday2');
 const six2 = document.getElementById('saturday2');
 const seven2 = document.getElementById('sunday2');
 
-// Runs whenever first select has changed
 first.onchange = () => {
-  // Checks First Selects Value
   if (first.value === 'Mon') {
     one2.hidden = true;
     two2.hidden = false;
@@ -824,10 +689,7 @@ first.onchange = () => {
     updatedDay1();
   }
 };
-
-// Runs whenever second select has changed
 second.onchange = () => {
-  // Checks Second Selects Value
   if (second.value === 'Mon') {
     one.hidden = true;
     two.hidden = false;

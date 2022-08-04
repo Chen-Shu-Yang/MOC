@@ -1,8 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-undef */
-
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -23,7 +18,6 @@ if (tempCustomerID === null) {
 }
 function loadUserDetails(id) {
   let userInfo;
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customerAddBooking/${id}`,
@@ -33,8 +27,6 @@ function loadUserDetails(id) {
     success(data) {
       for (let i = 0; i < data.length; i++) {
         const user = data[i];
-
-        // compile the data that the card needs for its creation
         userInfo = {
           userNameInfo: user.FirstName,
         };
@@ -44,10 +36,7 @@ function loadUserDetails(id) {
   });
 }
 
-// Function will fill up the confirm card
 function fillUpConfirmationCard() {
-  // Retrieves the necessary details from the localstorage
-  // Stores the values into their respective contant variables
   const servicePreference = localStorage.getItem('servicePref');
   const customerAddress = localStorage.getItem('address');
   const servicePackages = localStorage.getItem('servicePackage');
@@ -64,8 +53,6 @@ function fillUpConfirmationCard() {
   const totalEstCost = localStorage.getItem('totalCost');
   const custPostalCode = localStorage.getItem('postalCode');
 
-  // Some of the values will need to seperate
-  // To get the value and its id
   const servicePrefId = servicePreference.substring(servicePreference.indexOf('#') + 1);
   const ratesId = rates.substring(rates.indexOf('#') + 1);
   const servicePackagesId = servicePackages.substring(servicePackages.indexOf('#') + 1);
@@ -74,7 +61,6 @@ function fillUpConfirmationCard() {
   const ratesString = rates.substring(0, rates.indexOf('#'));
   const servicePackagesString = servicePackages.substring(0, servicePackages.indexOf('#'));
 
-  // Fills their respective inputs
   $('#serviceClassId').val(servicePrefId);
   $('#servicePackageId').val(servicePackagesId);
   $('#sizeRatingsId').val(ratesId);
@@ -95,7 +81,6 @@ function fillUpConfirmationCard() {
   $('#startDate').text(contractStartDate);
   $('#serviceDay').text(day1);
 
-  // Check package to display second service date
   if (servicePackagesId === '2') {
     $('#serviceDay2').text(day2);
   } else {
@@ -118,9 +103,7 @@ function fillUpConfirmationCard() {
   $('#estimatedTotal').val(totalEstCost);
 }
 
-// Customer Auto booking function
 function customerAutobooking() {
-  // Extracts the value from the inputs and values
   const ServiceClass = $('#serviceClassId').val();
   const ServicePackage = $('#servicePackageId').val();
   const NoOfRooms = $('#noOfRooms').text();
@@ -135,8 +118,6 @@ function customerAutobooking() {
   const ExtraServices = $('#extraServices').text();
   const AdditionalInfo = $('#additionalInfo').text();
   const EstimatedTotal = $('#estimatedTotal').val();
-
-  // Compiles the extracted values into an object
   const requestBody = {
     customer: CustomerID,
     StartDate,
@@ -154,11 +135,7 @@ function customerAutobooking() {
     ExtraService: ExtraServices,
     PostalCode,
   };
-
-  // Stringifies object
   const reqBody = JSON.stringify(requestBody);
-
-  // Ajax function to call web service function
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/customer/autobooking`,
@@ -167,7 +144,6 @@ function customerAutobooking() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success() {
-      // If successful remove localstorage items
       localStorage.removeItem('servicePref');
       localStorage.removeItem('address');
       localStorage.removeItem('servicePackage');
@@ -181,11 +157,9 @@ function customerAutobooking() {
       localStorage.removeItem('addInfo');
       localStorage.removeItem('totalCost');
       localStorage.removeItem('postalCode');
-      // Brings customer to the possible list of helpers
       window.location.replace(`${frontEndUrl}/customer/helpers`);
     },
     error(xhr) {
-      // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
         errMsg = 'Server Issues';
@@ -210,8 +184,6 @@ function customerAutobooking() {
 $(document).ready(() => {
   fillUpConfirmationCard();
   loadUserDetails(CustomerID);
-
-  // Confirm button to trigger customer auto-booking
   $('#confirmBookingBtn').click(() => {
     customerAutobooking();
   });

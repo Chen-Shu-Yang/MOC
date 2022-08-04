@@ -1,10 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-shadow */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-undef */
-/* eslint-disable no-console */
-/* eslint-disable no-nested-ternary */
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -12,56 +5,42 @@ const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'http://18.142.170.203:3001/';
 // const backEndUrl = 'http://18.142.170.203:5000/';
 
-
 const tmpToken = JSON.parse(localStorage.getItem('token'));
 const tempAdminID = JSON.parse(localStorage.getItem('AdminID'));
 if (tmpToken === null || tempAdminID === null) {
   window.localStorage.clear();
   window.location.replace(`${frontEndUrl}/unAuthorize`);
 }
-
-// Create a new card for Contracts
 function createRow(cardInfo) {
-  // cardInfo data is place in each respective place
   const card = `
       <tr>
-  
         <td>${cardInfo.CustomerID}</td>
         <td>${cardInfo.FirstName}</td>
         <td> ${cardInfo.LastName}</td>
         <td>${cardInfo.PhoneNumber}</td>
         <td><button onClick="deleteCustomer(${cardInfo.CustomerID})" id="deleteCustomerBtn" class="btn btn-danger">Delete</button></td>
         <td><button onClick="activateUser(${cardInfo.CustomerID})" id="activateCustomerBtn" class="btn btn-success">Activate</button></td>
-       
       </tr>
       `;
   return card;
 }
-// Create pagination numbering
 function pageBtnCreate(totalNumberOfPages) {
-  // Remove any pagination
   $('#pagination').html('');
-  // for loop to the button based on totalNumberOfPages
   for (i = 1; i <= totalNumberOfPages; i++) {
     divPaginBtn = `<button type="button" onClick="loadAllContractByLimit(${i})">${i}</button>`;
     $('#pagination').append(divPaginBtn);
   }
 }
-// Load all contracts to allow for pagination numbering
 function loadAllInactiveCustomers() {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/inactiveCustomers`,
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
-    // when successful, divide the number of result by 6 to determine
-    // number of pages needed
     success(data) {
       const totalNumberOfPages = Math.ceil(data.length / 6);
       pageBtnCreate(totalNumberOfPages);
     },
-
     error(xhr, textStatus, errorThrown) {
       console.log('Error in Operation');
       console.log(xhr);
@@ -72,9 +51,8 @@ function loadAllInactiveCustomers() {
     },
   });
 }
-// Load contracts restricted to 6 row per page
+
 function loadAllInactiveCustomerByLimit(pageNumber) {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/inactiveCustomers/${pageNumber}`,
@@ -84,12 +62,9 @@ function loadAllInactiveCustomerByLimit(pageNumber) {
     success(data) {
       if (data != null) {
         $('#customerTableBody').html('');
-        // for loop to generate each row of result
         for (let i = 0; i < data.length; i++) {
           const inactiveCustomer = data[i];
-
           console.log(inactiveCustomer);
-          // compile the data that the card needs for its creation
           const contractstbl = {
             CustomerID: inactiveCustomer.CustomerID,
             FirstName: inactiveCustomer.FirstName,
@@ -107,17 +82,14 @@ function loadAllInactiveCustomerByLimit(pageNumber) {
       console.log(xhr);
       console.log(textStatus);
       console.log(errorThrown);
-
       console.log(xhr.status);
       console.log(xhr.responseText);
     },
   });
 }
 
-// eslint-disable-next-line no-unused-vars
 function activateUser(id) {
   console.log(`Booking id to cancel ${id}`);
-  // ajax method to call the method
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/activateCustomer/${id}`,
@@ -128,7 +100,6 @@ function activateUser(id) {
       console.log(xhr);
       console.log(textStatus);
       console.log(data);
-      // set and call confirmation message
       $('#customerTableBody').html('');
       loadAllInactiveCustomerByLimit(1);
       msg = 'Successfully updated!';
@@ -144,7 +115,6 @@ function activateUser(id) {
     error(xhr, textStatus, errorThrown) {
       console.log(textStatus);
       console.log(errorThrown);
-      // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
         console.log('error');
@@ -169,10 +139,8 @@ function activateUser(id) {
   });
 }
 
-// eslint-disable-next-line no-unused-vars
 function deleteCustomer(id) {
   console.log(`Booking id to cancel ${id}`);
-  // ajax method to call the method
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/inActiveCustomer/${id}`,
@@ -183,7 +151,6 @@ function deleteCustomer(id) {
       console.log(xhr);
       console.log(textStatus);
       console.log(data);
-      // set and call confirmation message
       $('#customerTableBody').html('');
       loadAllInactiveCustomerByLimit(1);
       msg = 'Successfully updated!';
@@ -199,7 +166,6 @@ function deleteCustomer(id) {
     error(xhr, textStatus, errorThrown) {
       console.log(textStatus);
       console.log(errorThrown);
-      // set and call error message
       let errMsg = '';
       if (xhr.status === 500) {
         console.log('error');
@@ -228,7 +194,6 @@ $(document).ready(() => {
   console.log('--------Query Params----------');
   console.log(`Query Param (source): ${window.location.search}`);
   console.log(`Query Param (extraction): ${queryParams}`);
-
   loadAllInactiveCustomerByLimit('1');
   loadAllInactiveCustomers();
 });
