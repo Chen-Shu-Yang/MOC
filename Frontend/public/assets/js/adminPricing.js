@@ -147,12 +147,12 @@ function deleteClassOfService(id) {
           theme: 'sunset',
           text: errMsg,
         }).show();
-      
+
         // to refresh
         $('#classServiceTableBody').html('');
         loadAllClassOfServices();
       } else if (xhr.status === 200) {
-      // if the params id is valid and
+        // if the params id is valid and
         // set and call confirmation message
         const msg = 'Successfully deleted!';
         new Noty({
@@ -163,7 +163,7 @@ function deleteClassOfService(id) {
           text: msg,
         }).show();
 
-      
+
         // to refresh
         $('#classServiceTableBody').html('');
         loadAllClassOfServices();
@@ -189,7 +189,7 @@ function deleteClassOfService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-   
+
     },
 
   });
@@ -234,7 +234,7 @@ function updateClassOfService() {
         theme: 'sunset',
         text: msg,
       }).show();
- 
+
       // refresh
       $('#classServiceTableBody').html('');
       loadAllClassOfServices();
@@ -264,7 +264,7 @@ function updateClassOfService() {
       }).show();
       $('#classServiceTableBody').html('');
       loadAllClassOfServices();
-   
+
     },
   });
 }
@@ -315,7 +315,7 @@ function loadAClassOfService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-  
+
     },
   });
 }
@@ -363,7 +363,7 @@ function addClassOfService() {
         theme: 'sunset',
         text: msg,
       }).show();
-  
+
     },
     error(xhr, textStatus, errorThrown) {
       console.log(xhr);
@@ -388,7 +388,7 @@ function addClassOfService() {
         theme: 'sunset',
         text: errMsg,
       }).show();
-   
+
       $('#classServiceTableBody').html('');
       loadAllClassOfServices();
     },
@@ -478,7 +478,7 @@ function loadAnExtraService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-  
+
     },
   });
 }
@@ -523,7 +523,7 @@ function addExtraService() {
         theme: 'sunset',
         text: msg,
       }).show();
-  
+
       const post = data;
       console.log(post);
       $('#extraServiceTableBody').html('');
@@ -552,7 +552,7 @@ function addExtraService() {
         theme: 'sunset',
         text: errMsg,
       }).show();
-   
+
       $('#extraServiceTableBody').html('');
       loadAllExtraServices();
     },
@@ -574,7 +574,7 @@ function updateExtraService() {
   // put all data inserted into data2 so that it can be used to parse as json data in the api
   const data2 = {
     ExtraServiceName: extraServiceName,
-    ExtraServicePrice: (extraServicePrice).toFixed(2),
+    ExtraServicePrice: extraServicePrice,
   };
   // ajax method to call the method
   $.ajax({
@@ -628,7 +628,7 @@ function updateExtraService() {
       }).show();
       $('#extraServiceTableBody').html('');
       loadAllExtraServices();
-   
+
     },
   });
 }
@@ -656,11 +656,11 @@ function deleteExtraService(id) {
           theme: 'sunset',
           text: errMsg,
         }).show();
-       
+
         // to refresh
         $('#extraServiceTableBody').html('');
       } else if (xhr.status === 200) {
-      // if the params id is valid and
+        // if the params id is valid and
         // set and call confirmation message
         const msg = 'Successfully deleted!';
         new Noty({
@@ -694,7 +694,7 @@ function deleteExtraService(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-  
+
     },
   });
 }
@@ -789,7 +789,7 @@ function loadARate(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-   
+
     },
   });
 }
@@ -838,7 +838,7 @@ function addRate() {
         theme: 'sunset',
         text: msg,
       }).show();
-  
+
     },
     error(xhr, textStatus, errorThrown) {
       console.log(xhr);
@@ -863,7 +863,7 @@ function addRate() {
         theme: 'sunset',
         text: errMsg,
       }).show();
-    
+
       $('#rateTableBody').html('');
       loadAllRates();
     },
@@ -911,8 +911,8 @@ function updateRate() {
         theme: 'sunset',
         text: msg,
       }).show();
- 
-  
+
+
       $('#rateTableBody').html('');
       loadAllRates();
       // loadAllClassOfServices()
@@ -971,11 +971,11 @@ function deleteRate(id) {
           theme: 'sunset',
           text: errMsg,
         }).show();
-     
+
         // to refresh
         $('#rateTableBody').html('');
       } else if (xhr.status === 200) {
-      // if the params id is valid and
+        // if the params id is valid and
         // set and call confirmation message
         const msg = 'Successfully deleted!';
         new Noty({
@@ -986,7 +986,7 @@ function deleteRate(id) {
           text: msg,
         }).show();
 
-      
+
         // to refresh
         // to refresh
         $('#rateTableBody').html('');
