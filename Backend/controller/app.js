@@ -1970,8 +1970,9 @@ app.post('/employeeList', printDebugInfo, verifyToken, async (req, res) => {
 
   // calling getBookingdetails method from admin model
   const detail = req.body.bookingDates;
+  const { timeOfService } = req.body;
 
-  Admin.getEmployeeAvailabilty(detail, (err, result) => {
+  Admin.getEmployeeAvailabilty(detail, timeOfService, (err, result) => {
     // if no error send result
     if (!err) {
       console.log('==================================');
