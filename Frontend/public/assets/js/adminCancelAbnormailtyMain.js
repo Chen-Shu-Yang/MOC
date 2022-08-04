@@ -54,8 +54,8 @@ function createTable(cardInfo) {
   <td>${cardInfo.Customer}</td>
   <td>${cardInfo.FirstName}</td>
   <td>${cardInfo.LastName}</td>
-  <td> <button type="button" id="suspendBtn" class="btn btn-info"  onClick="suspendUser(${cardInfo.Customer})">Suspend</button></td>
-  <td> <button type="button" id="resolveBtn" class="btn btn-info"  onClick="resolveIssue(${cardInfo.Customer})">Resolve</button></td>
+  <td> <button type="button" id="suspendBtn" class="btn btn-danger"  onClick="suspendUser(${cardInfo.Customer})">Suspend</button></td>
+  <td> <button type="button" id="resolveBtn" class="btn btn-success"  onClick="resolveIssue(${cardInfo.Customer})">Resolve</button></td>
   </tr>
   `;
 
@@ -89,8 +89,8 @@ function loadAllClassOfServices() {
         console.log(RowInfo);
         // calling createTable to display values row by row
         const newRow = createTable(RowInfo);
-        // appeding row to classTable
-        $('#classServiceTableBody').append(newRow);
+        // appeding row to cancelAbnormalTable
+        $('#cancelAbnormalTableBody').append(newRow);
       }
     },
     error(xhr, textStatus, errorThrown) {
@@ -116,18 +116,27 @@ function resolveIssue(id) {
     contentType: 'application/json; charset=utf-8',
     // if data inserted
     success(data, textStatus, xhr) {
+   
       // if id in the params not valid show error
       if (xhr.status === 404) {
         // set and call error message
         let errMsg = '';
         errMsg = 'Not valid id';
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+   
         // to refresh
-        $('#classServiceTableBody').html('');
-      } else if (xhr.status === 200) {
+        $('#cancelAbnormalTableBody').html('');
+        loadAllClassOfServices();
+      } else if (xhr.status === 202) {
       // if the params id is valid and
         // set and call confirmation message
-        msg = 'Successfully deleted!';
+        msg = 'Successfully resolved!';
         new Noty({
           timeout: '5000',
           type: 'success',
@@ -139,54 +148,7 @@ function resolveIssue(id) {
         $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
         // to refresh
         // to refresh
-        $('#classServiceTableBody').html('');
-        loadAllClassOfServices();
-      }
-    },
-    error(xhr, textStatus, errorThrown) {
-      // set and call error message
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      let errMsg = '';
-      if (xhr.status === 500) {
-        console.log('error');
-        errMsg = 'Server Issues';
-      } else {
-        errMsg = 'There is some other issues here';
-      }
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-    },
-  });
-}
-
-// eslint-disable-next-line no-unused-vars
-function suspendUser(id) {
-  // call the web service endpoint for deleting class of service by id
-  $.ajax({
-    headers: { authorization: `Bearer ${tmpToken}` },
-    url: `${backEndUrl}/updateCustomerStatus/${id}`,
-    type: 'PUT',
-    contentType: 'application/json; charset=utf-8',
-    // if data inserted
-    success(data, textStatus, xhr) {
-      // if id in the params not valid show error
-      if (xhr.status === 404) {
-        // set and call error message
-        let errMsg = '';
-        errMsg = 'Not valid id';
-        $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
-        // to refresh
-        $('#classServiceTableBody').html('');
-      } else if (xhr.status === 200) {
-      // if the params id is valid and
-        // set and call confirmation message
-        msg = 'Successfully deleted!';
-
-        $('#confirmationMsg').html(confirmToast(`${msg} ${xhr.status}`)).fadeOut(2500);
-        // to refresh
-        // to refresh
-        $('#classServiceTableBody').html('');
+        $('#cancelAbnormalTableBody').html('');
         loadAllClassOfServices();
       }
     },
@@ -209,7 +171,73 @@ function suspendUser(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
+ 
+    },
+  });
+}
+
+// eslint-disable-next-line no-unused-vars
+function suspendUser(id) {
+  // call the web service endpoint for deleting class of service by id
+  $.ajax({
+    headers: { authorization: `Bearer ${tmpToken}` },
+    url: `${backEndUrl}/updateCustomerStatus/${id}`,
+    type: 'PUT',
+    contentType: 'application/json; charset=utf-8',
+    // if data inserted
+    success(data, textStatus, xhr) {
+      // if id in the params not valid show error
+      if (xhr.status === 404) {
+        // set and call error message
+        let errMsg = '';
+        errMsg = 'Not valid id';
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+   
+        // to refresh
+        $('#cancelAbnormalTableBody').html('');
+
+      } else if (xhr.status === 202) {
+      // if the params id is valid and
+        // set and call confirmation message
+        const msg = 'User suspended!';
+        new Noty({
+          timeout: '5000',
+          type: 'success',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: msg,
+        }).show();
+        // to refresh
+        // to refresh
+     
+      }
+    },
+    error(xhr, textStatus, errorThrown) {
+      // set and call error message
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(errorThrown);
+      let errMsg = '';
+      if (xhr.status === 500) {
+        console.log('error');
+        errMsg = 'Server Issues';
+      } else {
+        errMsg = 'There is some other issues here';
+      }
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }

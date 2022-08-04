@@ -1,75 +1,183 @@
-.addBtn{
-    margin-left: 790px;
+.table {
+    padding-top: 20000px;
 }
 
-.btn-success{
-    background: #2E6869; 
-    margin-top: -80px;
 
-}
-
-.btn-success:hover{
-    background-color: #448788;
+.alert {
+    width: 300px;
+    margin-left: 500px;
+    margin-top: 20px;
 
 }
 
-.btn-success:active{
-    background-color: #448788;
-
-}
-
-.alert{
-    width:300px;
-    margin-left:500px;
-    margin-top:20px;
-  
-}
-
-.cardClassService{
+.cardClassService {
     margin-top: 90px;
     margin-left: -40px;
 }
 
+.home-section nav .search-box,
+.contract-header.moved .search-box {
+    height: 40px;
+    width: 300px;
+    margin: 0 20px;
+    position: relative;
+}
+
+nav .search-box input,
+.contract-header.moved .search-box input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    padding: 0 15px;
+    font-size: 15px;
+    color: #000;
+    background: #F5F6FA;
+    border: 2px solid #EFEEF1;
+    outline: none;
+}
+
+nav .search-box .fa-magnifying-glass,
+.contract-header.moved .search-box .fa-magnifying-glass {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px;
+    width: 40px;
+    border-radius: 6px;
+    color: #000;
+    font-size: 18px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+nav .right-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* contract Section */
+.contract-header.moved {
+    display: none;
+}
+
+.contract-section {
+    padding-top: 100px;
+    padding-bottom: 20px;
+}
 #suspendBtn{
     background-color: #D38984;
     color: white;
     margin-top: 10px;
+    border: 0.1px solid  #D38984 ;
 }
 
 #resolveBtn{
     background-color: #74A2A3;
     color: white;
     margin-top: 10px;
+    border: 0.1px solid  #74A2A3 ;
 }
 
-#suspendBtn:hover{
-    background-color: white;
-    color: #91322b;
-    border: 0.2px solid black;
-    margin-top: 10px;
-}
-
-#resolveBtn:hover{
-    background-color: white;
-    color: #74A2A3;
-    border: 0.2px solid black;
-    margin-top: 10px;
-}
-
-.customer-section {
-    padding-top: 100px;
-    width: 100%;
-    margin-left: -200px;
-}
-
-.customer-section .max-width {
+.contract-section .max-width {
     margin: 0 80px;
-    border: 2px solid #c4c4c4;
-    padding: 30px;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
+}
+
+.contract-section .contract-list {
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+}
+
+.contract-card {
+    border: 2px solid #000;
+    padding: 20px;
+    border-radius: 6px;
+    font-size: 11px;
+}
+
+.contract-card .contract-id {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    font-size: 16px;
+}
+
+.contract-card .contract-id img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-right: 25px;
+    border-radius: 50%;
+}
+
+.contract-card .contract-des {
+    margin: 20px 0;
+}
+
+.contract-card .contract-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Pagination Styling */
+.page-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.page-btn button {
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-btn button:hover,
+.page-btn button.active {
+    background: #000;
+    color: #fff;
+}
+
+/* Modal Styling */
+#editContractModal {
+    margin-top: 200px;
+}
+
+.modal-content .modal-body input {
+    margin-bottom: 20px;
+}
+
+.modal-content .modal-header .close {
+    background: none;
+    border: none;
+}
+
+.modal-content .modal-header .close span {
+    font-size: 25px;
+}
+
+
+.modal-content .modal-body textarea {
+    resize: none;
 }
 
 .max-width table {
@@ -90,6 +198,11 @@
     display: flex;
     align-items: center;
     justify-content: start;
+    border: none;
+}
+
+table tr {
+    border-bottom: 1px solid #dee2e6;
 }
 
 .max-width table .status-color {
@@ -99,35 +212,87 @@
     margin-right: 10px;
 }
 
-.max-width table .status-color.suspend {
-    background: #8F7752;
+.max-width table .status-color.Cancelled {
+    background: #C86E6E;
 }
 
-.max-width table .status-color.active {
-    background: #2E6869;
+.max-width table .status-color.Assigned {
+    background: #A5A66C;
 }
 
-.max-width table button {
-    border: none;
-    background: #fff;
-    margin-right: 10px;
+.max-width table .status-color.Pending {
+    background: #9E9C9C;
 }
 
-.modal-content .modal-footer .update-btn {
-    background: #84BC9E;
-    color: #fff;
+.max-width table .status-color.Completed {
+    background: #73A684;
+}
+
+@media (max-width: 1200px) {
+    .contract-section .contract-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .home-section nav .search-box {
+        height: 32px;
+        width: 300px;
+        margin: 0 20px;
+        position: relative;
+    }
+
+    nav .search-box input {
+        padding: 0 15px;
+        font-size: 13px;
+    }
+
+    nav .search-box .fa-magnifying-glass {
+        top: 50%;
+        height: 30px;
+        width: 30px;
+        font-size: 15px;
+        line-height: 30px;
+    }
+}
+
+@media (max-width: 900px) {
+    .contract-section .contract-list {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
 }
 
 @media (max-width: 729px) {
-    .customer-section .max-width {
-        margin-right: 40px;
+    .contract-section .max-width {
         margin-left: 120px;
+        margin-right: 40px;
     }
+
+    .right-header.moved {
+        display: none;
+    }
+
+    .contract-header.moved {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 20px;
+        z-index: -1;
+    }
+
+    .contract-header.moved .search-box {
+        height: 40px;
+        width: 100%;
+        margin: 0px;
+        margin-right: 10px;
+        flex-basis: 75%;
+    }
+
 }
 
 
 @media (max-width: 580px) {
-    .customer-section .max-width {
-        margin: 0 40px
+    .contract-section .max-width {
+        margin: 0 30px;
     }
 }
