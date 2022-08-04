@@ -1088,12 +1088,12 @@ month(b.ScheduleDate) desc,day(b.ScheduleDate) asc
   },
   getEmployeeAvailabilty(bookingDate, callback) {
     // sql query statement
-    const sql = `SELECT e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,e.EmployeeID,b.*
+    const sql = `SELECT distinct e.EmployeeName,e.EmployeeDes,e.EmployeeImgUrl,DATE_FORMAT(s.ScheduleDate,'%Y-%m-%d') AS FormatScheduleDate,e.EmployeeID
     FROM heroku_6b49aedb7855c0b.employee as e
     left join heroku_6b49aedb7855c0b.schedule as s on e.EmployeeID = s.Employee
     left join heroku_6b49aedb7855c0b.booking as b on e.EmployeeID = b.Employee
     
-    Having FormatScheduleDate= ?;`;
+    Having FormatScheduleDate = ?;`;
 
     const values = [bookingDate];
     // pool query

@@ -281,7 +281,7 @@ $('#updateContract').click(() => {
           theme: 'sunset',
           text: 'Contract updated!',
         }).show();
-        // loadAllBookingByLimit(1);
+        window.location.reload();
       } else {
         console.log('Error');
       }
