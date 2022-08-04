@@ -10,6 +10,12 @@
 
 
 }
+.card-body a{
+    text-decoration: none !important;
+}
+.card-title .ct1{
+    text-decoration: none !important;
+}
 
 .ic{
    margin:5px auto;
