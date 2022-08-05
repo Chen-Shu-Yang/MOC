@@ -154,9 +154,12 @@ function loadAllBooking(activePage) {
           Status: booking.Status,
           TimeOfService: booking.TimeOfService,
           BookingID: booking.BookingID,
+          AssignerF: booking.AdminFName,
+          AssignerL: booking.AdminLName,
         };
         userSearchChar.push(Customer);
       }
+
       const totalNumberOfPages = Math.ceil(data.length / 6);
       pageBtnCreate(totalNumberOfPages, activePage);
     },
@@ -187,15 +190,14 @@ function loadAllBookingByLimit(pageNumber) {
         $('#bookingTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
-          let date = booking.ScheduleDate;
-          date = date.replace('T16:00:00.000Z', '');
+
           const bookingstbl = {
             bookingID: booking.BookingID,
             FirstName: booking.FirstName,
             LastName: booking.LastName,
             Package: booking.PackageName,
             ClassName: booking.ClassName,
-            ScheduleDate: date,
+            ScheduleDate: booking.ScheduleDate,
             TimeOfService: booking.TimeOfService,
             NoOfRooms: booking.NoOfRooms,
             NoOfBathrooms: booking.NoOfBathrooms,
@@ -341,6 +343,8 @@ userSearch.addEventListener('keyup', (e) => {
         Address: booking.Address,
         Employee: booking.EmployeeName,
         Status: booking.Status,
+        AssignerF: booking.AssignerF,
+        AssignerL: booking.AssignerL,
       };
       const newCard = createRow(RowInfo);
       $('#bookingTableBody').append(newCard);
@@ -365,6 +369,8 @@ userSearch.addEventListener('keyup', (e) => {
         Address: booking.Address,
         Employee: booking.EmployeeName,
         Status: booking.Status,
+        AssignerF: booking.AssignerF,
+        AssignerL: booking.AssignerL,
       };
       if (distance <= 4) {
         similarResults.push(RowInfo);
