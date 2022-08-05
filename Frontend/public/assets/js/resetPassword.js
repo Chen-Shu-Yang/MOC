@@ -46,7 +46,6 @@ $(document).ready(() => {
           dataType: 'json',
           success(data) {
             if (data != null) {
-              console.log('Data');
               new Noty({
                 timeout: '5000',
                 type: 'success',
@@ -56,15 +55,18 @@ $(document).ready(() => {
               }).show();
               window.location.replace(`${frontEndUrl}/login`);
             } else {
-              console.log('Error');
+              errMsg="Error in operation"
+              new Noty({
+                timeout: '5000',
+                type: 'error',
+                layout: 'topCenter',
+                theme: 'sunset',
+                text: errMsg,
+              }).show();
+        
             }
           },
           error(xhr, textStatus, errorThrown) {
-            console.log('Frontend error');
-            console.log('Error in Operation');
-            console.log(`XHR: ${JSON.stringify(xhr)}`);
-            console.log(`Textstatus: ${textStatus}`);
-            console.log(`Errorthorwn${errorThrown}`);
             new Noty({
               timeout: '5000',
               type: 'error',

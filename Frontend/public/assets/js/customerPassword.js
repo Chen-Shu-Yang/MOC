@@ -65,10 +65,6 @@ $('#changePassword').click(() => {
         }
       },
       error(xhr, textStatus, errorThrown) {
-        console.log('Error in Operation');
-        console.log(`XHR: ${JSON.stringify(xhr.responseText)}`);
-        console.log(`Textstatus: ${textStatus}`);
-        console.log(`Errorthorwn${errorThrown}`);
         new Noty({
           timeout: '5000',
           type: 'error',

@@ -104,6 +104,17 @@ function loadAllBookingToBeCancelled(activePage) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
+      else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
+      }
     },
   });
 }
@@ -188,6 +199,7 @@ function cancelBooking(id) {
         errMsg = 'There is some other issues here ';
       }
       $('#classServiceTableBody').html('');
+      loadAllBookingToBeCancelledByLimit(1);
       new Noty({
         timeout: '5000',
         type: 'error',

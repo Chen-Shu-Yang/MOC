@@ -49,6 +49,17 @@ function loadAllClassOfServices() {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
+      else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
+      }
     },
   });
 }
@@ -87,12 +98,8 @@ function resolveIssue(id) {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';
@@ -141,7 +148,6 @@ function suspendUser(id) {
     error(xhr, textStatus, errorThrown) {
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';

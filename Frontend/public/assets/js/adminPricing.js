@@ -81,10 +81,18 @@ function loadAllClassOfServices() {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+      else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
+      }
+
     },
   });
 }
@@ -122,12 +130,8 @@ function deleteClassOfService(id) {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';
@@ -165,7 +169,6 @@ function updateClassOfService() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data) {
-      console.log(data);
       const msg = 'Successfully updated!';
       new Noty({
         timeout: '5000',
@@ -178,12 +181,8 @@ function updateClassOfService() {
       loadAllClassOfServices();
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -225,9 +224,6 @@ function loadAClassOfService(id) {
       $('#class-description-update').val(RowInfo.classDescription);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       errMsg = ' ';
       if (xhr.status === 201) {
         errMsg = "The id doesn't exist ";
@@ -255,7 +251,6 @@ function addClassOfService() {
     ClassPricing: classPricing,
     ClassDes: classDescription,
   };
-  console.log(`request body: ${requestBody}`);
   const reqBody = JSON.stringify(requestBody);
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
@@ -266,7 +261,6 @@ function addClassOfService() {
     dataType: 'json',
     success(data) {
       const post = data;
-      console.log(post);
       $('#classServiceTableBody').html('');
       loadAllClassOfServices();
       const msg = 'Successfully added!';
@@ -279,12 +273,8 @@ function addClassOfService() {
       }).show();
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else if (xhr.status === 400) {
         errMsg = ' Input not accepted';
@@ -325,10 +315,15 @@ function loadAllExtraServices() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -350,9 +345,6 @@ function loadAnExtraService(id) {
       $('#extra-service-pricing-update').val(RowInfo.extraServicePrice);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       errMsg = ' ';
       if (xhr.status === 201) {
         errMsg = "The id doesn't exist ";
@@ -395,17 +387,12 @@ function addExtraService() {
         text: msg,
       }).show();
       const post = data;
-      console.log(post);
       $('#extraServiceTableBody').html('');
       loadAllExtraServices();
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else if (xhr.status === 400) {
         errMsg = ' Input not accepted';
@@ -445,9 +432,6 @@ function updateExtraService() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log(data);
-      console.log(textStatus);
-      console.log(xhr);
       const msg = 'Successfully updated!';
       new Noty({
         timeout: '5000',
@@ -460,12 +444,8 @@ function updateExtraService() {
       loadAllExtraServices();
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -519,12 +499,8 @@ function deleteExtraService(id) {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';
@@ -560,10 +536,15 @@ function loadAllRates() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -586,9 +567,6 @@ function loadARate(id) {
       $('#package-update').val(RowInfo.package);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = ' ';
       if (xhr.status === 201) {
         errMsg = "The id doesn't exist ";
@@ -637,12 +615,8 @@ function addRate() {
       }).show();
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else if (xhr.status === 400) {
         errMsg = ' Input not accepted';
@@ -685,9 +659,6 @@ function updateRate() {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log(data);
-      console.log(textStatus);
-      console.log(xhr);
       const msg = 'Successfully updated!';
       new Noty({
         timeout: '5000',
@@ -700,12 +671,8 @@ function updateRate() {
       loadAllRates();
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -759,12 +726,8 @@ function deleteRate(id) {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Server Issues';
       } else {
         errMsg = 'There is some other issues here';

@@ -42,12 +42,15 @@ function loadAllInactiveCustomers() {
       pageBtnCreate(totalNumberOfPages);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -64,7 +67,6 @@ function loadAllInactiveCustomerByLimit(pageNumber) {
         $('#customerTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const inactiveCustomer = data[i];
-          console.log(inactiveCustomer);
           const contractstbl = {
             CustomerID: inactiveCustomer.CustomerID,
             FirstName: inactiveCustomer.FirstName,
@@ -77,19 +79,20 @@ function loadAllInactiveCustomerByLimit(pageNumber) {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.status);
-      console.log(xhr.responseText);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
 
 function activateUser(id) {
-  console.log(`Booking id to cancel ${id}`);
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/activateCustomer/${id}`,
@@ -97,9 +100,6 @@ function activateUser(id) {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
       $('#customerTableBody').html('');
       loadAllInactiveCustomerByLimit(1);
       msg = 'Successfully updated!';
@@ -112,12 +112,9 @@ function activateUser(id) {
       }).show();
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
     },
-    error(xhr, textStatus, errorThrown) {
-      console.log(textStatus);
-      console.log(errorThrown);
+    error(xhr, textStatus, errorThrown) {;
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -140,7 +137,6 @@ function activateUser(id) {
 }
 
 function deleteCustomer(id) {
-  console.log(`Booking id to cancel ${id}`);
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/inActiveCustomer/${id}`,
@@ -148,9 +144,6 @@ function deleteCustomer(id) {
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(data);
       $('#customerTableBody').html('');
       loadAllInactiveCustomerByLimit(1);
       msg = 'Successfully updated!';
@@ -164,11 +157,8 @@ function deleteCustomer(id) {
       $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(textStatus);
-      console.log(errorThrown);
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -191,9 +181,6 @@ function deleteCustomer(id) {
 }
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
   loadAllInactiveCustomerByLimit('1');
   loadAllInactiveCustomers();
 });

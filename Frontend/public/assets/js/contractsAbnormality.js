@@ -37,7 +37,6 @@ function loadAllAbnContracts(CustomerID) {
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
-      console.log(data);
       $('#contract-list').html('');
       for (let i = 0; i < data.length; i++) {
         const contract = data[i];
@@ -53,12 +52,16 @@ function loadAllAbnContracts(CustomerID) {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
+
     },
   });
 }
@@ -70,18 +73,20 @@ function cancelAbnormalContract(id) {
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
     success(data) {
-      console.log(data);
       const queryParams = new URLSearchParams(window.location.search);
       const customerID = queryParams.get('id');
       loadAllAbnContracts(customerID);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -93,16 +98,18 @@ function resolveAbnContracts(id) {
     type: 'PUT',
     contentType: 'application/json; charset=utf-8',
     success(data) {
-      console.log(data);
       window.location.replace(`${frontEndUrl}/admin/abnormality/contract`);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }

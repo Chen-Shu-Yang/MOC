@@ -57,15 +57,18 @@ $(document).ready(() => {
                 if (data != null) {
                   window.location.replace(`${frontEndUrl}/login`);
                 } else {
-                  console.log('Error');
+                  errMsg="Error in operation"
+                  new Noty({
+                    timeout: '5000',
+                    type: 'error',
+                    layout: 'topCenter',
+                    theme: 'sunset',
+                    text: errMsg,
+                  }).show();
+            
                 }
               },
               error(xhr, textStatus, errorThrown) {
-                console.log('Frontend error');
-                console.log('Error in Operation');
-                console.log(`XHR: ${JSON.stringify(xhr)}`);
-                console.log(`Textstatus: ${textStatus}`);
-                console.log(`Errorthorwn ${errorThrown}`);
                 if(errorThrown === 'Unprocessable Entity'){
                   new Noty({
                     timeout: '5000',

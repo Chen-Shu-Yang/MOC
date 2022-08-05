@@ -68,7 +68,6 @@ function completeBooking(id) {
     error(xhr, textStatus, errorThrown) {
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -85,7 +84,6 @@ function completeBooking(id) {
         theme: 'sunset',
         text: errMsg,
       }).show();
-      $('#errMsgNotificaton').html(errorToast(errMsg)).fadeOut(2500);
     },
   });
 }
@@ -164,13 +162,15 @@ function loadAllBooking(activePage) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
 
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.responseText);
-      console.log(xhr.status);
     },
   });
 }
@@ -217,12 +217,17 @@ function loadAllBookingByLimit(pageNumber) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+      else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
 
-      console.log(xhr.status);
-      console.log(xhr.responseText);
+      }
     },
   });
 }
@@ -263,14 +268,15 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
     },
 
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
 
-      console.log(xhr.status);
-      console.log(xhr.responseText);
     },
   });
 }
@@ -323,7 +329,6 @@ userSearch.addEventListener('keyup', (e) => {
   $('#similarSearch').html('');
   $('#bookingTableBody').html('');
   if (filterBookings.length !== 0) {
-    console.log(filterBookings);
     for (let i = 0; i < filterBookings.length; i++) {
       const booking = filterBookings[i];
       RowInfo = {
@@ -436,7 +441,6 @@ function addMonthlyBooking() {
       }
       else{
         if (xhr.status === 500) {
-          console.log('error');
           errMsg = 'Server Issues';
         } else if (xhr.status === 400) {
           errMsg = ' Input not accepted';
@@ -490,7 +494,6 @@ function addMonthlyBookingNext() {
       }
       else{
         if (xhr.status === 500) {
-          console.log('error');
           errMsg = 'Server Issues';
         } else if (xhr.status === 400) {
           errMsg = ' Input not accepted';
@@ -530,7 +533,6 @@ $('#addNewBooking').click(() => {
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success(data) {
-        console.log(data);
         if (data != null) {
           new Noty({
             timeout: '5000',
@@ -551,10 +553,6 @@ $('#addNewBooking').click(() => {
         }
       },
       error(xhr, textStatus, errorThrown) {
-        console.log('Error in Operation');
-        console.log(`XHR: ${JSON.stringify(xhr)}`);
-        console.log(`Textstatus: ${textStatus}`);
-        console.log(`Errorthorwn${errorThrown}`);
         new Noty({
           timeout: '5000',
           type: 'error',
@@ -596,14 +594,18 @@ $('#updateBookingDate').click(() => {
         }).show();
       
       } else {
-        console.log('Error');
+        errMsg="Error in operation"
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+  
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(`XHR: ${JSON.stringify(xhr)}`);
-      console.log(`Textstatus: ${textStatus}`);
-      console.log(`Errorthorwn${errorThrown}`);
       new Noty({
         timeout: '5000',
         type: 'error',

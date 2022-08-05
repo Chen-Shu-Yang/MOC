@@ -35,10 +35,15 @@ function populateRatesMullBerry() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -60,10 +65,15 @@ function populateRatesSaffaras() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }

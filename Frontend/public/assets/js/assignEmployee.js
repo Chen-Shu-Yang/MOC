@@ -77,8 +77,6 @@ function loadAvailableEmployee(bookingDate,timeOfService) {
     dataType: 'json',
     success(data) {
       if (data != null) {
-        console.log('-------response data------');
-        console.log(`LENGTH OF DATA:${data.length}`);
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
           const employeeDetails = {
@@ -96,13 +94,18 @@ function loadAvailableEmployee(bookingDate,timeOfService) {
     error(xhr, textStatus, errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
       }
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+
     },
   });
 }
@@ -114,9 +117,6 @@ function loadBookingDetails(bookingid) {
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       const bookingDetails = data[0];
       const RowInfo = {
         customerId: bookingDetails.CustomerID,
@@ -145,10 +145,15 @@ function loadBookingDetails(bookingid) {
       loadAvailableEmployee(RowInfo.bookingDate, RowInfo.timeOfService);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -188,18 +193,28 @@ function assignBookingSchedule() {
         $('#employeeWhatsapp').val(data.EmployeeMobile);
         $('#customerWhatsapp').val(data.CustomerMobile);
       } else {
-        console.log('Error');
+        errMsg="Error in operation"
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+  
       }
     },
     error(xhr, textStatus, errorThrown) {
       if (xhr.status === 400) {
-        console.log('Error in Operation');
-        console.log('-----------------------');
-        console.log(xhr);
-        console.log(textStatus);
-        console.log(errorThrown);
-        console.log(xhr.status);
-        console.log(xhr.responseText);
+        errMsg="Error in operation"
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+  
       }
     },
   });
@@ -210,7 +225,6 @@ function whatsappEmployee() {
   const bookingId = queryParams.get('bookingid');
   const employeeWhatsapp = $('#employeeWhatsapp').val();
   if (employeeCount > 0 && customerCount > 0) {
-    console.log('message sent');
     window.location.replace(`${frontEndUrl}/admin/booking`);
   }
   if (employeeCount > 0) {
@@ -246,12 +260,15 @@ function whatsappEmployee() {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
   employeeCount++;
@@ -262,7 +279,6 @@ function whatsappCustomer() {
   const bookingId = queryParams.get('bookingid');
   const customerWhatsapp = $('#customerWhatsapp').val();
   if (employeeCount > 0 && customerCount > 0) {
-    console.log('message sent');
     window.location.replace(`${frontEndUrl}/admin/booking`);
   }
   if (customerCount > 0) {
@@ -292,11 +308,15 @@ function whatsappCustomer() {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
   customerCount++;
@@ -304,10 +324,6 @@ function whatsappCustomer() {
 
 $(document).ready(() => {
   const queryParams = new URLSearchParams(window.location.search);
-  console.log('--------Query Params----------');
-  console.log(`Query Param (source): ${window.location.search}`);
-  console.log(`Query Param (extraction): ${queryParams}`);
   const bookingid = queryParams.get('bookingid');
-  console.log(bookingid);
   loadBookingDetails(bookingid);
 });

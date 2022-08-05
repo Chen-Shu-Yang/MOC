@@ -31,14 +31,14 @@ function loadUserDetails() {
       $('#adminName').append("<h1>Welcome "+userInfo.FirstName + " "+userInfo.LastName+",</h1>");
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-
-      console.log(xhr.status);
-      console.log(xhr.responseText);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
     },
   });
 }
@@ -118,10 +118,15 @@ function loadMonthlyBookingForGraph() {
       });
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -138,11 +143,18 @@ function getRevenueOfTheMonth() {
     error(xhr, textStatus, errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
       }
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
+
     },
   });
 }
@@ -154,8 +166,6 @@ function diffInConsecutiveMonthBooking() {
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data, textStatus, xhr) {
-      console.log(xhr);
-      console.log(textStatus);
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();
       let lastMonth;
@@ -179,10 +189,15 @@ function diffInConsecutiveMonthBooking() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log('Error in Operation');
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }

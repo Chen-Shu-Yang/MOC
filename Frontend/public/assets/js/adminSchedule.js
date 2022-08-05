@@ -52,13 +52,18 @@ function loadAllAvailEmployees(date, time) {
     error(xhr, textStatus, errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
       }
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+
     },
   });
 }
@@ -95,13 +100,17 @@ function ScheduleAvailability(employeeId, date, time) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
+      else{
+        errMsg="Error in operation"
       new Noty({
-        timeout: '3000',
-        type: 'success',
+        timeout: '5000',
+        type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: xhr.responseText,
+        text: errMsg,
       }).show();
+
+      }
     },
   });
 }

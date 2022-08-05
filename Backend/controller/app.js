@@ -4272,8 +4272,6 @@ app.delete('/inActiveCustomer/:id', printDebugInfo, verifyToken, (req, res) => {
       };
       res.status(500).send(output);
     }
-
-
   });
 });
 

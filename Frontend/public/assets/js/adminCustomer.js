@@ -60,7 +60,6 @@ function pageBtnCreate(totalNumberOfPages, activePage) {
       $('#pagination').append(divPaginBtn);
     }
   }
-
   if (activePage !== totalNumberOfPages) {
     divPaginBtn = `<button type="button" onClick="loadCustomersByLimit(${totalNumberOfPages})">>></button>`;
     $('#pagination').append(divPaginBtn);
@@ -93,6 +92,16 @@ function loadAllCustomers(activePage) {
     error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
       }
     },
   });
@@ -123,6 +132,16 @@ function loadCustomersByLimit(pageNumber) {
     error(errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
       }
     },
   });
@@ -210,7 +229,7 @@ function updateCustomer() {
         type: 'error',
         layout: 'topCenter',
         theme: 'sunset',
-        text: xhr.responseText,
+        text: msg,
       }).show();
     },
   });
@@ -222,7 +241,6 @@ function deleteCustomer(id) {
     url: `${backEndUrl}/customer/${id}`,
     type: 'DELETE',
     contentType: 'application/json; charset=utf-8',
-    // if data inserted
     success(data, textStatus, xhr) {
       $('#customer-list').html('');
       loadCustomersByLimit(1);
@@ -288,7 +306,6 @@ function levenshtein(a, b) {
   return matrix[b.length][a.length];
 }
 
-
 userSearch.addEventListener('keyup', (e) => {
   let RowInfo = {};
   const similarResults = [];
@@ -304,7 +321,6 @@ userSearch.addEventListener('keyup', (e) => {
     loadCustomersByLimit(1);
     return;
   }
-
   $('#similarSearch').html('');
   $('#customer-list').html('');
   if (filterCustomers.length !== 0) {

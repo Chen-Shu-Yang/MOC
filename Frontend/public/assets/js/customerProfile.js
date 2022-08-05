@@ -28,12 +28,15 @@ function loadProfileDetails() {
       $('#email').val(custDetail.Email);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error n Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -71,14 +74,18 @@ $('#updateProfile').click(() => {
           text: 'Profile updated!',
         }).show();
       } else {
-        console.log('Error');
+        errMsg="Error in operation"
+        new Noty({
+          timeout: '5000',
+          type: 'error',
+          layout: 'topCenter',
+          theme: 'sunset',
+          text: errMsg,
+        }).show();
+  
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(`XHR: ${JSON.stringify(xhr)}`);
-      console.log(`Textstatus: ${textStatus}`);
-      console.log(`Errorthorwn${errorThrown}`);
       new Noty({
         timeout: '5000',
         type: 'error',

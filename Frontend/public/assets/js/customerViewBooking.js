@@ -167,7 +167,6 @@ function cancelBooking(bookingId) {
     error(xhr, textStatus, errorThrown) {
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -213,12 +212,15 @@ function loadAllBooking() {
     },
 
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }

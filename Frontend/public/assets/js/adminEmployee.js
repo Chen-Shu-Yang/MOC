@@ -133,9 +133,6 @@ function loadEmployeeAvailability() {
     type: 'GET',
     contentType: 'application/json; charset=utf-8',
     success(data) {
-      console.log('-------response data------');
-      console.log(data);
-      console.log(`LENGTH OF DATA:${data.length}`);
       if (data.length === 0) {
         $('#eightThirtySlot').removeClass('unavailable');
         $('#twelveThirtySlot').removeClass('unavailable');
@@ -192,12 +189,14 @@ function loadEmployeeAvailability() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
     },
   });
 }
@@ -501,7 +500,7 @@ function addEmployee() {
         type: 'success',
         layout: 'topCenter',
         theme: 'sunset',
-        text: 'Image Uploaded',
+        text: 'Employee added',
       }).show();
     },
     error(xhr) {

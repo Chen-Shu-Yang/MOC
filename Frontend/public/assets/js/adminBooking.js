@@ -112,6 +112,16 @@ function loadAllBooking(activePage) {
     error(xhr, textStatus, errorThrown) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
+      }else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
       }
     },
   });
@@ -155,6 +165,16 @@ function loadAllBookingByLimit(pageNumber) {
       if (errorThrown === 'Forbidden') {
         window.location.replace(`${frontEndUrl}/unAuthorize`);
       }
+      else{
+        errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+      }
     },
   });
 }
@@ -176,12 +196,10 @@ function completeBooking(id) {
         theme: 'sunset',
         text: msg,
       }).show();
-      $('#confirmationMsg').html(confirmToast(msg)).fadeOut(2500);
     },
     error(xhr, textStatus, errorThrown) {
       let errMsg = '';
       if (xhr.status === 500) {
-        console.log('error');
         errMsg = 'Please ensure that your values are accurate';
       } else if (xhr.status === 400) {
         errMsg = ' Invalid input ';
@@ -202,9 +220,8 @@ function completeBooking(id) {
     },
   });
 }
-// eslint-disable-next-line no-unused-vars
+
 function loadAllBookingToBECancelledByLimit(pageNumber) {
-  // call the web service endpoint
   $.ajax({
     headers: { authorization: `Bearer ${tmpToken}` },
     url: `${backEndUrl}/bookingCancel/${pageNumber}`,
@@ -216,7 +233,6 @@ function loadAllBookingToBECancelledByLimit(pageNumber) {
         $('#bookingTableBody').html('');
         for (let i = 0; i < data.length; i++) {
           const booking = data[i];
-          // compile the data that the card needs for its creation
           const bookingstbl = {
             bookingID: booking.BookingID,
             FirstName: booking.FirstName,
@@ -370,7 +386,6 @@ function loadABooking(bookingID) {
       $('#datePicker').val(RowInfo.ScheduleDate);
     },
     error(xhr) {
-      
       errMsg = ' ';
       if (xhr.status === 201) {
         errMsg = "The id doesn't exist ";
@@ -388,17 +403,12 @@ function loadABooking(bookingID) {
 
 
 $(document).ready(() => {
-
  $('#addNewBooking').click(() => {
-    // data extraction
-    console.log('Hi');
     const tempAdminID = localStorage.getItem('AdminID');
     if (tempAdminID != null) {
       const id = $('#addContractID').val();
       const date = $('#datepicker').val();
       const tempAdminID = localStorage.getItem('AdminID');
-
-      // data compilation
       const info = {
         bookingID: id,
         bookingDate: date,
@@ -421,10 +431,6 @@ $(document).ready(() => {
           }).show();
         },
         error(xhr, textStatus, errorThrown) {
-          console.log('Error in Operation');
-          console.log(`XHR: ${JSON.stringify(xhr)}`);
-          console.log(`Textstatus: ${textStatus}`);
-          console.log(`Errorthorwn${errorThrown}`);
           new Noty({
             timeout: '5000',
             type: 'error',
@@ -441,16 +447,12 @@ $(document).ready(() => {
   });
 
   $('#updateBookingDate').click(() => {
-    // data extraction
     const bookingIDs = $('#booking-id-update').val();
     const date = $('#datePicker').val();
-    // data compilation
     const info = {
       bookingID: bookingIDs,
       ScheduleDate: date,
     };
-
-    // call web service endpoint
     $.ajax({
       headers: { authorization: `Bearer ${tmpToken}` },
       url: `${backEndUrl}/updateBooking/${bookingIDs}`,

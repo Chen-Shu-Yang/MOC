@@ -1,11 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-console */
-/* eslint-disable no-undef */
-/* eslint-disable prefer-regex-literals */
-/* eslint-disable no-useless-escape */
-
-
 const frontEndUrl = 'http://localhost:3001';
 const backEndUrl = 'http://localhost:5000';
 // const frontEndUrl = 'https://moc-fa.herokuapp.com';
@@ -31,15 +23,10 @@ let estTotal = 0;
 const extraServiceArr = [];
 const excludedServiceArr = [];
 
-console.log("======= At the start ===================")
-console.log(typeof (estService));
-console.log("==============================================")
-
 function createCard(cardInfo) {
   const card = `
     <div class="col-md-4">
         <div class="card">
-
             <div id="service${cardInfo.ClassID}" class="container-class"  border-radius: 10px;>
                 <h4 style="text-align:center;"><b>${cardInfo.ClassName}</b></h4> 
                 <p style="text-align:center;"><b>$${cardInfo.ClassPricing} per hour</b></p>
@@ -47,8 +34,6 @@ function createCard(cardInfo) {
                 <div>
                 <p style="text-align:center;">${cardInfo.ClassDes}</p>   
                 </div>
-
-                
                 <input type="checkbox" id="classNameButton${cardInfo.ClassID}" value="${cardInfo.ClassName} $${cardInfo.ClassPricing} #${cardInfo.ClassID}" onchange="updatedService" disabled hidden>
                 <button class="confirm-btn" onclick=updatedService(${cardInfo.ClassID})>
                     Select
@@ -91,7 +76,6 @@ function setCurrentDate() {
 
 function loadUserDetails() {
   const CustomerIDs = localStorage.getItem('customerID');
-  console.log(CustomerIDs);
   let userInfo;
   setCurrentDate();
   updatedDay1();
@@ -112,19 +96,19 @@ function loadUserDetails() {
           userNameInfo: user.FirstName,
         };
       }
-      console.log(userInfo.userNameInfo);
       $('#cUserNameInfo').val(userInfo.userNameInfo);
       $('#cAddress').val(userInfo.userAddress);
       $('#cPostalCode').val(userInfo.userPostalCode);
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log('-----------------------');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.status);
-      console.log(xhr.responseText);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
     },
   });
 }
@@ -162,12 +146,15 @@ function populateClass() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -189,12 +176,15 @@ function populatePackage() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -219,12 +209,15 @@ function populateRates() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -250,12 +243,15 @@ function populateAdditonalService() {
       }
     },
     error(xhr, textStatus, errorThrown) {
-      console.log('Error in Operation');
-      console.log(xhr);
-      console.log(textStatus);
-      console.log(errorThrown);
-      console.log(xhr.responseText);
-      console.log(xhr.status);
+      errMsg="Error in operation"
+      new Noty({
+        timeout: '5000',
+        type: 'error',
+        layout: 'topCenter',
+        theme: 'sunset',
+        text: errMsg,
+      }).show();
+
     },
   });
 }
@@ -340,11 +336,9 @@ function updatedExcludedAddSer(x) {
   const excludeServices = document.getElementById(x).value;
   const id = `#${x}`;
   const extraserviceCheck = $(id).is(':checked');
-  console.log(extraserviceCheck);
   const excludeServicesValue = excludeServices.substring((excludeServices.indexOf('$') + 1));
   if (extraserviceCheck) {
     excludedServiceArr.push(excludeServices);
-    console.log(excludedServiceArr);
     estTotal -= parseFloat(excludeServicesValue, 10);
     updatedAmt();
   } else if (!extraserviceCheck) {
@@ -353,7 +347,6 @@ function updatedExcludedAddSer(x) {
         excludedServiceArr.splice(y, 1);
       }
     }
-    console.log(excludedServiceArr);
     estTotal += parseFloat(excludeServicesValue, 10);
     updatedAmt();
   }
