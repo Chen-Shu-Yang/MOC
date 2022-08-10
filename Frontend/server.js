@@ -82,7 +82,7 @@ app.get('/contact', (req, res) => {
 
 // Go to contact
 app.get('/oneTimeCleaning', (req, res) => {
-  res.sendFile('/public/assets/html/oneTimeCleaning.html', { root: __dirname });
+  res.sendFile('/public/assets/html/oneTImeCleaning.html', { root: __dirname });
 });
 // Go to office
 app.get('/officeCleaning', (req, res) => {
