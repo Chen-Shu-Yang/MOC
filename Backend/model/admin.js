@@ -1655,7 +1655,6 @@ where
     pool.query(sql, [id], (err, result) => {
       // error
       if (err) {
-        console.log("****************************")
         console.log(err);
         return callback(err);
       }
